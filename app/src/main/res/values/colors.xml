@@ -3,4 +3,17 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="grayf">#ABFFFFFF</color>
+    <color name="goldf">#C9A63C</color>
+    <color name="gray2f">#59D8D4D4</color>
+    <color name="greenf">#44FF03</color>
+    <color name="redf">#FC2828</color>
+    <color name="yellowf">#DDFF00</color>
+    <color name="gray_darkf">#4B4A4A</color>
+    <!--    <color name="gray_darkf">#27274B</color>-->
+    <color name="dark_bluef">#13133D</color>
+    <color name="alpha_grayf">#8D000000</color>
+    <color name="white">#FFFFFF</color>
+
 </resources>
