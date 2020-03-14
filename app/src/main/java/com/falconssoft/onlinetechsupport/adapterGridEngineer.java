@@ -35,7 +35,7 @@ public class adapterGridEngineer extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View myView = View.inflate(context, R.layout.item_row,null);
+        View myView = View.inflate(context, R.layout.item_rows,null);
         TextView green,textView_Nmae;
         CircleImageView profile_image;
 //        green = myView.findViewById(R.id.green);
