@@ -41,7 +41,7 @@ public class adapterGridEngineer extends BaseAdapter {
 //        green = myView.findViewById(R.id.green);
         textView_Nmae = myView.findViewById(R.id.textView_Nmae);
         profile_image= myView.findViewById(R.id.profile_image);
-        if(i%2==0)
+        if(i%2!=0)
         {
 //           green.setBackgroundResource(R.drawable.red_circle);
             textView_Nmae.setText("Eng Abeer Hayari");

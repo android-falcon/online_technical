@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:ignore="MissingDefaultResource">
 
     <LinearLayout
         android:layout_height="match_parent"
@@ -252,6 +253,15 @@
                 android:padding="15dp"
 
                 android:layout_width="match_parent"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="Hold Customer"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textColor="@color/darkblue_1"
+                android:layout_gravity="center"
+                android:layout_weight="0.2"/>
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler"
                 android:background="@color/layer1"

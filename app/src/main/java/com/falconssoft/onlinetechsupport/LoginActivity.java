@@ -46,8 +46,12 @@ public class LoginActivity extends AppCompatActivity {
 
                             switch (employeeID){
                                 case 1:// manager
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
                                     break;
                                 case 2:// call center
+                                    Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                    startActivity(intent2);
                                     break;
                                 case 3:// online
                                     Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);

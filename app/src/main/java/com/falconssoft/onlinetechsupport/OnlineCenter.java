@@ -22,6 +22,7 @@ public class OnlineCenter extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_center);
+
         gridView = (GridView)findViewById(R.id.grid);
         recyclerView=findViewById(R.id.recycler);
         List<String> chequeListitems= new ArrayList<>();
