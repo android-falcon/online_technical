@@ -1,6 +1,7 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     List<ManagerLayout> cheakIn,cheakout,hold;
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ListView listCheakIn,listCheakout,holds ;
     ImageView falcon;
     Animation animZoom;
-    Timer  timer;
+    Timer  T;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
