@@ -17,4 +17,12 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="Theme_Dialog" parent="android:Theme.Holo.Dialog">
+
+        <item name="android:windowMinWidthMajor">50%</item>
+        <item name="android:windowMinWidthMinor">50%</item>
+        <item name="android:windowEnterAnimation">@anim/top_bottom</item>
+        <item name="android:windowExitAnimation">@anim/left</item>
+    </style>
+
 </resources>
