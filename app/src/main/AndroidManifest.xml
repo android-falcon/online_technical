@@ -13,6 +13,8 @@
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".OnlineActivity" />
+        <activity android:name=".OnlineCenter" android:screenOrientation="sensorLandscape"/>
+
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
