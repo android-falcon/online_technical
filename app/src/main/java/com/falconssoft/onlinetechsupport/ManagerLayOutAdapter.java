@@ -64,7 +64,7 @@ public class ManagerLayOutAdapter extends BaseAdapter {
         public View getView(final int i, View view, ViewGroup viewGroup) {
 
             final ViewHolder holder = new ViewHolder();
-            view = View.inflate(context, R.layout.item_row, null);
+            view = View.inflate(context, R.layout.item_manager_row, null);
 
 
             holder.companyName = (TextView) view.findViewById(R.id.companyName);
