@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#032A3D</color>
+    <color name="colorAccent">#7732F0</color>
+    <color name="gray">#D0585F72</color>
     <color name="white">#F7F4F6</color>
     <color name="RedColor">#F84343</color>
     <color name="greenColor">#12880B</color>
     <color name="noColor">#0012880B</color>
-    <color name="gray">#F0BABDBA</color>
+
     <color name="blueColor">#4FB5FA</color>
     <color name="falconColor">#c8a010</color>
     <color name="darkBlueColor">#0C2F53</color>
@@ -65,5 +66,16 @@
     <color name="darkblue_">#DF075F8B</color>
     <color name="darkblue_2">#032A3D</color>
 
+    <color name="grayf">#ABFFFFFF</color>
+    <color name="goldf">#C9A63C</color>
+    <color name="gray2f">#59D8D4D4</color>
+    <color name="greenf">#44FF03</color>
+    <color name="redf">#FC2828</color>
+    <color name="yellowf">#DDFF00</color>
+    <color name="gray_darkf">#4B4A4A</color>
+    <!--    <color name="gray_darkf">#27274B</color>-->
+    <color name="dark_bluef">#13133D</color>
+    <color name="alpha_grayf">#8D000000</color>
+    <color name="white_dark2">#FFFFFF</color>
 
 </resources>

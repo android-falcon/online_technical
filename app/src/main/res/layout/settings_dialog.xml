@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="@string/action_settings"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.964"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:background="@drawable/icon_f"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_person"
+            tools:ignore="VectorDrawableCompat" />
+
+        <EditText
+            android:id="@+id/settings_id"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/edit_text_f"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:hint="ID"
+            android:inputType="textPersonName"
+            android:minHeight="50dp"
+            android:nextFocusDown="@id/login_password"
+            android:padding="10dp"
+            android:textSize="15sp"
+            tools:layout_editor_absoluteX="120dp"
+            tools:layout_editor_absoluteY="398dp" />
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/settings_done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="255dp"
+        android:layout_marginLeft="255dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="257dp"
+        android:layout_marginRight="257dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/button_f"
+        android:fontFamily="serif"
+        android:text="Done"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearOne" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

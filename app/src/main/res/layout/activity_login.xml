@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grayf"
+    tools:context=".LoginActivity">
+
+    <LinearLayout
+        android:id="@+id/linearOne"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:background="@drawable/icon_f"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_person"
+            tools:ignore="VectorDrawableCompat" />
+
+        <EditText
+            android:id="@+id/login_username"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/edit_text_f"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:hint="Username"
+            android:inputType="textPersonName"
+            android:minHeight="50dp"
+            android:nextFocusDown="@id/login_password"
+            android:padding="10dp"
+            android:textSize="15sp"
+            tools:layout_editor_absoluteX="120dp"
+            tools:layout_editor_absoluteY="398dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="120dp"
+        android:layout_marginRight="120dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearOne">
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:background="@drawable/icon_f"
+            android:padding="10dp"
+            app:srcCompat="@drawable/ic_lock"
+            tools:ignore="VectorDrawableCompat" />
+
+
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/edit_text_f"
+            android:drawablePadding="5dp"
+            android:ems="10"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:hint="Password"
+            android:inputType="textPersonName"
+            android:minHeight="50dp"
+            android:padding="10dp"
+            android:textSize="15sp"
+            tools:layout_editor_absoluteX="120dp"
+            tools:layout_editor_absoluteY="398dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="114dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/falconssoftlogoblack" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="190dp"
+        android:layout_marginLeft="190dp"
+        android:layout_marginEnd="190dp"
+        android:layout_marginRight="190dp"
+        android:background="@drawable/button_f"
+        android:fontFamily="serif"
+        android:text="Go"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearTwo"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="260dp"
+        android:fontFamily="serif"
+        android:gravity="center"
+        android:text="Login"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.964"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/login_settings"
+        android:layout_width="40dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="#00FFFFFF"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
