@@ -11,11 +11,11 @@
         android:id="@+id/linearOne"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginRight="120dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginLeft="320dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="320dp"
+        android:layout_marginRight="320dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,6 @@
             android:layout_height="match_parent"
             android:layout_weight="0"
             android:background="@drawable/icon_f"
-            android:tint="@color/darkblue_1"
             android:padding="10dp"
             app:srcCompat="@drawable/ic_person"
             tools:ignore="VectorDrawableCompat" />
@@ -57,11 +56,11 @@
         android:id="@+id/linearTwo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="120dp"
-        android:layout_marginLeft="120dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginLeft="320dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginRight="120dp"
+        android:layout_marginEnd="320dp"
+        android:layout_marginRight="320dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,12 +71,10 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0"
-            android:tint="@color/darkblue_1"
             android:background="@drawable/icon_f"
             android:padding="10dp"
             app:srcCompat="@drawable/ic_lock"
             tools:ignore="VectorDrawableCompat" />
-
 
         <EditText
             android:id="@+id/login_password"
@@ -97,10 +94,11 @@
             tools:layout_editor_absoluteX="120dp"
             tools:layout_editor_absoluteY="398dp" />
 
+
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/login_logo"
+        android:id="@+id/imageView"
         android:layout_width="114dp"
         android:layout_height="58dp"
         android:layout_marginTop="16dp"
@@ -111,13 +109,13 @@
         app:srcCompat="@drawable/falconssoftlogoblack" />
 
     <Button
-        android:id="@+id/login_login"
+        android:id="@+id/button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="190dp"
-        android:layout_marginLeft="190dp"
-        android:layout_marginEnd="190dp"
-        android:layout_marginRight="190dp"
+        android:layout_marginStart="400dp"
+        android:layout_marginLeft="400dp"
+        android:layout_marginEnd="400dp"
+        android:layout_marginRight="400dp"
         android:background="@drawable/button_f"
         android:fontFamily="serif"
         android:text="Go"
@@ -135,11 +133,10 @@
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="130dp"
         android:fontFamily="serif"
         android:gravity="center"
         android:text="Login"
-        android:textColor="@color/darkblue_1"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.964"
@@ -153,8 +150,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
+        android:background="#00FFFFFF"
         android:src="@drawable/ic_settings"
-        android:tint="@color/darkblue_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
