@@ -19,9 +19,11 @@
             android:layout_width="match_parent"
             android:layout_weight="5"
             android:orientation="vertical">
-            <LinearLayout android:layout_height="match_parent"
+            <LinearLayout
+                android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:layout_weight="5"
+
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -191,20 +193,21 @@
             <GridView
                 android:id="@+id/grid"
                 android:background="@color/layer1"
+
                 android:numColumns="2"
                 android:horizontalSpacing="2dp"
-                android:verticalSpacing="30dp"
+                android:verticalSpacing="7dp"
+
 
                 android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:layout_margin="10dp"
-                android:padding="15dp"
-
+                android:padding="5dp"
                 android:layout_width="match_parent"/>
             <LinearLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:layout_weight="8"
+                android:layout_weight="7"
                 android:orientation="horizontal">
                 <Button
                     android:layout_height="wrap_content"
@@ -262,7 +265,7 @@
                 android:layout_gravity="bottom"
                 android:layout_weight="0.3"
                 android:gravity="center"
-                android:text="Hold Customer"
+                android:text="Hold Customer List"
                 android:textColor="@color/darkblue_1"
                 android:textStyle="bold" />
 

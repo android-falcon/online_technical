@@ -15,7 +15,7 @@
         <activity android:name=".OnlineActivity" />
         <activity android:name=".OnlineCenter" android:screenOrientation="sensorLandscape"/>
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
