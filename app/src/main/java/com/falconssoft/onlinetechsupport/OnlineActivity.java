@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,10 +27,12 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 
     private ConstraintLayout coordinatorLayout;
     private CircleImageView profilePicture;
-    private ImageView breakButton, exitButton;
+    private ImageView breakButton, exitButton,customerName;
+    private TextView  phoneNo, system;
     private Button exitBreak;
     private FloatingActionButton addactionButton;
     private Snackbar snackbar;
+    private Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,23 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         exitButton = findViewById(R.id.online_exit);
         coordinatorLayout = findViewById(R.id.online_cordinator_layout);
         addactionButton = findViewById(R.id.online_add);
+        customerName = findViewById(R.id.online_image_customer);
+//        phoneNo = findViewById(R.id.online_image_customer);
+//        system = findViewById(R.id.online_image_customer);
+
+//        phoneNo = findViewById(R.id.online_image_phone);
+//        system = findViewById(R.id.online_image_system);
+
+//        animation = AnimationUtils.loadAnimation(this, R.anim.zoom);
+//        customerName.startAnimation(animation);
+//
+//        animation = AnimationUtils.loadAnimation(this, R.anim.zoom);
+//        animation.setStartOffset(20);
+//        phoneNo.startAnimation(animation);
+//
+//        animation = AnimationUtils.loadAnimation(this, R.anim.zoom);
+//        animation.setStartOffset(30);
+//        system.startAnimation(animation);
 
         addactionButton.setOnClickListener(this);
         breakButton.setOnClickListener(this);
