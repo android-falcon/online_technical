@@ -8,16 +8,20 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText id;
-    private Button done;
-    private ImageView settings;
+    private Button done, login;
+    private ImageView settings, logo;
     int employeeID;
+    private Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         settings = findViewById(R.id.login_settings);
+        login = findViewById(R.id.login_login);
+        logo = findViewById(R.id.login_logo);
+        animation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
+//        animation.setRepeatCount(Animation.INFINITE);
+        logo.startAnimation(animation);
 
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                                 case 3:// online
                                     Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
                                     startActivity(intent3);
-
                                     break;
                             }
                         }

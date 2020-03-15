@@ -12,10 +12,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".OnlineActivity" />
+        <activity android:name=".OnlineActivity" android:screenOrientation="sensorPortrait" />
         <activity android:name=".OnlineCenter" android:screenOrientation="sensorLandscape"/>
 
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" android:windowSoftInputMode="adjustPan" android:screenOrientation="sensorPortrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
