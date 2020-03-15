@@ -8,7 +8,10 @@
         android:pivotX="50%"
         android:pivotY="50%"
         android:toXScale="150dp"
-        android:toYScale="150dp"/>
+        android:toYScale="150dp"
+        android:repeatMode="reverse"
+        android:repeatCount="infinite"
+        />
 
     <rotate
         android:duration="4000"
