@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.GridView;
 
+import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +18,20 @@ import static android.widget.LinearLayout.VERTICAL;
 public class OnlineCenter extends AppCompatActivity {
     GridView gridView;
     RecyclerView recyclerView;
+    List<EngineerInfo> engineerInfoList;
+    List<String> chequeListitems;
 
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_center);
+        initialView();
+        engineerInfoList=new ArrayList<>();
+        fillEngineerInfoList();
 
-        gridView = (GridView)findViewById(R.id.grid);
-        recyclerView=findViewById(R.id.recycler);
-        List<String> chequeListitems= new ArrayList<>();
+
+        chequeListitems= new ArrayList<>();
         chequeListitems.add("tahani");
         chequeListitems.add("tahani");
         chequeListitems.add("tahani");
@@ -42,5 +48,16 @@ public class OnlineCenter extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new holdCompanyAdapter(OnlineCenter.this,chequeListitems));
         gridView.setAdapter(engineerAdapter);
+    }
+
+    private void fillEngineerInfoList() {
+
+
+
+    }
+
+    private void initialView() {
+        gridView = (GridView)findViewById(R.id.grid);
+        recyclerView=findViewById(R.id.recycler);
     }
 }
