@@ -67,8 +67,8 @@ public class PresenterClass {
 
     public void getCustomersData() {
         //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
-        HashMap<String, String> headers = new HashMap<String, String>();
-        headers.put("Content-Type", "application/json; charset=utf-8");
+//        HashMap<String, String> headers = new HashMap<String, String>();
+//        headers.put("Content-Type", "application/json; charset=utf-8");
         urlImportCustomer = "http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=\"2\"&ENG_ID=\"2\"";
         objectRequest = new StringRequest(Request.Method.POST, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
         requestQueue.add(objectRequest);
