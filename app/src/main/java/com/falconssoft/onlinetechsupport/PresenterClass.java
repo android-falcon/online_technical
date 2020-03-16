@@ -16,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+
 public class PresenterClass {
 
     private String urlImportCustomer, urlLogin;
@@ -64,8 +66,11 @@ public class PresenterClass {
     //****************************************** Customers Data **************************************
 
     public void getCustomersData() {
-        urlImportCustomer = urlImportCustomer = "http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=\"2\"&ENG_ID=\"2\"";
-        objectRequest = new StringRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
+        //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
+        HashMap<String, String> headers = new HashMap<String, String>();
+        headers.put("Content-Type", "application/json; charset=utf-8");
+        urlImportCustomer = "http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=\"2\"&ENG_ID=\"2\"";
+        objectRequest = new StringRequest(Request.Method.POST, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
         requestQueue.add(objectRequest);
     }
 
