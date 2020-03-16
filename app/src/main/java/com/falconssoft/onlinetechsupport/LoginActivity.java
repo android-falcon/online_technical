@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         presenterClass = new PresenterClass(this);
+        presenterClass.getCustomersData();
         sharedPreferences = getSharedPreferences(LOGIN_PREFERNCES, Context.MODE_PRIVATE);
         settings = findViewById(R.id.login_settings);
         login = findViewById(R.id.login_login);
