@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".MainActivity"
+    tools:context=".OnlineCenter"
     tools:ignore="MissingDefaultResource">
 
     <LinearLayout
@@ -209,16 +209,19 @@
                 android:layout_width="match_parent"
                 android:layout_weight="7"
                 android:orientation="horizontal">
-                <Button
-                    android:layout_height="wrap_content"
-                    android:text="Check In"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:elevation="5dp"
-                    android:textColor="@color/layer1"
-                    android:background="@drawable/background_checkin"
 
-                    android:layout_width="match_parent"/>
+                <Button
+                    android:id="@+id/checkIn_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/background_checkin"
+                    android:elevation="5dp"
+                    android:onClick="sendCompaneyInfo"
+
+                    android:text="Check In"
+                    android:textColor="@color/layer1" />
                 <Button
                     android:layout_height="wrap_content"
                     android:text="Hold"

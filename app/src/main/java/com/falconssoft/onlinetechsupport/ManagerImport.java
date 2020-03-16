@@ -237,11 +237,11 @@ Log.e("tag_itemCard", "****saveSuccess");
                 JSONArray NEWI=new JSONArray();
 
                 try {
-                    obj.put("CUST_NAME", "'daaa'");
-                    obj.put("COMPANY_NAME", "'MASTER'");
-                    obj.put("SYSTEM_NAME", "'rrrr'");
-                    obj.put("PHONE_NO", "'0154545465'");
-                    obj.put("CHECH_IN_TIME", "'0000'");
+                    obj.put("CUST_NAME", "'Eng Tahani'");
+                    obj.put("COMPANY_NAME", "'Falcons'");
+                    obj.put("SYSTEM_NAME", "'Accounting'");
+                    obj.put("PHONE_NO", "'015454'");
+                    obj.put("CHECH_IN_TIME", "'03:30'");
                     obj.put("STATE", "'1'");
                     obj.put("ENG_NAME", "'ENG.RAWAN'");
 
