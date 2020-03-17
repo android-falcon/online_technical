@@ -97,13 +97,13 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
                     dialog.setContentView(R.layout.information_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-                    TextView customer,company,phone,system,eng,time,states,titel;
+                    TextView customer,company,phone,system,eng,time,states,titel,problem;
                     LinearLayout bac1,bac2;
 
 
                     bac1=dialog.findViewById(R.id.bac1);
                     bac2=dialog.findViewById(R.id.bac2);
-
+                    problem=dialog.findViewById(R.id.problem);
                     titel =dialog.findViewById(R.id.tital);
                     customer=dialog.findViewById(R.id.customerName);
                     company=dialog.findViewById(R.id.company);
@@ -154,6 +154,7 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
                     eng.setText("" + itemsList.get(i).getEnginerName());
                     time.setText("" + itemsList.get(i).getCheakInTime());
                     states.setText(statesString);
+                    problem.setText("" + itemsList.get(i).getProplem());
 
 //                    Toast.makeText(context, "main "+ holder.EngName.getText().toString(), Toast.LENGTH_SHORT).show();
 

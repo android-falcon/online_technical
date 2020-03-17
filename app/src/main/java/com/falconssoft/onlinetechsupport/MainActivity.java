@@ -1,6 +1,7 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.animation.Animator;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 
@@ -53,7 +55,11 @@ public class MainActivity extends AppCompatActivity {
 //                managerImport.startSending("ManageriN");
 //            }
 //        });
+//        RecyclerView recyclerView = null;
+//        recyclerView.getAdapter().notifyItemInserted(position);
+//        recyclerView.getAdapter().notifyItemRangeInserted(positionStart, itemCount);
         waite = findViewById(R.id.waite);
+
         refresh = findViewById(R.id.refresh);
         imageMove = findViewById(R.id.imageMove);
         cheakIn = new ArrayList<>();
