@@ -9,21 +9,28 @@ public class ManagerLayout {
     private String cheakOutTime;
     private String EnginerName;
     private String State;
+    private String systemId;
+    private String Proplem;
+    private String LOding;
+    private String currentTime;
+
 
     public ManagerLayout() {
 
     }
 
-    public ManagerLayout(String customerName, String companyName, String systemName,
-                         String phoneNo, String cheakInTime, String cheakOutTime, String enginerName, String state) {
+    public ManagerLayout(String customerName, String companyName, String systemName, String phoneNo, String cheakInTime,
+                         String cheakOutTime, String enginerName, String state, String systemId, String proplem) {
         this.customerName = customerName;
         this.companyName = companyName;
         this.systemName = systemName;
         this.phoneNo = phoneNo;
         this.cheakInTime = cheakInTime;
         this.cheakOutTime = cheakOutTime;
-        EnginerName = enginerName;
-        State = state;
+        this. EnginerName = enginerName;
+        this.State = state;
+        this.systemId = systemId;
+        this.Proplem = proplem;
     }
 
     public void setCustomerName(String customerName) {
@@ -58,6 +65,21 @@ public class ManagerLayout {
         State = state;
     }
 
+    public void setSystemId(String systemId) {
+        this.systemId = systemId;
+    }
+
+    public void setProplem(String proplem) {
+        Proplem = proplem;
+    }
+
+    public void setLOding(String LOding) {
+        this.LOding = LOding;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
+    }
 
     public String getCustomerName() {
         return customerName;
@@ -89,5 +111,21 @@ public class ManagerLayout {
 
     public String getState() {
         return State;
+    }
+
+    public String getSystemId() {
+        return systemId;
+    }
+
+    public String getProplem() {
+        return Proplem;
+    }
+
+    public String getLOding() {
+        return LOding;
+    }
+
+    public String getCurrentTime() {
+        return currentTime;
     }
 }
