@@ -5,9 +5,13 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.icu.util.Calendar;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -26,6 +30,18 @@ import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,7 +61,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     private ImageView breakButton, exitButton;
     private CircularView timer;
     private CircularView.OptionsBuilder builder;
-//    private CircleTimeView timer;
+    //    private CircleTimeView timer;
     private EditText problem;
     private TextView phoneNo, system, username;
     private Button exitBreak, new_customer;
@@ -116,29 +132,8 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()) {
             case R.id.online_new_customer:
                 presenterClass.getCustomersData();
-                onlineImage.setVisibility(View.GONE);
-                timer.setVisibility(View.VISIBLE);
 //                timer.setCurrentTime(20000);
 //                start circular view to rotate
-                builder = new
-                        CircularView.OptionsBuilder()
-                        .shouldDisplayText(true)
-                        .setCounterInSeconds(60)
-                        .setCircularViewCallback(new CircularViewCallback() {
-                            @Override
-                            public void onTimerFinish() {
-                                Toast.makeText(OnlineActivity.this, "CircularCallback: Timer Finished ", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onTimerCancelled() {
-                                Toast.makeText(OnlineActivity.this, "CircularCallback: Timer Cancelled ", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                timer.setOptions(builder);
-                timer.startTimer();
-
-
 //                // pause circular view and timer
 //                if(timer.pauseTimer())
 //                {
@@ -152,28 +147,37 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.online_add:
 //                timer.stopTimer();
-                onlineImage.setVisibility(View.VISIBLE);
-                timer.setVisibility(View.GONE);
-                resetFields();
-//                currentTime = Calendar.getInstance().getTime();
 
-                onlineEditor = onlineSharedPreferences.edit();
-                onlineEditor.putString(ONLINE_PROBLEM,"" + problem.getText());
-                onlineEditor.putString(ONLINE_CHECH_OUT_TIME,"" + currentTime);
+                if (customerLayout.getVisibility() == View.VISIBLE) {
+                    if (!TextUtils.isEmpty(problem.getText().toString())) {
 
-                CustomerOnline customerOnline  =new CustomerOnline();
-                customerOnline.setProblem("" + problem.getText());
-                customerOnline.setCustomerName("" + username.getText());
-                customerOnline.setPhoneNo("" + phoneNo.getText());
-                customerOnline.setCheakInTime(onlineSharedPreferences.getString(ONLINE_CHECH_IN_TIME, null));
-                customerOnline.setCompanyName(onlineSharedPreferences.getString(ONLINE_COMPANY_NAME, null));
-                customerOnline.setSystemName(onlineSharedPreferences.getString(ONLINE_SYSTEM_NAME, null));
-                customerOnline.setSystemId(onlineSharedPreferences.getString(ONLINE_SYS_ID, null));
-                customerOnline.setEngineerID(LoginActivity.sharedPreferences.getString(LOGIN_ID, null));
-                customerOnline.setEngineerName(LoginActivity.sharedPreferences.getString(LOGIN_NAME, null));
-                customerOnline.setCheakOutTime(onlineSharedPreferences.getString(ONLINE_CHECH_OUT_TIME, null));
+                        currentTime = Calendar.getInstance().getTime();
+                        Log.e("time", "" + currentTime);
+                        onlineEditor = onlineSharedPreferences.edit();
+                        onlineEditor.putString(ONLINE_PROBLEM, "" + problem.getText());
+                        onlineEditor.putString(ONLINE_CHECH_OUT_TIME, "" + currentTime);
+                        onlineEditor.commit();
 
-//                presenterClass.pushCustomerProblem(customerOnline, 0);// check out
+                        CustomerOnline customerOnline = new CustomerOnline();
+                        customerOnline.setProblem("" + problem.getText());
+                        customerOnline.setCustomerName("" + username.getText());
+                        customerOnline.setPhoneNo("" + phoneNo.getText());
+                        customerOnline.setCheakInTime(onlineSharedPreferences.getString(ONLINE_CHECH_IN_TIME, null));
+                        customerOnline.setCompanyName(onlineSharedPreferences.getString(ONLINE_COMPANY_NAME, null));
+                        customerOnline.setSystemName(onlineSharedPreferences.getString(ONLINE_SYSTEM_NAME, null));
+                        customerOnline.setSystemId(onlineSharedPreferences.getString(ONLINE_SYS_ID, null));
+                        customerOnline.setEngineerID(LoginActivity.sharedPreferences.getString(LOGIN_ID, null));
+                        customerOnline.setEngineerName(LoginActivity.sharedPreferences.getString(LOGIN_NAME, null));
+                        customerOnline.setCheakOutTime(onlineSharedPreferences.getString(ONLINE_CHECH_OUT_TIME, null));
+
+                        new SyncManagerLayoutIN().execute();
+//                        presenterClass.pushCustomerProblem(customerOnline, 0);// check out
+                    } else {
+                        Toast.makeText(this, "Please add problem first!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(this, "please add customer first!", Toast.LENGTH_SHORT).show();
+                }
 
                 break;
             case R.id.online_break:
@@ -201,7 +205,45 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void resetFields(){
+    public void showCustomerLinear(CustomerOnline customerOnline) {
+        new_customer.setVisibility(View.GONE); // button
+        onlineImage.setVisibility(View.GONE); // image
+        customerLayout.setVisibility(View.VISIBLE); // customer fields
+        timer.setVisibility(View.VISIBLE); // timer
+        builder = new
+                CircularView.OptionsBuilder()
+                .shouldDisplayText(true)
+                .setCounterInSeconds(60)
+                .setCircularViewCallback(new CircularViewCallback() {
+                    @Override
+                    public void onTimerFinish() {
+                        Toast.makeText(OnlineActivity.this, "CircularCallback: Timer Finished ", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onTimerCancelled() {
+                        Toast.makeText(OnlineActivity.this, "CircularCallback: Timer Cancelled ", Toast.LENGTH_SHORT).show();
+                    }
+                });
+        timer.setOptions(builder);
+        timer.startTimer();
+
+        phoneNo.setText(customerOnline.getPhoneNo());
+        system.setText(customerOnline.getSystemName());
+        username.setText(customerOnline.getCustomerName());
+
+        onlineEditor = onlineSharedPreferences.edit();
+        onlineEditor.putString(ONLINE_CHECH_IN_TIME, customerOnline.getCheakInTime());
+        onlineEditor.putString(ONLINE_COMPANY_NAME, customerOnline.getCompanyName());
+        onlineEditor.putString(ONLINE_CUST_NAME, customerOnline.getCustomerName());
+        onlineEditor.putString(ONLINE_PHONE_NO, customerOnline.getPhoneNo());
+        onlineEditor.putString(ONLINE_SYSTEM_NAME, customerOnline.getSystemName());
+        onlineEditor.putString(ONLINE_SYS_ID, customerOnline.getSystemId());
+        onlineEditor.commit();
+
+    }
+
+    public void hideCustomerLinear() {
         snackbar = Snackbar.make(coordinatorLayout, Html.fromHtml("<font color=\"#3167F0\">Checked out Successfully</font>"), Snackbar.LENGTH_SHORT);
         View snackbarLayout = snackbar.getView();
         TextView textViewSnackbar = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
@@ -211,29 +253,130 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         phoneNo.setText("");
         username.setText("");
         system.setText("");
-        hideCustomerLinear();
-    }
-
-    public void showCustomerLinear(CustomerOnline customerOnline){
-        new_customer.setVisibility(View.GONE);
-        customerLayout.setVisibility(View.VISIBLE);
-        phoneNo.setText(customerOnline.getPhoneNo());
-        system.setText(customerOnline.getSystemName());
-        username.setText(customerOnline.getCustomerName());
-
-        onlineEditor = onlineSharedPreferences.edit();
-        onlineEditor.putString(ONLINE_CHECH_IN_TIME,customerOnline.getCheakInTime());
-        onlineEditor.putString(ONLINE_COMPANY_NAME,customerOnline.getCompanyName());
-        onlineEditor.putString(ONLINE_CUST_NAME,customerOnline.getCustomerName());
-        onlineEditor.putString(ONLINE_PHONE_NO,customerOnline.getPhoneNo());
-        onlineEditor.putString(ONLINE_SYSTEM_NAME,customerOnline.getSystemName());
-        onlineEditor.putString(ONLINE_SYS_ID,customerOnline.getSystemId());
-
-    }
-
-     void hideCustomerLinear(){
         new_customer.setVisibility(View.VISIBLE);
+        onlineImage.setVisibility(View.VISIBLE);
         customerLayout.setVisibility(View.GONE);
-
+        timer.setVisibility(View.GONE);
     }
-}
+
+    private class SyncManagerLayoutIN extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+
+                String link = "http://10.0.0.214/onlineTechnicalSupport/export.php";
+                // ITEM_CARD
+
+//                JSONObject obj = new JSONObject();
+//                JSONArray NEWI=new JSONArray();
+
+                //                    obj.put("CUST_NAME", "'Eng Tahani'");
+//                    obj.put("COMPANY_NAME", "'Falcons'");
+//                    obj.put("SYSTEM_NAME", "'Accounting'");
+//                    obj.put("PHONE_NO", "'015454'");
+//                    obj.put("CHECH_IN_TIME", "'03:30'");
+//                    obj.put("STATE", "'1'");
+//                    obj.put("ENG_NAME", "'ENG.RAWAN'");
+
+//                NEWI.put(datatoSend);
+                JSONObject object = new JSONObject();
+                try {
+                    object.put("CHECH_OUT_TIME", "jhg");
+                    object.put("PROBLEM", "aNDROID 100");
+                    object.put("CUST_NAME", "FALCONS");
+                    object.put("CHECH_IN_TIME", "hjh");
+                    object.put("COMPANY_NAME", "hjh");
+                    object.put("PHONE_NO", "hjh");
+                    object.put("SYSTEM_NAME", "hjh");
+                    object.put("SYS_ID", "hjh");
+                    object.put("ENG_ID", "2");
+                    object.put("ENG_NAME", "hjh");
+                    object.put("STATE", "hjh");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String data = "PROBLEM_SOLVED=" + URLEncoder.encode(object.toString(), "UTF-8");
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+                wr.writeBytes(data);
+                wr.flush();
+                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+//            if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
+//                sendSucsses = true;
+
+                Log.e("tag_ItemOCode", "****Success");
+//                progressDialog.dismiss();
+
+
+//            } else {
+//                sendSucsses = false;
+//                Log.e("tag_itemCard", "****Failed to export data");
+//
+////                }
+
+
+            }
+
+        }
+    }
+
+

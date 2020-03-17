@@ -4,10 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -18,9 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
@@ -29,14 +36,16 @@ public class PresenterClass {
 
     private String urlImportCustomer, urlLogin, urlState, urlPushProblem;
     private RequestQueue requestQueue;
-    private JsonObjectRequest loginRequest, objectRequest, pushProblemRequest;
-    private StringRequest stateRequest;
+    private JsonObjectRequest loginRequest, objectRequest;
+    //    private JsonArrayRequest  pushProblemRequest;
+    private StringRequest stateRequest, pushProblemRequest;
     private Context context;
     private DatabaseHandler databaseHandler;
     private List<EngineerInfo> list;
     private List<CustomerOnline> onlineList;
     private OnlineActivity onlineActivity;
     private CustomerOnline customerOnline;
+    private  String value;
 
     public PresenterClass(Context context) {
         this.context = context;
@@ -118,7 +127,7 @@ public class PresenterClass {
             try {
                 boolean found = false;
                 String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
-                Log.e("ppppppp",  engId);
+                Log.e("ppppppp", engId);
                 JSONArray jsonArray = response.getJSONArray("CUSTOMER_INFO");
                 for (int m = 0; m < jsonArray.length(); m++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(m);
@@ -151,32 +160,83 @@ public class PresenterClass {
 
     //****************************************** Push Customer Problem **************************************
 
-    public void pushCustomerProblem(CustomerOnline customerOnline,int state) {
+    public void pushCustomerProblem(CustomerOnline customerOnline, int state) {
+//        object.put("CHECH_OUT_TIME", "'" + customerOnline.getCheakOutTime() + "'");
+//        object.put("PROBLEM", "'" + customerOnline.getProblem() + "'");
+//        object.put("CUST_NAME", "'" + customerOnline.getCustomerName() + "'");
+//        object.put("CHECH_IN_TIME", "'" + customerOnline.getCheakInTime() + "'");
+//        object.put("COMPANY_NAME", "'" + customerOnline.getCompanyName() + "'");
+//        object.put("PHONE_NO", "'" + customerOnline.getPhoneNo() + "'");
+//        object.put("SYSTEM_NAME", "'" + customerOnline.getSystemName() + "'");
+//        object.put("SYS_ID", "'" + customerOnline.getSystemId() + "'");
+//        object.put("ENG_ID", "'" + customerOnline.getEngineerID() + "'");
+//        object.put("ENG_NAME", "'" + customerOnline.getEngineerName() + "'");
+
 //    "http://10.0.0.214/onlineTechnicalSupport/import.php?LOG_IN_OUT=0&ENG_ID=&STATE="
         urlPushProblem = "http://10.0.0.214/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
 //        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
         Log.e("push", urlPushProblem);
-        JSONObject object = new JSONObject();
+
+        final JSONObject object = new JSONObject();
         try {
             object.put("CHECH_OUT_TIME", customerOnline.getCheakOutTime());
             object.put("PROBLEM", customerOnline.getProblem());
-            object.put("CUST_NAME", customerOnline.getCustomerName());
+            object.put("CUST_NAME", "FALCONS");//customerOnline.getCustomerName()
             object.put("CHECH_IN_TIME", customerOnline.getCheakInTime());
             object.put("COMPANY_NAME", customerOnline.getCompanyName());
-            object.put("PHONE_NO",customerOnline.getPhoneNo() );
+            object.put("PHONE_NO", customerOnline.getPhoneNo());
             object.put("SYSTEM_NAME", customerOnline.getSystemName());
             object.put("SYS_ID", customerOnline.getSystemId());
             object.put("ENG_ID", customerOnline.getEngineerID());
             object.put("ENG_NAME", customerOnline.getEngineerName());
+            object.put("STATE", "hjh");
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
+         value = "PROBLEM_SOLVED=" + new JSONArray().put(object).toString();
+        pushProblemRequest = new StringRequest(Request.Method.POST
+                , urlPushProblem
+                , new PushProblemClass()
+                , new PushProblemClass()) {
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
 
-        pushProblemRequest = new JsonObjectRequest(Request.Method.POST, urlPushProblem, object, new PushProblemClass(), new PushProblemClass());
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return value == null ? null : value.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", value, "utf-8");
+                    return null;
+                }
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+                String responseString = "";
+                if (response != null) {
+                    responseString = String.valueOf(response.statusCode);
+                    // can get more details such as response.headers
+                }
+                return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
+            }
+        }
+        ;
+//        {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//            final Map<String, String> headers = new HashMap<>();
+//            headers.put("PROBLEM_SOLVED","PROBLEM_SOLVED=" + new JSONArray().put(object).toString());
+//            return headers;
+//        }
+//        }
         requestQueue.add(pushProblemRequest);
     }
 
-    class PushProblemClass implements Response.Listener<JSONObject>, Response.ErrorListener {
+    class PushProblemClass implements Response.Listener<String>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.e("presenter/e", "PushProblemClass/ " + error.getMessage());
@@ -184,9 +244,9 @@ public class PresenterClass {
         }
 
         @Override
-        public void onResponse(JSONObject response) {
-            Log.e("presenter", "PushProblemClass/ " + response.toString());
-            onlineActivity.resetFields();
+        public void onResponse(String response) {
+            Log.e("presenter", "PushProblemClass/ " + response);
+            onlineActivity.hideCustomerLinear();
         }
     }
 
