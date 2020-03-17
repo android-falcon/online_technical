@@ -8,167 +8,105 @@
     android:id="@+id/online_cordinator_layout"
     tools:context=".OnlineActivity">
 
-    <LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="100dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/online_image_customer"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        android:layout_weight="0.5"
+        android:padding="10dp"
+        android:src="@drawable/call_center_boy"
+        android:tint="@color/darkblue_2"
+        android:visibility="visible"
+        app:civ_border_color="@color/darkblue_2"
+        app:civ_border_width="1dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        tools:ignore="VectorDrawableCompat" />
 
+<!--    <net.crosp.libs.android.circletimeview.CircleTimeView-->
+<!--        android:id="@+id/online_timer"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginTop="90dp"-->
+<!--        android:layout_weight="0.9"-->
+<!--        android:visibility="gone"-->
+<!--        app:ctvCircleButtonColor="#099ef4"-->
+<!--        app:ctvCircleColor="#00d9ff"-->
+<!--        app:ctvCircleHandButtonRadius="10dp"-->
+<!--        app:ctvCirclePressedButtonColor="#08bfdf"-->
+<!--        app:ctvCircleStrokeWidth="1dp"-->
+<!--        app:ctvCurrentTimeInSeconds="160"-->
+<!--        app:ctvHighlightMarkLineColor="#00f7ff"-->
+<!--        app:ctvLabelText="The сlock is ticking"-->
+<!--        app:ctvLabelTextColor="#fff"-->
+<!--        app:ctvLabelTextSize="18sp"-->
+<!--        app:ctvLapBackgroundColor="#9adf1b"-->
+<!--        app:ctvLapLabelMarginTop="15dp"-->
+<!--        app:ctvLapLabelTextSize="12sp"-->
+<!--        app:ctvLapTextColor="#fff"-->
+<!--        app:ctvMarginTopLabel="22dp"-->
+<!--        app:ctvMarkLineColor="#ffffff"-->
+<!--        app:ctvMarkLineWidth="1dp"-->
+<!--        app:ctvMarkSize="10dp"-->
+<!--        app:ctvMinutesMarkCount="120"-->
+<!--        app:ctvMultiLapRotation="true"-->
+<!--        app:ctvPaddingInnerRadius="15dp"-->
+<!--        app:ctvPaddingQuarterNumber="5dp"-->
+<!--        app:ctvQuarterMarkSize="20dp"-->
+<!--        app:ctvQuarterNumberColor="#08ff00"-->
+<!--        app:ctvQuarterNumberTextSize="16sp"-->
+<!--        app:ctvShowLaps="true"-->
+<!--        app:ctvTimeFormat="seconds_minutes"-->
+<!--        app:ctvTimeMode="manual"-->
+<!--        app:ctvTimeNumberColor="#00d0ff"-->
+<!--        app:ctvTimeNumbersTextSize="55sp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        app:m_arc_stroke_color="@color/darkblue_2"-->
+<!--        app:m_cicle_stroke_width="14"-->
+<!--        app:m_circle_radius="100"-->
+<!--        app:m_circle_stroke_color="@color/goldf" />-->
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:minHeight="50dp"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteX="-16dp"
-            tools:layout_editor_absoluteY="213dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/icon2_f"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:padding="10dp"
-                android:src="@drawable/ic_person"
-                android:tint="@color/darkblue_" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/icon5_f"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:hint="Customer"
-                android:text="Abeer"
-                android:textColor="@color/darkblue_"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="2dp"
-            android:layout_weight="1"
-            android:minHeight="50dp"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteX="-16dp"
-            tools:layout_editor_absoluteY="213dp">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/icon4_f"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:padding="10dp"
-                android:src="@drawable/ic_call"
-                android:text="Phone"
-                android:tint="@color/darkblue_" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/gray2f"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:hint="Phone Number"
-                android:text="0772095887"
-                android:textColor="@color/darkblue_"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:minHeight="50dp"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/textView44"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@drawable/icon3_f"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:padding="10dp"
-                android:src="@drawable/ic_desktop_window"
-                android:text="System"
-                android:tint="@color/darkblue_" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/gray2f"
-                android:fontFamily="serif"
-                android:gravity="center"
-                android:hint="System"
-                android:text="Restaurant"
-                android:textColor="@color/darkblue_"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-    </LinearLayout>
+    <ticker.views.com.ticker.widgets.circular.timer.view.CircularView
+        android:id="@+id/online_timer"
+        android:layout_width="350dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="90dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:m_arc_stroke_color="@color/darkblue_2"
+        app:m_cicle_stroke_width="14"
+        app:m_circle_radius="100"
+        app:m_circle_stroke_color="@color/goldf"
+        android:layout_marginLeft="70dp" />
 
     <EditText
-        android:id="@+id/textView5"
+        android:id="@+id/online_problem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
+        android:layout_marginStart="350dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="44dp"
         android:background="@drawable/stroke_f"
+        android:fontFamily="serif"
         android:gravity="start"
         android:hint="System problem ..."
         android:inputType="textMultiLine"
-        android:minLines="8"
+        android:minLines="14"
         android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
-
-    <Button
-        android:visibility="gone"
-        android:id="@+id/button2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginLeft="160dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginRight="160dp"
-        android:background="@drawable/button_f"
-        android:fontFamily="serif"
-        android:text="Check Out"
-        android:textAllCaps="false"
-        android:textColor="@color/gray_darkf"
-        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="350dp"
+        android:layout_marginRight="16dp" />
 
     <RelativeLayout
         android:id="@+id/linearLayout5"
@@ -185,57 +123,155 @@
             android:layout_width="40dp"
             android:layout_height="70dp"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
-            android:tint="@color/goldf"
+            android:layout_marginLeft="20dp"
             android:src="@drawable/ic_exit"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="20dp" />
+            android:tint="@color/goldf" />
 
         <ImageView
             android:id="@+id/online_break"
             android:layout_width="40dp"
             android:layout_height="70dp"
-            android:layout_toEndOf="@id/online_exit"
             android:layout_alignParentTop="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="10dp"
-            android:src="@drawable/ic_free_breakfast"
-            android:tint="@color/goldf"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@id/online_exit"
             android:layout_toRightOf="@id/online_exit"
-            android:layout_marginLeft="10dp" />
+            android:src="@drawable/ic_free_breakfast"
+            android:tint="@color/goldf" />
 
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/online_settings"
-            app:civ_border_width="3dp"
-            app:civ_border_color="@color/greenf"
             android:layout_width="63dp"
             android:layout_height="68dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             android:src="@drawable/a_letter_f"
-            android:layout_alignParentRight="true" />
+            app:civ_border_color="@color/greenf"
+            app:civ_border_width="3dp" />
     </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/online_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginRight="40dp"
         android:layout_marginBottom="40dp"
         android:src="@drawable/ic_check"
-        android:tint="@color/darkblue_"
+        android:tint="@color/darkblue_1"
         app:backgroundTint="@color/goldf"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:maxImageSize="24dp" />
+        app:layout_constraintVertical_bias="0.994" />
 
+    <LinearLayout
+        android:id="@+id/online_customer_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/online_problem"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/online_timer"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/online_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/edit_text_f"
+            android:drawableStart="@drawable/ic_person"
+            android:drawableLeft="@drawable/ic_person"
+            android:drawableTint="@color/goldf"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:hint="Customer"
+            android:padding="15dp" />
+
+        <TextView
+            android:id="@+id/online_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@drawable/edit_text_f"
+            android:drawableStart="@drawable/ic_call"
+            android:drawableLeft="@drawable/ic_call"
+            android:drawableTint="@color/goldf"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:hint="Phone Number"
+            android:padding="15dp" />
+
+        <TextView
+            android:id="@+id/online_system"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/edit_text_f"
+            android:drawableStart="@drawable/ic_desktop_window"
+            android:drawableLeft="@drawable/ic_desktop_window"
+            android:drawableTint="@color/goldf"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:hint="System"
+            android:padding="15dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/online_new_customer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/button_f"
+        android:drawableStart="@drawable/ic_call"
+        android:drawableLeft="@drawable/ic_call"
+        android:drawablePadding="-50dp"
+        android:drawableTint="@color/white"
+        android:fontFamily="serif"
+        android:paddingLeft="40dp"
+        android:text="New Customer"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/online_problem"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/online_image_customer"
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="36dp"
+        android:layout_marginRight="24dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
