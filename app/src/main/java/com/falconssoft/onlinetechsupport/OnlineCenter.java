@@ -60,6 +60,18 @@ public class OnlineCenter extends AppCompatActivity {
         engineerInfoList = new ArrayList<>();
         listEngforAdapter = new ArrayList<>();
         systemsList = new ArrayList<>();
+        chequeListitems=new ArrayList<>();
+        chequeListitems.add("Falcons");
+        chequeListitems.add("Falcons");
+        chequeListitems.add("Falcons");
+        chequeListitems.add("Falcons");
+        chequeListitems.add("Falcons");
+        final LinearLayoutManager layoutManager;
+        layoutManager = new LinearLayoutManager(OnlineCenter.this);
+        layoutManager.setOrientation(VERTICAL);
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new holdCompanyAdapter(OnlineCenter.this,chequeListitems));
         fillEngineerInfoList();
 
     }
@@ -68,7 +80,7 @@ public class OnlineCenter extends AppCompatActivity {
     private void sendEngineerToAdapter() {
         int engType = 0;
         for (int i = 0; i < engineerInfoList.size(); i++) {
-            engType = Integer.parseInt(engineerInfoList.get(i).getEng_type());
+            engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
 
             if (engType == 0)// online Engeneering
             {
@@ -83,8 +95,6 @@ public class OnlineCenter extends AppCompatActivity {
         adapterGridEngineer engineerAdapter = new adapterGridEngineer(this, listEngforAdapter);
         gridView.setAdapter(engineerAdapter);
 
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setAdapter(new holdCompanyAdapter(OnlineCenter.this,chequeListitems));
 
 
     }
@@ -106,7 +116,7 @@ public class OnlineCenter extends AppCompatActivity {
                                 EngineerInfo engineerInfo = new EngineerInfo();
                                 engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
                                 engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
-                                engineerInfo.setEng_type(engineerInfoObject.getString("ENG_TYPE"));
+                                engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
                                 engineerInfoList.add(engineerInfo);
                             }
                             JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
