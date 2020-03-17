@@ -28,6 +28,7 @@
             android:layout_weight="0"
             android:background="@drawable/icon_f"
             android:padding="10dp"
+            android:tint="@color/darkblue_1"
             app:srcCompat="@drawable/ic_person"
             tools:ignore="VectorDrawableCompat" />
 
@@ -73,6 +74,7 @@
             android:layout_weight="0"
             android:background="@drawable/icon_f"
             android:padding="10dp"
+            android:tint="@color/darkblue_1"
             app:srcCompat="@drawable/ic_lock"
             tools:ignore="VectorDrawableCompat" />
 
@@ -98,7 +100,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/login_logo"
         android:layout_width="114dp"
         android:layout_height="58dp"
         android:layout_marginTop="16dp"
@@ -109,7 +111,7 @@
         app:srcCompat="@drawable/falconssoftlogoblack" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/login_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="400dp"
@@ -137,6 +139,7 @@
         android:fontFamily="serif"
         android:gravity="center"
         android:text="Login"
+        android:textColor="@color/darkblue_1"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.964"
@@ -152,6 +155,7 @@
         android:layout_marginRight="16dp"
         android:background="#00FFFFFF"
         android:src="@drawable/ic_settings"
+        android:tint="@color/darkblue_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
