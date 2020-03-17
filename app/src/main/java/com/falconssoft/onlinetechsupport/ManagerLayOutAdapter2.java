@@ -17,6 +17,8 @@ import androidx.annotation.RequiresApi;
 
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class ManagerLayOutAdapter2 extends BaseAdapter {
@@ -74,7 +76,8 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
 
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
             holder.EngName.setText("" + itemsList.get(i).getEnginerName());
-            holder.timeLoading.setText("" + itemsList.get(i).getCheakInTime());
+//            holder.timeLoading.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCheakOutTime()));
+            holder.timeLoading.setText(itemsList.get(i).getCheakInTime());
             switch (col){
                 case 0:
                     holder.time.setBackground(context.getResources().getDrawable(R.drawable.bac_list_0));
@@ -166,4 +169,34 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
 
             return view;
         }
+
+
+    public  String clock(String inTime ,String outTime){
+        String timing ="";
+
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+        Date d1 = null;
+        Date d2 = null;
+        long diffSeconds=0,diffMinutes=0,diffHours = 0;
+        try {
+            d1 = format.parse(inTime);
+            d2 = format.parse(outTime);
+
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            diffSeconds = diff / 1000 % 60;
+            diffMinutes = diff / (60 * 1000) % 60;
+            diffHours = diff / (60 * 60 * 1000) % 24;
+//                long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            timing="" +diffHours+":"+diffMinutes+":"+diffSeconds;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return timing;
+    }
 }

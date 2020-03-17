@@ -90,59 +90,34 @@ public class ManagerLayOutAdapter extends BaseAdapter {
             holder.timeLoading =  view.findViewById(R.id.timeLoading);
             holder.time=(LinearLayout) view.findViewById(R.id.time);
             holder.mainLiner=(LinearLayout) view.findViewById(R.id.mainLiner);
-//            holder.timeLoading
-//                    .setAnimationDuration(10000000)
-//                    .countAnimation(0, 10000);
 
-            String arrayTime[] =itemsList.get(i).getCheakInTime().split(":");
-            String todayTime[] =itemsList.get(i).getCurrentTime().split(":");
 
-//            Log.e("timing__",""+today);
-
-            int timeHour=Integer.parseInt(todayTime[0])-Integer.parseInt(arrayTime[0]);
-            int timeMin=Integer.parseInt(todayTime[1])-Integer.parseInt(arrayTime[1]);
-            int timesecond=Integer.parseInt(todayTime[2])-Integer.parseInt(arrayTime[2]);
-
-            if(timeMin>=60){
-                timeHour++;
-                timeMin=timeMin-60;
-            }
-
-            if(timesecond>=60){
-                timeMin++;
-                timesecond=timesecond-60;
-            }
-
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-
-            Date d1 = null;
-            Date d2 = null;
-            long diffSeconds=0,diffMinutes=0,diffHours = 0;
-            try {
-                d1 = format.parse(itemsList.get(i).getCheakInTime());
-                d2 = format.parse(itemsList.get(i).getCurrentTime());
-
-                //in milliseconds
-                long diff = d2.getTime() - d1.getTime();
-
-                 diffSeconds = diff / 1000 % 60;
-                 diffMinutes = diff / (60 * 1000) % 60;
-                 diffHours = diff / (60 * 60 * 1000) % 24;
-//                long diffDays = diff / (24 * 60 * 60 * 1000);
-
-//                System.out.print(diffDays + " days, ");
-//                System.out.print(diffHours + " hours, ");
-//                System.out.print(diffMinutes + " minutes, ");
-//                System.out.print(diffSeconds + " seconds.");
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+//
+//            Date d1 = null;
+//            Date d2 = null;
+//            long diffSeconds=0,diffMinutes=0,diffHours = 0;
+//            try {
+//                d1 = format.parse(itemsList.get(i).getCheakInTime());
+//                d2 = format.parse(itemsList.get(i).getCurrentTime());
+//
+//                //in milliseconds
+//                long diff = d2.getTime() - d1.getTime();
+//
+//                 diffSeconds = diff / 1000 % 60;
+//                 diffMinutes = diff / (60 * 1000) % 60;
+//                 diffHours = diff / (60 * 60 * 1000) % 24;
+////                long diffDays = diff / (24 * 60 * 60 * 1000);
+//
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
 
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
             holder.EngName.setText("" + itemsList.get(i).getEnginerName());
-            holder.timeLoading.setText("" +diffHours+":"+diffMinutes+":"+diffSeconds);
+            holder.timeLoading.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCurrentTime()));
 
 //            final Animation animZoom = AnimationUtils.loadAnimation(context, R.anim.zoom);
 //            holder.mainLiner.startAnimation(animZoom);
@@ -239,4 +214,34 @@ public class ManagerLayOutAdapter extends BaseAdapter {
 
             return view;
         }
+
+        public  String clock(String inTime ,String outTime){
+            String timing ="";
+
+                        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+            Date d1 = null;
+            Date d2 = null;
+            long diffSeconds=0,diffMinutes=0,diffHours = 0;
+            try {
+                d1 = format.parse(inTime);
+                d2 = format.parse(outTime);
+
+                //in milliseconds
+                long diff = d2.getTime() - d1.getTime();
+
+                 diffSeconds = diff / 1000 % 60;
+                 diffMinutes = diff / (60 * 1000) % 60;
+                 diffHours = diff / (60 * 60 * 1000) % 24;
+//                long diffDays = diff / (24 * 60 * 60 * 1000);
+
+                timing="" +diffHours+":"+diffMinutes+":"+diffSeconds;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            return timing;
+        }
+
 }

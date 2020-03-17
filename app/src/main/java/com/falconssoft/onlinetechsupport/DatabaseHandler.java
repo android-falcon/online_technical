@@ -9,6 +9,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String BD_NAME = "TECH_DB";
@@ -27,8 +32,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String USERS_ID = "ID";
     private static final String USERS_NAME = "NAME";
     private static final String USERS_PASSWORD = "PASSWORD";
-    private static final String USERS_STATE = "STATE";
     private static final String USERS_TYPE = "TYPE";
+    private static final String USERS_STATE = "STATE";
 
     //******************************************************************
     private static final String CUSTOMERS_TABLE = "CUSTOMERS_TABLE";
@@ -40,6 +45,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String CUSTOMERS_CHICK_IN = "CHECK_IN";
     private static final String CUSTOMERS_STATE = "STATE";
     private static final String CUSTOMERS_ENG_NAME = "ENG_NAME";
+    private static final String CUSTOMERS_ENG_ID = "ENG_ID";
 
     //******************************************************************
 
@@ -49,17 +55,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE_SETTINGS = "CREATE TABLE " + SETTINGS_TABLE + "("
-                + SETTINGS_ID + " TEXT,"
-                + SETTINGS_IP_ADDRESS + " TEXT" + ")";
-        db.execSQL(CREATE_TABLE_SETTINGS);
+//        String CREATE_TABLE_SETTINGS = "CREATE TABLE " + SETTINGS_TABLE + "("
+//                + SETTINGS_ID + " TEXT,"
+//                + SETTINGS_IP_ADDRESS + " TEXT" + ")";
+//        db.execSQL(CREATE_TABLE_SETTINGS);
 
         String CREATE_TABLE_USERS = "CREATE TABLE " + USERS_TABLE + "("
                 + USERS_ID + " TEXT,"
                 + USERS_NAME + " TEXT,"
                 + USERS_PASSWORD + " TEXT,"
-                + USERS_STATE + " TEXT,"
-                + USERS_TYPE + "INTEGER" + ")";
+                + USERS_TYPE + " INTEGER,"
+                + USERS_STATE + " INTEGER"
+                + ")";
         db.execSQL(CREATE_TABLE_USERS);
 
         String CREATE_TABLE_CUSTOMERS = "CREATE TABLE " + CUSTOMERS_TABLE + "("
@@ -68,8 +75,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + CUSTOMERS_SYSTEM + " TEXT,"
                 + CUSTOMERS_PHONE + " INTEGER,"
                 + CUSTOMERS_CHICK_IN + " TEXT,"
-                + CUSTOMERS_STATE + " TEXT,"
-                + CUSTOMERS_ENG_NAME + " TEXT"+ ")";
+                + CUSTOMERS_STATE + " INTEGER,"
+                + CUSTOMERS_ENG_NAME + " TEXT,"
+                + CUSTOMERS_ENG_ID + " TEXT"
+                + ")";
         db.execSQL(CREATE_TABLE_CUSTOMERS);
 
     }
@@ -85,44 +94,44 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //*************************************** ADD **********************************
 
-//    public void addSettings(Settings settings) {
-//        db = this.getReadableDatabase();
-//        ContentValues contentValues = new ContentValues();
-//
-//        contentValues.put(SETTINGS_COMPANY_NAME, settings.getCompanyName());
-//        contentValues.put(SETTINGS_IP_ADDRESS, settings.getIpAddress());
-//        contentValues.put(SETTINGS_STORE, settings.getStore());
-//
-////        SettingsFile.companyName = settings.getCompanyName();
-////        SettingsFile.ipAddress = settings.getIpAddress();
-////        SettingsFile.store = settings.getStore();
-//
-//        db.insert(SETTINGS_TABLE, null, contentValues);
-//        db.close();
-//    }
+    public void addLoginInfo(List<EngineerInfo> info) {
+        database = this.getReadableDatabase();
+        ContentValues contentValues;
+        for (int i = 0; i<info.size(); i++) {
+             contentValues = new ContentValues();
+
+            contentValues.put(USERS_ID, info.get(i).getId());
+            contentValues.put(USERS_NAME, info.get(i).getName());
+            contentValues.put(USERS_PASSWORD, info.get(i).getPassword());
+            contentValues.put(USERS_STATE, info.get(i).getState());
+            contentValues.put(USERS_TYPE, info.get(i).getEng_type());
+
+            database.insert(USERS_TABLE, null, contentValues);
+        }
+        database.close();
+    }
 
     //*************************************** GET **********************************
 
-//    public Settings getSettings() {
-//        Settings settings = new Settings();
-//        String selectQuery = "SELECT * FROM " + SETTINGS_TABLE;
-//        db = this.getWritableDatabase();
-//        Cursor cursor = db.rawQuery(selectQuery, null);
-//
-//        if (cursor.moveToFirst()) {
-//            do {
-//                settings.setCompanyName(cursor.getString(0));
-//                settings.setIpAddress(cursor.getString(1));
-//                settings.setStore(cursor.getString(2));
-//                settings.setUserNo(cursor.getString(3));
-//
-////                SettingsFile.companyName = cursor.getString(0);
-////                SettingsFile.ipAddress = cursor.getString(1);
-////                SettingsFile.store = cursor.getString(2);
-//            } while (cursor.moveToNext());
-//        }
-//        return settings;
-//    }
+    public List<EngineerInfo> getLoginData() {
+        List<EngineerInfo> list = new ArrayList<>();
+        String selectQuery = "SELECT * FROM " + USERS_TABLE;
+        database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                EngineerInfo info = new EngineerInfo();
+                info.setId(cursor.getString(0));
+                info.setName(cursor.getString(1));
+                info.setPassword(cursor.getString(2));
+                info.setEng_type(cursor.getInt(3));
+
+                list.add(info);
+            } while (cursor.moveToNext());
+        }
+        return list;
+    }
 
     //*************************************** UPDATE **********************************
 
@@ -136,10 +145,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //*************************************** DELETE **********************************
 
-//    public void deleteSettings() {
-//        db = this.getWritableDatabase();
-//        db.delete(SETTINGS_TABLE, null, null);
-//        db.close();
-//    }
+    public void deleteLoginData() {
+        database = this.getWritableDatabase();
+        database.delete(USERS_TABLE, null, null);
+        database.close();
+    }
 
 }
