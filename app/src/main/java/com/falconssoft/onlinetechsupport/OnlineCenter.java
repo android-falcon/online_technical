@@ -34,8 +34,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import static android.widget.LinearLayout.VERTICAL;
 import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
@@ -186,11 +191,17 @@ public class OnlineCenter extends AppCompatActivity {
     }
 
     private JSONObject getData() throws JSONException {
+        String time="";
 
         String customerName="",companeyName="",tele="";
         customerName=customer_name.getText().toString();
         companeyName=companey_name.getText().toString();
         tele=telephone_no.getText().toString();
+        Date currentTimeAndDate = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
+        time = df.format(currentTimeAndDate);
+        Log.e("time",""+time);
+
 
         JSONObject obj = new JSONObject();
 
@@ -201,22 +212,14 @@ public class OnlineCenter extends AppCompatActivity {
                 obj.put("COMPANY_NAME", "'"+companeyName+"'");
                 obj.put("SYSTEM_NAME", "'Accounting'");
                 obj.put("PHONE_NO", "'"+tele+"'");
-                obj.put("CHECH_IN_TIME", "'03:30:00'");
-                obj.put("STATE", "'1'");
+                obj.put("CHECH_IN_TIME", "'"+time+"'");
+                obj.put("STATE", "'1'");// state for companey // 1 --> check in  // 2 ---> check out  0----> hold
                 obj.put("ENG_NAME", "'Tahani'");
-                obj.put("ENG_ID", "'1'");
+                obj.put("ENG_ID", "'3'");
                 obj.put("SYS_ID", "'2'");
-                obj.put("CHECH_OUT_TIME", "'03:30:00'");
+                obj.put("CHECH_OUT_TIME", "'00:00:00'");
                 obj.put("PROBLEM", "'problem'");
 //               String engineer= selectedPostionName;
-
-
-
-
-
-
-
-
         }
         return  obj;
 
