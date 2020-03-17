@@ -200,6 +200,29 @@
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
             </TableRow>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/textView144"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Problem Detail  :"
+                    android:textColor="@color/darkBlueColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/problem"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:textColor="@color/darkBlueColor"
+                    android:textSize="16sp" />
+            </TableRow>
         </TableLayout>
     </LinearLayout>
 
