@@ -1,12 +1,21 @@
 package com.falconssoft.onlinetechsupport.Modle;
 
 public class EngineerInfo {
-    private  String name;
-    private  String id;
-    private  String password;
-    private  String eng_type;
+    private String name;
+    private String id;
+    private String password;
+    private int eng_type;
+    private int state;
 
     public EngineerInfo() {
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public String getName() {
@@ -33,11 +42,11 @@ public class EngineerInfo {
         this.password = password;
     }
 
-    public String getEng_type() {
+    public int getEng_type() {
         return eng_type;
     }
 
-    public void setEng_type(String eng_type) {
+    public void setEng_type(int eng_type) {
         this.eng_type = eng_type;
     }
 }

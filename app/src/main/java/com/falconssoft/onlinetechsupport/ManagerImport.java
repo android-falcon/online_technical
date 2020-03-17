@@ -36,6 +36,8 @@ public class ManagerImport {
     String itemCode;
     String JsonResponseSave;
     String JsonResponseSaveSwitch;
+    JSONObject datatoSend=null;
+    public  static boolean sendSucsses=false;
 
 
     public ManagerImport(Context context) {//, JSONObject obj
@@ -54,6 +56,16 @@ public class ManagerImport {
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
+    public void startSendingData(JSONObject data) {
+        sendSucsses=false;
+         datatoSend=data;
+
+
+            new SyncManagerLayoutIN().execute();
+//http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
+
+    }
+
 
     private class SyncManagerLayout extends AsyncTask<String, String, String> {
         private String JsonResponse = null;
@@ -243,19 +255,15 @@ Log.e("tag_itemCard", "****saveSuccess");
                 JSONObject obj = new JSONObject();
                 JSONArray NEWI=new JSONArray();
 
-                try {
-                    obj.put("CUST_NAME", "'Eng Tahani'");
-                    obj.put("COMPANY_NAME", "'Falcons'");
-                    obj.put("SYSTEM_NAME", "'Accounting'");
-                    obj.put("PHONE_NO", "'015454'");
-                    obj.put("CHECH_IN_TIME", "'03:30'");
-                    obj.put("STATE", "'1'");
-                    obj.put("ENG_NAME", "'ENG.RAWAN'");
+                //                    obj.put("CUST_NAME", "'Eng Tahani'");
+//                    obj.put("COMPANY_NAME", "'Falcons'");
+//                    obj.put("SYSTEM_NAME", "'Accounting'");
+//                    obj.put("PHONE_NO", "'015454'");
+//                    obj.put("CHECH_IN_TIME", "'03:30'");
+//                    obj.put("STATE", "'1'");
+//                    obj.put("ENG_NAME", "'ENG.RAWAN'");
 
-                    NEWI.put(obj);
-                } catch (JSONException e) {
-                    Log.e("Tag", "JSONException");
-                }
+                NEWI.put(datatoSend);
 
 
                 String data = "CUSTOMER_INFO=" + URLEncoder.encode(NEWI.toString(), "UTF-8");
@@ -314,11 +322,14 @@ Log.e("tag_itemCard", "****saveSuccess");
             super.onPostExecute(JsonResponse);
 
             if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
+                sendSucsses=true;
+
                 Log.e("tag_ItemOCode", "****Success");
 //                progressDialog.dismiss();
 
 
             }  else {
+                sendSucsses=false;
                 Log.e("tag_itemCard", "****Failed to export data");
 
 //                }
