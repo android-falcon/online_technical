@@ -57,23 +57,23 @@ public class adapterGridEngineer extends BaseAdapter {
         textView_Nmae.setText(list_engineer.get(i).getName());
         textView_Nmae.setTag(i);
 
-        textView_Nmae.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int value = (Integer)((TextView)v).getTag();
-
-                for(int i=0;i<viewGroup.getChildCount();i++)
-                {
-                    View c = viewGroup.getChildAt(i);
-                    c.findViewById(R.id.engineerLayout).setBackgroundColor(context.getResources().getColor(R.color.layer1));
-
-                }
-                engineerLayout.setBackgroundColor(context.getResources().getColor(R.color.layer4));
-                selectedPostionName=textView_Nmae.getText().toString();
-                Log.e("selectedPostionName",""+selectedPostionName);
-
-            }
-        });
+//        textView_Nmae.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int value = (Integer)((TextView)v).getTag();
+//
+//                for(int i=0;i<viewGroup.getChildCount();i++)
+//                {
+//                    View c = viewGroup.getChildAt(i);
+//                    c.findViewById(R.id.engineerLayout).setBackgroundColor(context.getResources().getColor(R.color.layer1));
+//
+//                }
+//                engineerLayout.setBackgroundColor(context.getResources().getColor(R.color.layer4));
+//                selectedPostionName=textView_Nmae.getText().toString();
+//                Log.e("selectedPostionName",""+selectedPostionName);
+//
+//            }
+//        });
 
 
         if(i%2!=0)

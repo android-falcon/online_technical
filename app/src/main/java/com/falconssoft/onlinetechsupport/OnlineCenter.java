@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
@@ -99,6 +100,15 @@ public class OnlineCenter extends AppCompatActivity {
         layoutManager.setOrientation(VERTICAL);
         adapterGridEngineer engineerAdapter = new adapterGridEngineer(this, listEngforAdapter);
         gridView.setAdapter(engineerAdapter);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                gridView.setBackgroundColor(getResources().getColor(R.color.layer4));
+                String name=  ((TextView) view).getText().toString();
+                Log.e("selectedPostionName",""+name);
+
+            }
+        } );
 
 
 
