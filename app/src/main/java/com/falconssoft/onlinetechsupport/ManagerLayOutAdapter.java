@@ -113,9 +113,36 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                 timesecond=timesecond-60;
             }
 
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+
+            Date d1 = null;
+            Date d2 = null;
+            long diffSeconds=0,diffMinutes=0,diffHours = 0;
+            try {
+                d1 = format.parse(itemsList.get(i).getCheakInTime());
+                d2 = format.parse(itemsList.get(i).getCurrentTime());
+
+                //in milliseconds
+                long diff = d2.getTime() - d1.getTime();
+
+                 diffSeconds = diff / 1000 % 60;
+                 diffMinutes = diff / (60 * 1000) % 60;
+                 diffHours = diff / (60 * 60 * 1000) % 24;
+//                long diffDays = diff / (24 * 60 * 60 * 1000);
+
+//                System.out.print(diffDays + " days, ");
+//                System.out.print(diffHours + " hours, ");
+//                System.out.print(diffMinutes + " minutes, ");
+//                System.out.print(diffSeconds + " seconds.");
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
             holder.EngName.setText("" + itemsList.get(i).getEnginerName());
-            holder.timeLoading.setText("" +timeHour+":"+timeMin+":"+timesecond);
+            holder.timeLoading.setText("" +diffHours+":"+diffMinutes+":"+diffSeconds);
 
 //            final Animation animZoom = AnimationUtils.loadAnimation(context, R.anim.zoom);
 //            holder.mainLiner.startAnimation(animZoom);
