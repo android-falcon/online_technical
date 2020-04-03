@@ -5,6 +5,7 @@
 
     <application
         android:allowBackup="true"
+        tools:replace="android:icon"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -16,6 +17,7 @@
             android:name=".OnlineActivity" android:screenOrientation="sensorLandscape"/>
         <activity
             android:name=".OnlineCenter"
+            android:windowSoftInputMode="stateVisible|adjustNothing"
             android:screenOrientation="sensorLandscape" />
 
         <activity
