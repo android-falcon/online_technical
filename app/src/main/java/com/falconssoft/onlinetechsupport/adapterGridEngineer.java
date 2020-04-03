@@ -27,6 +27,7 @@ public class adapterGridEngineer extends BaseAdapter {
     adapterGridEngineer(Context context,List list_engineer){
         this.context=context;
         this.list_engineer=list_engineer;
+        Log.e("list_engineer",""+list_engineer.size());
 
 
     }
@@ -37,12 +38,12 @@ public class adapterGridEngineer extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return list_engineer.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override

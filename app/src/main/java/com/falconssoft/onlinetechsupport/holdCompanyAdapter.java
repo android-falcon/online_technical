@@ -2,6 +2,7 @@ package com.falconssoft.onlinetechsupport;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
+
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -18,14 +21,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter.ViewHolder> {
     //    RecyclerView.Adapter<engineer_adapter.ViewHolder>
     Context context;
-    List<String> list_engineer;
+    List<CompaneyInfo> companey;
 
 
 //public static List<Cheque> chequeListall;
 
-    public holdCompanyAdapter(Context context, List<String> eng) {
+    public holdCompanyAdapter(Context context, List<CompaneyInfo> companeyInfo) {
         this.context = context;
-        this.list_engineer = eng;
+        this.companey = companeyInfo;
+        Log.e("holdCompanyAdapter",""+companey.size());
 
     }
 
@@ -40,28 +44,32 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
 //
-        if (i != 0) {
+//        if (i != 0) {
             // viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#F5F1F5F5"));
-//
-        }
+
+            viewHolder.hold_company_name.setText(companey.get(i).getCompanyName());
+            viewHolder.companyTel.setText(companey.get(i).getPhoneNo());
+//        }
 
 
     }
 
     @Override
     public int getItemCount() {
-        return list_engineer.size();
+        return companey.size();
     }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView green, textView_Nmae;
+        TextView green, textView_Nmae,hold_company_name,companyTel;
         CircleImageView profile_image;
         LinearLayout linear_companey;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            linear_companey = itemView.findViewById(R.id.linear_companey);
+            //linear_companey = itemView.findViewById(R.id.linear_companey);
+            hold_company_name=itemView.findViewById(R.id.hold_company_name);
+            companyTel=itemView.findViewById(R.id.hold_company_tel);
 
 
         }

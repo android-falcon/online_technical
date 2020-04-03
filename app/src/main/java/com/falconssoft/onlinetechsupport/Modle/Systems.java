@@ -7,6 +7,11 @@ public class Systems {
     public Systems() {
     }
 
+    public Systems(String systemName, String systemNo) {
+        this.systemName = systemName;
+        this.systemNo = systemNo;
+    }
+
     public String getSystemName() {
         return systemName;
     }
