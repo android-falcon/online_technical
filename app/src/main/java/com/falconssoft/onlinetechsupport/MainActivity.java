@@ -75,31 +75,33 @@ public class MainActivity extends AppCompatActivity {
         falcon = findViewById(R.id.falcon);
         final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
         falcon.startAnimation(animZoom);
+        cheakIn.clear();
+        cheakout.clear();
+        hold.clear();
 
+        for(int i=0;i<20;i++){
+            ManagerLayout managerLayout =new ManagerLayout();
+            managerLayout.setCompanyName("Falcons Soft");
+            managerLayout.setCheakInTime("10:21 AM"+i);
+            managerLayout.setEnginerName("Eng.Name");
+            cheakIn.add(managerLayout);
+        }
 
-//        for(int i=0;i<20;i++){
-//            ManagerLayout managerLayout =new ManagerLayout();
-//            managerLayout.setCompanyName("Falcons Soft");
-//            managerLayout.setCheakInTime("10:21 AM"+i);
-//            managerLayout.setEnginerName("Eng.Name");
-//            cheakIn.add(managerLayout);
-//        }
-//
-//        for(int i=0;i<20;i++){
-//            ManagerLayout managerLayout =new ManagerLayout();
-//            managerLayout.setCompanyName("Falcons Soft");
-//            managerLayout.setCheakInTime("15:21 AM"+i);
-//            managerLayout.setEnginerName("Eng.Name");
-//            cheakout.add(managerLayout);
-//        }
-//
-//        for(int i=0;i<20;i++){
-//            ManagerLayout managerLayout =new ManagerLayout();
-//            managerLayout.setCompanyName("Falcons Soft");
-//            managerLayout.setCheakInTime("12:21 AM"+i);
-//            managerLayout.setEnginerName("Eng.Name");
-//            hold.add(managerLayout);
-//        }
+        for(int i=0;i<20;i++){
+            ManagerLayout managerLayout =new ManagerLayout();
+            managerLayout.setCompanyName("Falcons Soft");
+            managerLayout.setCheakInTime("15:21 AM"+i);
+            managerLayout.setEnginerName("Eng.Name");
+            cheakout.add(managerLayout);
+        }
+
+        for(int i=0;i<20;i++){
+            ManagerLayout managerLayout =new ManagerLayout();
+            managerLayout.setCompanyName("Falcons Soft");
+            managerLayout.setCheakInTime("12:21 AM"+i);
+            managerLayout.setEnginerName("Eng.Name");
+            hold.add(managerLayout);
+        }
 
         managerLayOutAdapter1 = new ManagerLayOutAdapter(MainActivity.this, cheakIn, 0);
         managerLayOutAdapter2 = new ManagerLayOutAdapter2(MainActivity.this, cheakout, 1);
