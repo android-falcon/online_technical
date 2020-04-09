@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
+import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +27,11 @@ import static com.falconssoft.onlinetechsupport.OnlineCenter.telephone_no;
 public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter.ViewHolder> {
     //    RecyclerView.Adapter<engineer_adapter.ViewHolder>
     Context context;
-    List<CompaneyInfo> companey;
+    List<ManagerLayout> companey;
     CompaneyInfo clickedcom;
     List<CompaneyInfo> companeyInfos=new ArrayList<>();
 
-    public holdCompanyAdapter(Context context, List<CompaneyInfo> companeyInfo) {
+    public holdCompanyAdapter(Context context, List<ManagerLayout> companeyInfo) {
         this.context = context;
         this.companey = companeyInfo;
         Log.e("holdCompanyAdapter",""+companey.size());

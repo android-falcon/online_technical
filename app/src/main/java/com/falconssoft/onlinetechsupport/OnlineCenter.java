@@ -33,6 +33,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 
 
@@ -55,16 +56,16 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 import static android.widget.LinearLayout.VERTICAL;
+import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
 
 public class OnlineCenter extends AppCompatActivity {
     GridView gridView;
-    RecyclerView recyclerView;
+     public static RecyclerView recyclerView;
     List<EngineerInfo> engineerInfoList, listEngforAdapter;
-    List<CompaneyInfo> holdCompaney;
+    List<ManagerLayout> holdCompaney;
     public  static TextView customer_name, companey_name, telephone_no;
     Spinner spenner_systems;
-    //    String ipAddres = "10.0.0.214";
     String ipAddres = "5.189.130.98:8085";
     List<Systems> systemsList;
     LinearLayoutManager layoutManager;
@@ -72,6 +73,7 @@ public class OnlineCenter extends AppCompatActivity {
     String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
     Timer timer;
+    public static List<ManagerLayout> hold_List;
 
 
     @SuppressLint("WrongConstant")
@@ -84,23 +86,24 @@ public class OnlineCenter extends AppCompatActivity {
         listEngforAdapter = new ArrayList<>();
         holdCompaney = new ArrayList<>();
         systemsList = new ArrayList<>();
-//        fillEngineerInfoList();
-        systemsList.add(new Systems("Falcons1", "1"));
-        systemsList.add(new Systems("Falcons2", "2"));
-        systemsList.add(new Systems("Falcons3", "3"));
-        systemsList.add(new Systems("Falcons4", "4"));
-        systemsList.add(new Systems("Falcon5", "5"));
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                fillEngineerInfoList();
-//
-//            }
-//
-//        }, 0, 3000);
+        hold_List=new ArrayList<>();
+        fillEngineerInfoList(0);
+//        systemsList.add(new Systems("Falcons1", "1"));
+//        systemsList.add(new Systems("Falcons2", "2"));
+//        systemsList.add(new Systems("Falcons3", "3"));
+//        systemsList.add(new Systems("Falcons4", "4"));
+//        systemsList.add(new Systems("Falcon5", "5"));
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                fillEngineerInfoList(1);
 
-        fillSpennerSystem(systemsList);
+            }
+
+        }, 0, 3000);
+
+        //fillSpennerSystem(systemsList);
         fillHoldList();
         //fillListTest();
 
@@ -109,28 +112,35 @@ public class OnlineCenter extends AppCompatActivity {
 
     @SuppressLint("WrongConstant")
     private void fillHoldList() {
+
+//        CompaneyInfo info = new CompaneyInfo();
+//        info.setCompanyName("aljunidi");
+//        info.setPhoneNo("079731999");
+//        info.setCheakInTime("2:03");
+//        info.setState_company("0");
+//        CompaneyInfo info2 = new CompaneyInfo();
+//        info2.setCompanyName("ejabi");
+//        info2.setPhoneNo("079731900");
+//        info2.setState_company("0");
+//        info2.setCheakInTime("08:15");
+//        holdCompaney.add(info);
+//        holdCompaney.add(info2);
+//        holdCompaney.add(info);
+       // holdCompaney.add(info2);
+        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+        managerImport.startSending("GetHold");
+
         LinearLayoutManager llm = new LinearLayoutManager(this);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        CompaneyInfo info = new CompaneyInfo();
-        info.setCompanyName("aljunidi");
-        info.setPhoneNo("079731999");
-        info.setCheakInTime("2:03");
-        info.setState_company("0");
-        CompaneyInfo info2 = new CompaneyInfo();
-        info2.setCompanyName("ejabi");
-        info2.setPhoneNo("079731900");
-        info2.setState_company("0");
-        info2.setCheakInTime("08:15");
-        holdCompaney.add(info);
-        holdCompaney.add(info2);
-        holdCompaney.add(info);
-        holdCompaney.add(info2);
+        Log.e("fillHoldList",""+hold_List.size());
+       if( hold_List.size()!=0)
+       {
+           final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
 
+           recyclerView.setLayoutManager(llm);
+           recyclerView.setAdapter(companyAdapter);
+       }
 
-        final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, holdCompaney);
-
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setAdapter(companyAdapter);
     }
 
     @SuppressLint("WrongConstant")
@@ -279,7 +289,7 @@ public class OnlineCenter extends AppCompatActivity {
         }
     }
 
-    private void fillEngineerInfoList() {
+    private void fillEngineerInfoList(final int flag) {
         final String url = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
 
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
@@ -288,34 +298,59 @@ public class OnlineCenter extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         try {
-                            engineerInfoList.clear();
+                            if(flag!=0)// 0 ---->  just first time
+                            {
+                                engineerInfoList.clear();
 
-                            JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
-                            Log.e("info", "" + info);
-                            for (int i = 0; i < info.length(); i++) {
-                                JSONObject engineerInfoObject = info.getJSONObject(i);
-                                EngineerInfo engineerInfo = new EngineerInfo();
-                                engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
-                                engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
-                                engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
-                                if( engineerInfo.getEng_type()==0)
-                                {
-                                    engineerInfoList.add(engineerInfo);
+                                JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
+                                Log.e("info", "" + info);
+                                for (int i = 0; i < info.length(); i++) {
+                                    JSONObject engineerInfoObject = info.getJSONObject(i);
+                                    EngineerInfo engineerInfo = new EngineerInfo();
+                                    engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
+                                    engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
+                                    engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
+                                    if( engineerInfo.getEng_type()==0)
+                                    {
+                                        engineerInfoList.add(engineerInfo);
+
+                                    }
 
                                 }
+                                sendEngineerToAdapter();
 
                             }
-//                            JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
-//                            Log.e("systemInfoArray",""+systemInfoArray);
-//                            for (int i = 0; i < systemInfoArray.length(); i++) {
-//                                JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
-//                                Systems systemInfo = new Systems();
-//                                systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
-//                                systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
-//                                systemsList.add(systemInfo);
-//                            }
-//                            fillSpennerSystem(systemsList);
-                            sendEngineerToAdapter();
+                            else {
+                                engineerInfoList.clear();
+
+                                JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
+                                Log.e("info", "" + info);
+                                for (int i = 0; i < info.length(); i++) {
+                                    JSONObject engineerInfoObject = info.getJSONObject(i);
+                                    EngineerInfo engineerInfo = new EngineerInfo();
+                                    engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
+                                    engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
+                                    engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
+                                    if( engineerInfo.getEng_type()==0)
+                                    {
+                                        engineerInfoList.add(engineerInfo);
+
+                                    }
+
+                                }
+                                JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
+                                Log.e("systemInfoArray",""+systemInfoArray);
+                                for (int i = 0; i < systemInfoArray.length(); i++) {
+                                    JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
+                                    Systems systemInfo = new Systems();
+                                    systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
+                                    systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
+                                    systemsList.add(systemInfo);
+                                }
+                                fillSpennerSystem(systemsList);
+                                sendEngineerToAdapter();
+                            }
+
 
                         } catch (Exception e) {
                             Log.e("Exception", "" + e.getMessage());
@@ -385,7 +420,7 @@ public class OnlineCenter extends AppCompatActivity {
                             @SuppressLint("WrongConstant")
                             @Override
                             public void onClick(SweetAlertDialog sDialog) {
-                                CompaneyInfo info = new CompaneyInfo();
+                                ManagerLayout info = new ManagerLayout();
                                 info.setCompanyName(companey_name.getText().toString());
                                 info.setPhoneNo(telephone_no.getText().toString());
                                 holdCompaney.add(info);
@@ -529,10 +564,10 @@ public class OnlineCenter extends AppCompatActivity {
                     Log.e("timeHold", "" + time);
                     LinearLayoutManager llm = new LinearLayoutManager(this);
                     llm.setOrientation(LinearLayoutManager.VERTICAL);
-                    CompaneyInfo info = new CompaneyInfo();
+                    ManagerLayout info = new ManagerLayout();
                     info.setCompanyName(companey_name.getText().toString());
                     info.setPhoneNo(telephone_no.getText().toString());
-                    info.setState_company("0");
+                    info.setState("0");
                     info.setCheakInTime(time);
                     JSONObject data = null;
                     try {
