@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ManagerLayOutAdapter managerLayOutAdapter1;
     ManagerLayOutAdapter2 managerLayOutAdapter2;
     ManagerLayOutAdapter3 managerLayOutAdapter3;
+    String ipAddres = "5.189.130.98:8085";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
