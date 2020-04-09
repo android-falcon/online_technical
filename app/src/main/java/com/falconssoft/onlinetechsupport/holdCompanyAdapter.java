@@ -23,6 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.telephone_no;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.text_delet_id;
 
 public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter.ViewHolder> {
     //    RecyclerView.Adapter<engineer_adapter.ViewHolder>
@@ -55,12 +56,19 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
             viewHolder.linear_companey.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    viewHolder.linear_companey.setBackgroundColor(R.color.greenColor);
                     clickedcom=new CompaneyInfo();
                     clickedcom.setCompanyName(viewHolder.hold_company_name.getText().toString());
                     clickedcom.setPhoneNo(viewHolder.companyTel.getText().toString());
                     companey_name.setText(viewHolder.hold_company_name.getText().toString());
                     telephone_no.setText(viewHolder.companyTel.getText().toString());
-                    customer_name.setText("mohemmed");
+                    customer_name.setText(companey.get(i).getCustomerName());
+                    Log.e("systemSelected",""+companey.get(i).getSystemName());
+                    Log.e("text_delet_id",""+i);
+                    text_delet_id.setText(i+"");
+                    //companey.remove(i);
+                   // Log.e("companysize",""+companey.size());
+
                     companeyInfos.add(clickedcom);
                 }
             });
@@ -73,6 +81,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
     public List<CompaneyInfo> getCheckedItems() {
         return companeyInfos;
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {

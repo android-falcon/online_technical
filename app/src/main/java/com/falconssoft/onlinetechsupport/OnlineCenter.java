@@ -9,7 +9,9 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
@@ -64,7 +66,7 @@ public class OnlineCenter extends AppCompatActivity {
      public static RecyclerView recyclerView;
     List<EngineerInfo> engineerInfoList, listEngforAdapter;
     List<ManagerLayout> holdCompaney;
-    public  static TextView customer_name, companey_name, telephone_no;
+    public  static TextView customer_name, companey_name, telephone_no,text_delet_id;
     Spinner spenner_systems;
     String ipAddres = "5.189.130.98:8085";
     List<Systems> systemsList;
@@ -74,6 +76,7 @@ public class OnlineCenter extends AppCompatActivity {
     adapterGridEngineer engineerAdapter;
     Timer timer;
     public static List<ManagerLayout> hold_List;
+    int idForDelete=0;
 
 
     @SuppressLint("WrongConstant")
@@ -82,17 +85,8 @@ public class OnlineCenter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_center);
         initialView();
-        engineerInfoList = new ArrayList<>();
-        listEngforAdapter = new ArrayList<>();
-        holdCompaney = new ArrayList<>();
-        systemsList = new ArrayList<>();
-        hold_List=new ArrayList<>();
+
         fillEngineerInfoList(0);
-//        systemsList.add(new Systems("Falcons1", "1"));
-//        systemsList.add(new Systems("Falcons2", "2"));
-//        systemsList.add(new Systems("Falcons3", "3"));
-//        systemsList.add(new Systems("Falcons4", "4"));
-//        systemsList.add(new Systems("Falcon5", "5"));
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -113,33 +107,8 @@ public class OnlineCenter extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     private void fillHoldList() {
 
-//        CompaneyInfo info = new CompaneyInfo();
-//        info.setCompanyName("aljunidi");
-//        info.setPhoneNo("079731999");
-//        info.setCheakInTime("2:03");
-//        info.setState_company("0");
-//        CompaneyInfo info2 = new CompaneyInfo();
-//        info2.setCompanyName("ejabi");
-//        info2.setPhoneNo("079731900");
-//        info2.setState_company("0");
-//        info2.setCheakInTime("08:15");
-//        holdCompaney.add(info);
-//        holdCompaney.add(info2);
-//        holdCompaney.add(info);
-       // holdCompaney.add(info2);
         ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
         managerImport.startSending("GetHold");
-
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        Log.e("fillHoldList",""+hold_List.size());
-       if( hold_List.size()!=0)
-       {
-           final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
-
-           recyclerView.setLayoutManager(llm);
-           recyclerView.setAdapter(companyAdapter);
-       }
 
     }
 
@@ -396,6 +365,44 @@ public class OnlineCenter extends AppCompatActivity {
         companey_name = findViewById(R.id.companey_name);
         telephone_no = findViewById(R.id.telephone_no);
         spenner_systems = findViewById(R.id.spenner_systems);
+        engineerInfoList = new ArrayList<>();
+        listEngforAdapter = new ArrayList<>();
+        holdCompaney = new ArrayList<>();
+        systemsList = new ArrayList<>();
+        hold_List=new ArrayList<>();
+        text_delet_id=findViewById(R.id.text_delet_id);
+        text_delet_id.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(!text_delet_id.getText().toString().equals(""))
+                {
+                    idForDelete=Integer.parseInt(text_delet_id.getText().toString());
+                    Log.e("idForDelete",""+idForDelete);
+                    hold_List.remove(idForDelete);
+                    recyclerView.removeViewAt(idForDelete);
+                    LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
+                    llm.setOrientation(LinearLayoutManager.VERTICAL);
+                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
+                    recyclerView.setLayoutManager(llm);
+                    recyclerView.setAdapter(companyAdapter);
+
+
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
 
     }
