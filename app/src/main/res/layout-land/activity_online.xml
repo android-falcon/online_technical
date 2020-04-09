@@ -96,7 +96,7 @@
         android:background="@drawable/stroke_f"
         android:fontFamily="serif"
         android:gravity="start"
-        android:hint="System problem ..."
+        android:hint="@string/system_problem"
         android:inputType="textMultiLine"
         android:minLines="14"
         android:padding="10dp"
@@ -206,7 +206,7 @@
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
-            android:hint="Customer"
+            android:hint="@string/customer"
             android:padding="15dp" />
 
         <TextView
@@ -224,7 +224,7 @@
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
-            android:hint="Phone Number"
+            android:hint="@string/phone_number"
             android:padding="15dp" />
 
         <TextView
@@ -242,7 +242,7 @@
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
-            android:hint="System"
+            android:hint="@string/system"
             android:padding="15dp" />
     </LinearLayout>
 
@@ -261,7 +261,7 @@
         android:drawableTint="@color/white"
         android:fontFamily="serif"
         android:paddingLeft="40dp"
-        android:text="New Customer"
+        android:text="@string/new_customer"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp"

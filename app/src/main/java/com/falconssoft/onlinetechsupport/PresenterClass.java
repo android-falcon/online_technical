@@ -91,12 +91,14 @@ public class PresenterClass {
                     EngineerInfo engineerInfo = new EngineerInfo();
                     engineerInfo.setId(jsonObject.getString("ENG_ID"));
                     engineerInfo.setName(jsonObject.getString("ENG_NAME"));
-                    engineerInfo.setState(jsonObject.getInt("STATE"));
-                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
+//                    engineerInfo.setState(jsonObject.getInt("STATE"));
+//                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
                     engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
                     list.add(engineerInfo);
                     i++;
+                    Log.e("EmployList", "LoginDataClass/ " +engineerInfo.getName()+"  "+engineerInfo.getPassword());
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }

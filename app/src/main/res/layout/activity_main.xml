@@ -24,8 +24,9 @@
 
             <ImageView
                 android:id="@+id/falcon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 app:srcCompat="@drawable/falconssoftlogo" />
 
             <!--<Button-->
@@ -34,6 +35,30 @@
                 <!--android:layout_height="wrap_content"-->
                 <!--android:layout_weight="1"-->
                 <!--android:text="ADD" />-->
+
+            <ImageView
+                android:id="@+id/addSys"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="9"
+                app:srcCompat="@drawable/ic_add_to_queue_black_24dp"
+                tools:ignore="VectorDrawableCompat" />
+
+            <ImageView
+                android:id="@+id/addEmp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:layout_weight="9"
+                app:srcCompat="@drawable/ic_person_add_black_24dp"
+                tools:ignore="VectorDrawableCompat" />
 
             <TextView
                 android:id="@+id/refresh"
@@ -64,7 +89,7 @@
                     android:background="@drawable/bac_list_1"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="In Service"
+                    android:text="@string/in_service"
                     android:textColor="@color/greenColor"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -101,7 +126,7 @@
                     android:background="@drawable/bac_list_2"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Out Service"
+                    android:text="@string/out_service"
                     android:textColor="@color/darkblue_2"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -133,7 +158,7 @@
                     android:background="@drawable/bac_list_3"
                     android:gravity="center"
                     android:padding="10dp"
-                    android:text="Waiting"
+                    android:text="@string/waiting"
                     android:textColor="@color/falconColor"
                     android:textSize="20sp"
                     android:textStyle="bold" />
