@@ -66,7 +66,7 @@ public class PresenterClass {
     //****************************************** Login **************************************
 
     public void getLoginData() {
-        urlLogin = "http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=0";
+        urlLogin = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=0";
         loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
     }
@@ -80,7 +80,7 @@ public class PresenterClass {
 
         @Override
         public void onResponse(JSONObject response) {
-//            Log.e("presenter", "LoginDataClass/ " + response.toString());
+            Log.e("presenter", "LoginDataClass/ " + response.toString());
             try {
                 databaseHandler.deleteLoginData();
                 list.clear();
@@ -109,7 +109,7 @@ public class PresenterClass {
 
     public void getCustomersData() {
         //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
-        urlImportCustomer = "http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=2";
+        urlImportCustomer = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=2";
         objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
         requestQueue.add(objectRequest);
     }
@@ -173,7 +173,7 @@ public class PresenterClass {
 //        object.put("ENG_NAME", "'" + customerOnline.getEngineerName() + "'");
 
 //    "http://10.0.0.214/onlineTechnicalSupport/import.php?LOG_IN_OUT=0&ENG_ID=&STATE="
-        urlPushProblem = "http://10.0.0.214/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
+        urlPushProblem = "http://5.189.130.98:8085/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
 //        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
         Log.e("push", urlPushProblem);
 
@@ -253,7 +253,7 @@ public class PresenterClass {
     //****************************************** State **************************************
 
     public void setState(String engId, int state) {
-        urlState = "http://10.0.0.214/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
+        urlState = "http://5.189.130.98:8085/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
         stateRequest = new StringRequest(Request.Method.GET, urlState, new StateClass(), new StateClass());
         requestQueue.add(stateRequest);
     }
