@@ -48,6 +48,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -64,12 +66,12 @@ public class OnlineCenter extends AppCompatActivity {
     Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     String ipAddres = "5.189.130.98:8085";
-    //    List<String> systemsList;
     List<Systems> systemsList;
     LinearLayoutManager layoutManager;
     int stateCompaney = -1, selectedEngId = 0;
     String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
+    Timer timer;
 
 
     @SuppressLint("WrongConstant")
@@ -82,17 +84,24 @@ public class OnlineCenter extends AppCompatActivity {
         listEngforAdapter = new ArrayList<>();
         holdCompaney = new ArrayList<>();
         systemsList = new ArrayList<>();
+        fillEngineerInfoList();
         systemsList.add(new Systems("Falcons1", "1"));
         systemsList.add(new Systems("Falcons2", "2"));
         systemsList.add(new Systems("Falcons3", "3"));
         systemsList.add(new Systems("Falcons4", "4"));
         systemsList.add(new Systems("Falcon5", "5"));
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                fillEngineerInfoList();
+
+            }
+
+        }, 0, 3000);
 
         fillSpennerSystem(systemsList);
-
-        fillEngineerInfoList();
         fillHoldList();
-
         //fillListTest();
 
 
@@ -199,72 +208,75 @@ public class OnlineCenter extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     private void sendEngineerToAdapter() {
         int engType = 0;
-        for (int i = 0; i < engineerInfoList.size(); i++) {
-            engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
+        if(engineerInfoList.size()!=0)
+        {
+            listEngforAdapter.clear();
+            for (int i = 0; i < engineerInfoList.size(); i++) {
+                engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
 
-            if (engType == 0)// available  Engeneering
-            {
-                listEngforAdapter.add(engineerInfoList.get(i));
+                if (engType == 0)// available  Engeneering
+                {
+                    listEngforAdapter.add(engineerInfoList.get(i));
 
-            }
-        }
-
-        final LinearLayoutManager layoutManager;
-        layoutManager = new LinearLayoutManager(OnlineCenter.this);
-        layoutManager.setOrientation(VERTICAL);
-        engineerAdapter = new adapterGridEngineer(this, listEngforAdapter);
-        gridView.setAdapter(engineerAdapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1,
-                                    int arg2, long arg3) {
-                selectedEngineer = engineerInfoList.get(arg2).getName();
-                selectedEngId = arg2;
-                for (int i = 0; i < gridView.getChildCount(); i++) {
-                    if (i != arg2) {
-                        gridView.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.layer1));
-
-                    }
                 }
-                new AlertDialog.Builder(OnlineCenter.this)
-                        .setTitle("Confirm")
-                        .setMessage("Do you want to check in this company to eng " + selectedEngineer + " ?")
+            }
+            final LinearLayoutManager layoutManager;
+            layoutManager = new LinearLayoutManager(OnlineCenter.this);
+            layoutManager.setOrientation(VERTICAL);
+            engineerAdapter = new adapterGridEngineer(this, listEngforAdapter);
+            gridView.setAdapter(engineerAdapter);
+            gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    sendCompaneyInfo();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                // Continue with delete operation
-                            }
-                        })
+                @Override
+                public void onItemClick(AdapterView<?> arg0, View arg1,
+                                        int arg2, long arg3) {
+                    selectedEngineer = engineerInfoList.get(arg2).getName();
+                    selectedEngId = arg2;
+                    for (int i = 0; i < gridView.getChildCount(); i++) {
+                        if (i != arg2) {
+                            gridView.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.layer1));
 
-                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        for (int i = 0; i < gridView.getChildCount(); i++) {
+                        }
+                    }
+                    new AlertDialog.Builder(OnlineCenter.this)
+                            .setTitle("Confirm")
+                            .setMessage("Do you want to check in this company to eng " + selectedEngineer + " ?")
 
-                                            gridView.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.layer1));
-                                        }
-                                        dialog.dismiss();
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        sendCompaneyInfo();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
                                     }
+                                    // Continue with delete operation
                                 }
-                        )
-                        .setIcon(android.R.drawable.ic_input_add)
-                        .show();
+                            })
 
-                if (gridView.isItemChecked(arg2)) {
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            for (int i = 0; i < gridView.getChildCount(); i++) {
+
+                                                gridView.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.layer1));
+                                            }
+                                            dialog.dismiss();
+                                        }
+                                    }
+                            )
+                            .setIcon(android.R.drawable.ic_input_add)
+                            .show();
+
+                    if (gridView.isItemChecked(arg2)) {
 //                    arg1= gridView.getChildAt(arg2);
 //                    arg1.setBackgroundColor(getResources().getColor(R.color.layer4));
-                } else {
+                    } else {
 //
-                    arg1.setBackgroundColor(getResources().getColor(R.color.layer3)); //the color code is the background color of GridView
+                        arg1.setBackgroundColor(getResources().getColor(R.color.layer3)); //the color code is the background color of GridView
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     private void fillEngineerInfoList() {
@@ -276,6 +288,7 @@ public class OnlineCenter extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         try {
+                            engineerInfoList.clear();
 
                             JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
                             Log.e("info", "" + info);
@@ -315,6 +328,11 @@ public class OnlineCenter extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                if ((error instanceof TimeoutError) || (error instanceof NoConnectionError)) {
+                    Toast.makeText(OnlineCenter.this,
+                            "تأكد من اتصال الانترنت",
+                            Toast.LENGTH_SHORT).show();
+                }
 
                 Log.e("onErrorResponse: ", "" + error);
             }
