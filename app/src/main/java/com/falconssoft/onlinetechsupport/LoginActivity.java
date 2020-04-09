@@ -70,8 +70,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_login:
-                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
-                startActivity(intent2);
+//                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+//                startActivity(intent2);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
 //                list = handler.getLoginData();
 //                String localUsername = username.getText().toString();
 //                String localPassword = password.getText().toString();

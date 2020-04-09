@@ -84,21 +84,21 @@ public class OnlineCenter extends AppCompatActivity {
         listEngforAdapter = new ArrayList<>();
         holdCompaney = new ArrayList<>();
         systemsList = new ArrayList<>();
-        fillEngineerInfoList();
+//        fillEngineerInfoList();
         systemsList.add(new Systems("Falcons1", "1"));
         systemsList.add(new Systems("Falcons2", "2"));
         systemsList.add(new Systems("Falcons3", "3"));
         systemsList.add(new Systems("Falcons4", "4"));
         systemsList.add(new Systems("Falcon5", "5"));
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                fillEngineerInfoList();
-
-            }
-
-        }, 0, 3000);
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                fillEngineerInfoList();
+//
+//            }
+//
+//        }, 0, 3000);
 
         fillSpennerSystem(systemsList);
         fillHoldList();

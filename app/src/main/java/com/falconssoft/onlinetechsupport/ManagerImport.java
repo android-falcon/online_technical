@@ -40,6 +40,7 @@ public class ManagerImport {
     String JsonResponseSaveSwitch;
     JSONObject datatoSend=null;
     public  static boolean sendSucsses=false;
+    String ipAddres = "5.189.130.98:8085";
 
 
     public ManagerImport(Context context) {//, JSONObject obj
@@ -83,11 +84,8 @@ public class ManagerImport {
         @Override
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
-
-                String ip = "";
-
 //
-                String link ="http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=1";
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=1";
                 // ITEM_CARD
 
 
@@ -247,8 +245,6 @@ Log.e("tag_itemCard", "****saveSuccess");
         @Override
         protected String doInBackground(String... params) {
             try {
-
-                String ip = "";
                 String ipAddres = "5.189.130.98:8085";
 
 //
