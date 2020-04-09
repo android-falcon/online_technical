@@ -331,7 +331,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                 new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("")
                         .setContentText(" Send Sucsseful")
-                        .hideConfirmButton()
+//                        .hideConfirmButton()
                         .show();
 
 //                progressDialog.dismiss();
