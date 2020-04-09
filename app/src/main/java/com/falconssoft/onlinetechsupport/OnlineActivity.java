@@ -151,11 +151,11 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                 if (customerLayout.getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
 
-                        currentTime = Calendar.getInstance().getTime();
+//                        currentTime = Calendar.getInstance().getTime();
                         Log.e("time", "" + currentTime);
                         onlineEditor = onlineSharedPreferences.edit();
                         onlineEditor.putString(ONLINE_PROBLEM, "" + problem.getText());
-                        onlineEditor.putString(ONLINE_CHECH_OUT_TIME, "" + currentTime);
+                        onlineEditor.putString(ONLINE_CHECH_OUT_TIME, "" + "00:00:00");
                         onlineEditor.commit();
 
                         CustomerOnline customerOnline = new CustomerOnline();
@@ -227,7 +227,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                 });
         timer.setOptions(builder);
         timer.startTimer();
-
+Log.e("trrrr","master");
         phoneNo.setText(customerOnline.getPhoneNo());
         system.setText(customerOnline.getSystemName());
         username.setText(customerOnline.getCustomerName());
@@ -274,7 +274,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         protected String doInBackground(String... params) {
             try {
 
-                String link = "http://10.0.0.214/onlineTechnicalSupport/export.php";
+                String link = "http://5.189.130.98:8085//onlineTechnicalSupport/export.php";
                 // ITEM_CARD
 
 //                JSONObject obj = new JSONObject();
@@ -291,17 +291,17 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 //                NEWI.put(datatoSend);
                 JSONObject object = new JSONObject();
                 try {
-                    object.put("CHECH_OUT_TIME", "jhg");
-                    object.put("PROBLEM", "aNDROID 100");
-                    object.put("CUST_NAME", "FALCONS");
-                    object.put("CHECH_IN_TIME", "hjh");
-                    object.put("COMPANY_NAME", "hjh");
-                    object.put("PHONE_NO", "hjh");
-                    object.put("SYSTEM_NAME", "hjh");
-                    object.put("SYS_ID", "hjh");
-                    object.put("ENG_ID", "2");
-                    object.put("ENG_NAME", "hjh");
-                    object.put("STATE", "hjh");
+                    object.put("CHECH_OUT_TIME", "'jhg'");
+                    object.put("PROBLEM", "'aNDROID 100'");
+                    object.put("CUST_NAME", "'FALCONS'");
+                    object.put("CHECH_IN_TIME", "'hjh'");
+                    object.put("COMPANY_NAME", "'hjh'");
+                    object.put("PHONE_NO", "'hjh'");
+                    object.put("SYSTEM_NAME", "'hjh'");
+                    object.put("SYS_ID", "'hjh'");
+                    object.put("ENG_ID", 2);
+                    object.put("ENG_NAME", "'hjh'");
+                    object.put("STATE", "'0'");
 
                 } catch (JSONException e) {
                     e.printStackTrace();

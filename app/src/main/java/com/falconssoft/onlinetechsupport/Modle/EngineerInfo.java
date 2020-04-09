@@ -1,5 +1,14 @@
 package com.falconssoft.onlinetechsupport.Modle;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class EngineerInfo {
     private String name;
     private String id;
@@ -48,5 +57,20 @@ public class EngineerInfo {
 
     public void setEng_type(int eng_type) {
         this.eng_type = eng_type;
+    }
+
+    public JSONObject getData() throws JSONException {
+
+        JSONObject obj = new JSONObject();
+
+            obj.put("ENG_NAME", "'"+name+"'");
+            obj.put("ENG_ID", "'"+id+"'");
+            obj.put("PASSWORD", "'"+password+"'");
+            obj.put("ENG_TYPE", "'"+eng_type+"'");
+            obj.put("STATE", "'"+state+"'");
+
+        return  obj;
+
+
     }
 }

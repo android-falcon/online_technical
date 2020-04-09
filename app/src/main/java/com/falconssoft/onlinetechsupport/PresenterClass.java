@@ -66,7 +66,7 @@ public class PresenterClass {
     //****************************************** Login **************************************
 
     public void getLoginData() {
-        urlLogin = "http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=0";
+        urlLogin = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=0";
         loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
     }
@@ -80,7 +80,7 @@ public class PresenterClass {
 
         @Override
         public void onResponse(JSONObject response) {
-//            Log.e("presenter", "LoginDataClass/ " + response.toString());
+            Log.e("presenter", "LoginDataClass/ " + response.toString());
             try {
                 databaseHandler.deleteLoginData();
                 list.clear();
@@ -91,12 +91,14 @@ public class PresenterClass {
                     EngineerInfo engineerInfo = new EngineerInfo();
                     engineerInfo.setId(jsonObject.getString("ENG_ID"));
                     engineerInfo.setName(jsonObject.getString("ENG_NAME"));
-                    engineerInfo.setState(jsonObject.getInt("STATE"));
-                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
+//                    engineerInfo.setState(jsonObject.getInt("STATE"));
+//                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
                     engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
                     list.add(engineerInfo);
                     i++;
+                    Log.e("EmployList", "LoginDataClass/ " +engineerInfo.getName()+"  "+engineerInfo.getPassword());
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -109,7 +111,7 @@ public class PresenterClass {
 
     public void getCustomersData() {
         //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
-        urlImportCustomer = "http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=2";
+        urlImportCustomer = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=1";
         objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
         requestQueue.add(objectRequest);
     }
@@ -129,6 +131,7 @@ public class PresenterClass {
                 String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
                 Log.e("ppppppp", engId);
                 JSONArray jsonArray = response.getJSONArray("CUSTOMER_INFO");
+                Log.e("customer", "master = "+jsonArray.toString());
                 for (int m = 0; m < jsonArray.length(); m++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(m);
                     Log.e("ppppppppppppp", jsonObject.getString("ENG_ID"));
@@ -173,7 +176,7 @@ public class PresenterClass {
 //        object.put("ENG_NAME", "'" + customerOnline.getEngineerName() + "'");
 
 //    "http://10.0.0.214/onlineTechnicalSupport/import.php?LOG_IN_OUT=0&ENG_ID=&STATE="
-        urlPushProblem = "http://10.0.0.214/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
+        urlPushProblem = "http://5.189.130.98:8085/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
 //        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
         Log.e("push", urlPushProblem);
 
@@ -253,7 +256,7 @@ public class PresenterClass {
     //****************************************** State **************************************
 
     public void setState(String engId, int state) {
-        urlState = "http://10.0.0.214/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
+        urlState = "http://5.189.130.98:8085/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
         stateRequest = new StringRequest(Request.Method.GET, urlState, new StateClass(), new StateClass());
         requestQueue.add(stateRequest);
     }

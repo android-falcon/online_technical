@@ -70,57 +70,57 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_login:
-                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
-                startActivity(intent2);
-//                list = handler.getLoginData();
-//                String localUsername = username.getText().toString();
-//                String localPassword = password.getText().toString();
-//                boolean found = false;
-//
-//                if (!TextUtils.isEmpty(localUsername))
-//                    if (!TextUtils.isEmpty(localPassword)) {
-//                        for (int i = 0; i < list.size(); i++)
-//                            if (localUsername.toLowerCase().equals(list.get(i).getName().toLowerCase())
-//                                    && localPassword.equals(list.get(i).getPassword())) {
-//                                found = true;
-//                                editor= sharedPreferences.edit();
-//                                editor.putString(LOGIN_NAME,list.get(i).getName() );
-//                                editor.putString(LOGIN_ID,list.get(i).getId() );
-//                                editor.putInt(LOGIN_STATE, list.get(i).getState());
-//                                editor.putString(LOGIN_PASSWORD,list.get(i).getPassword() );
-//                                editor.putInt(LOGIN_TYPE,list.get(i).getEng_type() );
-//                                editor.commit();
-//
-//                                switch (list.get(i).getEng_type()) {
-//                                    case 0:// manager
-//                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                                        startActivity(intent);
-//                                        break;
-//                                    case 1:// call center
-//                                        Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
-//                                        startActivity(intent2);
-//                                        break;
-//                                    case 2:// online
-//                                        Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
-//                                        startActivity(intent3);
-//                                        break;
-//                                }
-//                                presenterClass.setState(list.get(i).getId(), 0);// log in
-//                                break;
-//                            }
-//
-//                        if (!found){
-//                            Toast.makeText(this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
-//                        }
-//                    } else {
-//                        animation = AnimationUtils.loadAnimation(this, R.anim.shake);
-//                        password.startAnimation(animation);
-//                    }
-//                else {
-//                    animation = AnimationUtils.loadAnimation(this, R.anim.shake);
-//                    username.startAnimation(animation);
-//
-//                }
+//                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+//                startActivity(intent2);
+                list = handler.getLoginData();
+                String localUsername = username.getText().toString();
+                String localPassword = password.getText().toString();
+                boolean found = false;
+
+                if (!TextUtils.isEmpty(localUsername))
+                    if (!TextUtils.isEmpty(localPassword)) {
+                        for (int i = 0; i < list.size(); i++)
+                            if (localUsername.toLowerCase().equals(list.get(i).getName().toLowerCase())
+                                    ) {//&& localPassword.equals(list.get(i).getPassword())
+                                found = true;
+                                editor= sharedPreferences.edit();
+                                editor.putString(LOGIN_NAME,list.get(i).getName() );
+                                editor.putString(LOGIN_ID,list.get(i).getId() );
+                                editor.putInt(LOGIN_STATE, list.get(i).getState());
+                                editor.putString(LOGIN_PASSWORD,list.get(i).getPassword() );
+                                editor.putInt(LOGIN_TYPE,list.get(i).getEng_type() );
+                                editor.commit();
+
+                                switch (list.get(i).getEng_type()) {
+                                    case 0:// manager
+                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                        startActivity(intent);
+                                        break;
+                                    case 1:// call center
+                                        Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                        startActivity(intent2);
+                                        break;
+                                    case 2:// online
+                                        Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+                                        startActivity(intent3);
+                                        break;
+                                }
+                                presenterClass.setState(list.get(i).getId(), 0);// log in
+                                break;
+                            }
+
+                        if (!found){
+                            Toast.makeText(this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        animation = AnimationUtils.loadAnimation(this, R.anim.shake);
+                        password.startAnimation(animation);
+                    }
+                else {
+                    animation = AnimationUtils.loadAnimation(this, R.anim.shake);
+                    username.startAnimation(animation);
+
+                }
 
                 break;
             case R.id.login_settings:

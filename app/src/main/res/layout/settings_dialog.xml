@@ -25,7 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="horizontal"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -56,8 +55,7 @@
             android:minHeight="50dp"
             android:nextFocusDown="@id/login_password"
             android:padding="10dp"
-            android:textSize="15sp"
-          />
+            android:textSize="15sp" />
 
 
     </LinearLayout>
