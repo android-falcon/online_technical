@@ -20,6 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
@@ -247,9 +249,10 @@ Log.e("tag_itemCard", "****saveSuccess");
             try {
 
                 String ip = "";
+                String ipAddres = "5.189.130.98:8085";
 
 //
-                String link ="http://5.189.130.98:8085/onlineTechnicalSupport/export.php";
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
                 // ITEM_CARD
 
                 JSONObject obj = new JSONObject();
@@ -325,6 +328,12 @@ Log.e("tag_itemCard", "****saveSuccess");
                 sendSucsses=true;
 
                 Log.e("tag_ItemOCode", "****Success");
+                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("")
+                        .setContentText(" Send Sucsseful")
+                        .hideConfirmButton()
+                        .show();
+
 //                progressDialog.dismiss();
 
 

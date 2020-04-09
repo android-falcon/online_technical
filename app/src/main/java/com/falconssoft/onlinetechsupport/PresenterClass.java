@@ -111,7 +111,7 @@ public class PresenterClass {
 
     public void getCustomersData() {
         //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
-        urlImportCustomer = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=1";
+        urlImportCustomer = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=2";
         objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
         requestQueue.add(objectRequest);
     }
@@ -131,7 +131,6 @@ public class PresenterClass {
                 String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
                 Log.e("ppppppp", engId);
                 JSONArray jsonArray = response.getJSONArray("CUSTOMER_INFO");
-                Log.e("customer", "master = "+jsonArray.toString());
                 for (int m = 0; m < jsonArray.length(); m++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(m);
                     Log.e("ppppppppppppp", jsonObject.getString("ENG_ID"));
