@@ -12,12 +12,12 @@
         <TextView
             android:id="@+id/hold_company_name"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="16sp"
+            android:layout_margin="5dp"
+            android:textSize="15sp"
             android:text=" Companey falcons"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="5dp"
             android:layout_weight="1"
             android:textColor="@color/darkblue_"
 
@@ -25,8 +25,8 @@
         <TextView
             android:layout_height="match_parent"
             android:layout_width="2dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
@@ -35,13 +35,37 @@
         <TextView
             android:id="@+id/hold_company_tel"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textSize="16sp"
-            android:text=" tel :  079731988"
+            android:layout_margin="5dp"
+            android:textSize="15sp"
+            android:text="079731988"
             android:layout_gravity="center"
 
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="5dp"
+            android:textColor="@color/darkblue_"
+            android:layout_weight="1"
+
+            android:layout_width="match_parent"/>
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="2dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/darkblue_2"
+            android:background="@drawable/edittext_back"/>
+        <TextView
+            android:id="@+id/hold_company_time"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="15sp"
+            android:text="05:10"
+            android:layout_gravity="center"
+
+            android:gravity="center"
+            android:padding="5dp"
             android:textColor="@color/darkblue_"
             android:layout_weight="1"
 

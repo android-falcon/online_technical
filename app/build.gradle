@@ -46,7 +46,7 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
     //implementation 'com.github.thomper:sweet-alert-dialog:1.4.0'
 
-    implementation 'com.github.f0ris.sweetalert:library:1.5.1'
+    implementation 'com.github.f0ris.sweetalert:library:1.5.6'
 
 
 
