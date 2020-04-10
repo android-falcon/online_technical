@@ -2,6 +2,7 @@ package com.falconssoft.onlinetechsupport;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
     List<ManagerLayout> companey;
     CompaneyInfo clickedcom;
     List<CompaneyInfo> companeyInfos=new ArrayList<>();
+     int row_index=-1;
 
     public holdCompanyAdapter(Context context, List<ManagerLayout> companeyInfo) {
         this.context = context;
@@ -56,7 +58,10 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
             viewHolder.linear_companey.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    viewHolder.linear_companey.setBackgroundColor(R.color.greenColor);
+                    row_index=i;
+                    notifyDataSetChanged();
+
+
                     clickedcom=new CompaneyInfo();
                     clickedcom.setCompanyName(viewHolder.hold_company_name.getText().toString());
                     clickedcom.setPhoneNo(viewHolder.companyTel.getText().toString());
@@ -71,7 +76,17 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
 
                     companeyInfos.add(clickedcom);
                 }
+
             });
+            if(row_index==i)
+            {
+                viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#e5e4e2"));
+
+            }
+            else {
+                viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+            }
     }
 
     @Override

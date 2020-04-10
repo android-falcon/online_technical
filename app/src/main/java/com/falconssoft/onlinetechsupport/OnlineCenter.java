@@ -66,7 +66,7 @@ public class OnlineCenter extends AppCompatActivity {
      public static RecyclerView recyclerView;
     List<EngineerInfo> engineerInfoList, listEngforAdapter;
     List<ManagerLayout> holdCompaney;
-    public  static TextView customer_name, companey_name, telephone_no,text_delet_id;
+    public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish;
     Spinner spenner_systems;
     String ipAddres = "5.189.130.98:8085";
     List<Systems> systemsList;
@@ -85,7 +85,6 @@ public class OnlineCenter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_center);
         initialView();
-
         fillEngineerInfoList(0);
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -96,10 +95,9 @@ public class OnlineCenter extends AppCompatActivity {
             }
 
         }, 0, 3000);
-
-        //fillSpennerSystem(systemsList);
         fillHoldList();
         //fillListTest();
+        //fillSpennerSystem(systemsList);
 
 
     }
@@ -332,7 +330,7 @@ public class OnlineCenter extends AppCompatActivity {
                 , new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if ((error instanceof TimeoutError) || (error instanceof NoConnectionError)) {
+                if ((error instanceof NoConnectionError)) {
                     Toast.makeText(OnlineCenter.this,
                             "تأكد من اتصال الانترنت",
                             Toast.LENGTH_SHORT).show();
@@ -371,30 +369,20 @@ public class OnlineCenter extends AppCompatActivity {
         systemsList = new ArrayList<>();
         hold_List=new ArrayList<>();
         text_delet_id=findViewById(R.id.text_delet_id);
-        text_delet_id.addTextChangedListener(new TextWatcher() {
+        text_finish=findViewById(R.id.text_finish);
+        text_finish.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
             }
 
-            @SuppressLint("WrongConstant")
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!text_delet_id.getText().toString().equals(""))
+                if(text_finish.getText().toString().equals("finish"))
                 {
-                    idForDelete=Integer.parseInt(text_delet_id.getText().toString());
-                    Log.e("idForDelete",""+idForDelete);
-                    hold_List.remove(idForDelete);
-                    recyclerView.removeViewAt(idForDelete);
-                    LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
-                    llm.setOrientation(LinearLayoutManager.VERTICAL);
-                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
-                    recyclerView.setLayoutManager(llm);
-                    recyclerView.setAdapter(companyAdapter);
-
-
+                    clearData();// after sucsess
+                    deleteFromHoldList();
                 }
-
 
             }
 
@@ -403,13 +391,9 @@ public class OnlineCenter extends AppCompatActivity {
 
             }
         });
-
-
     }
 
     public void sendCompaneyInfo() throws JSONException {
-//        if (view.getId() == R.id.checkIn_btn) {
-        //check in if list of engineer not empty
         boolean isfaull = checkRequiredData();
         if (isfaull) {
             if (engineerInfoList.size() != 0) {
@@ -417,7 +401,7 @@ public class OnlineCenter extends AppCompatActivity {
                 Log.e("data", "" + data);
                 ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
                 managerImport.startSendingData(data);
-                clearData();
+
             } else {
                 new SweetAlertDialog(OnlineCenter.this, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("WARNING")
@@ -447,18 +431,32 @@ public class OnlineCenter extends AppCompatActivity {
                         .show();
                 Toast.makeText(this, "you can't check in Hold companey", Toast.LENGTH_SHORT).show();
             }
-
-
-            if (sendSucsses) {
-                Log.e("sendSucsses", "" + sendSucsses);
-            }
         }
 
 //        }
 
     }
 
-    private void clearData() {
+    @SuppressLint("WrongConstant")
+    private void deleteFromHoldList() {
+        if(!text_delet_id.getText().toString().equals(""))
+        {
+            idForDelete=Integer.parseInt(text_delet_id.getText().toString());
+            Log.e("idForDelete",""+idForDelete);
+            hold_List.remove(idForDelete);
+//            recyclerView.removeViewAt(idForDelete);
+            LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
+            recyclerView.setLayoutManager(llm);
+            recyclerView.setAdapter(companyAdapter);
+            text_delet_id.setText("");
+
+
+        }
+    }
+
+    public void clearData() {
         customer_name.setText("");
         customer_name.requestFocus();
         companey_name.setText("");
@@ -592,7 +590,6 @@ public class OnlineCenter extends AppCompatActivity {
 
                     recyclerView.setLayoutManager(llm);
                     recyclerView.setAdapter(companyAdapter);
-                    clearData();
 
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)

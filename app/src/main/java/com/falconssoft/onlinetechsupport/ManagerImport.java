@@ -31,6 +31,7 @@ import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.MainActivity.refresh;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.hold_List;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.text_finish;
 
 
 public class ManagerImport {
@@ -250,18 +251,11 @@ Log.e("tag_itemCard", "****saveSuccess");
             super.onPreExecute();
 
         }
-
         @Override
         protected String doInBackground(String... params) {
             try {
-
-                String ip = "";
-                String ipAddres = "5.189.130.98:8085";
-
-//
+                String ipAddres = "5.189.130.98:8085";//
                 String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
-                // ITEM_CARD
-
                 JSONObject obj = new JSONObject();
                 JSONArray NEWI=new JSONArray();
 
@@ -321,7 +315,7 @@ Log.e("tag_itemCard", "****saveSuccess");
 
             if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
                 sendSucsses=true;
-
+                text_finish.setText("finish");
                 Log.e("tag_ItemOCode", "****Success");
                 new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("")
@@ -329,7 +323,6 @@ Log.e("tag_itemCard", "****saveSuccess");
 //                        .hideConfirmButton()
                         .show();
 
-//                progressDialog.dismiss();
 
 
             }  else {
