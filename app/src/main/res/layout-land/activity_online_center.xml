@@ -189,6 +189,11 @@
                             android:gravity="center"
                             android:padding="3dp"
                             android:textSize="16sp" />
+                        <TextView
+                            android:id="@+id/text_finish"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -199,33 +204,14 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="5"
                 android:orientation="vertical">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_margin="15dp"
-                    android:layout_weight="3"
-                    android:visibility="gone"
-                    app:cardCornerRadius="15dp"
-
-                    app:cardElevation="10dp">
-
-                    <pl.droidsonroids.gif.GifImageView
-                        android:layout_width="match_parent"
-
-
-                        android:layout_height="match_parent"
-
-                        android:layout_weight="3"
-                        android:src="@drawable/callcenter2" />
-                </androidx.cardview.widget.CardView>
 
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="0.6"
                     android:gravity="center"
@@ -233,10 +219,16 @@
                     android:textColor="@color/darkblue_1"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/text_delet_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="match_parent"
                     android:layout_margin="15dp"
                     android:layout_weight="4"
                     android:background="@drawable/background_container"
@@ -305,3 +297,22 @@
 
 <!--android:textColor="@color/layer1"-->
 <!--android:visibility="gone" />-->
+<!--<androidx.cardview.widget.CardView-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="0dp"-->
+<!--android:layout_margin="15dp"-->
+<!--android:layout_weight="3"-->
+<!--android:visibility="gone"-->
+<!--app:cardCornerRadius="15dp"-->
+
+<!--app:cardElevation="10dp">-->
+
+<!--<pl.droidsonroids.gif.GifImageView-->
+    <!--android:layout_width="match_parent"-->
+
+
+    <!--android:layout_height="match_parent"-->
+
+    <!--android:layout_weight="3"-->
+    <!--android:src="@drawable/callcenter2" />-->
+<!--</androidx.cardview.widget.CardView>-->
