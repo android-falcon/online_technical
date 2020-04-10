@@ -65,7 +65,9 @@ public class OnlineCenter extends AppCompatActivity {
     public  static TextView customer_name, companey_name, telephone_no;
     Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
-    String ipAddres = "5.189.130.98:8085";
+    DatabaseHandler databaseHandler;
+
+    String ipAddres = "";
     List<Systems> systemsList;
     LinearLayoutManager layoutManager;
     int stateCompaney = -1, selectedEngId = 0;
@@ -84,23 +86,27 @@ public class OnlineCenter extends AppCompatActivity {
         listEngforAdapter = new ArrayList<>();
         holdCompaney = new ArrayList<>();
         systemsList = new ArrayList<>();
-//        fillEngineerInfoList();
-        systemsList.add(new Systems("Falcons1", "1"));
-        systemsList.add(new Systems("Falcons2", "2"));
-        systemsList.add(new Systems("Falcons3", "3"));
-        systemsList.add(new Systems("Falcons4", "4"));
-        systemsList.add(new Systems("Falcon5", "5"));
-//        timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                fillEngineerInfoList();
-//
-//            }
-//
-//        }, 0, 3000);
+        databaseHandler=new DatabaseHandler(OnlineCenter.this);
+        ipAddres=databaseHandler.getIp();
 
-        fillSpennerSystem(systemsList);
+        //        fillEngineerInfoList();
+//        systemsList.add(new Systems("Falcons1", "1"));
+//        systemsList.add(new Systems("Falcons2", "2"));
+//        systemsList.add(new Systems("Falcons3", "3"));
+//        systemsList.add(new Systems("Falcons4", "4"));
+//        systemsList.add(new Systems("Falcon5", "5"));
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                fillEngineerInfoList();
+
+            }
+
+        }, 0, 3000);
+
+
+//        fillSpennerSystem(systemsList);
         fillHoldList();
         //fillListTest();
 
@@ -280,6 +286,10 @@ public class OnlineCenter extends AppCompatActivity {
     }
 
     private void fillEngineerInfoList() {
+        if(TextUtils.isEmpty(ipAddres)){
+            Toast.makeText(this, "ip Not Found,Please Add Ip", Toast.LENGTH_SHORT).show();
+        }
+
         final String url = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
 
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
@@ -289,7 +299,7 @@ public class OnlineCenter extends AppCompatActivity {
                     public void onResponse(JSONObject jsonObject) {
                         try {
                             engineerInfoList.clear();
-
+                            systemsList.clear();
                             JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
                             Log.e("info", "" + info);
                             for (int i = 0; i < info.length(); i++) {
@@ -298,23 +308,23 @@ public class OnlineCenter extends AppCompatActivity {
                                 engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
                                 engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
                                 engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
-                                if( engineerInfo.getEng_type()==0)
+                                if( engineerInfo.getEng_type()==2)
                                 {
                                     engineerInfoList.add(engineerInfo);
 
                                 }
 
                             }
-//                            JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
-//                            Log.e("systemInfoArray",""+systemInfoArray);
-//                            for (int i = 0; i < systemInfoArray.length(); i++) {
-//                                JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
-//                                Systems systemInfo = new Systems();
-//                                systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
-//                                systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
-//                                systemsList.add(systemInfo);
-//                            }
-//                            fillSpennerSystem(systemsList);
+                            JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
+                            Log.e("systemInfoArray",""+systemInfoArray);
+                            for (int i = 0; i < systemInfoArray.length(); i++) {
+                                JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
+                                Systems systemInfo = new Systems();
+                                systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
+                                systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
+                                systemsList.add(systemInfo);
+                            }
+                            fillSpennerSystem(systemsList);
                             sendEngineerToAdapter();
 
                         } catch (Exception e) {
@@ -555,7 +565,8 @@ public class OnlineCenter extends AppCompatActivity {
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                             .setTitleText("warning!!")
-                            .setContentText("there is engineer available !!!").hideConfirmButton()
+                            .setContentText("there is engineer available !!!")
+//                            .hideConfirmButton()
                             .show();
 
                 }

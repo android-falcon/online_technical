@@ -291,17 +291,17 @@ Log.e("trrrr","master");
 //                NEWI.put(datatoSend);
                 JSONObject object = new JSONObject();
                 try {
-                    object.put("CHECH_OUT_TIME", "'jhg'");
-                    object.put("PROBLEM", "'aNDROID 100'");
-                    object.put("CUST_NAME", "'FALCONS'");
-                    object.put("CHECH_IN_TIME", "'hjh'");
-                    object.put("COMPANY_NAME", "'hjh'");
-                    object.put("PHONE_NO", "'hjh'");
-                    object.put("SYSTEM_NAME", "'hjh'");
-                    object.put("SYS_ID", "'hjh'");
-                    object.put("ENG_ID", 2);
-                    object.put("ENG_NAME", "'hjh'");
-                    object.put("STATE", "'0'");
+                    object.put("CHECH_OUT_TIME", "00:00:00");
+                    object.put("PROBLEM", "aNDROID 100");
+                    object.put("CUST_NAME", "FALCONS");
+                    object.put("CHECH_IN_TIME", "hjh");
+                    object.put("COMPANY_NAME", "hjh");
+                    object.put("PHONE_NO", "hjh");
+                    object.put("SYSTEM_NAME", "hjh");
+                    object.put("SYS_ID", "hjh");
+                    object.put("ENG_ID", "2");
+                    object.put("ENG_NAME", "hjh");
+                    object.put("STATE", "2");
 
                 } catch (JSONException e) {
                     e.printStackTrace();

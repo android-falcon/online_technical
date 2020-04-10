@@ -25,10 +25,12 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText id, username, password;
+    private EditText id, username, password,IP;
     private Button done, login;
     private ImageView settings, logo;
     private int employeeID;
+    private String employeeIP;
+
     private Animation animation;
     private Dialog settingDialog;
     private PresenterClass presenterClass;
@@ -129,32 +131,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 settingDialog.setContentView(R.layout.settings_dialog);
 
                 id = settingDialog.findViewById(R.id.settings_id);
+                IP= settingDialog.findViewById(R.id.settings_ip);
                 done = settingDialog.findViewById(R.id.settings_done);
-
+              String ip=  handler.getIp();
+                IP.setText(""+ip);
                 employeeID = 0;
 
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!TextUtils.isEmpty(id.getText().toString())) {
-                            employeeID = Integer.parseInt(id.getText().toString());
+                        if (!TextUtils.isEmpty(IP.getText().toString())) {
+//                            employeeID = Integer.parseInt(id.getText().toString());
+//
+//                            switch (employeeID) {
+//                                case 1:// manager
+//                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                    startActivity(intent);
+//                                    break;
+//                                case 2:// call center
+//                                    Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+//                                    startActivity(intent2);
+//                                    break;
+//                                case 3:// online
+//                                    Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+//                                    startActivity(intent3);
+//                                    break;
+//                            }
+                            handler.deleteIpData();
+                            employeeIP = IP.getText().toString();
+                            handler.addIPSetting(employeeIP);
+                            Toast.makeText(LoginActivity.this, "Save Success", Toast.LENGTH_SHORT).show();
+                            settingDialog.dismiss();
 
-                            switch (employeeID) {
-                                case 1:// manager
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    break;
-                                case 2:// call center
-                                    Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
-                                    startActivity(intent2);
-                                    break;
-                                case 3:// online
-                                    Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
-                                    startActivity(intent3);
-                                    break;
-                            }
-                        }
-                        settingDialog.dismiss();
+                        }else{}
+
                     }
                 });
                 settingDialog.show();

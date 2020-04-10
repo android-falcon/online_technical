@@ -40,12 +40,16 @@ public class ManagerImport {
     String JsonResponseSaveSwitch;
     JSONObject datatoSend=null;
     public  static boolean sendSucsses=false;
-    String ipAddres = "5.189.130.98:8085";
+    String ipAddres ="";
+    DatabaseHandler databaseHandler;
 
 
     public ManagerImport(Context context) {//, JSONObject obj
 //        this.obj = obj;
         this.context = context;
+        databaseHandler=new DatabaseHandler(context);
+        ipAddres=databaseHandler.getIp();
+
 
     }
 
@@ -246,12 +250,7 @@ Log.e("tag_itemCard", "****saveSuccess");
         protected String doInBackground(String... params) {
             try {
 
-                String ip = "";
-                String ipAddres = "5.189.130.98:8085";
-
-//
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
-                // ITEM_CARD
+            String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
 
                 JSONObject obj = new JSONObject();
                 JSONArray NEWI=new JSONArray();

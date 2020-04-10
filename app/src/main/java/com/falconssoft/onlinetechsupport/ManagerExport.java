@@ -39,11 +39,14 @@ public class ManagerExport {
     JSONObject datatoSend=null;
 
     public  static boolean sendSucsses=false;
-
+DatabaseHandler databaseHandler;
+String ipAddres="";
 
     public ManagerExport(Context context,JSONObject obj) {//, JSONObject obj
         this.obj = obj;
         this.context = context;
+        databaseHandler=new DatabaseHandler(context);
+        ipAddres=databaseHandler.getIp();
 
     }
 
@@ -75,7 +78,7 @@ public class ManagerExport {
                 String ip = "";
 
 //
-                String link ="http://5.189.130.98:8085/onlineTechnicalSupport/export.php";
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
                 // ITEM_CARD
 
                 JSONArray jsonArray=new JSONArray();
@@ -175,7 +178,7 @@ public class ManagerExport {
                 String ip = "";
 
 //
-                String link ="http://5.189.130.98:8085/onlineTechnicalSupport/export.php";
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
                 // ITEM_CARD
                 JSONArray jsonArray=new JSONArray();
                 jsonArray.put(obj);

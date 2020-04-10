@@ -17,7 +17,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     private static final String BD_NAME = "TECH_DB";
-    private static int BD_VERSION = 1;
+    private static int BD_VERSION = 2;
     private static SQLiteDatabase database;
 
     //******************************************************************
@@ -55,10 +55,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        String CREATE_TABLE_SETTINGS = "CREATE TABLE " + SETTINGS_TABLE + "("
-//                + SETTINGS_ID + " TEXT,"
-//                + SETTINGS_IP_ADDRESS + " TEXT" + ")";
-//        db.execSQL(CREATE_TABLE_SETTINGS);
+        String CREATE_TABLE_SETTINGS = "CREATE TABLE " + SETTINGS_TABLE + "("
+                + SETTINGS_ID + " TEXT,"
+                + SETTINGS_IP_ADDRESS + " TEXT" + ")";
+        db.execSQL(CREATE_TABLE_SETTINGS);
 
         String CREATE_TABLE_USERS = "CREATE TABLE " + USERS_TABLE + "("
                 + USERS_ID + " TEXT,"
@@ -90,6 +90,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 //        }catch (Exception e){
 //            Log.e("upgrade", "USER NO");
 //        }
+        try {
+        String CREATE_TABLE_SETTINGS = "CREATE TABLE " + SETTINGS_TABLE + "("
+                + SETTINGS_ID + " TEXT,"
+                + SETTINGS_IP_ADDRESS + " TEXT" + ")";
+        db.execSQL(CREATE_TABLE_SETTINGS);
+        }catch (Exception e){
+            Log.e("upgrade", "USER NO");
+        }
     }
 
     //*************************************** ADD **********************************
@@ -110,6 +118,22 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
         database.close();
     }
+
+
+    public void addIPSetting(String ip) {
+        database = this.getReadableDatabase();
+        ContentValues contentValues;
+
+            contentValues = new ContentValues();
+
+            contentValues.put(SETTINGS_IP_ADDRESS, ip);
+
+
+            database.insert(SETTINGS_TABLE, null, contentValues);
+
+        database.close();
+    }
+
 
     //*************************************** GET **********************************
 
@@ -133,6 +157,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return list;
     }
 
+    public String getIp() {
+       String list = "";
+        String selectQuery = "SELECT IP_ADDRESS FROM " + SETTINGS_TABLE;
+        database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+
+                list=cursor.getString(0);
+
+
+
+            } while (cursor.moveToNext());
+        }
+        return list;
+    }
+
     //*************************************** UPDATE **********************************
 
 //    public void updateSettingsUserNo(String userNo) {
@@ -148,6 +190,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void deleteLoginData() {
         database = this.getWritableDatabase();
         database.delete(USERS_TABLE, null, null);
+        database.close();
+    }
+
+    public void deleteIpData() {
+        database = this.getWritableDatabase();
+        database.delete(SETTINGS_TABLE, null, null);
         database.close();
     }
 

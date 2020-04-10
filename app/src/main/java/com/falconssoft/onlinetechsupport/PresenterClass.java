@@ -46,12 +46,13 @@ public class PresenterClass {
     private OnlineActivity onlineActivity;
     private CustomerOnline customerOnline;
     private  String value;
-
+    private  String ipAddres;
     public PresenterClass(Context context) {
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(context);
         databaseHandler = new DatabaseHandler(context);
         list = new ArrayList<>();
+
     }
 
     public PresenterClass(OnlineActivity onlineActivity, int flag) {
@@ -66,7 +67,8 @@ public class PresenterClass {
     //****************************************** Login **************************************
 
     public void getLoginData() {
-        urlLogin = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=0";
+        ipAddres=databaseHandler.getIp();
+        urlLogin = "http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=0";
         loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
     }
@@ -110,9 +112,19 @@ public class PresenterClass {
     //****************************************** Customers Data **************************************
 
     public void getCustomersData() {
+        ipAddres=databaseHandler.getIp();
+//        List<EngineerInfo>userDat=databaseHandler.getLoginData();
+//        String engID="-2";
+//        if(userDat.size()!=0){
+//            engID=userDat.get(0).getId();
+//        }
+
+        String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
         //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
-        urlImportCustomer = "http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=2";
+        urlImportCustomer = "http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID="+engId;
         objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
+        Log.e("presenter/e", "getCustomersData/urllll" + urlImportCustomer);
+
         requestQueue.add(objectRequest);
     }
 
@@ -136,7 +148,7 @@ public class PresenterClass {
                     Log.e("ppppppppppppp", jsonObject.getString("ENG_ID"));
 
 //                    engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))
-                    if (engId.toLowerCase().equals("3")) {
+                    if (engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))&& !jsonObject.getString("STATE").toString().equals("2")) {
                         found = true;
                         customerOnline = new CustomerOnline();
                         customerOnline.setCheakInTime(jsonObject.getString("CHECH_IN_TIME"));
@@ -175,7 +187,8 @@ public class PresenterClass {
 //        object.put("ENG_NAME", "'" + customerOnline.getEngineerName() + "'");
 
 //    "http://10.0.0.214/onlineTechnicalSupport/import.php?LOG_IN_OUT=0&ENG_ID=&STATE="
-        urlPushProblem = "http://5.189.130.98:8085/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
+        ipAddres=databaseHandler.getIp();
+        urlPushProblem = "http://"+ipAddres+"/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
 //        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
         Log.e("push", urlPushProblem);
 
@@ -183,7 +196,7 @@ public class PresenterClass {
         try {
             object.put("CHECH_OUT_TIME", customerOnline.getCheakOutTime());
             object.put("PROBLEM", customerOnline.getProblem());
-            object.put("CUST_NAME", "FALCONS");//customerOnline.getCustomerName()
+            object.put("CUST_NAME", customerOnline.getCustomerName());//customerOnline.getCustomerName()
             object.put("CHECH_IN_TIME", customerOnline.getCheakInTime());
             object.put("COMPANY_NAME", customerOnline.getCompanyName());
             object.put("PHONE_NO", customerOnline.getPhoneNo());
@@ -191,7 +204,7 @@ public class PresenterClass {
             object.put("SYS_ID", customerOnline.getSystemId());
             object.put("ENG_ID", customerOnline.getEngineerID());
             object.put("ENG_NAME", customerOnline.getEngineerName());
-            object.put("STATE", "hjh");
+            object.put("STATE", "2");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -255,7 +268,8 @@ public class PresenterClass {
     //****************************************** State **************************************
 
     public void setState(String engId, int state) {
-        urlState = "http://5.189.130.98:8085/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
+        ipAddres=databaseHandler.getIp();
+        urlState = "http://"+ipAddres+"/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
         stateRequest = new StringRequest(Request.Method.GET, urlState, new StateClass(), new StateClass());
         requestQueue.add(stateRequest);
     }
