@@ -2,6 +2,7 @@ package com.falconssoft.onlinetechsupport;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.telephone_no;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.text_delet_id;
 
 public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter.ViewHolder> {
     //    RecyclerView.Adapter<engineer_adapter.ViewHolder>
@@ -30,6 +32,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
     List<ManagerLayout> companey;
     CompaneyInfo clickedcom;
     List<CompaneyInfo> companeyInfos=new ArrayList<>();
+     int row_index=-1;
 
     public holdCompanyAdapter(Context context, List<ManagerLayout> companeyInfo) {
         this.context = context;
@@ -55,15 +58,35 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
             viewHolder.linear_companey.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    row_index=i;
+                    notifyDataSetChanged();
+
+
                     clickedcom=new CompaneyInfo();
                     clickedcom.setCompanyName(viewHolder.hold_company_name.getText().toString());
                     clickedcom.setPhoneNo(viewHolder.companyTel.getText().toString());
                     companey_name.setText(viewHolder.hold_company_name.getText().toString());
                     telephone_no.setText(viewHolder.companyTel.getText().toString());
-                    customer_name.setText("mohemmed");
+                    customer_name.setText(companey.get(i).getCustomerName());
+                    Log.e("systemSelected",""+companey.get(i).getSystemName());
+                    Log.e("text_delet_id",""+i);
+                    text_delet_id.setText(i+"");
+                    //companey.remove(i);
+                   // Log.e("companysize",""+companey.size());
+
                     companeyInfos.add(clickedcom);
                 }
+
             });
+            if(row_index==i)
+            {
+                viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#e5e4e2"));
+
+            }
+            else {
+                viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+            }
     }
 
     @Override
@@ -73,6 +96,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
     public List<CompaneyInfo> getCheckedItems() {
         return companeyInfos;
     }
+
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
