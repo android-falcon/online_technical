@@ -540,6 +540,7 @@ public class OnlineCenter extends AppCompatActivity {
 //        sys_name = spenner_systems.getSelectedItem().toString();
         if(spenner_systems.getCount()!=0){
             sys_name = spenner_systems.getSelectedItem().toString();
+            Log.e("sys_name",""+sys_name);
         }
         sys_Id = getSystemId(sys_name);
         if (engineerInfoList.size() == 0) {
@@ -630,6 +631,7 @@ public class OnlineCenter extends AppCompatActivity {
                     ManagerLayout info = new ManagerLayout();
                     info.setCompanyName(companey_name.getText().toString());
                     info.setPhoneNo(telephone_no.getText().toString());
+                    info.setCustomerName(customer_name.getText().toString());
                     info.setState("0");
                     info.setCheakInTime(time);
                     JSONObject data = null;
@@ -648,6 +650,7 @@ public class OnlineCenter extends AppCompatActivity {
 
                     recyclerView.setLayoutManager(llm);
                     recyclerView.setAdapter(companyAdapter);
+                    clearData();
 
                 } else {
                     new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
