@@ -74,7 +74,8 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout customerLayout;
     private Date currentTime;
     CustomerOnline customerOnlineGlobel;
-
+String ipAdress="";
+DatabaseHandler databaseHandler;
     public SharedPreferences onlineSharedPreferences;
     public SharedPreferences.Editor onlineEditor;
     public static final String ONLINE_PREFERNCES = "login_preferences";
@@ -122,6 +123,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 //        animation.setStartOffset(30);
 //        system.startAnimation(animation);
 
+        databaseHandler=new DatabaseHandler(OnlineActivity.this);
         new_customer.setOnClickListener(this);
         addactionButton.setOnClickListener(this);
         breakButton.setOnClickListener(this);
@@ -292,8 +294,8 @@ Log.e("trrrr","master");
         @Override
         protected String doInBackground(String... params) {
             try {
-
-                String link = "http://5.189.130.98:8085//onlineTechnicalSupport/export.php";
+                 ipAdress=databaseHandler.getIp();
+                String link = "http://"+ipAdress+"//onlineTechnicalSupport/export.php";
                 // ITEM_CARD
 
 //                JSONObject obj = new JSONObject();

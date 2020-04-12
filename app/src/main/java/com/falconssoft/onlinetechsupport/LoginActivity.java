@@ -172,11 +172,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                                    startActivity(intent3);
 //                                    break;
 //                            }
+
                             handler.deleteIpData();
                             employeeIP = IP.getText().toString();
                             handler.addIPSetting(employeeIP);
                             Toast.makeText(LoginActivity.this, "Save Success", Toast.LENGTH_SHORT).show();
                             settingDialog.dismiss();
+                            presenterClass.getLoginData();
 
                         }else{}
 
