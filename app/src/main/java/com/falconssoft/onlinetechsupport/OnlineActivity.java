@@ -136,7 +136,7 @@ DatabaseHandler databaseHandler;
 
         switch (view.getId()) {
             case R.id.online_new_customer:
-                presenterClass.getCustomersData();
+                presenterClass.getCustomersData(); 
 //                timer.setCurrentTime(20000);
 //                start circular view to rotate
 //                // pause circular view and timer
