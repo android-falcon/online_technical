@@ -290,7 +290,7 @@ Log.e("trrrr","master");
             super.onPreExecute();
 
         }
-
+   
         @Override
         protected String doInBackground(String... params) {
             try {
