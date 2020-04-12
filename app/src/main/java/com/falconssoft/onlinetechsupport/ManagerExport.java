@@ -20,6 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
@@ -40,7 +42,7 @@ public class ManagerExport {
 
     public  static boolean sendSucsses=false;
 DatabaseHandler databaseHandler;
-String ipAddres="";
+    public  static String ipAddres="";
 
     public ManagerExport(Context context,JSONObject obj) {//, JSONObject obj
         this.obj = obj;
@@ -78,6 +80,8 @@ String ipAddres="";
                 String ip = "";
 
 //
+//                ipAddres=databaseHandler.getIp();
+
                 String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
                 // ITEM_CARD
 
@@ -140,20 +144,20 @@ String ipAddres="";
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
             Log.e("tag_itemCard000", "****saveSuccess"+JsonResponse);
-            if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
-                Log.e("tag_itemCard", "****saveSuccess");
-
+            if (JsonResponse != null && JsonResponse.contains("USER_INFO SUCCESS")) {
+                Log.e(" ONLINE_ENGINEER_INFO", "****saveSuccess");
+                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("")
+                        .setContentText("The User Save Success ")
+//                        .hideConfirmButton()
+                        .show();
             }  else {
-                Log.e("tag_itemCard", "****Failed to export data");
-//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
-//                if (pd != null) {
-//                    pd.dismiss();
-//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
-//                            .setTitleText(context.getResources().getString(R.string.ops))
-//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
-//                            .show();
-//                }
-
+                Log.e(" ONLINE_ENGINEER_INFO", "****Failed to export data");
+                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("")
+                        .setContentText("The User Failed to save")
+//                        .hideConfirmButton()
+                        .show();
 
             }
 
@@ -176,6 +180,7 @@ String ipAddres="";
             try {
 
                 String ip = "";
+//                ipAddres=databaseHandler.getIp();
 
 //
                 String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
@@ -241,87 +246,22 @@ String ipAddres="";
             super.onPostExecute(JsonResponse);
 
             if (JsonResponse != null && JsonResponse.contains("SYSTEM_INFO SUCCESS")) {
-                Log.e("tag_ItemOCode", "****Success");
+                Log.e("SYSTEM_INFO", "****Success");
 //                progressDialog.dismiss();
                 JsonResponseSave = JsonResponse;
-
-//                try {
-//
-//                    JSONArray parentArrayS = new JSONArray(JsonResponse);
-//                    JSONObject CURRENT_TIME = parentArrayS.getJSONObject(0);
-//
-//                    String curentTime=CURRENT_TIME.getString("CURRENT_TIME");
-//                    Log.e("CURRENT_TIME",""+CURRENT_TIME.getString("CURRENT_TIME"));
-//
-//                    JSONObject parentArrayD = parentArrayS.getJSONObject(1);
-//                    JSONArray parentArray = parentArrayD.getJSONArray("CUSTOMER_INFO");
-//
-//                    int cheakInCount=cheakIn.size();
-//                    int cheakoutCount=cheakout.size();
-//                    int holdCount=hold.size();
-//
-//                    cheakIn.clear();
-//                    cheakout.clear();
-//                    hold.clear();
-//
-////                    {"CUST_NAME":"daaa","COMPANY_NAME":"MASTER","SYSTEM_NAME":"rrrr","PHONE_NO":"0154545465","CHECH_IN_TIME":"0000","STATE":"1"
-////                            ,"ENG_NAME":"ENG.RAWAN","ENG_ID":"2","SYS_ID":"1","CHECH_OUT_TIME":"03:15","PROBLEM":"sefwuysagdh jyeuv "},
-//
-//                    for (int i = 0; i < parentArray.length(); i++) {
-//                        JSONObject finalObject = parentArray.getJSONObject(i);
-//
-//                        ManagerLayout obj = new ManagerLayout();
-//                        obj.setCompanyName(finalObject.getString("COMPANY_NAME"));
-//                        obj.setCustomerName(finalObject.getString("CUST_NAME"));
-//                        obj.setCheakInTime(finalObject.getString("CHECH_IN_TIME"));
-//                        obj.setCheakOutTime(finalObject.getString("CHECH_OUT_TIME"));
-//                        obj.setEnginerName(finalObject.getString("ENG_NAME"));
-//                        obj.setPhoneNo(finalObject.getString("PHONE_NO"));
-//                        obj.setState(finalObject.getString("STATE"));
-//                        obj.setProplem(finalObject.getString("PROBLEM"));
-//                        obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
-//                        obj.setSystemId(finalObject.getString("SYS_ID"));
-//                        obj.setCurrentTime(curentTime);
-//
-//                        if(obj.getState().equals("1")){
-//                            cheakIn.add(obj);
-//                        }else if(obj.getState().equals("2")){
-//                            cheakout.add(obj);
-//                        }else if(obj.getState().equals("0")){
-//                            hold.add(obj);
-//                        }
-//
-//
-//                    }
-//                    refresh.setText("1");
-//
-//
-//                    int cheakInCount1=cheakIn.size();
-//                    int cheakoutCount1=cheakout.size();
-//                    int holdCount1=hold.size();
-//
-//                    if(cheakInCount1>cheakInCount){
-//                        refresh.setText("2");
-//                    }
-//
-//                    Log.e("tag_itemCard", "****saveSuccess");
-//
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("")
+                        .setContentText("The System Add SUCCESS")
+//                        .hideConfirmButton()
+                        .show();
 
             }  else {
-                Log.e("tag_itemCard", "****Failed to export data");
-//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
-//                if (pd != null) {
-//                    pd.dismiss();
-//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
-//                            .setTitleText(context.getResources().getString(R.string.ops))
-//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
-//                            .show();
-//                }
-
-
+                Log.e("SYSTEM_INFO", "****Failed to export data");
+                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("")
+                        .setContentText("The System Failed to Add")
+//                        .hideConfirmButton()
+                        .show();
             }
 
         }

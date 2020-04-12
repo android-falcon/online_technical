@@ -66,7 +66,7 @@ public class OnlineCenter extends AppCompatActivity {
      public static RecyclerView recyclerView;
     List<EngineerInfo> engineerInfoList, listEngforAdapter;
     List<ManagerLayout> holdCompaney;
-    public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish;
+    public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState;
     Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     DatabaseHandler databaseHandler;
@@ -74,12 +74,14 @@ public class OnlineCenter extends AppCompatActivity {
     String ipAddres = "";
     List<Systems> systemsList;
     LinearLayoutManager layoutManager;
-    int stateCompaney = -1, selectedEngId = 0;
+    int stateCompaney = -1, selectedEngId = 0,EngId=-1;
     String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
     Timer timer;
     public static List<ManagerLayout> hold_List;
     int idForDelete=0;
+    private PresenterClass presenterClass;
+
 
 
     @SuppressLint("WrongConstant")
@@ -88,6 +90,9 @@ public class OnlineCenter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_center);
         initialView();
+        presenterClass = new PresenterClass(this);
+        databaseHandler=new DatabaseHandler(OnlineCenter.this);
+        ipAddres=databaseHandler.getIp();
         fillEngineerInfoList(0);
         timer = new Timer();
         timer.schedule(new TimerTask() {
@@ -101,6 +106,7 @@ public class OnlineCenter extends AppCompatActivity {
         fillHoldList();
         //fillListTest();
         //fillSpennerSystem(systemsList);
+
 
 
     }
@@ -137,6 +143,7 @@ public class OnlineCenter extends AppCompatActivity {
                                     int arg2, long arg3) {
                 selectedEngineer = engineerInfoList.get(arg2).getName();
                 selectedEngId = arg2;
+                EngId= Integer.parseInt(engineerInfoList.get(arg2).getId());
                 for (int i = 0; i < gridView.getChildCount(); i++) {
                     if (i != arg2) {
                         gridView.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.layer1));
@@ -194,7 +201,7 @@ public class OnlineCenter extends AppCompatActivity {
             for (int i = 0; i < engineerInfoList.size(); i++) {
                 engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
 
-                if (engType == 0)// available  Engeneering
+                if (engType == 2)// available  Engeneering
                 {
                     listEngforAdapter.add(engineerInfoList.get(i));
 
@@ -209,9 +216,11 @@ public class OnlineCenter extends AppCompatActivity {
 
                 @Override
                 public void onItemClick(AdapterView<?> arg0, View arg1,
-                                        int arg2, long arg3) {
+                                        final int arg2, long arg3) {
                     selectedEngineer = engineerInfoList.get(arg2).getName();
                     selectedEngId = arg2;
+                    EngId= Integer.parseInt(engineerInfoList.get(arg2).getId());
+
                     for (int i = 0; i < gridView.getChildCount(); i++) {
                         if (i != arg2) {
                             gridView.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.layer1));
@@ -226,6 +235,7 @@ public class OnlineCenter extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     try {
                                         sendCompaneyInfo();
+
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -260,9 +270,11 @@ public class OnlineCenter extends AppCompatActivity {
     }
 
     private void fillEngineerInfoList(final int flag) {
-        if(TextUtils.isEmpty(ipAddres)){
-            Toast.makeText(this, "ip Not Found,Please Add Ip", Toast.LENGTH_SHORT).show();
-        }
+//        if(TextUtils.isEmpty(ipAddres)){
+//            Toast.makeText(this, "ip Not Found,Please Add Ip", Toast.LENGTH_SHORT).show();
+//        }
+        databaseHandler=new DatabaseHandler(OnlineCenter.this);
+        ipAddres=databaseHandler.getIp();
         final String url = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
 
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
@@ -282,10 +294,14 @@ public class OnlineCenter extends AppCompatActivity {
                                     EngineerInfo engineerInfo = new EngineerInfo();
                                     engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
                                     engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
-                                    engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
-                                    if( engineerInfo.getEng_type()==0)
+                                    engineerInfo.setEng_type(engineerInfoObject.getInt("ENG_TYPE"));
+                                    engineerInfo.setState(engineerInfoObject.getInt("STATE"));
+
+                                    Log.e("ENG_TYPE",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
+                                    if( engineerInfo.getEng_type()==2&& engineerInfo.getState()==0)
                                     {
                                         engineerInfoList.add(engineerInfo);
+                                        Log.e("ENG_TYPE_in",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
 
                                     }
 
@@ -296,23 +312,29 @@ public class OnlineCenter extends AppCompatActivity {
                             else {
                                 engineerInfoList.clear();
 
-                                JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
-                                Log.e("info", "" + info);
-                                for (int i = 0; i < info.length(); i++) {
-                                    JSONObject engineerInfoObject = info.getJSONObject(i);
-                                    EngineerInfo engineerInfo = new EngineerInfo();
-                                    engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
-                                    engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
-                                    engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
-                                    if( engineerInfo.getEng_type()==0)
-                                    {
-                                        engineerInfoList.add(engineerInfo);
+                                try {
+                                    JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
+                                    Log.e("info", "" + info);
+                                    for (int i = 0; i < info.length(); i++) {
+                                        JSONObject engineerInfoObject = info.getJSONObject(i);
+                                        EngineerInfo engineerInfo = new EngineerInfo();
+                                        engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
+                                        engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
+                                        engineerInfo.setState(engineerInfoObject.getInt("STATE"));
+                                        engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
+                                        if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
+                                            engineerInfoList.add(engineerInfo);
+
+                                        }
 
                                     }
+                                } catch (Exception e) {
+                                    Log.e("No_Eng", "Exception");
 
                                 }
+                                try{
                                 JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
-                                Log.e("systemInfoArray",""+systemInfoArray);
+                                Log.e("systemInfoArray", "" + systemInfoArray);
                                 for (int i = 0; i < systemInfoArray.length(); i++) {
                                     JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
                                     Systems systemInfo = new Systems();
@@ -320,6 +342,10 @@ public class OnlineCenter extends AppCompatActivity {
                                     systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
                                     systemsList.add(systemInfo);
                                 }
+                            }catch (Exception e){
+                                Log.e("No_Sys       ","Exception");
+
+                            }
                                 fillSpennerSystem(systemsList);
                                 sendEngineerToAdapter();
                             }
@@ -376,6 +402,28 @@ public class OnlineCenter extends AppCompatActivity {
         hold_List=new ArrayList<>();
         text_delet_id=findViewById(R.id.text_delet_id);
         text_finish=findViewById(R.id.text_finish);
+        textState=findViewById(R.id.textState);
+        textState.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if(textState.getText().toString().equals("Success")){
+                    presenterClass.setState(String.valueOf(EngId), 1);// checkin
+                    Log.e("textStateEngid",""+EngId);
+                    textState.setText("1");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         text_finish.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -406,7 +454,7 @@ public class OnlineCenter extends AppCompatActivity {
                 JSONObject data = getData();
                 Log.e("data", "" + data);
                 ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                managerImport.startSendingData(data);
+                managerImport.startSendingData(data,true);
 
             } else {
                 new SweetAlertDialog(OnlineCenter.this, SweetAlertDialog.SUCCESS_TYPE)
@@ -421,9 +469,10 @@ public class OnlineCenter extends AppCompatActivity {
                                 info.setCompanyName(companey_name.getText().toString());
                                 info.setPhoneNo(telephone_no.getText().toString());
                                 holdCompaney.add(info);
+                                hold_List.add(info);
                                 layoutManager = new LinearLayoutManager(OnlineCenter.this);
                                 layoutManager.setOrientation(VERTICAL);
-                                final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, holdCompaney);
+                                final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
                                 recyclerView.setAdapter(companyAdapter);
                                 sDialog.dismissWithAnimation();
                             }
@@ -488,7 +537,10 @@ public class OnlineCenter extends AppCompatActivity {
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
         time = df.format(currentTimeAndDate);
-        sys_name = spenner_systems.getSelectedItem().toString();
+//        sys_name = spenner_systems.getSelectedItem().toString();
+        if(spenner_systems.getCount()!=0){
+            sys_name = spenner_systems.getSelectedItem().toString();
+        }
         sys_Id = getSystemId(sys_name);
         if (engineerInfoList.size() == 0) {
             stateCompaney = 0;// hold
@@ -504,7 +556,7 @@ public class OnlineCenter extends AppCompatActivity {
             obj.put("CHECH_IN_TIME", "'" + time + "'");
             obj.put("STATE", "'" + stateCompaney + "'");// state for companey // 1 --> check in  // 2 ---> check out  0----> hold
             obj.put("ENG_NAME", "'" + selectedEngineer + "'");
-            obj.put("ENG_ID", "'" + selectedEngId + "'");
+            obj.put("ENG_ID", "'" + EngId + "'");
             obj.put("SYS_ID", "'" + sys_Id + "'");
             obj.put("CHECH_OUT_TIME", "'00:00:00'");
             obj.put("PROBLEM", "'problem'");
@@ -588,11 +640,11 @@ public class OnlineCenter extends AppCompatActivity {
                     }
                     Log.e("data", "" + data);
                     ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                    managerImport.startSendingData(data);
+                    managerImport.startSendingData(data,false);
 
                     holdCompaney.add(info);
-
-                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, holdCompaney);
+                    hold_List.add(info);
+                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
 
                     recyclerView.setLayoutManager(llm);
                     recyclerView.setAdapter(companyAdapter);

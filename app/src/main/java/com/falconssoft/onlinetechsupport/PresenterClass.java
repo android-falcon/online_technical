@@ -76,13 +76,13 @@ public class PresenterClass {
     class LoginDataClass implements Response.Listener<JSONObject>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
-            showLog("LoginDataClass/e", error.getMessage());
+//            Log.e("presenter/e", "LoginDataClass/ " + error.getMessage());
 
         }
 
         @Override
         public void onResponse(JSONObject response) {
-            showLog("LoginDataClass", response.toString());
+            Log.e("presenter", "LoginDataClass/ " + response.toString());
             try {
                 databaseHandler.deleteLoginData();
                 list.clear();
@@ -93,12 +93,12 @@ public class PresenterClass {
                     EngineerInfo engineerInfo = new EngineerInfo();
                     engineerInfo.setId(jsonObject.getString("ENG_ID"));
                     engineerInfo.setName(jsonObject.getString("ENG_NAME"));
-//                    engineerInfo.setState(jsonObject.getInt("STATE"));
-//                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
+                    engineerInfo.setState(jsonObject.getInt("STATE"));
+                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
                     engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
                     list.add(engineerInfo);
                     i++;
-                    showLog("LoginDataClass/EmployList", "" + engineerInfo.getName() + "  " + engineerInfo.getPassword());
+                    Log.e("EmployList", "LoginDataClass/ " +engineerInfo.getName()+"  "+engineerInfo.getPassword());
                 }
 
             } catch (JSONException e) {
@@ -131,23 +131,24 @@ public class PresenterClass {
     class CustomersDataClass implements Response.Listener<JSONObject>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
-            showLog("getCustomersData/e", error.getMessage());
+            Log.e("presenter/e", "getCustomersData/ " + error.getMessage());
+
         }
 
         @Override
         public void onResponse(JSONObject response) {
-//            showLog("getCustomersData", response.toString());
+//            Log.e("presenter", "getCustomersData/ " + response.toString());
             try {
                 boolean found = false;
                 String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
-                showLog("getCustomersData/engid", engId);
+                Log.e("ppppppp", engId);
                 JSONArray jsonArray = response.getJSONArray("CUSTOMER_INFO");
                 for (int m = 0; m < jsonArray.length(); m++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(m);
-                    showLog("getCustomersData", jsonObject.getString("ENG_ID"));
+                    Log.e("ppppppppppppp", jsonObject.getString("ENG_ID"));
 
 //                    engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))
-                    if (engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))&& !jsonObject.getString("STATE").toString().equals("2")) {
+                    if (engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))&& jsonObject.getString("STATE").toString().equals("1")) {
                         found = true;
                         customerOnline = new CustomerOnline();
                         customerOnline.setCheakInTime(jsonObject.getString("CHECH_IN_TIME"));
@@ -156,7 +157,7 @@ public class PresenterClass {
                         customerOnline.setPhoneNo(jsonObject.getString("PHONE_NO"));
                         customerOnline.setSystemName(jsonObject.getString("SYSTEM_NAME"));
                         customerOnline.setSystemId(jsonObject.getString("SYS_ID"));
-                        showLog("getCustomersData", customerOnline.getCustomerName());
+                        Log.e("name", customerOnline.getCustomerName());
 
                         break;
                     }
@@ -189,7 +190,7 @@ public class PresenterClass {
         ipAddres=databaseHandler.getIp();
         urlPushProblem = "http://"+ipAddres+"/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
 //        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
-        showLog("PushProblemClass", "" + urlPushProblem);
+        Log.e("push", urlPushProblem);
 
         final JSONObject object = new JSONObject();
         try {
@@ -208,7 +209,7 @@ public class PresenterClass {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        value = "PROBLEM_SOLVED=" + new JSONArray().put(object).toString();
+         value = "PROBLEM_SOLVED=" + new JSONArray().put(object).toString();
         pushProblemRequest = new StringRequest(Request.Method.POST
                 , urlPushProblem
                 , new PushProblemClass()
@@ -234,6 +235,7 @@ public class PresenterClass {
                 if (response != null) {
                     responseString = String.valueOf(response.statusCode);
                     // can get more details such as response.headers
+                    Log.e("respons","is"+response.toString());
                 }
                 return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
             }
@@ -253,13 +255,13 @@ public class PresenterClass {
     class PushProblemClass implements Response.Listener<String>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
-            showLog("PushProblemClass/e", "" + error.getMessage());
+            Log.e("presenter/e", "PushProblemClass/ " + error.getMessage());
 
         }
 
         @Override
         public void onResponse(String response) {
-            showLog("PushProblemClass", "" + response);
+            Log.e("presenter", "PushProblemClass/ " + response);
             onlineActivity.hideCustomerLinear();
         }
     }
@@ -268,28 +270,26 @@ public class PresenterClass {
 
     public void setState(String engId, int state) {
         ipAddres=databaseHandler.getIp();
-        urlState = "http://"+ipAddres+"/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
+        urlState = "http://"+ipAddres+"/onlineTechnicalSupport/export.php?LOG_IN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
         stateRequest = new StringRequest(Request.Method.GET, urlState, new StateClass(), new StateClass());
+        Log.e("setStateGGG///","engId"+engId+"state"+state+"url"+urlState);
+
         requestQueue.add(stateRequest);
     }
 
     class StateClass implements Response.Listener<String>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
-            showLog("StateClass/e", "" + error.getMessage());
+            Log.e("presenter/e", "StateClassError/ " + error.getMessage());
 
         }
 
         @Override
         public void onResponse(String response) {
-            showLog("StateClass", "" + response);
+            Log.e("presenter", "StateClass/ " + response);
 
         }
     }// ststus 2 ///////// cusomer
 
-
-    void showLog(String method, String message) {
-        Log.e("presenter", method + "/" + message);
-    }
 
 }

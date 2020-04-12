@@ -13,17 +13,34 @@
         android:id="@+id/online_image_customer"
         android:layout_width="350dp"
         android:layout_height="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/call_center_boy"
+        app:civ_border_color="@color/darkblue_2"
+        app:civ_border_width="1dp"
         android:layout_marginTop="24dp"
         android:layout_weight="0.5"
         android:padding="10dp"
-        android:src="@drawable/call_center_boy"
-        android:tint="@color/darkblue_2"
-        android:visibility="visible"
-        app:civ_border_color="@color/darkblue_2"
-        app:civ_border_width="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        tools:ignore="VectorDrawableCompat" />
+        tools:ignore="VectorDrawableCompat"/>
+
+
+<!--    android:layout_width="350dp"-->
+<!--    android:layout_height="200dp"-->
+<!--    android:layout_marginTop="24dp"-->
+<!--    android:layout_weight="0.5"-->
+<!--    android:padding="10dp"-->
+<!--    android:src="@drawable/call_center_boy"-->
+<!--    android:tint="@color/darkblue_2"-->
+<!--    android:visibility="visible"-->
+<!--    app:civ_border_color="@color/darkblue_2"-->
+<!--    app:civ_border_width="1dp"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toBottomOf="@+id/linearLayout5"-->
+<!--    tools:ignore="VectorDrawableCompat" />-->
+
+
 
 <!--    <net.crosp.libs.android.circletimeview.CircleTimeView-->
 <!--        android:id="@+id/online_timer"-->

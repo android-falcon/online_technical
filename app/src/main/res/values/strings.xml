@@ -33,4 +33,6 @@
     <string name="phone_number">Phone Number</string>
     <string name="system">System</string>
     <string name="new_customer">New Customer</string>
+    <string name="eng_id">Eng ID :</string>
+    <string name="system_no">System No :</string>
 </resources>

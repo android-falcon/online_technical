@@ -50,6 +50,8 @@ import ticker.views.com.ticker.widgets.circular.timer.view.CircularView;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
+import static com.falconssoft.onlinetechsupport.LoginActivity.editor;
+import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 
 //import android.support.design.widget.Snackbar;
 
@@ -71,6 +73,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     private PresenterClass presenterClass;
     private LinearLayout customerLayout;
     private Date currentTime;
+    CustomerOnline customerOnlineGlobel;
 
     public SharedPreferences onlineSharedPreferences;
     public SharedPreferences.Editor onlineEditor;
@@ -91,7 +94,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 
         presenterClass = new PresenterClass(this, 0);
         onlineSharedPreferences = getSharedPreferences(ONLINE_PREFERNCES, Context.MODE_PRIVATE);
-        profilePicture = findViewById(R.id.online_settings);
+        profilePicture = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.online_settings);
         breakButton = findViewById(R.id.online_break);
         exitButton = findViewById(R.id.online_exit);
         coordinatorLayout = findViewById(R.id.online_cordinator_layout);
@@ -99,7 +102,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         timer = findViewById(R.id.online_timer);
         customerLayout = findViewById(R.id.online_customer_layout);
         new_customer = findViewById(R.id.online_new_customer);
-        onlineImage = findViewById(R.id.online_image_customer);
+        onlineImage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.online_image_customer);
         phoneNo = findViewById(R.id.online_phone);
         system = findViewById(R.id.online_system);
         username = findViewById(R.id.online_username);
@@ -166,12 +169,17 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                         customerOnline.setCompanyName(onlineSharedPreferences.getString(ONLINE_COMPANY_NAME, null));
                         customerOnline.setSystemName(onlineSharedPreferences.getString(ONLINE_SYSTEM_NAME, null));
                         customerOnline.setSystemId(onlineSharedPreferences.getString(ONLINE_SYS_ID, null));
-                        customerOnline.setEngineerID(LoginActivity.sharedPreferences.getString(LOGIN_ID, null));
-                        customerOnline.setEngineerName(LoginActivity.sharedPreferences.getString(LOGIN_NAME, null));
+                        customerOnline.setEngineerID(sharedPreferences.getString(LOGIN_ID, null));
+                        customerOnline.setEngineerName(sharedPreferences.getString(LOGIN_NAME, null));
                         customerOnline.setCheakOutTime(onlineSharedPreferences.getString(ONLINE_CHECH_OUT_TIME, null));
+                        customerOnline.setCustomerState(2);
 
+                        customerOnlineGlobel=new CustomerOnline();
+                        customerOnlineGlobel=customerOnline;
                         new SyncManagerLayoutIN().execute();
 //                        presenterClass.pushCustomerProblem(customerOnline, 0);// check out
+//                        final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+//                        presenterClass.setState(engId, 0);// checkout
                     } else {
                         Toast.makeText(this, "Please add problem first!", Toast.LENGTH_SHORT).show();
                     }
@@ -187,12 +195,17 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                 dialog.setContentView(R.layout.break_dialog);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.setCanceledOnTouchOutside(false);
+                dialog.setCancelable(false);
+                final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+                presenterClass.setState(engId, 2);// break
 
                 exitBreak = dialog.findViewById(R.id.breakDialog_exit);
                 exitBreak.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         profilePicture.setBorderColor(getResources().getColor(R.color.greenf));
+
+                        presenterClass.setState(engId, 0);// back break
                         dialog.dismiss();
                     }
                 });
@@ -201,6 +214,9 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.online_exit:
                 profilePicture.setBorderColor(getResources().getColor(R.color.redf));
+                final String engIds = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+                presenterClass.setState(engIds, -1);//exit
+                finish();
                 break;
         }
     }
@@ -244,6 +260,8 @@ Log.e("trrrr","master");
     }
 
     public void hideCustomerLinear() {
+        final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+        presenterClass.setState(engId, 0);// checkout
         snackbar = Snackbar.make(coordinatorLayout, Html.fromHtml("<font color=\"#3167F0\">Checked out Successfully</font>"), Snackbar.LENGTH_SHORT);
         View snackbarLayout = snackbar.getView();
         TextView textViewSnackbar = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
@@ -253,6 +271,7 @@ Log.e("trrrr","master");
         phoneNo.setText("");
         username.setText("");
         system.setText("");
+        problem.setText("");
         new_customer.setVisibility(View.VISIBLE);
         onlineImage.setVisibility(View.VISIBLE);
         customerLayout.setVisibility(View.GONE);
@@ -291,18 +310,30 @@ Log.e("trrrr","master");
 //                NEWI.put(datatoSend);
                 JSONObject object = new JSONObject();
                 try {
-                    object.put("CHECH_OUT_TIME", "00:00:00");
-                    object.put("PROBLEM", "aNDROID 100");
-                    object.put("CUST_NAME", "FALCONS");
-                    object.put("CHECH_IN_TIME", "hjh");
-                    object.put("COMPANY_NAME", "hjh");
-                    object.put("PHONE_NO", "hjh");
-                    object.put("SYSTEM_NAME", "hjh");
-                    object.put("SYS_ID", "hjh");
-                    object.put("ENG_ID", "2");
-                    object.put("ENG_NAME", "hjh");
-                    object.put("STATE", "2");
+//                    object.put("CHECH_OUT_TIME", "00:00:00");
+//                    object.put("PROBLEM", "aNDROID 100");
+//                    object.put("CUST_NAME", "FALCONS");
+//                    object.put("CHECH_IN_TIME", "hjh");
+//                    object.put("COMPANY_NAME", "hjh");
+//                    object.put("PHONE_NO", "hjh");
+//                    object.put("SYSTEM_NAME", "hjh");
+//                    object.put("SYS_ID", "hjh");
+//                    object.put("ENG_ID", "2");
+//                    object.put("ENG_NAME", "hjh");
+//                    object.put("STATE", "2");
+                    Log.e("problemDataurlString = ", "" + customerOnlineGlobel.getProblem());
 
+                    object.put("CHECH_OUT_TIME",  customerOnlineGlobel.getCheakOutTime() );
+                    object.put("PROBLEM", customerOnlineGlobel.getProblem());
+                    object.put("CUST_NAME",  customerOnlineGlobel.getCustomerName());
+                    object.put("CHECH_IN_TIME",  customerOnlineGlobel.getCheakInTime());
+                    object.put("COMPANY_NAME",  customerOnlineGlobel.getCompanyName());
+                    object.put("PHONE_NO", customerOnlineGlobel.getPhoneNo());
+                    object.put("SYSTEM_NAME", customerOnlineGlobel.getSystemName());
+                    object.put("SYS_ID", customerOnlineGlobel.getSystemId());
+                    object.put("ENG_ID", customerOnlineGlobel.getEngineerID());
+                    object.put("ENG_NAME", customerOnlineGlobel.getEngineerName());
+                    object.put("STATE",  2);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -310,7 +341,8 @@ Log.e("trrrr","master");
                 String data = "PROBLEM_SOLVED=" + URLEncoder.encode(object.toString(), "UTF-8");
 
                 URL url = new URL(link);
-                Log.e("urlString = ", "" + url.toString());
+                Log.e("urlStringProblem= ", "" + url.toString());
+                Log.e("urlStringData= ", "" +data);
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
@@ -335,7 +367,7 @@ Log.e("trrrr","master");
                 inputStream.close();
                 httpURLConnection.disconnect();
 
-                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+                Log.e("tag", "ItemOCodegggppp -->" + stringBuffer.toString());
 
                 return stringBuffer.toString();
 
@@ -360,18 +392,15 @@ Log.e("trrrr","master");
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
 
-//            if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
-//                sendSucsses = true;
+            if (JsonResponse != null && JsonResponse.contains("PROBLEM_SOLVED SUCCESS")) {
+                Log.e("PROBLEM_SOLVED_", "****Success"+JsonResponse.toString());
+                hideCustomerLinear();
 
-                Log.e("tag_ItemOCode", "****Success");
-//                progressDialog.dismiss();
+            } else {
 
+                Log.e("PROBLEM_SOLVED_", "****Failed to export data");
 
-//            } else {
-//                sendSucsses = false;
-//                Log.e("tag_itemCard", "****Failed to export data");
-//
-////                }
+                }
 
 
             }

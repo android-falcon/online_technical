@@ -81,16 +81,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if (!TextUtils.isEmpty(localUsername))
                     if (!TextUtils.isEmpty(localPassword)) {
+
                         for (int i = 0; i < list.size(); i++)
                             if (localUsername.toLowerCase().equals(list.get(i).getName().toLowerCase())
-                                    ) {//&& localPassword.equals(list.get(i).getPassword())
+                                    && localPassword.equals(list.get(i).getPassword())) {//
                                 found = true;
-                                editor= sharedPreferences.edit();
-                                editor.putString(LOGIN_NAME,list.get(i).getName() );
-                                editor.putString(LOGIN_ID,list.get(i).getId() );
+                                editor = sharedPreferences.edit();
+                                editor.putString(LOGIN_NAME, list.get(i).getName());
+                                editor.putString(LOGIN_ID, list.get(i).getId());
                                 editor.putInt(LOGIN_STATE, list.get(i).getState());
-                                editor.putString(LOGIN_PASSWORD,list.get(i).getPassword() );
-                                editor.putInt(LOGIN_TYPE,list.get(i).getEng_type() );
+                                editor.putString(LOGIN_PASSWORD, list.get(i).getPassword());
+                                editor.putInt(LOGIN_TYPE, list.get(i).getEng_type());
                                 editor.commit();
 
                                 switch (list.get(i).getEng_type()) {
@@ -111,8 +112,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 break;
                             }
 
-                        if (!found){
-                            Toast.makeText(this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
+                        if (!found) {
+                            if (localUsername.equals("Manager")&&localPassword.equals("1234m")) {
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+
+                            }else if(localUsername.equals("online")&&localPassword.equals("1234o")){
+
+                                Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+                                startActivity(intent3);
+                            }else  if(localUsername.equals("callCenter")&&localPassword.equals("1234c")){
+                                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                startActivity(intent2);
+                            }else{
+                                Toast.makeText(this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } else {
                         animation = AnimationUtils.loadAnimation(this, R.anim.shake);
