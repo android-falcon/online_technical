@@ -93,8 +93,8 @@ public class PresenterClass {
                     EngineerInfo engineerInfo = new EngineerInfo();
                     engineerInfo.setId(jsonObject.getString("ENG_ID"));
                     engineerInfo.setName(jsonObject.getString("ENG_NAME"));
-//                    engineerInfo.setState(jsonObject.getInt("STATE"));
-//                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
+                    engineerInfo.setState(jsonObject.getInt("STATE"));
+                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
                     engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
                     list.add(engineerInfo);
                     i++;
@@ -148,7 +148,7 @@ public class PresenterClass {
                     Log.e("ppppppppppppp", jsonObject.getString("ENG_ID"));
 
 //                    engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))
-                    if (engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))&& !jsonObject.getString("STATE").toString().equals("2")) {
+                    if (engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))&& jsonObject.getString("STATE").toString().equals("1")) {
                         found = true;
                         customerOnline = new CustomerOnline();
                         customerOnline.setCheakInTime(jsonObject.getString("CHECH_IN_TIME"));
@@ -235,6 +235,7 @@ public class PresenterClass {
                 if (response != null) {
                     responseString = String.valueOf(response.statusCode);
                     // can get more details such as response.headers
+                    Log.e("respons","is"+response.toString());
                 }
                 return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
             }
@@ -269,21 +270,23 @@ public class PresenterClass {
 
     public void setState(String engId, int state) {
         ipAddres=databaseHandler.getIp();
-        urlState = "http://"+ipAddres+"/onlineTechnicalSupport/export.php?LOGIN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
+        urlState = "http://"+ipAddres+"/onlineTechnicalSupport/export.php?LOG_IN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
         stateRequest = new StringRequest(Request.Method.GET, urlState, new StateClass(), new StateClass());
+        Log.e("setStateGGG///","engId"+engId+"state"+state+"url"+urlState);
+
         requestQueue.add(stateRequest);
     }
 
     class StateClass implements Response.Listener<String>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
-//            Log.e("presenter/e", "StateClass/ " + error.getMessage());
+            Log.e("presenter/e", "StateClassError/ " + error.getMessage());
 
         }
 
         @Override
         public void onResponse(String response) {
-//            Log.e("presenter", "StateClass/ " + response);
+            Log.e("presenter", "StateClass/ " + response);
 
         }
     }// ststus 2 ///////// cusomer

@@ -1,0 +1,7 @@
+State for Eng
+
+-1 =>  log out ,0 => log in and check out , 1=> check in ,// break => 2
+
+
+State for company
+1 --> check in  // 2 ---> check out  0----> hold

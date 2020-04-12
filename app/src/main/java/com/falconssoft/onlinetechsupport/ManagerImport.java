@@ -31,12 +31,14 @@ import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.MainActivity.refresh;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.hold_List;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.textState;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_finish;
 
 
 public class ManagerImport {
 
     private Context context;
+    boolean holdin=false;
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialogSave;
     private JSONObject obj;
@@ -46,7 +48,7 @@ public class ManagerImport {
     String JsonResponseSaveSwitch;
     JSONObject datatoSend=null;
     public  static boolean sendSucsses=false;
-    String ipAddres ="";
+    public  static String ipAddres ="";
     DatabaseHandler databaseHandler;
 
 
@@ -73,10 +75,10 @@ public class ManagerImport {
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
-    public void startSendingData(JSONObject data) {
+    public void startSendingData(JSONObject data,boolean holds) {
         sendSucsses=false;
          datatoSend=data;
-
+holdin=holds;
 
             new SyncManagerLayoutIN().execute();
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
@@ -99,6 +101,7 @@ public class ManagerImport {
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
+                ipAddres=databaseHandler.getIp();
                 String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=1";
                 // ITEM_CARD
 
@@ -249,6 +252,7 @@ Log.e("tag_itemCard", "****saveSuccess");
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
+       boolean isHold=false;
 
         @Override
         protected void onPreExecute() {
@@ -258,13 +262,14 @@ Log.e("tag_itemCard", "****saveSuccess");
         @Override
         protected String doInBackground(String... params) {
             try {
-
+              ipAddres=databaseHandler.getIp();
             String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
 
                 JSONObject obj = new JSONObject();
                 JSONArray NEWI=new JSONArray();
 
                 NEWI.put(datatoSend);
+
                 String data = "CUSTOMER_INFO=" + URLEncoder.encode(NEWI.toString(), "UTF-8");
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
@@ -321,13 +326,16 @@ Log.e("tag_itemCard", "****saveSuccess");
             if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
                 sendSucsses=true;
                 text_finish.setText("finish");
-                Log.e("tag_ItemOCode", "****Success");
+                Log.e("tag_ItemOCodeSS", "****Success");
                 new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("")
                         .setContentText(" Send Sucsseful")
 //                        .hideConfirmButton()
                         .show();
 
+                if(holdin){
+                    textState.setText("Success");
+                }
 
 
             }  else {
@@ -356,6 +364,7 @@ Log.e("tag_itemCard", "****saveSuccess");
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
+                ipAddres=databaseHandler.getIp();
                 String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=1";
                 // ITEM_CARD
 
