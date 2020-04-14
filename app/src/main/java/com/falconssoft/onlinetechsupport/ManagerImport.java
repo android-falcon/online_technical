@@ -46,7 +46,7 @@ public class ManagerImport {
     String itemCode;
     String JsonResponseSave;
     String JsonResponseSaveSwitch;
-    JSONObject datatoSend=null;
+    JSONObject datatoSend=null,upDateHold=null;
     public  static boolean sendSucsses=false;
     public  static String ipAddres ="";
     DatabaseHandler databaseHandler;
@@ -72,6 +72,7 @@ public class ManagerImport {
             new SyncHoldLayout().execute();
 
 
+
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
@@ -83,6 +84,11 @@ holdin=holds;
             new SyncManagerLayoutIN().execute();
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
+    }
+
+    public void startUpdateHold(JSONObject data) {
+        upDateHold=data;
+        new updateHoldLayout().execute();
     }
 
 
@@ -349,6 +355,109 @@ Log.e("tag_itemCard", "****saveSuccess");
 
         }
     }
+
+    private class updateHoldLayout extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                ipAddres=databaseHandler.getIp();
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
+
+                JSONObject obj = new JSONObject();
+                JSONArray NEWI=new JSONArray();
+
+//                NEWI.put(upDateHold);
+
+                String data = "UPDATE_CUSTOMER_INFO=" + URLEncoder.encode(upDateHold.toString(), "UTF-8");
+                URL url = new URL(link);
+                Log.e("UPDATE_CUSTOMER_INFO = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+
+                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+                wr.writeBytes(data);
+                wr.flush();
+                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("UPDATE_HOLD", "UPDATE=-->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
+//                sendSucsses=true;
+//                text_finish.setText("finish");
+                Log.e("tag_ItemOCodeSS", "****Success");
+                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("")
+                        .setContentText("UPDATE Success")
+//                        .hideConfirmButton()
+                        .show();
+
+//                if(holdin){
+//                    textState.setText("Success");
+//                }
+
+
+            }  else {
+                sendSucsses=false;
+                Log.e("tag_itemCard", "****Failed to export data");
+
+//                }
+
+
+            }
+
+        }
+    }
+
     private class SyncHoldLayout extends AsyncTask<String, String, String> {
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
