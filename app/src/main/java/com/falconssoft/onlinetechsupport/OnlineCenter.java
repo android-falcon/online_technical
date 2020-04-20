@@ -58,6 +58,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 
 import static android.widget.LinearLayout.VERTICAL;
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
+import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
 
@@ -67,6 +70,7 @@ public class OnlineCenter extends AppCompatActivity {
     List<EngineerInfo> engineerInfoList, listEngforAdapter;
     List<ManagerLayout> holdCompaney;
     public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState;
+    TextView callCenterName,LogInTime;
     Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     DatabaseHandler databaseHandler;
@@ -78,10 +82,11 @@ public class OnlineCenter extends AppCompatActivity {
     String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
     Timer timer;
+    public static JSONObject updateHold;
     public static List<ManagerLayout> hold_List;
     int idForDelete=0;
     private PresenterClass presenterClass;
-
+public  static boolean isInHold=false;
 
 
     @SuppressLint("WrongConstant")
@@ -90,6 +95,11 @@ public class OnlineCenter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_center);
         initialView();
+        callCenterName.setText(sharedPreferences.getString(LOGIN_NAME, null));
+        Date currentTimeAndDate = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy   hh:mm:ss");
+        String time = df.format(currentTimeAndDate);
+        LogInTime.setText(""+time);
         presenterClass = new PresenterClass(this);
         databaseHandler=new DatabaseHandler(OnlineCenter.this);
         ipAddres=databaseHandler.getIp();
@@ -403,6 +413,8 @@ public class OnlineCenter extends AppCompatActivity {
         text_delet_id=findViewById(R.id.text_delet_id);
         text_finish=findViewById(R.id.text_finish);
         textState=findViewById(R.id.textState);
+        callCenterName=findViewById(R.id.callCenterName);
+        LogInTime=findViewById(R.id.LogInTime);
         textState.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -451,11 +463,40 @@ public class OnlineCenter extends AppCompatActivity {
         boolean isfaull = checkRequiredData();
         if (isfaull) {
             if (engineerInfoList.size() != 0) {
-                JSONObject data = getData();
-                Log.e("data", "" + data);
-                ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                managerImport.startSendingData(data,true);
+                if(!isInHold) {
+                    JSONObject data = getData();
+                    Log.e("data", "" + data);
+                    ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                    managerImport.startSendingData(data, true);
+                }else{
+                    if(!text_delet_id.getText().toString().equals("")) {
+                        CompaneyInfo companeyInfo = new CompaneyInfo();
 
+                        String sys_Id = getSystemId(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getSystemName());
+
+                        companeyInfo.setCustomerName(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getCustomerName());
+                        companeyInfo.setCompanyName(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getCompanyName());
+                        companeyInfo.setSystemName(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getSystemName());
+                        companeyInfo.setPhoneNo(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getPhoneNo());
+                        companeyInfo.setCheakInTime(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getCheakInTime());
+                        companeyInfo.setState_company("1");
+                        companeyInfo.setEngName(selectedEngineer);
+                        companeyInfo.setEngId(String.valueOf(EngId));
+                        companeyInfo.setSystemId(sys_Id);
+                        companeyInfo.setChechout(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getCheakOutTime());
+                        companeyInfo.setproblem(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getProplem());
+                        Log.e("HOLDp", "UPDATE=-->" + companeyInfo.getSystemName().toString());
+
+                        JSONObject data = companeyInfo.getData();
+                        Log.e("HOLDp", "" + data);
+                        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                        managerImport.startUpdateHold(data);
+
+                    }
+                    isInHold=false;
+
+
+                }
             } else {
                 new SweetAlertDialog(OnlineCenter.this, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("WARNING")
@@ -548,6 +589,8 @@ public class OnlineCenter extends AppCompatActivity {
         } else {
             stateCompaney = 1;
         }
+        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+
         JSONObject obj = new JSONObject();
         if (engineerInfoList.size() != 0) {
             obj.put("CUST_NAME", "'" + customerName + "'");
@@ -561,6 +604,8 @@ public class OnlineCenter extends AppCompatActivity {
             obj.put("SYS_ID", "'" + sys_Id + "'");
             obj.put("CHECH_OUT_TIME", "'00:00:00'");
             obj.put("PROBLEM", "'problem'");
+            obj.put("CALL_CENTER_ID", "'"+CallId+"'");
+
         } else {
             // hold company data
             obj.put("CUST_NAME", "'" + customerName + "'");
@@ -574,6 +619,7 @@ public class OnlineCenter extends AppCompatActivity {
             obj.put("SYS_ID", "'" + sys_Id + "'");
             obj.put("CHECH_OUT_TIME", "'00:00:00'");
             obj.put("PROBLEM", "'problem'");
+            obj.put("CALL_CENTER_ID", "'"+CallId+"'");
         }
         return obj;
 

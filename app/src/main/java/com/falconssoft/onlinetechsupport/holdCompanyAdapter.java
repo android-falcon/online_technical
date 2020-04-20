@@ -23,6 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.isInHold;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.telephone_no;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_delet_id;
 
@@ -73,7 +74,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
                     text_delet_id.setText(i+"");
                     //companey.remove(i);
                    // Log.e("companysize",""+companey.size());
-
+                    isInHold=true;
                     companeyInfos.add(clickedcom);
                 }
 

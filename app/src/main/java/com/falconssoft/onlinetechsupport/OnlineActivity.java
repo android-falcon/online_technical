@@ -325,7 +325,7 @@ Log.e("trrrr","master");
 //                    object.put("STATE", "2");
                     Log.e("problemDataurlString = ", "" + customerOnlineGlobel.getProblem());
 
-                    object.put("CHECH_OUT_TIME",  customerOnlineGlobel.getCheakOutTime() );
+                    object.put("CHECH_OUT_TIME",  "00:00:00" );
                     object.put("PROBLEM", customerOnlineGlobel.getProblem());
                     object.put("CUST_NAME",  customerOnlineGlobel.getCustomerName());
                     object.put("CHECH_IN_TIME",  customerOnlineGlobel.getCheakInTime());
@@ -336,6 +336,7 @@ Log.e("trrrr","master");
                     object.put("ENG_ID", customerOnlineGlobel.getEngineerID());
                     object.put("ENG_NAME", customerOnlineGlobel.getEngineerName());
                     object.put("STATE",  2);
+//                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

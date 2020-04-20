@@ -14,9 +14,9 @@
     <string name="password">Password</string>
     <string name="go">Go</string>
     <string name="login">Login</string>
-    <string name="in_service">In Service</string>
-    <string name="waiting">Waiting</string>
-    <string name="out_service">Out Service</string>
+    <string name="in_service">In Process</string>
+    <string name="waiting">Waiting In Hold</string>
+    <string name="out_service">Finish Complete</string>
     <string name="add_employees">Add Employees</string>
     <string name="user_name">User Name :</string>
     <string name="password_">Password :</string>
@@ -35,4 +35,15 @@
     <string name="new_customer">New Customer</string>
     <string name="eng_id">Eng ID :</string>
     <string name="system_no">System No :</string>
+    <string name="company_name">Company Name</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="system_type">System Type</string>
+    <string name="hold_customer_list">Hold Customer List</string>
+    <string name="hold">Hold</string>
+    <string name="more_information">More Information</string>
+    <string name="eng_name">Eng Name :</string>
+    <string name="time_loading">Time Loading :</string>
+    <string name="states">States :</string>
+    <string name="problem_detail">Problem Detail :</string>
+    <string name="done">Done</string>
 </resources>

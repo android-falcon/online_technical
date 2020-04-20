@@ -386,6 +386,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 httpURLConnection.setRequestMethod("POST");
+                Log.e("UPDATE_HOLD", "Data=-->" + data);
 
 
                 DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
@@ -431,19 +432,19 @@ Log.e("tag_itemCard", "****saveSuccess");
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
 
+
             if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
-//                sendSucsses=true;
-//                text_finish.setText("finish");
-                Log.e("tag_ItemOCodeSS", "****Success");
+                sendSucsses=true;
+                text_finish.setText("finish");
+                Log.e("updatehold", "****Success");
                 new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
                         .setTitleText("")
-                        .setContentText("UPDATE Success")
+                        .setContentText("send hold data Success")
 //                        .hideConfirmButton()
                         .show();
 
-//                if(holdin){
-//                    textState.setText("Success");
-//                }
+                    textState.setText("Success");
+
 
 
             }  else {

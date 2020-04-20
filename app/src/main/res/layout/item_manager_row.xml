@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layoutDirection="ltr"
     android:padding="5dp">
 
     <androidx.cardview.widget.CardView
@@ -26,7 +27,7 @@
                 android:id="@+id/companyName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="0.85"
                 android:padding="5dp"
                 android:text="Company Name"
                 android:textColor="@android:color/black" />
@@ -54,6 +55,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:visibility="gone"
                     app:srcCompat="@drawable/ic_restaurant_black_24dp"
                     tools:ignore="VectorDrawableCompat" />
 
