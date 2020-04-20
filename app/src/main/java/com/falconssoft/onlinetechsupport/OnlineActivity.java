@@ -45,6 +45,7 @@ import java.net.URLEncoder;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pl.droidsonroids.gif.GifImageView;
 import ticker.views.com.ticker.widgets.circular.timer.callbacks.CircularViewCallback;
 import ticker.views.com.ticker.widgets.circular.timer.view.CircularView;
 
@@ -61,7 +62,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     private ConstraintLayout coordinatorLayout;
     private CircleImageView profilePicture, onlineImage;
     private ImageView breakButton, exitButton;
-    private CircularView timer;
+    private GifImageView gifImageView;
     private CircularView.OptionsBuilder builder;
     //    private CircleTimeView timer;
     private EditText problem;
@@ -100,7 +101,7 @@ DatabaseHandler databaseHandler;
         exitButton = findViewById(R.id.online_exit);
         coordinatorLayout = findViewById(R.id.online_cordinator_layout);
         addactionButton = findViewById(R.id.online_add);
-        timer = findViewById(R.id.online_timer);
+        gifImageView = findViewById(R.id.online_gif_image);
         customerLayout = findViewById(R.id.online_customer_layout);
         new_customer = findViewById(R.id.online_new_customer);
         onlineImage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.online_image_customer);
@@ -136,7 +137,7 @@ DatabaseHandler databaseHandler;
 
         switch (view.getId()) {
             case R.id.online_new_customer:
-                presenterClass.getCustomersData(); 
+                presenterClass.getCustomersData();
 //                timer.setCurrentTime(20000);
 //                start circular view to rotate
 //                // pause circular view and timer
@@ -227,24 +228,8 @@ DatabaseHandler databaseHandler;
         new_customer.setVisibility(View.GONE); // button
         onlineImage.setVisibility(View.GONE); // image
         customerLayout.setVisibility(View.VISIBLE); // customer fields
-        timer.setVisibility(View.VISIBLE); // timer
-        builder = new
-                CircularView.OptionsBuilder()
-                .shouldDisplayText(true)
-                .setCounterInSeconds(60)
-                .setCircularViewCallback(new CircularViewCallback() {
-                    @Override
-                    public void onTimerFinish() {
-                        Toast.makeText(OnlineActivity.this, "CircularCallback: Timer Finished ", Toast.LENGTH_SHORT).show();
-                    }
+        gifImageView.setVisibility(View.VISIBLE); // timer
 
-                    @Override
-                    public void onTimerCancelled() {
-                        Toast.makeText(OnlineActivity.this, "CircularCallback: Timer Cancelled ", Toast.LENGTH_SHORT).show();
-                    }
-                });
-        timer.setOptions(builder);
-        timer.startTimer();
 Log.e("trrrr","master");
         phoneNo.setText(customerOnline.getPhoneNo());
         system.setText(customerOnline.getSystemName());
@@ -277,7 +262,7 @@ Log.e("trrrr","master");
         new_customer.setVisibility(View.VISIBLE);
         onlineImage.setVisibility(View.VISIBLE);
         customerLayout.setVisibility(View.GONE);
-        timer.setVisibility(View.GONE);
+        gifImageView.setVisibility(View.GONE);
     }
 
     private class SyncManagerLayoutIN extends AsyncTask<String, String, String> {
