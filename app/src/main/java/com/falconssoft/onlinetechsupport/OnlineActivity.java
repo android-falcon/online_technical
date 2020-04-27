@@ -1,19 +1,25 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.app.Dialog;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +31,7 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
 
 import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,6 +50,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pl.droidsonroids.gif.GifImageView;
@@ -75,6 +84,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     private LinearLayout customerLayout;
     private Date currentTime;
     CustomerOnline customerOnlineGlobel;
+    Button online_new_customer;
 String ipAdress="";
 DatabaseHandler databaseHandler;
     public SharedPreferences onlineSharedPreferences;
@@ -88,6 +98,10 @@ DatabaseHandler databaseHandler;
     public static final String ONLINE_SYS_ID = "system_id";
     public static final String ONLINE_PROBLEM = "problem";
     public static final String ONLINE_CHECH_OUT_TIME = "check_out_time";
+    Timer timer;
+//     MediaPlayer mp;
+    Animation animations;
+    public static boolean isTimerWork=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +123,7 @@ DatabaseHandler databaseHandler;
         system = findViewById(R.id.online_system);
         username = findViewById(R.id.online_username);
         problem = findViewById(R.id.online_problem);
+        online_new_customer=findViewById(R.id.online_new_customer);
 
 //        phoneNo = findViewById(R.id.online_image_phone);
 //        system = findViewById(R.id.online_image_system);
@@ -129,6 +144,34 @@ DatabaseHandler databaseHandler;
         addactionButton.setOnClickListener(this);
         breakButton.setOnClickListener(this);
         exitButton.setOnClickListener(this);
+
+
+//        timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                presenterClass.getCustomersData("ifFound");
+//            }
+//
+//        }, 0, 1000);
+
+        timerWork();
+//         mp = MediaPlayer.create(this, R.raw.sound);
+
+    }
+
+    private void timerWork() {
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                    presenterClass.getCustomersData("ifFound");
+
+            }
+
+        }, 0, 1000);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -137,7 +180,15 @@ DatabaseHandler databaseHandler;
 
         switch (view.getId()) {
             case R.id.online_new_customer:
-                presenterClass.getCustomersData();
+//                if(timer != null) {
+//                    timer.cancel();
+//                    timer.purge();
+//                    timer = null;
+//                }
+                isTimerWork=false;
+//                animations.cancel();
+                online_new_customer.clearAnimation();
+                presenterClass.getCustomersData("get");
 //                timer.setCurrentTime(20000);
 //                start circular view to rotate
 //                // pause circular view and timer
@@ -153,6 +204,7 @@ DatabaseHandler databaseHandler;
                 break;
             case R.id.online_add:
 //                timer.stopTimer();
+                isTimerWork=true;
 
                 if (customerLayout.getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
@@ -180,6 +232,7 @@ DatabaseHandler databaseHandler;
                         customerOnlineGlobel=new CustomerOnline();
                         customerOnlineGlobel=customerOnline;
                         new SyncManagerLayoutIN().execute();
+
 //                        presenterClass.pushCustomerProblem(customerOnline, 0);// check out
 //                        final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
 //                        presenterClass.setState(engId, 0);// checkout
@@ -224,6 +277,28 @@ DatabaseHandler databaseHandler;
         }
     }
 
+    public void ShowNotification(){
+        notifyThis("Master","belcin");
+        blinking();
+    }
+
+    public void StopNotification(){
+//        notifyThis("Master","belcin");
+//        mp.stop();
+    }
+
+
+    void blinking (){
+
+        Animation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(100); //You can manage the blinking time with this parameter
+        anim.setStartOffset(20);
+        anim.setRepeatMode(Animation.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        online_new_customer.startAnimation(anim);
+        animations=anim;
+    }
+
     public void showCustomerLinear(CustomerOnline customerOnline) {
         new_customer.setVisibility(View.GONE); // button
         onlineImage.setVisibility(View.GONE); // image
@@ -264,6 +339,23 @@ Log.e("trrrr","master");
         customerLayout.setVisibility(View.GONE);
         gifImageView.setVisibility(View.GONE);
     }
+
+    public void notifyThis(String title, String message) {
+        NotificationCompat.Builder b = new NotificationCompat.Builder(OnlineActivity.this);
+        b.setAutoCancel(true)
+                .setDefaults(NotificationCompat.DEFAULT_ALL);
+//                .setWhen(System.currentTimeMillis())
+//                .setSmallIcon(R.drawable.favicon32)
+//                .setTicker("{your tiny message}")
+//                .setContentTitle(title)
+//                .setContentText(message)
+//                .setContentInfo("INFO");
+
+        NotificationManager nm = (NotificationManager) OnlineActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+        nm.notify(1, b.build());
+    }
+
+
 
     private class SyncManagerLayoutIN extends AsyncTask<String, String, String> {
         private String JsonResponse = null;

@@ -24,6 +24,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.isInHold;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.systype;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.telephone_no;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_delet_id;
 
@@ -69,6 +70,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
                     companey_name.setText(viewHolder.hold_company_name.getText().toString());
                     telephone_no.setText(viewHolder.companyTel.getText().toString());
                     customer_name.setText(companey.get(i).getCustomerName());
+                    systype.setText(companey.get(i).getSystemName());
                     Log.e("systemSelected",""+companey.get(i).getSystemName());
                     Log.e("text_delet_id",""+i);
                     text_delet_id.setText(i+"");

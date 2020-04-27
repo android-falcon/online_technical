@@ -31,9 +31,10 @@ import java.util.Map;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
+import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
 
 public class PresenterClass {
-
+private String getDataState="1";
     private String urlImportCustomer, urlLogin, urlState, urlPushProblem;
     private RequestQueue requestQueue;
     private JsonObjectRequest loginRequest, objectRequest;
@@ -111,21 +112,26 @@ public class PresenterClass {
 //    json object problem_solved
     //****************************************** Customers Data **************************************
 
-    public void getCustomersData() {
-        ipAddres=databaseHandler.getIp();
+    public void getCustomersData(String dataState) {
+        if(isTimerWork||dataState.equals("get")) {
+            Log.e("getCustomer/e", "data " + dataState + " isWork  "+isTimerWork);
+
+            ipAddres = databaseHandler.getIp();
+            getDataState = dataState;
 //        List<EngineerInfo>userDat=databaseHandler.getLoginData();
 //        String engID="-2";
 //        if(userDat.size()!=0){
 //            engID=userDat.get(0).getId();
 //        }
 
-        String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
-        //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
-        urlImportCustomer = "http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID="+engId;
-        objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
-        Log.e("presenter/e", "getCustomersData/urllll" + urlImportCustomer);
+            String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+            //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
+            urlImportCustomer = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=" + engId;
+            objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
+            Log.e("presenter/e", "getCustomersData/urllll" + urlImportCustomer);
 
-        requestQueue.add(objectRequest);
+            requestQueue.add(objectRequest);
+        }
     }
 
     class CustomersDataClass implements Response.Listener<JSONObject>, Response.ErrorListener {
@@ -163,8 +169,13 @@ public class PresenterClass {
                     }
 
                 }
-                if (found)
+                if (found && getDataState.equals("get")) {
                     onlineActivity.showCustomerLinear(customerOnline);
+                }else if (found && getDataState.equals("ifFound")) {
+                    onlineActivity.ShowNotification();
+                }else if(!found){
+                    isTimerWork=true;
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }

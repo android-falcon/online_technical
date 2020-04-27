@@ -214,31 +214,47 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginRight="10dp"
-                            android:layout_weight="0.5"
+                            android:layout_weight="1.2"
+
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
-
                             android:gravity="center"
                             android:inputType="number"
-
                             android:padding="1dp"
                             android:text="@string/system_type"
                             android:textColor="@color/darkblue_1"
+
                             android:textSize="16sp" />
 
-                        <Spinner
-                            android:id="@+id/spenner_systems"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/systype"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginRight="5dp"
-                            android:layout_weight="0.3"
+                            android:layout_weight="2"
+                            android:background="@drawable/edittext_back"
                             android:elevation="2dp"
                             android:gravity="center"
+                            android:inputType="number"
                             android:padding="3dp"
+
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
+
+<!--                        <Spinner-->
+<!--                            android:id="@+id/spenner_systems"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_marginRight="5dp"-->
+<!--                            android:layout_weight="0.3"-->
+<!--                            android:elevation="2dp"-->
+<!--                            android:gravity="center"-->
+<!--                            -->
+<!--                            android:padding="3dp"-->
+<!--                            android:textSize="16sp" />-->
 
                         <TextView
                             android:id="@+id/text_finish"

@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,10 +15,14 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,9 +74,9 @@ public class OnlineCenter extends AppCompatActivity {
      public static RecyclerView recyclerView;
     List<EngineerInfo> engineerInfoList, listEngforAdapter;
     List<ManagerLayout> holdCompaney;
-    public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState;
+    public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState,systype;
     TextView callCenterName,LogInTime;
-    Spinner spenner_systems;
+//    Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     DatabaseHandler databaseHandler;
 
@@ -89,12 +94,19 @@ public class OnlineCenter extends AppCompatActivity {
 public  static boolean isInHold=false;
 
 
+
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_online_center);
         initialView();
+        systype.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                systemGridDialog(systemsList);
+            }
+        });
         callCenterName.setText(sharedPreferences.getString(LOGIN_NAME, null));
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy   hh:mm:ss");
@@ -279,6 +291,34 @@ public  static boolean isInHold=false;
         }
     }
 
+    public void  systemGridDialog(final List<Systems>listOfsystem){
+
+        final Dialog fillSysDialog = new Dialog(OnlineCenter.this,R.style.Theme_Dialog);
+        fillSysDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        fillSysDialog.setCancelable(true);
+        fillSysDialog.setContentView(R.layout.sys_dialog);
+//                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
+
+        final GridView SysGrid;
+
+        SysGrid=fillSysDialog.findViewById(R.id.Sysgrid);
+//        SysGrid
+
+        adapterGridSystem adapterSystem = new adapterGridSystem(this, listOfsystem);
+        SysGrid.setAdapter(adapterSystem);
+
+        SysGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                systype.setText(listOfsystem.get(position).getSystemName());
+                fillSysDialog.dismiss();
+
+            }
+        });
+
+        fillSysDialog.show();
+    }
+
     private void fillEngineerInfoList(final int flag) {
 //        if(TextUtils.isEmpty(ipAddres)){
 //            Toast.makeText(this, "ip Not Found,Please Add Ip", Toast.LENGTH_SHORT).show();
@@ -356,7 +396,8 @@ public  static boolean isInHold=false;
                                 Log.e("No_Sys       ","Exception");
 
                             }
-                                fillSpennerSystem(systemsList);
+//                                fillSpennerSystem(systemsList);
+//                                systemGridDialog(systemsList);
                                 sendEngineerToAdapter();
                             }
 
@@ -387,16 +428,16 @@ public  static boolean isInHold=false;
 
     }
 
-    private void fillSpennerSystem(List<Systems> systemsList) {
-        List<String> listNameSys = new ArrayList<>();
-        for (int j = 0; j < systemsList.size(); j++) {
-            listNameSys.add(systemsList.get(j).getSystemName());
-        }
-
-        spenner_systems.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, listNameSys));
-
-    }
+//    private void fillSpennerSystem(List<Systems> systemsList) {
+//        List<String> listNameSys = new ArrayList<>();
+//        for (int j = 0; j < systemsList.size(); j++) {
+//            listNameSys.add(systemsList.get(j).getSystemName());
+//        }
+//
+//        spenner_systems.setAdapter(new ArrayAdapter<String>(this,
+//                android.R.layout.simple_spinner_item, listNameSys));
+//
+//    }
 
     private void initialView() {
         gridView = (GridView) findViewById(R.id.grid);
@@ -404,7 +445,7 @@ public  static boolean isInHold=false;
         customer_name = findViewById(R.id.customer_name);
         companey_name = findViewById(R.id.companey_name);
         telephone_no = findViewById(R.id.telephone_no);
-        spenner_systems = findViewById(R.id.spenner_systems);
+//        spenner_systems = findViewById(R.id.spenner_systems);
         engineerInfoList = new ArrayList<>();
         listEngforAdapter = new ArrayList<>();
         holdCompaney = new ArrayList<>();
@@ -412,6 +453,7 @@ public  static boolean isInHold=false;
         hold_List=new ArrayList<>();
         text_delet_id=findViewById(R.id.text_delet_id);
         text_finish=findViewById(R.id.text_finish);
+        systype=findViewById(R.id.systype);
         textState=findViewById(R.id.textState);
         callCenterName=findViewById(R.id.callCenterName);
         LogInTime=findViewById(R.id.LogInTime);
@@ -557,6 +599,7 @@ public  static boolean isInHold=false;
         customer_name.requestFocus();
         companey_name.setText("");
         telephone_no.setText("");
+        systype.setText("");
         if(engineerInfoList.size()!=0)
         {
             engineerInfoList.remove(selectedEngId);
@@ -579,10 +622,11 @@ public  static boolean isInHold=false;
         SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
         time = df.format(currentTimeAndDate);
 //        sys_name = spenner_systems.getSelectedItem().toString();
-        if(spenner_systems.getCount()!=0){
-            sys_name = spenner_systems.getSelectedItem().toString();
-            Log.e("sys_name",""+sys_name);
-        }
+//        if(spenner_systems.getCount()!=0){
+//            sys_name = spenner_systems.getSelectedItem().toString();
+//            Log.e("sys_name",""+sys_name);
+//        }
+        sys_name=systype.getText().toString();
         sys_Id = getSystemId(sys_name);
         if (engineerInfoList.size() == 0) {
             stateCompaney = 0;// hold
@@ -640,12 +684,13 @@ public  static boolean isInHold=false;
     }
 
     private boolean checkRequiredData() {
-        String customerName = "", companeyName = "", tele = "";
+        String customerName = "", companeyName = "", tele = "",systemName="";
         customerName = customer_name.getText().toString();
         companeyName = companey_name.getText().toString();
         tele = telephone_no.getText().toString();
+        systemName=systype.getText().toString();
 
-        if ((!TextUtils.isEmpty(customerName)) && (!TextUtils.isEmpty(companeyName)) && (!TextUtils.isEmpty(tele))) {
+        if ((!TextUtils.isEmpty(customerName)) && (!TextUtils.isEmpty(companeyName)) && (!TextUtils.isEmpty(tele)) &&  (!TextUtils.isEmpty(systemName))) {
             return true;
 
         } else {
@@ -656,6 +701,9 @@ public  static boolean isInHold=false;
                 companey_name.setError("Required");
             } else if (TextUtils.isEmpty(tele)) {
                 telephone_no.setError("Required");
+            }
+            else if (TextUtils.isEmpty(systemName)) {
+                systype.setError("Required");
             }
             return false;
         }

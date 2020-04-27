@@ -156,6 +156,7 @@
             android:background="@drawable/edit_text_f"
             android:drawableStart="@drawable/ic_person"
             android:drawableLeft="@drawable/ic_person"
+            android:textColor="@color/black"
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
@@ -177,6 +178,8 @@
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
+            android:textColor="@color/black"
+
             android:hint="@string/phone_number"
             android:padding="15dp" />
 
@@ -194,6 +197,7 @@
             android:drawableLeft="@drawable/ic_desktop_window"
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
+            android:textColor="@color/black"
             android:gravity="center"
             android:hint="@string/system"
             android:padding="15dp" />
