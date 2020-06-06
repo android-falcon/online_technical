@@ -92,6 +92,7 @@ public class ManagerImport {
 //                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
 ////
 
+
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
