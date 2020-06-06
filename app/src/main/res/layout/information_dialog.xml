@@ -22,7 +22,7 @@
             android:background="@drawable/bac_list_1"
             android:gravity="center"
             android:padding="10dp"
-            android:text="More Information "
+            android:text="@string/more_information"
             android:textColor="@color/greenColor"
             android:textSize="20sp" />
 
@@ -43,7 +43,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Customer Name : "
+                    android:text="@string/customer_name"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 
@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Company Name : "
+                    android:text="@string/company_name"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 
@@ -92,7 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Phone No :"
+                    android:text="@string/phone_number"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 
@@ -116,7 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="System Name :"
+                    android:text="@string/system_name"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 
@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Eng Name : "
+                    android:text="@string/eng_name"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 
@@ -164,7 +164,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Time Loading :"
+                    android:text="@string/time_loading"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 
@@ -188,7 +188,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="States :"
+                    android:text="@string/states"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 
@@ -211,7 +211,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Problem Detail  :"
+                    android:text="@string/problem_detail"
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
 

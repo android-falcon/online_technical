@@ -1,6 +1,7 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.animation.Animator;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -8,21 +9,30 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+import com.falconssoft.onlinetechsupport.Modle.Systems;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +41,7 @@ import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     public static List<ManagerLayout> cheakIn, cheakout, hold;
-//    Button add;
+    ImageView addEmp,AddSystem;
     ListView listCheakIn, listCheakout, holds;
     ImageView falcon;
     Animation animZoom;
@@ -42,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     ManagerLayOutAdapter managerLayOutAdapter1;
     ManagerLayOutAdapter2 managerLayOutAdapter2;
     ManagerLayOutAdapter3 managerLayOutAdapter3;
+    String ipAddres = "5.189.130.98:8085";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.getAdapter().notifyItemInserted(position);
 //        recyclerView.getAdapter().notifyItemRangeInserted(positionStart, itemCount);
         waite = findViewById(R.id.waite);
+        addEmp=  findViewById(R.id.addEmp);
+        AddSystem= findViewById(R.id.addSys);
 
         refresh = findViewById(R.id.refresh);
         imageMove = findViewById(R.id.imageMove);
@@ -76,6 +89,26 @@ public class MainActivity extends AppCompatActivity {
         final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
         falcon.startAnimation(animZoom);
 
+        addEmp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AddEmploy();
+
+            }
+        });
+
+        AddSystem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AddSystem();
+            }
+        });
+
+//        cheakIn.clear();
+//        cheakout.clear();
+//        hold.clear();
 
 //        for(int i=0;i<20;i++){
 //            ManagerLayout managerLayout =new ManagerLayout();
@@ -138,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+//
         T = new Timer();
         T.schedule(new TimerTask() {
             @Override
@@ -210,5 +243,144 @@ public class MainActivity extends AppCompatActivity {
 
         return imageView;
     }
+    public void  AddEmploy(){
 
+        final Dialog AddEmployeDialog = new Dialog(MainActivity.this,R.style.Theme_Dialog);
+        AddEmployeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AddEmployeDialog.setCancelable(true);
+        AddEmployeDialog.setContentView(R.layout.add_emp_dialog);
+//                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
+
+        final EditText UserName,Password,EngId;
+        final RadioButton Manager,Online,callCenter;
+        Button add,cancel;
+
+
+
+        UserName=AddEmployeDialog.findViewById(R.id.UserName);
+        Password=AddEmployeDialog.findViewById(R.id.password);
+        EngId=AddEmployeDialog.findViewById(R.id.EngId);
+
+        Manager=AddEmployeDialog.findViewById(R.id.managerRadio);
+        Online =AddEmployeDialog.findViewById(R.id.OnlineRadio);
+        callCenter=AddEmployeDialog.findViewById(R.id.CallRadio);
+
+        add =AddEmployeDialog.findViewById(R.id.Addbutton);
+        cancel =AddEmployeDialog.findViewById(R.id.Cancelbutton);
+
+
+
+//        Manager.setChecked(true);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!UserName.getText().toString().equals("")&&!Password.getText().toString().equals("")){
+
+                    JSONObject obj=new JSONObject();
+                    EngineerInfo engineerInfo=new EngineerInfo();
+                    int EngType=0;
+                    if(Manager.isChecked()){
+                        EngType=0;
+                    }else if(Online.isChecked()){
+                        EngType=2;
+                    }else if(callCenter.isChecked()){
+                        EngType=1;
+                    }
+
+                    engineerInfo.setEng_type(EngType);
+                    engineerInfo.setName(UserName.getText().toString());
+                    engineerInfo.setId(EngId.getText().toString());
+                    engineerInfo.setPassword(Password.getText().toString());
+                    engineerInfo.setState(-1);
+
+
+                    try {
+                        obj= engineerInfo.getData();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ManagerExport managerExport=new ManagerExport(MainActivity.this,obj);
+                    managerExport.startSending("AddEmp");
+                    EngId.setText("");
+                    UserName.setText("");
+                    Password.setText("");
+
+                } else {
+                    Toast.makeText(MainActivity.this, "Please Add Information Of User", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+             AddEmployeDialog.dismiss();
+            }
+        });
+
+
+        AddEmployeDialog.show();
+    }
+    public void  AddSystem(){
+
+        final Dialog AddSystem = new Dialog(MainActivity.this,R.style.Theme_Dialog);
+        AddSystem.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AddSystem.setCancelable(true);
+        AddSystem.setContentView(R.layout.add_sys_dialog);
+//                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
+
+        final EditText SystemName,SysId;
+        Button add,cancel;
+
+
+
+        SystemName=AddSystem.findViewById(R.id.sysName);
+        SysId=AddSystem.findViewById(R.id.sysId);
+
+        add =AddSystem.findViewById(R.id.Addbutton);
+        cancel =AddSystem.findViewById(R.id.Cancelbutton);
+
+
+
+//        Manager.setChecked(true);
+
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!SystemName.getText().toString().equals("")&&!SysId.getText().toString().equals("")){
+
+                    JSONObject obj=new JSONObject();
+                    Systems systems=new Systems();
+
+                    systems.setSystemName(SystemName.getText().toString());
+                    systems.setSystemNo(SysId.getText().toString());
+
+
+                    try {
+                        obj= systems.getData();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    ManagerExport managerExport=new ManagerExport(MainActivity.this,obj);
+                    managerExport.startSending("AddSystem");
+                    SystemName.setText("");
+                    SysId.setText("");
+
+                } else {
+                    Toast.makeText(MainActivity.this, "Please Add Information Of User", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddSystem.dismiss();
+            }
+        });
+
+
+        AddSystem.show();
+    }
 }

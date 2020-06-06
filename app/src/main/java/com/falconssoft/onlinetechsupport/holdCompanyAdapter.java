@@ -2,6 +2,8 @@ package com.falconssoft.onlinetechsupport;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,21 +13,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
+import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.isInHold;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.systype;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.telephone_no;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.text_delet_id;
+
 public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter.ViewHolder> {
     //    RecyclerView.Adapter<engineer_adapter.ViewHolder>
     Context context;
-    List<String> list_engineer;
+    List<ManagerLayout> companey;
+    CompaneyInfo clickedcom;
+    List<CompaneyInfo> companeyInfos=new ArrayList<>();
+     int row_index=-1;
 
-
-//public static List<Cheque> chequeListall;
-
-    public holdCompanyAdapter(Context context, List<String> eng) {
+    public holdCompanyAdapter(Context context, List<ManagerLayout> companeyInfo) {
         this.context = context;
-        this.list_engineer = eng;
+        this.companey = companeyInfo;
+        Log.e("holdCompanyAdapter",""+companey.size());
 
     }
 
@@ -39,29 +53,67 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
     @SuppressLint("ResourceAsColor")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-//
-        if (i != 0) {
-            // viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#F5F1F5F5"));
-//
-        }
+
+            viewHolder.hold_company_name.setText(companey.get(i).getCompanyName());
+            viewHolder.companyTel.setText(companey.get(i).getPhoneNo());
+            viewHolder.hold_company_time.setText(companey.get(i).getCheakInTime());
+            viewHolder.linear_companey.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    row_index=i;
+                    notifyDataSetChanged();
 
 
+                    clickedcom=new CompaneyInfo();
+                    clickedcom.setCompanyName(viewHolder.hold_company_name.getText().toString());
+                    clickedcom.setPhoneNo(viewHolder.companyTel.getText().toString());
+                    companey_name.setText(viewHolder.hold_company_name.getText().toString());
+                    telephone_no.setText(viewHolder.companyTel.getText().toString());
+                    customer_name.setText(companey.get(i).getCustomerName());
+                    systype.setText(companey.get(i).getSystemName());
+                    Log.e("systemSelected",""+companey.get(i).getSystemName());
+                    Log.e("text_delet_id",""+i);
+                    text_delet_id.setText(i+"");
+                    //companey.remove(i);
+                   // Log.e("companysize",""+companey.size());
+                    isInHold=true;
+                    companeyInfos.add(clickedcom);
+                }
+
+            });
+            if(row_index==i)
+            {
+                viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#e5e4e2"));
+
+            }
+            else {
+                viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#FFFFFF"));
+
+            }
     }
 
     @Override
     public int getItemCount() {
-        return list_engineer.size();
+        return companey.size();
+    }
+    public List<CompaneyInfo> getCheckedItems() {
+        return companeyInfos;
     }
 
 
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView green, textView_Nmae;
+        TextView green, hold_company_time,hold_company_name,companyTel;
         CircleImageView profile_image;
         LinearLayout linear_companey;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            linear_companey = itemView.findViewById(R.id.linear_companey);
+            //linear_companey = itemView.findViewById(R.id.linear_companey);
+            hold_company_name=itemView.findViewById(R.id.hold_company_name);
+            companyTel=itemView.findViewById(R.id.hold_company_tel);
+            hold_company_time=itemView.findViewById(R.id.hold_company_time);
+            linear_companey=itemView.findViewById(R.id.linear_companey);
 
 
         }

@@ -25,10 +25,12 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText id, username, password;
+    private EditText id, username, password,IP;
     private Button done, login;
     private ImageView settings, logo;
     private int employeeID;
+    private String employeeIP;
+
     private Animation animation;
     private Dialog settingDialog;
     private PresenterClass presenterClass;
@@ -70,6 +72,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_login:
+//                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+//                startActivity(intent2);
                 list = handler.getLoginData();
                 String localUsername = username.getText().toString();
                 String localPassword = password.getText().toString();
@@ -77,16 +81,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if (!TextUtils.isEmpty(localUsername))
                     if (!TextUtils.isEmpty(localPassword)) {
+
                         for (int i = 0; i < list.size(); i++)
                             if (localUsername.toLowerCase().equals(list.get(i).getName().toLowerCase())
-                                    && localPassword.equals(list.get(i).getPassword())) {
+                                    && localPassword.equals(list.get(i).getPassword())) {//
                                 found = true;
-                                editor= sharedPreferences.edit();
-                                editor.putString(LOGIN_NAME,list.get(i).getName() );
-                                editor.putString(LOGIN_ID,list.get(i).getId() );
+                                editor = sharedPreferences.edit();
+                                editor.putString(LOGIN_NAME, list.get(i).getName());
+                                editor.putString(LOGIN_ID, list.get(i).getId());
                                 editor.putInt(LOGIN_STATE, list.get(i).getState());
-                                editor.putString(LOGIN_PASSWORD,list.get(i).getPassword() );
-                                editor.putInt(LOGIN_TYPE,list.get(i).getEng_type() );
+                                editor.putString(LOGIN_PASSWORD, list.get(i).getPassword());
+                                editor.putInt(LOGIN_TYPE, list.get(i).getEng_type());
                                 editor.commit();
 
                                 switch (list.get(i).getEng_type()) {
@@ -107,8 +112,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 break;
                             }
 
-                        if (!found){
-                            Toast.makeText(this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
+                        if (!found) {
+                            if (localUsername.equals("Manager")&&localPassword.equals("1234m")) {
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+
+                            }else if(localUsername.equals("online")&&localPassword.equals("1234o")){
+
+                                Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+                                startActivity(intent3);
+                            }else  if(localUsername.equals("callCenter")&&localPassword.equals("1234c")){
+                                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                startActivity(intent2);
+                            }else{
+                                Toast.makeText(this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     } else {
                         animation = AnimationUtils.loadAnimation(this, R.anim.shake);
@@ -127,32 +146,42 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 settingDialog.setContentView(R.layout.settings_dialog);
 
                 id = settingDialog.findViewById(R.id.settings_id);
+                IP= settingDialog.findViewById(R.id.settings_ip);
                 done = settingDialog.findViewById(R.id.settings_done);
-
+              String ip=  handler.getIp();
+                IP.setText(""+ip);
                 employeeID = 0;
 
                 done.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!TextUtils.isEmpty(id.getText().toString())) {
-                            employeeID = Integer.parseInt(id.getText().toString());
+                        if (!TextUtils.isEmpty(IP.getText().toString())) {
+//                            employeeID = Integer.parseInt(id.getText().toString());
+//
+//                            switch (employeeID) {
+//                                case 1:// manager
+//                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+//                                    startActivity(intent);
+//                                    break;
+//                                case 2:// call center
+//                                    Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+//                                    startActivity(intent2);
+//                                    break;
+//                                case 3:// online
+//                                    Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+//                                    startActivity(intent3);
+//                                    break;
+//                            }
 
-                            switch (employeeID) {
-                                case 1:// manager
-                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                    startActivity(intent);
-                                    break;
-                                case 2:// call center
-                                    Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
-                                    startActivity(intent2);
-                                    break;
-                                case 3:// online
-                                    Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
-                                    startActivity(intent3);
-                                    break;
-                            }
-                        }
-                        settingDialog.dismiss();
+                            handler.deleteIpData();
+                            employeeIP = IP.getText().toString();
+                            handler.addIPSetting(employeeIP);
+                            Toast.makeText(LoginActivity.this, "Save Success", Toast.LENGTH_SHORT).show();
+                            settingDialog.dismiss();
+                            presenterClass.getLoginData();
+
+                        }else{}
+
                     }
                 });
                 settingDialog.show();

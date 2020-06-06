@@ -4,35 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/darkblue_2"
     android:orientation="vertical"
     tools:context=".OnlineCenter"
     tools:ignore="MissingDefaultResource">
 
-    <LinearLayout
-        android:layout_height="match_parent"
+    <TableRow
         android:layout_width="match_parent"
-        android:layout_weight="5"
-        android:orientation="horizontal">
-        <LinearLayout
-            android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/textView11"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:text="@string/call_center"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/callCenterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.75"
+            android:padding="5dp"
+            tools:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:text="LogIn Time :"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/LogInTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:textColor="@color/white" />
+    </TableRow>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:background="@drawable/bac_list_2"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="5"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
             <LinearLayout
-                android:layout_height="match_parent"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="5"
 
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:padding="10dp"
                     android:layout_margin="10dp"
                     android:layout_weight="6"
-                    android:layout_width="match_parent">
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -44,34 +96,36 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.2"
+                            android:layout_marginRight="10dp"
 
+                            android:layout_weight="1.2"
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
-                            android:layout_marginRight="10dp"
                             android:gravity="center"
                             android:inputType="number"
-                            android:textColor="@color/darkblue_1"
                             android:padding="1dp"
-                            android:text="Customer Name"
+                            android:text="@string/customer_name"
+                            android:textColor="@color/darkblue_1"
 
                             android:textSize="16sp" />
 
                         <EditText
                             android:id="@+id/customer_name"
                             android:layout_width="0dp"
-                            android:layout_weight="2"
-                            android:layout_marginRight="5dp"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="2"
                             android:background="@drawable/edittext_back"
-
                             android:elevation="2dp"
-                            android:padding="3dp"
+
                             android:gravity="center"
+                            android:inputType="textNoSuggestions"
+                            android:padding="3dp"
 
                             android:textSize="16sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -83,29 +137,30 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.2"
                             android:layout_marginRight="10dp"
+                            android:layout_weight="1.2"
 
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
-                            android:textColor="@color/darkblue_1"
                             android:gravity="center"
                             android:inputType="number"
                             android:padding="1dp"
-                            android:text="Companey Name"
+                            android:text="@string/company_name"
+                            android:textColor="@color/darkblue_1"
                             android:textSize="16sp" />
 
                         <EditText
                             android:id="@+id/companey_name"
                             android:layout_width="0dp"
-                            android:layout_weight="2"
-                            android:layout_marginRight="5dp"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="2"
                             android:background="@drawable/edittext_back"
-
                             android:elevation="2dp"
-                            android:padding="3dp"
+
                             android:gravity="center"
+                            android:inputType="textNoSuggestions"
+                            android:padding="3dp"
 
                             android:textSize="16sp" />
 
@@ -121,33 +176,35 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="1.2"
                             android:layout_marginRight="10dp"
+                            android:layout_weight="1.2"
 
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
-                            android:textColor="@color/darkblue_1"
                             android:gravity="center"
                             android:inputType="number"
                             android:padding="1dp"
-                            android:text="Telephone"
+                            android:text="@string/phone_number"
+                            android:textColor="@color/darkblue_1"
 
                             android:textSize="16sp" />
 
                         <EditText
                             android:id="@+id/telephone_no"
                             android:layout_width="0dp"
-                            android:layout_weight="2"
-                            android:layout_marginRight="5dp"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="2"
                             android:background="@drawable/edittext_back"
                             android:elevation="2dp"
-                            android:padding="3dp"
                             android:gravity="center"
+                            android:inputType="number"
+                            android:padding="3dp"
 
                             android:textSize="16sp" />
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -157,31 +214,54 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.5"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="1.2"
+
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
-                            android:layout_marginRight="10dp"
-
                             android:gravity="center"
-                            android:textColor="@color/darkblue_1"
-
                             android:inputType="number"
                             android:padding="1dp"
-                            android:text="System Type "
+                            android:text="@string/system_type"
+                            android:textColor="@color/darkblue_1"
+
                             android:textSize="16sp" />
 
-                        <Spinner
-                            android:id="@+id/spenner_systems"
-                            android:layout_width="match_parent"
-                            android:layout_weight="0.3"
-                            android:layout_marginRight="5dp"
+                        <TextView
+                            android:id="@+id/systype"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_marginRight="5dp"
+                            android:layout_weight="2"
+                            android:background="@drawable/edittext_back"
                             android:elevation="2dp"
-                            android:padding="3dp"
                             android:gravity="center"
+                            android:hint="click to choess system"
+                            android:inputType="number"
+
+                            android:padding="3dp"
+                            android:textColor="@color/black"
                             android:textSize="16sp" />
+
+<!--                        <Spinner-->
+<!--                            android:id="@+id/spenner_systems"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="match_parent"-->
+<!--                            android:layout_marginRight="5dp"-->
+<!--                            android:layout_weight="0.3"-->
+<!--                            android:elevation="2dp"-->
+<!--                            android:gravity="center"-->
+<!--                            -->
+<!--                            android:padding="3dp"-->
+<!--                            android:textSize="16sp" />-->
+
+                        <TextView
+                            android:id="@+id/text_finish"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -190,105 +270,121 @@
 
             </LinearLayout>
 
-            <GridView
-                android:id="@+id/grid"
-                android:background="@color/layer1"
-
-                android:numColumns="2"
-                android:horizontalSpacing="2dp"
-                android:verticalSpacing="7dp"
-
-
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="5"
-                android:layout_margin="10dp"
-                android:padding="5dp"
-                android:layout_width="match_parent"/>
-            <LinearLayout
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:layout_weight="7"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/checkIn_btn"
+                <TextView
+                    android:id="@+id/textState"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:text="0"
+                    android:textColor="@color/white" />
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/background_checkin"
-                    android:elevation="5dp"
-                    android:onClick="sendCompaneyInfo"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="0.6"
+                    android:gravity="center"
+                    android:text="@string/hold_customer_list"
+                    android:textColor="@color/darkblue_1"
+                    android:textStyle="bold" />
 
-                    android:text="Check In"
-                    android:textColor="@color/layer1" />
-                <Button
+                <TextView
+                    android:id="@+id/text_delet_id"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hold"
-                    android:layout_weight="1"
-                    android:layout_margin="10dp"
-                    android:elevation="5dp"
-                    android:background="@drawable/background_hold"
-                    android:textColor="@color/darkblue_"
+                    android:visibility="gone" />
 
-                    android:layout_width="match_parent"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="15dp"
+                    android:layout_weight="4"
+                    android:background="@drawable/background_container"
+                    android:elevation="5dp"
+
+
+                    android:padding="10dp" />
+
             </LinearLayout>
 
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_height="wrap_content"
+        <GridView
+            android:id="@+id/grid"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp"
             android:layout_weight="5"
-            android:orientation="vertical">
+            android:background="@color/layer1"
+            android:horizontalSpacing="2dp"
+            android:listSelector="@color/black"
+            android:numColumns="3"
+            android:padding="5dp"
+            android:verticalSpacing="7dp" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_margin="15dp"
-                android:layout_weight="3"
-                app:cardCornerRadius="15dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:layoutDirection="ltr"
+            android:orientation="horizontal">
 
-                app:cardElevation="10dp">
+            <Button
+                android:id="@+id/btn_hold"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="450dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/background_hold"
 
-                <pl.droidsonroids.gif.GifImageView
-                    android:layout_width="match_parent"
-
-
-                    android:layout_height="match_parent"
-
-                    android:layout_weight="3"
-                    android:src="@drawable/callcenter2" />
-            </androidx.cardview.widget.CardView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="bottom"
-                android:layout_weight="0.3"
-                android:gravity="center"
-                android:text="Hold Customer List"
-                android:textColor="@color/darkblue_1"
-                android:textStyle="bold" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/background_container"
-               android:layout_margin="15dp"
                 android:elevation="5dp"
-                android:layout_weight="3"
-
-
-                android:padding="10dp" />
-
+                android:gravity="center"
+                android:onClick="addToHoldList"
+                android:text="@string/hold"
+                android:textColor="@color/darkblue_" />
         </LinearLayout>
+
     </LinearLayout>
 
 
-
-
-
 </LinearLayout>
+<!--<Button-->
+<!--android:id="@+id/checkIn_btn"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:layout_margin="10dp"-->
+<!--android:layout_weight="1"-->
+<!--android:background="@drawable/background_checkin"-->
+<!--android:elevation="5dp"-->
+<!--android:text="Check In"-->
+
+<!--android:textColor="@color/layer1"-->
+<!--android:visibility="gone" />-->
+<!--<androidx.cardview.widget.CardView-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="0dp"-->
+<!--android:layout_margin="15dp"-->
+<!--android:layout_weight="3"-->
+<!--android:visibility="gone"-->
+<!--app:cardCornerRadius="15dp"-->
+
+<!--app:cardElevation="10dp">-->
+
+<!--<pl.droidsonroids.gif.GifImageView-->
+    <!--android:layout_width="match_parent"-->
+
+
+    <!--android:layout_height="match_parent"-->
+
+    <!--android:layout_weight="3"-->
+    <!--android:src="@drawable/callcenter2" />-->
+<!--</androidx.cardview.widget.CardView>-->

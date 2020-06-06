@@ -13,8 +13,18 @@ public class CustomerOnline {
     private String systemId;
     private String cheakOutTime;
     private String problem;
+    private String CallCenterId;
+
 
     public CustomerOnline() {
+    }
+
+    public String getCallId() {
+        return CallCenterId;
+    }
+
+    public void setCallCenterId(String callCenterId) {
+        this.CallCenterId = callCenterId;
     }
 
     public String getCustomerName() {

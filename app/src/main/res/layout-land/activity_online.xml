@@ -11,78 +11,31 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/online_image_customer"
+        android:visibility="visible"
         android:layout_width="350dp"
         android:layout_height="200dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/call_center_boy"
+        app:civ_border_color="@color/darkblue_2"
+        app:civ_border_width="1dp"
         android:layout_marginTop="24dp"
         android:layout_weight="0.5"
         android:padding="10dp"
-        android:src="@drawable/call_center_boy"
-        android:tint="@color/darkblue_2"
-        android:visibility="visible"
-        app:civ_border_color="@color/darkblue_2"
-        app:civ_border_width="1dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-        tools:ignore="VectorDrawableCompat" />
+        tools:ignore="VectorDrawableCompat"/>
 
-<!--    <net.crosp.libs.android.circletimeview.CircleTimeView-->
-<!--        android:id="@+id/online_timer"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_marginTop="90dp"-->
-<!--        android:layout_weight="0.9"-->
-<!--        android:visibility="gone"-->
-<!--        app:ctvCircleButtonColor="#099ef4"-->
-<!--        app:ctvCircleColor="#00d9ff"-->
-<!--        app:ctvCircleHandButtonRadius="10dp"-->
-<!--        app:ctvCirclePressedButtonColor="#08bfdf"-->
-<!--        app:ctvCircleStrokeWidth="1dp"-->
-<!--        app:ctvCurrentTimeInSeconds="160"-->
-<!--        app:ctvHighlightMarkLineColor="#00f7ff"-->
-<!--        app:ctvLabelText="The сlock is ticking"-->
-<!--        app:ctvLabelTextColor="#fff"-->
-<!--        app:ctvLabelTextSize="18sp"-->
-<!--        app:ctvLapBackgroundColor="#9adf1b"-->
-<!--        app:ctvLapLabelMarginTop="15dp"-->
-<!--        app:ctvLapLabelTextSize="12sp"-->
-<!--        app:ctvLapTextColor="#fff"-->
-<!--        app:ctvMarginTopLabel="22dp"-->
-<!--        app:ctvMarkLineColor="#ffffff"-->
-<!--        app:ctvMarkLineWidth="1dp"-->
-<!--        app:ctvMarkSize="10dp"-->
-<!--        app:ctvMinutesMarkCount="120"-->
-<!--        app:ctvMultiLapRotation="true"-->
-<!--        app:ctvPaddingInnerRadius="15dp"-->
-<!--        app:ctvPaddingQuarterNumber="5dp"-->
-<!--        app:ctvQuarterMarkSize="20dp"-->
-<!--        app:ctvQuarterNumberColor="#08ff00"-->
-<!--        app:ctvQuarterNumberTextSize="16sp"-->
-<!--        app:ctvShowLaps="true"-->
-<!--        app:ctvTimeFormat="seconds_minutes"-->
-<!--        app:ctvTimeMode="manual"-->
-<!--        app:ctvTimeNumberColor="#00d0ff"-->
-<!--        app:ctvTimeNumbersTextSize="55sp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:m_arc_stroke_color="@color/darkblue_2"-->
-<!--        app:m_cicle_stroke_width="14"-->
-<!--        app:m_circle_radius="100"-->
-<!--        app:m_circle_stroke_color="@color/goldf" />-->
-
-    <ticker.views.com.ticker.widgets.circular.timer.view.CircularView
-        android:id="@+id/online_timer"
-        android:layout_width="350dp"
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/online_gif_image"
+        android:layout_width="0dp"
         android:layout_height="200dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/online_gif"
         android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@+id/online_problem"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:m_arc_stroke_color="@color/darkblue_2"
-        app:m_cicle_stroke_width="14"
-        app:m_circle_radius="100"
-        app:m_circle_stroke_color="@color/goldf"
-        android:layout_marginLeft="70dp" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
     <EditText
         android:id="@+id/online_problem"
@@ -96,7 +49,7 @@
         android:background="@drawable/stroke_f"
         android:fontFamily="serif"
         android:gravity="start"
-        android:hint="System problem ..."
+        android:hint="@string/system_problem"
         android:inputType="textMultiLine"
         android:minLines="14"
         android:padding="10dp"
@@ -189,7 +142,7 @@
         app:layout_constraintEnd_toStartOf="@+id/online_problem"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/online_timer"
+        app:layout_constraintTop_toBottomOf="@+id/online_gif_image"
         app:layout_constraintVertical_bias="0.0">
 
         <TextView
@@ -203,10 +156,11 @@
             android:background="@drawable/edit_text_f"
             android:drawableStart="@drawable/ic_person"
             android:drawableLeft="@drawable/ic_person"
+            android:textColor="@color/black"
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
-            android:hint="Customer"
+            android:hint="@string/customer"
             android:padding="15dp" />
 
         <TextView
@@ -224,7 +178,9 @@
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
-            android:hint="Phone Number"
+            android:textColor="@color/black"
+
+            android:hint="@string/phone_number"
             android:padding="15dp" />
 
         <TextView
@@ -241,8 +197,9 @@
             android:drawableLeft="@drawable/ic_desktop_window"
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
+            android:textColor="@color/black"
             android:gravity="center"
-            android:hint="System"
+            android:hint="@string/system"
             android:padding="15dp" />
     </LinearLayout>
 
@@ -261,7 +218,7 @@
         android:drawableTint="@color/white"
         android:fontFamily="serif"
         android:paddingLeft="40dp"
-        android:text="New Customer"
+        android:text="@string/new_customer"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="20sp"

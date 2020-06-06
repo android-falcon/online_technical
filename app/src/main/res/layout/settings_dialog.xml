@@ -56,8 +56,7 @@
             android:minHeight="50dp"
             android:nextFocusDown="@id/login_password"
             android:padding="10dp"
-            android:textSize="15sp"
-          />
+            android:textSize="15sp" />
 
 
     </LinearLayout>
@@ -113,7 +112,7 @@
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_f"
         android:fontFamily="serif"
-        android:text="Done"
+        android:text="@string/done"
         android:textAllCaps="false"
         android:textColor="@color/white"
        />

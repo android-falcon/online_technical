@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -24,9 +25,11 @@ public class adapterGridEngineer extends BaseAdapter {
     Context context;
     List<EngineerInfo> list_engineer;
     private static String selectedPostionName="";
-    adapterGridEngineer(Context context,List list_engineer){
+    adapterGridEngineer(Context context,List list_engineerInfo){
         this.context=context;
-        this.list_engineer=list_engineer;
+        list_engineer=new ArrayList();
+        this.list_engineer=list_engineerInfo;
+        Log.e("list_engineer",""+list_engineer.size());
 
 
     }
@@ -37,12 +40,12 @@ public class adapterGridEngineer extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return list_engineer.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -57,23 +60,6 @@ public class adapterGridEngineer extends BaseAdapter {
         textView_Nmae.setText(list_engineer.get(i).getName());
         textView_Nmae.setTag(i);
 
-        textView_Nmae.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int value = (Integer)((TextView)v).getTag();
-
-                for(int i=0;i<viewGroup.getChildCount();i++)
-                {
-                    View c = viewGroup.getChildAt(i);
-                    c.findViewById(R.id.engineerLayout).setBackgroundColor(context.getResources().getColor(R.color.layer1));
-
-                }
-                engineerLayout.setBackgroundColor(context.getResources().getColor(R.color.layer4));
-                selectedPostionName=textView_Nmae.getText().toString();
-                Log.e("selectedPostionName",""+selectedPostionName);
-
-            }
-        });
 
 
         if(i%2!=0)
