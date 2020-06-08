@@ -150,6 +150,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 info.setName(cursor.getString(1));
                 info.setPassword(cursor.getString(2));
                 info.setEng_type(cursor.getInt(3));
+                Log.e("users", cursor.getString(1) + cursor.getString(2));
 
                 list.add(info);
             } while (cursor.moveToNext());
