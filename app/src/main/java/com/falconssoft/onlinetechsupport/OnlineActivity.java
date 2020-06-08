@@ -53,6 +53,7 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pl.droidsonroids.gif.GifImageView;
 import ticker.views.com.ticker.widgets.circular.timer.callbacks.CircularViewCallback;
@@ -246,34 +247,75 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 
                 break;
             case R.id.online_break:
-                profilePicture.setBorderColor(getResources().getColor(R.color.yellowf));
-                final Dialog dialog = new Dialog(this);
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.break_dialog);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.setCanceledOnTouchOutside(false);
-                dialog.setCancelable(false);
-                final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
-                presenterClass.setState(engId, 2);// break
 
-                exitBreak = dialog.findViewById(R.id.breakDialog_exit);
-                exitBreak.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        profilePicture.setBorderColor(getResources().getColor(R.color.greenf));
+                new SweetAlertDialog(OnlineActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Break")
+                        .setContentText("Are you sure?!")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                profilePicture.setBorderColor(getResources().getColor(R.color.yellowf));
+                                final Dialog dialog = new Dialog(OnlineActivity.this);
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                dialog.setContentView(R.layout.break_dialog);
+                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                dialog.setCanceledOnTouchOutside(false);
+                                dialog.setCancelable(false);
+                                final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+                                presenterClass.setState(engId, 2);// break
 
-                        presenterClass.setState(engId, 0);// back break
-                        dialog.dismiss();
-                    }
-                });
+                                exitBreak = dialog.findViewById(R.id.breakDialog_exit);
+                                exitBreak.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        profilePicture.setBorderColor(getResources().getColor(R.color.greenf));
 
-                dialog.show();
+                                        presenterClass.setState(engId, 0);// back break
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                                dialog.show();
+                                sDialog.dismissWithAnimation();
+                            }
+
+                        })
+                        .setCancelButton("No", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+
                 break;
             case R.id.online_exit:
-                profilePicture.setBorderColor(getResources().getColor(R.color.redf));
-                final String engIds = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
-                presenterClass.setState(engIds, -1);//exit
-                finish();
+
+                new SweetAlertDialog(OnlineActivity.this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("Exit")
+                        .setContentText("Are you sure?!")
+                        .setConfirmText("Yes")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+//
+                                profilePicture.setBorderColor(getResources().getColor(R.color.redf));
+                                final String engIds = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+                                presenterClass.setState(engIds, -1);//exit
+                                finish();
+                                sDialog.dismissWithAnimation();
+
+                            }
+                        })
+                        .setCancelButton("No", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                sDialog.dismissWithAnimation();
+                            }
+                        })
+                        .show();
+
                 break;
         }
     }
