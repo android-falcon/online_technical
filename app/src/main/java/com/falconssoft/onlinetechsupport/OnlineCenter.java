@@ -540,7 +540,7 @@ public  static boolean isInHold=false;
 
                 }
             } else {
-                new SweetAlertDialog(OnlineCenter.this, SweetAlertDialog.SUCCESS_TYPE)
+                new SweetAlertDialog(OnlineCenter.this,R.style.alert_dialog_dark)
                         .setTitleText("WARNING")
                         .setContentText("does not exist engineering  available  do you want to add  this customer to hold list ?")
                         .setConfirmText("Yes,add it")

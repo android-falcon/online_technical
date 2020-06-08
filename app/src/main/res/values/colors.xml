@@ -3,6 +3,8 @@
     <color name="colorPrimary">#FFFFFF</color>
     <color name="colorPrimaryDark">#032A3D</color>
     <color name="colorAccent">#c8a010</color>
+
+    <color name="gray5">#8D000000</color>
     <color name="gray">#D0585F72</color>
     <color name="white">#F7F4F6</color>
     <color name="RedColor">#F84343</color>
@@ -26,6 +28,7 @@
     <color name="purple_dark">#F0500650</color>
     <color name="white_dark">#E9FFFFFF</color>
     <!--<color name="white">#97FFFEFE</color>-->
+
     <color name="white_two">#85E4DCDC</color>
 
     <color name="gray2">#B9CE98E2</color>
@@ -75,8 +78,11 @@
     <color name="gray_darkf">#4B4A4A</color>
     <!--    <color name="gray_darkf">#27274B</color>-->
     <color name="dark_bluef">#13133D</color>
-    <color name="alpha_grayf">#8D000000</color>
+    <color name="alpha_grayf">#FFFFFF</color>
+
     <color name="white_dark2">#FFFFFF</color>
+
+<!--    <color name="main_green_color">#EBE7D433</color>-->
 
 
 </resources>

@@ -34,7 +34,7 @@ import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
 
 public class PresenterClass {
-private String getDataState="1";
+    private String getDataState = "1";
     private String urlImportCustomer, urlLogin, urlState, urlPushProblem;
     private RequestQueue requestQueue;
     private JsonObjectRequest loginRequest, objectRequest;
@@ -46,8 +46,9 @@ private String getDataState="1";
     private List<CustomerOnline> onlineList;
     private OnlineActivity onlineActivity;
     private CustomerOnline customerOnline;
-    private  String value;
-    private  String ipAddres;
+    private String value;
+    private String ipAddres;
+
     public PresenterClass(Context context) {
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(context);
@@ -68,9 +69,9 @@ private String getDataState="1";
     //****************************************** Login **************************************
 
     public void getLoginData() {
-        ipAddres=databaseHandler.getIp();
-        urlLogin = "http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=0";
-        loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, new LoginDataClass(), new LoginDataClass());
+        ipAddres = databaseHandler.getIp();
+        urlLogin = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
+        loginRequest = new JsonObjectRequest(Request.Method.GET,urlLogin, null, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
     }
 
@@ -99,7 +100,7 @@ private String getDataState="1";
                     engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
                     list.add(engineerInfo);
                     i++;
-                    Log.e("EmployList", "LoginDataClass/ " +engineerInfo.getName()+"  "+engineerInfo.getPassword());
+                    Log.e("EmployList", "LoginDataClass/ " + engineerInfo.getName() + "  " + engineerInfo.getPassword());
                 }
 
             } catch (JSONException e) {
@@ -113,8 +114,8 @@ private String getDataState="1";
     //****************************************** Customers Data **************************************
 
     public void getCustomersData(String dataState) {
-        if(isTimerWork||dataState.equals("get")) {
-            Log.e("getCustomer/e", "data " + dataState + " isWork  "+isTimerWork);
+        if (isTimerWork || dataState.equals("get")) {
+            Log.e("getCustomer/e", "data " + dataState + " isWork  " + isTimerWork);
 
             ipAddres = databaseHandler.getIp();
             getDataState = dataState;
@@ -127,7 +128,7 @@ private String getDataState="1";
             String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
             //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
             urlImportCustomer = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=" + engId;
-            objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, new CustomersDataClass(), new CustomersDataClass());
+            objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, null, new CustomersDataClass(), new CustomersDataClass());
             Log.e("presenter/e", "getCustomersData/urllll" + urlImportCustomer);
 
             requestQueue.add(objectRequest);
@@ -154,7 +155,7 @@ private String getDataState="1";
                     Log.e("ppppppppppppp", jsonObject.getString("ENG_ID"));
 
 //                    engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))
-                    if (engId.toLowerCase().equals(jsonObject.getString("ENG_ID"))&& jsonObject.getString("STATE").toString().equals("1")) {
+                    if (engId.toLowerCase().equals(jsonObject.getString("ENG_ID")) && jsonObject.getString("STATE").toString().equals("1")) {
                         found = true;
                         customerOnline = new CustomerOnline();
                         customerOnline.setCheakInTime(jsonObject.getString("CHECH_IN_TIME"));
@@ -171,10 +172,10 @@ private String getDataState="1";
                 }
                 if (found && getDataState.equals("get")) {
                     onlineActivity.showCustomerLinear(customerOnline);
-                }else if (found && getDataState.equals("ifFound")) {
+                } else if (found && getDataState.equals("ifFound")) {
                     onlineActivity.ShowNotification();
-                }else if(!found){
-                    isTimerWork=true;
+                } else if (!found) {
+                    isTimerWork = true;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -198,8 +199,8 @@ private String getDataState="1";
 //        object.put("ENG_NAME", "'" + customerOnline.getEngineerName() + "'");
 
 //    "http://10.0.0.214/onlineTechnicalSupport/import.php?LOG_IN_OUT=0&ENG_ID=&STATE="
-        ipAddres=databaseHandler.getIp();
-        urlPushProblem = "http://"+ipAddres+"/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
+        ipAddres = databaseHandler.getIp();
+        urlPushProblem = "http://" + ipAddres + "/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
 //        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
         Log.e("push", urlPushProblem);
 
@@ -220,7 +221,7 @@ private String getDataState="1";
         } catch (JSONException e) {
             e.printStackTrace();
         }
-         value = "PROBLEM_SOLVED=" + new JSONArray().put(object).toString();
+        value = "PROBLEM_SOLVED=" + new JSONArray().put(object).toString();
         pushProblemRequest = new StringRequest(Request.Method.POST
                 , urlPushProblem
                 , new PushProblemClass()
@@ -246,7 +247,7 @@ private String getDataState="1";
                 if (response != null) {
                     responseString = String.valueOf(response.statusCode);
                     // can get more details such as response.headers
-                    Log.e("respons","is"+response.toString());
+                    Log.e("respons", "is" + response.toString());
                 }
                 return Response.success(responseString, HttpHeaderParser.parseCacheHeaders(response));
             }
@@ -280,10 +281,10 @@ private String getDataState="1";
     //****************************************** State **************************************
 
     public void setState(String engId, int state) {
-        ipAddres=databaseHandler.getIp();
-        urlState = "http://"+ipAddres+"/onlineTechnicalSupport/export.php?LOG_IN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
+        ipAddres = databaseHandler.getIp();
+        urlState = "http://" + ipAddres + "/onlineTechnicalSupport/export.php?LOG_IN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
         stateRequest = new StringRequest(Request.Method.GET, urlState, new StateClass(), new StateClass());
-        Log.e("setStateGGG///","engId"+engId+"state"+state+"url"+urlState);
+        Log.e("setStateGGG///", "engId" + engId + "state" + state + "url" + urlState);
 
         requestQueue.add(stateRequest);
     }
