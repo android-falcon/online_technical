@@ -232,7 +232,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                         customerOnlineGlobel = new CustomerOnline();
                         customerOnlineGlobel = customerOnline;
                         new SyncManagerLayoutIN().execute();
-                        isTimerWork = true;
+
 
 //                        presenterClass.pushCustomerProblem(customerOnline, 0);// check out
 //                        final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
@@ -339,6 +339,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         onlineImage.setVisibility(View.VISIBLE);
         customerLayout.setVisibility(View.GONE);
         gifImageView.setVisibility(View.GONE);
+        isTimerWork = true;
     }
 
     public void notifyThis(String title, String message) {
