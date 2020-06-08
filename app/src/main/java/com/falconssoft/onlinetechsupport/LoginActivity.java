@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         logo = findViewById(R.id.login_logo);
         username = findViewById(R.id.login_username);
         password = findViewById(R.id.login_password);
+        username.requestFocus();
 
         animation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         logo.startAnimation(animation);

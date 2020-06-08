@@ -85,8 +85,8 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     private Date currentTime;
     CustomerOnline customerOnlineGlobel;
     Button online_new_customer;
-String ipAdress="";
-DatabaseHandler databaseHandler;
+    String ipAdress = "";
+    DatabaseHandler databaseHandler;
     public SharedPreferences onlineSharedPreferences;
     public SharedPreferences.Editor onlineEditor;
     public static final String ONLINE_PREFERNCES = "login_preferences";
@@ -99,9 +99,9 @@ DatabaseHandler databaseHandler;
     public static final String ONLINE_PROBLEM = "problem";
     public static final String ONLINE_CHECH_OUT_TIME = "check_out_time";
     Timer timer;
-//     MediaPlayer mp;
+    //     MediaPlayer mp;
     Animation animations;
-    public static boolean isTimerWork=true;
+    public static boolean isTimerWork = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +110,7 @@ DatabaseHandler databaseHandler;
 
         presenterClass = new PresenterClass(this, 0);
         onlineSharedPreferences = getSharedPreferences(ONLINE_PREFERNCES, Context.MODE_PRIVATE);
-        profilePicture = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.online_settings);
+        profilePicture = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.online_settings);
         breakButton = findViewById(R.id.online_break);
         exitButton = findViewById(R.id.online_exit);
         coordinatorLayout = findViewById(R.id.online_cordinator_layout);
@@ -118,12 +118,12 @@ DatabaseHandler databaseHandler;
         gifImageView = findViewById(R.id.online_gif_image);
         customerLayout = findViewById(R.id.online_customer_layout);
         new_customer = findViewById(R.id.online_new_customer);
-        onlineImage = (de.hdodenhof.circleimageview.CircleImageView)findViewById(R.id.online_image_customer);
+        onlineImage = (de.hdodenhof.circleimageview.CircleImageView) findViewById(R.id.online_image_customer);
         phoneNo = findViewById(R.id.online_phone);
         system = findViewById(R.id.online_system);
         username = findViewById(R.id.online_username);
         problem = findViewById(R.id.online_problem);
-        online_new_customer=findViewById(R.id.online_new_customer);
+        online_new_customer = findViewById(R.id.online_new_customer);
 
 //        phoneNo = findViewById(R.id.online_image_phone);
 //        system = findViewById(R.id.online_image_system);
@@ -139,7 +139,7 @@ DatabaseHandler databaseHandler;
 //        animation.setStartOffset(30);
 //        system.startAnimation(animation);
 
-        databaseHandler=new DatabaseHandler(OnlineActivity.this);
+        databaseHandler = new DatabaseHandler(OnlineActivity.this);
         new_customer.setOnClickListener(this);
         addactionButton.setOnClickListener(this);
         breakButton.setOnClickListener(this);
@@ -166,7 +166,7 @@ DatabaseHandler databaseHandler;
             @Override
             public void run() {
 
-                    presenterClass.getCustomersData("ifFound");
+                presenterClass.getCustomersData("ifFound");
 
             }
 
@@ -185,7 +185,7 @@ DatabaseHandler databaseHandler;
 //                    timer.purge();
 //                    timer = null;
 //                }
-                isTimerWork=false;
+                isTimerWork = false;
 //                animations.cancel();
                 online_new_customer.clearAnimation();
                 presenterClass.getCustomersData("get");
@@ -204,7 +204,7 @@ DatabaseHandler databaseHandler;
                 break;
             case R.id.online_add:
 //                timer.stopTimer();
-                isTimerWork=true;
+//                isTimerWork = true;
 
                 if (customerLayout.getVisibility() == View.VISIBLE) {
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
@@ -229,9 +229,10 @@ DatabaseHandler databaseHandler;
                         customerOnline.setCheakOutTime(onlineSharedPreferences.getString(ONLINE_CHECH_OUT_TIME, null));
                         customerOnline.setCustomerState(2);
 
-                        customerOnlineGlobel=new CustomerOnline();
-                        customerOnlineGlobel=customerOnline;
+                        customerOnlineGlobel = new CustomerOnline();
+                        customerOnlineGlobel = customerOnline;
                         new SyncManagerLayoutIN().execute();
+                        isTimerWork = true;
 
 //                        presenterClass.pushCustomerProblem(customerOnline, 0);// check out
 //                        final String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
@@ -277,18 +278,18 @@ DatabaseHandler databaseHandler;
         }
     }
 
-    public void ShowNotification(){
-        notifyThis("Master","belcin");
+    public void ShowNotification() {
+        notifyThis("Master", "belcin");
         blinking();
     }
 
-    public void StopNotification(){
+    public void StopNotification() {
 //        notifyThis("Master","belcin");
 //        mp.stop();
     }
 
 
-    void blinking (){
+    void blinking() {
 
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(100); //You can manage the blinking time with this parameter
@@ -296,7 +297,7 @@ DatabaseHandler databaseHandler;
         anim.setRepeatMode(Animation.REVERSE);
         anim.setRepeatCount(Animation.INFINITE);
         online_new_customer.startAnimation(anim);
-        animations=anim;
+        animations = anim;
     }
 
     public void showCustomerLinear(CustomerOnline customerOnline) {
@@ -305,7 +306,7 @@ DatabaseHandler databaseHandler;
         customerLayout.setVisibility(View.VISIBLE); // customer fields
         gifImageView.setVisibility(View.VISIBLE); // timer
 
-Log.e("trrrr","master");
+        Log.e("trrrr", "master");
         phoneNo.setText(customerOnline.getPhoneNo());
         system.setText(customerOnline.getSystemName());
         username.setText(customerOnline.getCustomerName());
@@ -343,9 +344,9 @@ Log.e("trrrr","master");
     public void notifyThis(String title, String message) {
         NotificationCompat.Builder b = new NotificationCompat.Builder(OnlineActivity.this);
         b.setAutoCancel(true)
-                .setDefaults(NotificationCompat.DEFAULT_ALL);
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                .setSmallIcon(R.drawable.icon2_f);
 //                .setWhen(System.currentTimeMillis())
-//                .setSmallIcon(R.drawable.favicon32)
 //                .setTicker("{your tiny message}")
 //                .setContentTitle(title)
 //                .setContentText(message)
@@ -354,7 +355,6 @@ Log.e("trrrr","master");
         NotificationManager nm = (NotificationManager) OnlineActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1, b.build());
     }
-
 
 
     private class SyncManagerLayoutIN extends AsyncTask<String, String, String> {
@@ -371,8 +371,8 @@ Log.e("trrrr","master");
         @Override
         protected String doInBackground(String... params) {
             try {
-                 ipAdress=databaseHandler.getIp();
-                String link = "http://"+ipAdress+"//onlineTechnicalSupport/export.php";
+                ipAdress = databaseHandler.getIp();
+                String link = "http://" + ipAdress + "//onlineTechnicalSupport/export.php";
                 // ITEM_CARD
 
 //                JSONObject obj = new JSONObject();
@@ -402,17 +402,17 @@ Log.e("trrrr","master");
 //                    object.put("STATE", "2");
                     Log.e("problemDataurlString = ", "" + customerOnlineGlobel.getProblem());
 
-                    object.put("CHECH_OUT_TIME",  "00:00:00" );
+                    object.put("CHECH_OUT_TIME", "00:00:00");
                     object.put("PROBLEM", customerOnlineGlobel.getProblem());
-                    object.put("CUST_NAME",  customerOnlineGlobel.getCustomerName());
-                    object.put("CHECH_IN_TIME",  customerOnlineGlobel.getCheakInTime());
-                    object.put("COMPANY_NAME",  customerOnlineGlobel.getCompanyName());
+                    object.put("CUST_NAME", customerOnlineGlobel.getCustomerName());
+                    object.put("CHECH_IN_TIME", customerOnlineGlobel.getCheakInTime());
+                    object.put("COMPANY_NAME", customerOnlineGlobel.getCompanyName());
                     object.put("PHONE_NO", customerOnlineGlobel.getPhoneNo());
                     object.put("SYSTEM_NAME", customerOnlineGlobel.getSystemName());
                     object.put("SYS_ID", customerOnlineGlobel.getSystemId());
                     object.put("ENG_ID", customerOnlineGlobel.getEngineerID());
                     object.put("ENG_NAME", customerOnlineGlobel.getEngineerName());
-                    object.put("STATE",  2);
+                    object.put("STATE", 2);
 //                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -422,7 +422,7 @@ Log.e("trrrr","master");
 
                 URL url = new URL(link);
                 Log.e("urlStringProblem= ", "" + url.toString());
-                Log.e("urlStringData= ", "" +data);
+                Log.e("urlStringData= ", "" + data);
 
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
@@ -473,19 +473,19 @@ Log.e("trrrr","master");
             super.onPostExecute(JsonResponse);
 
             if (JsonResponse != null && JsonResponse.contains("PROBLEM_SOLVED SUCCESS")) {
-                Log.e("PROBLEM_SOLVED_", "****Success"+JsonResponse.toString());
+                Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
                 hideCustomerLinear();
 
             } else {
 
                 Log.e("PROBLEM_SOLVED_", "****Failed to export data");
 
-                }
-
-
             }
 
+
         }
+
     }
+}
 
 
