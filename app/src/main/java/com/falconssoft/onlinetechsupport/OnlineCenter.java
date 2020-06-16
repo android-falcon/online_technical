@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -306,12 +307,18 @@ public  static boolean isInHold=false;
 
         adapterGridSystem adapterSystem = new adapterGridSystem(this, listOfsystem);
         SysGrid.setAdapter(adapterSystem);
+        systype.setMovementMethod(new ScrollingMovementMethod());
 
         SysGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                systype.setText(listOfsystem.get(position).getSystemName());
+                if( !systype.getText().toString().contains(listOfsystem.get(position).getSystemName())) {
+                    systype.setText(systype.getText().toString()+","+listOfsystem.get(position).getSystemName());
+
                 fillSysDialog.dismiss();
+                }else{
+                    Toast.makeText(OnlineCenter.this, "This System ADD Before", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -383,6 +390,8 @@ public  static boolean isInHold=false;
 
                                 }
                                 try{
+                                    systemsList.clear();
+                                    systemsList.add(new Systems ("system Not Known","-1"));
                                 JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
                                 Log.e("systemInfoArray", "" + systemInfoArray);
                                 for (int i = 0; i < systemInfoArray.length(); i++) {

@@ -156,12 +156,12 @@
             android:background="@drawable/edit_text_f"
             android:drawableStart="@drawable/ic_person"
             android:drawableLeft="@drawable/ic_person"
-            android:textColor="@color/black"
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
             android:hint="@string/customer"
-            android:padding="15dp" />
+            android:padding="15dp"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/online_phone"
@@ -178,15 +178,15 @@
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
             android:gravity="center"
-            android:textColor="@color/black"
-
             android:hint="@string/phone_number"
-            android:padding="15dp" />
+
+            android:padding="15dp"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/online_system"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="9dp"
@@ -197,10 +197,14 @@
             android:drawableLeft="@drawable/ic_desktop_window"
             android:drawableTint="@color/goldf"
             android:fontFamily="serif"
-            android:textColor="@color/black"
             android:gravity="center"
             android:hint="@string/system"
-            android:padding="15dp" />
+            android:inputType="textMultiLine"
+            android:padding="15dp"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:textColor="@color/black" />
+
     </LinearLayout>
 
     <Button
