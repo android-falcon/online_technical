@@ -121,11 +121,12 @@ public  static boolean isInHold=false;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
+
                 fillEngineerInfoList(1);
 
             }
 
-        }, 0, 3000);
+        }, 0, 2000);
         fillHoldList();
         //fillListTest();
         //fillSpennerSystem(systemsList);
@@ -289,6 +290,9 @@ public  static boolean isInHold=false;
                     }
                 }
             });
+        }else{
+            engineerAdapter = new adapterGridEngineer(this, engineerInfoList);
+            gridView.setAdapter(engineerAdapter);
         }
     }
 
@@ -312,13 +316,11 @@ public  static boolean isInHold=false;
         SysGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if( !systype.getText().toString().contains(listOfsystem.get(position).getSystemName())) {
-                    systype.setText(systype.getText().toString()+","+listOfsystem.get(position).getSystemName());
+
+                    systype.setText(listOfsystem.get(position).getSystemName());
 
                 fillSysDialog.dismiss();
-                }else{
-                    Toast.makeText(OnlineCenter.this, "This System ADD Before", Toast.LENGTH_SHORT).show();
-                }
+
 
             }
         });
@@ -411,6 +413,8 @@ public  static boolean isInHold=false;
                             }
 
 
+
+
                         } catch (Exception e) {
                             Log.e("Exception", "" + e.getMessage());
                         }
@@ -499,6 +503,8 @@ public  static boolean isInHold=false;
                 {
                     clearData();// after sucsess
                     deleteFromHoldList();
+                    hold_List.clear();
+                    fillHoldList();
                 }
 
             }
@@ -536,7 +542,10 @@ public  static boolean isInHold=false;
                         companeyInfo.setSystemId(sys_Id);
                         companeyInfo.setChechout(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getCheakOutTime());
                         companeyInfo.setproblem(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getProplem());
+                        companeyInfo.setSerial(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getSerial());
+
                         Log.e("HOLDp", "UPDATE=-->" + companeyInfo.getSystemName().toString());
+                        Log.e("HOLDp1", "UPDATE=-->" + companeyInfo.getSerial().toString());
 
                         JSONObject data = companeyInfo.getData();
                         Log.e("HOLDp", "" + data);
@@ -636,13 +645,14 @@ public  static boolean isInHold=false;
 //            Log.e("sys_name",""+sys_name);
 //        }
         sys_name=systype.getText().toString();
-        sys_Id = getSystemId(sys_name);
+        sys_Id = getSystemId(sys_name.replace(",",""));
         if (engineerInfoList.size() == 0) {
             stateCompaney = 0;// hold
         } else {
             stateCompaney = 1;
         }
-        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
+        Log.e("call_id1",""+CallId+"    "+sys_Id);
 
         JSONObject obj = new JSONObject();
         if (engineerInfoList.size() != 0) {
@@ -658,7 +668,9 @@ public  static boolean isInHold=false;
             obj.put("CHECH_OUT_TIME", "'00:00:00'");
             obj.put("PROBLEM", "'problem'");
             obj.put("CALL_CENTER_ID", "'"+CallId+"'");
-
+            obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
+            obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
+            obj.put("SERIAL", "'"+"222"+"'");
         } else {
             // hold company data
             obj.put("CUST_NAME", "'" + customerName + "'");

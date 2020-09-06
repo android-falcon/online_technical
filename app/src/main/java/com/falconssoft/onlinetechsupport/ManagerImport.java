@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
@@ -209,6 +210,9 @@ holdin=holds;
                         obj.setProplem(finalObject.getString("PROBLEM"));
                         obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
                         obj.setSystemId(finalObject.getString("SYS_ID"));
+                        obj.setHoldTime(finalObject.getString("HOLD_TIME"));
+                        obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+
                         obj.setCurrentTime(curentTime);
 
                         if(obj.getState().equals("1")){
@@ -334,11 +338,11 @@ Log.e("tag_itemCard", "****saveSuccess");
                 sendSucsses=true;
                 text_finish.setText("finish");
                 Log.e("tag_ItemOCodeSS", "****Success");
-                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("")
-                        .setContentText(" Send Sucsseful")
-//                        .hideConfirmButton()
-                        .show();
+//                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+//                        .setTitleText("")
+//                        .setContentText(" Send Sucsseful")
+////                        .hideConfirmButton()
+//                        .show();
 
                 if(holdin){
                     textState.setText("Success");
@@ -561,7 +565,9 @@ Log.e("tag_itemCard", "****saveSuccess");
                         obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
                         obj.setSystemId(finalObject.getString("SYS_ID"));
                         obj.setCurrentTime(curentTime);
-                        if(obj.getState().equals("0")){
+                        obj.setSerial(finalObject.getString("SERIAL"));
+
+                        if(obj.getState().equals("0")&& finalObject.getString("CALL_CENTER_ID").equals( LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1"))){
                             hold_List.add(obj);
                             Log.e("hold_List",""+hold_List.size());
                         }

@@ -1,5 +1,7 @@
 package com.falconssoft.onlinetechsupport.Modle;
 
+import android.util.Log;
+
 import com.falconssoft.onlinetechsupport.LoginActivity;
 
 import org.json.JSONException;
@@ -19,6 +21,9 @@ public class CompaneyInfo {
     private String EngName;
     private String Chechout;
     private String problem;
+    private String serial;
+
+
 
     public CompaneyInfo() {
     }
@@ -111,9 +116,13 @@ public class CompaneyInfo {
         this.systemId = systemId;
     }
 
+    public String getSerial() {
+        return serial;
+    }
 
-
-
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
 
     public JSONObject getData() throws JSONException {
 
@@ -129,8 +138,12 @@ public class CompaneyInfo {
         obj.put("SYS_ID", "'" + systemId + "'");
         obj.put("CHECH_OUT_TIME", "'00:00:00'");
         obj.put("PROBLEM", "'problem'");
-        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1");
+        Log.e("call_id2",""+CallId);
         obj.put("CALL_CENTER_ID", "'"+CallId+"'");
+        obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
+        obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
+        obj.put("SERIAL", serial);
 
         return  obj;
 

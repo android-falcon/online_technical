@@ -13,6 +13,9 @@ public class ManagerLayout {
     private String Proplem;
     private String LOding;
     private String currentTime;
+    private String holdTime;
+    private String callCenterId;
+    private String serial;
 
 
     public ManagerLayout() {
@@ -127,5 +130,29 @@ public class ManagerLayout {
 
     public String getCurrentTime() {
         return currentTime;
+    }
+
+    public String getHoldTime() {
+        return holdTime;
+    }
+
+    public void setHoldTime(String holdTime) {
+        this.holdTime = holdTime;
+    }
+
+    public String getCallCenterId() {
+        return callCenterId;
+    }
+
+    public void setCallCenterId(String callCenterId) {
+        this.callCenterId = callCenterId;
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 }

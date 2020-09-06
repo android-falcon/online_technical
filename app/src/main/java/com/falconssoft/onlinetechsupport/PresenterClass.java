@@ -146,6 +146,12 @@ public class PresenterClass {
         public void onResponse(JSONObject response) {
 //            Log.e("presenter", "getCustomersData/ " + response.toString());
             try {
+
+                //'SUCCESS{"CUSTOMER_INFO":[{"CUST_NAME":"rawanjjj","COMPANY_NAME":"gggg","SYSTEM_NAME":"Pharmacy",
+                // "PHONE_NO":"55888","CHECH_IN_TIME":"12:08:59","STATE":"1","ENG_NAME":"ahmad","ENG_ID":"5","SYS_ID":"2",
+                // "CHECH_OUT_TIME":"00:00","PROBLEM":"null","HOLD_TIME":"11:47:47",
+                // "DATE_OF_TRANSACTION":"16\/06\/2020","SERIAL":"1","CALL_CENTER_ID":"2"}]}
+
                 boolean found = false;
                 String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
                 Log.e("ppppppp", engId);
@@ -164,7 +170,8 @@ public class PresenterClass {
                         customerOnline.setPhoneNo(jsonObject.getString("PHONE_NO"));
                         customerOnline.setSystemName(jsonObject.getString("SYSTEM_NAME"));
                         customerOnline.setSystemId(jsonObject.getString("SYS_ID"));
-                        Log.e("name", customerOnline.getCustomerName());
+                        customerOnline.setSerial(jsonObject.getString("SERIAL"));
+                        Log.e("name", customerOnline.getCustomerName()+"    ==>"+ customerOnline.getSerial());
 
                         break;
                     }

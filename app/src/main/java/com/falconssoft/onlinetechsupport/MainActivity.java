@@ -251,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         AddEmployeDialog.setContentView(R.layout.add_emp_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-        final EditText UserName,Password,EngId;
+        final EditText UserName,Password;//,EngId;
         final RadioButton Manager,Online,callCenter;
         Button add,cancel;
 
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
 
         UserName=AddEmployeDialog.findViewById(R.id.UserName);
         Password=AddEmployeDialog.findViewById(R.id.password);
-        EngId=AddEmployeDialog.findViewById(R.id.EngId);
+//        EngId=AddEmployeDialog.findViewById(R.id.EngId);
 
         Manager=AddEmployeDialog.findViewById(R.id.managerRadio);
         Online =AddEmployeDialog.findViewById(R.id.OnlineRadio);
@@ -290,7 +290,7 @@ public class MainActivity extends AppCompatActivity {
 
                     engineerInfo.setEng_type(EngType);
                     engineerInfo.setName(UserName.getText().toString());
-                    engineerInfo.setId(EngId.getText().toString());
+                    engineerInfo.setId("*");
                     engineerInfo.setPassword(Password.getText().toString());
                     engineerInfo.setState(-1);
 
@@ -302,7 +302,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     ManagerExport managerExport=new ManagerExport(MainActivity.this,obj);
                     managerExport.startSending("AddEmp");
-                    EngId.setText("");
+//                    EngId.setText("");
                     UserName.setText("");
                     Password.setText("");
 
@@ -330,13 +330,13 @@ public class MainActivity extends AppCompatActivity {
         AddSystem.setContentView(R.layout.add_sys_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-        final EditText SystemName,SysId;
+        final EditText SystemName;//,SysId;
         Button add,cancel;
 
 
 
         SystemName=AddSystem.findViewById(R.id.sysName);
-        SysId=AddSystem.findViewById(R.id.sysId);
+//        SysId=AddSystem.findViewById(R.id.sysId);
 
         add =AddSystem.findViewById(R.id.Addbutton);
         cancel =AddSystem.findViewById(R.id.Cancelbutton);
@@ -347,14 +347,14 @@ public class MainActivity extends AppCompatActivity {
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if(!SystemName.getText().toString().equals("")&&!SysId.getText().toString().equals("")){
+            public void onClick(View v) {///*&&!SysId.getText().toString().equals("")*/
+                if(!SystemName.getText().toString().equals("")){
 
                     JSONObject obj=new JSONObject();
                     Systems systems=new Systems();
 
                     systems.setSystemName(SystemName.getText().toString());
-                    systems.setSystemNo(SysId.getText().toString());
+                    systems.setSystemNo("*");
 
 
                     try {
@@ -365,7 +365,7 @@ public class MainActivity extends AppCompatActivity {
                     ManagerExport managerExport=new ManagerExport(MainActivity.this,obj);
                     managerExport.startSending("AddSystem");
                     SystemName.setText("");
-                    SysId.setText("");
+//                    SysId.setText("");
 
                 } else {
                     Toast.makeText(MainActivity.this, "Please Add Information Of User", Toast.LENGTH_SHORT).show();

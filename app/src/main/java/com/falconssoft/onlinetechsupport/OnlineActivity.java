@@ -112,6 +112,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     public static final String ONLINE_SYS_ID = "system_id";
     public static final String ONLINE_PROBLEM = "problem";
     public static final String ONLINE_CHECH_OUT_TIME = "check_out_time";
+    public static final String ONLINE_SERIAL = "ONLINE_SERIAL";
     List <Systems>systemsListActivity;
     Timer timer;
     //     MediaPlayer mp;
@@ -248,12 +249,13 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                         customerOnline.setPhoneNo("" + phoneNo.getText());
                         customerOnline.setCheakInTime(onlineSharedPreferences.getString(ONLINE_CHECH_IN_TIME, null));
                         customerOnline.setCompanyName(onlineSharedPreferences.getString(ONLINE_COMPANY_NAME, null));
-                        customerOnline.setSystemName(onlineSharedPreferences.getString(ONLINE_SYSTEM_NAME, null));
+                        customerOnline.setSystemName(system.getText().toString());
                         customerOnline.setSystemId(onlineSharedPreferences.getString(ONLINE_SYS_ID, null));
                         customerOnline.setEngineerID(sharedPreferences.getString(LOGIN_ID, null));
                         customerOnline.setEngineerName(sharedPreferences.getString(LOGIN_NAME, null));
                         customerOnline.setCheakOutTime(onlineSharedPreferences.getString(ONLINE_CHECH_OUT_TIME, null));
                         customerOnline.setCustomerState(2);
+                        customerOnline.setSerial(onlineSharedPreferences.getString(ONLINE_SERIAL, null));
 
                         customerOnlineGlobel = new CustomerOnline();
                         customerOnlineGlobel = customerOnline;
@@ -418,6 +420,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         onlineEditor.putString(ONLINE_PHONE_NO, customerOnline.getPhoneNo());
         onlineEditor.putString(ONLINE_SYSTEM_NAME, customerOnline.getSystemName());
         onlineEditor.putString(ONLINE_SYS_ID, customerOnline.getSystemId());
+        onlineEditor.putString(ONLINE_SERIAL, customerOnline.getSerial());
         onlineEditor.commit();
 
     }
@@ -427,7 +430,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         presenterClass.setState(engId, 0);// checkout
         snackbar = Snackbar.make(coordinatorLayout, Html.fromHtml("<font color=\"#3167F0\">Checked out Successfully</font>"), Snackbar.LENGTH_SHORT);
         View snackbarLayout = snackbar.getView();
-        TextView textViewSnackbar = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+        TextView textViewSnackbar = snackbarLayout.findViewById(R.id.snackbar_text);
         textViewSnackbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0);
         textViewSnackbar.setCompoundDrawablePadding(15);
         snackbar.show();
@@ -576,6 +579,8 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                     object.put("ENG_ID", customerOnlineGlobel.getEngineerID());
                     object.put("ENG_NAME", customerOnlineGlobel.getEngineerName());
                     object.put("STATE", 2);
+                    object.put("SERIAL", customerOnlineGlobel.getSerial());
+
 //                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -586,7 +591,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                 URL url = new URL(link);
                 Log.e("urlStringProblem= ", "" + url.toString());
                 Log.e("urlStringData= ", "" + data);
-
+                Log.e("serial12344 = ", "" + customerOnlineGlobel.getSerial());
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
