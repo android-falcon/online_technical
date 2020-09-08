@@ -79,7 +79,7 @@ public class ManagerImport {
     public void startSendingData(JSONObject data,boolean holds) {
         sendSucsses=false;
          datatoSend=data;
-holdin=holds;
+       holdin=holds;
 
             new SyncManagerLayoutIN().execute();
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]

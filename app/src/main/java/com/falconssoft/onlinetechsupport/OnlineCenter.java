@@ -91,7 +91,7 @@ public class OnlineCenter extends AppCompatActivity {
     public static List<ManagerLayout> hold_List;
     int idForDelete=0;
     private PresenterClass presenterClass;
-public  static boolean isInHold=false;
+    public  static boolean isInHold=false;
 
 
 
