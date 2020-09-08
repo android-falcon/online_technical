@@ -585,7 +585,7 @@ public  static boolean isInHold=false;
                     }
                 })
                         .show();
-                Toast.makeText(this, "you can't check in Hold companey", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "you can't check in Hold company", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -747,6 +747,7 @@ public  static boolean isInHold=false;
                     info.setCompanyName(companey_name.getText().toString());
                     info.setPhoneNo(telephone_no.getText().toString());
                     info.setCustomerName(customer_name.getText().toString());
+                    info.setSystemName(systype.getText().toString());
                     info.setState("0");
                     info.setCheakInTime(time);
                     JSONObject data = null;

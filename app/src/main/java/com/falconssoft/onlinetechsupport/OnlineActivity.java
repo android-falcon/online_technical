@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -652,6 +653,11 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 
 
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }
