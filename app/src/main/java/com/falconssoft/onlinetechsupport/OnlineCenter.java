@@ -116,17 +116,17 @@ public  static boolean isInHold=false;
         presenterClass = new PresenterClass(this);
         databaseHandler=new DatabaseHandler(OnlineCenter.this);
         ipAddres=databaseHandler.getIp();
-        fillEngineerInfoList(0);
+       fillEngineerInfoList(0);
         timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
 
-                fillEngineerInfoList(1);
+//                fillEngineerInfoList(1);
 
-            }
-
-        }, 0, 2000);
+//            }
+//
+//        }, 0, 2000);
         fillHoldList();
         //fillListTest();
         //fillSpennerSystem(systemsList);

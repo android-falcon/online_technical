@@ -3,6 +3,7 @@ package com.falconssoft.onlinetechsupport;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -264,10 +265,15 @@ Log.e("tag_itemCard", "****saveSuccess");
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
        boolean isHold=false;
-
+        SweetAlertDialog pdaSweet;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pdaSweet = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+            pdaSweet.getProgressHelper().setBarColor(Color.parseColor("#FDD835"));
+            pdaSweet.setTitleText("Process...");
+            pdaSweet.setCancelable(false);
+            pdaSweet.show();
 
         }
         @Override
@@ -309,7 +315,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                 inputStream.close();
                 httpURLConnection.disconnect();
 
-                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+                Log.e("httpURLConnection", "stringBuffer" + stringBuffer.toString());
 
                 return stringBuffer.toString();
 
@@ -333,8 +339,9 @@ Log.e("tag_itemCard", "****saveSuccess");
         @Override
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
-
-            if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
+            pdaSweet.dismissWithAnimation();
+            //&& JsonResponse.contains("CUST_NAME")
+            if (JsonResponse != null && JsonResponse.contains("CUSTOMER_INFO SUCCESS")) {
                 sendSucsses=true;
                 text_finish.setText("finish");
                 Log.e("tag_ItemOCodeSS", "****Success");

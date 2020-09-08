@@ -254,11 +254,11 @@
                             android:padding="10dp"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
-                            android:textColor="@color/white"
+                            <!--android:textColor="@color/white"-->
 
-                            android:padding="3dp"
+                            <!--android:padding="3dp"-->
 
-                            android:textSize="17sp" />
+                            <!--android:textSize="17sp" />-->
 <!--                        android:drawableLeft="@drawable/ic_add_to_queue_black_24dp_white"-->
 
 
