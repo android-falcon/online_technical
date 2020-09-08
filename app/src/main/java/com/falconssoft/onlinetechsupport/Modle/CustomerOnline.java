@@ -15,6 +15,8 @@ public class CustomerOnline {
     private String problem;
     private String CallCenterId;
 
+    private String serial;
+
 
     public CustomerOnline() {
     }
@@ -113,5 +115,13 @@ public class CustomerOnline {
 
     public void setProblem(String problem) {
         this.problem = problem;
+    }
+
+    public String getSerial() {
+        return serial;
+    }
+
+    public void setSerial(String serial) {
+        this.serial = serial;
     }
 }

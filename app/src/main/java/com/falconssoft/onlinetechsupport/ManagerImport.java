@@ -3,6 +3,7 @@ package com.falconssoft.onlinetechsupport;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -25,6 +26,7 @@ import java.net.URLEncoder;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
@@ -209,6 +211,9 @@ public class ManagerImport {
                         obj.setProplem(finalObject.getString("PROBLEM"));
                         obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
                         obj.setSystemId(finalObject.getString("SYS_ID"));
+                        obj.setHoldTime(finalObject.getString("HOLD_TIME"));
+                        obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+
                         obj.setCurrentTime(curentTime);
 
                         if(obj.getState().equals("1")){
@@ -260,10 +265,15 @@ Log.e("tag_itemCard", "****saveSuccess");
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
        boolean isHold=false;
-
+        SweetAlertDialog pdaSweet;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            pdaSweet = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+            pdaSweet.getProgressHelper().setBarColor(Color.parseColor("#FDD835"));
+            pdaSweet.setTitleText("Process...");
+            pdaSweet.setCancelable(false);
+            pdaSweet.show();
 
         }
         @Override
@@ -305,7 +315,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                 inputStream.close();
                 httpURLConnection.disconnect();
 
-                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+                Log.e("httpURLConnection", "stringBuffer" + stringBuffer.toString());
 
                 return stringBuffer.toString();
 
@@ -329,16 +339,17 @@ Log.e("tag_itemCard", "****saveSuccess");
         @Override
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
-
-            if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
+            pdaSweet.dismissWithAnimation();
+            //&& JsonResponse.contains("CUST_NAME")
+            if (JsonResponse != null && JsonResponse.contains("CUSTOMER_INFO SUCCESS")) {
                 sendSucsses=true;
                 text_finish.setText("finish");
                 Log.e("tag_ItemOCodeSS", "****Success");
-                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("")
-                        .setContentText(" Send Sucsseful")
-//                        .hideConfirmButton()
-                        .show();
+//                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+//                        .setTitleText("")
+//                        .setContentText(" Send Sucsseful")
+////                        .hideConfirmButton()
+//                        .show();
 
                 if(holdin){
                     textState.setText("Success");
@@ -561,7 +572,9 @@ Log.e("tag_itemCard", "****saveSuccess");
                         obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
                         obj.setSystemId(finalObject.getString("SYS_ID"));
                         obj.setCurrentTime(curentTime);
-                        if(obj.getState().equals("0")){
+                        obj.setSerial(finalObject.getString("SERIAL"));
+
+                        if(obj.getState().equals("0")&& finalObject.getString("CALL_CENTER_ID").equals( LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1"))){
                             hold_List.add(obj);
                             Log.e("hold_List",""+hold_List.size());
                         }

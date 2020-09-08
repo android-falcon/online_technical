@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -115,16 +116,17 @@ public class OnlineCenter extends AppCompatActivity {
         presenterClass = new PresenterClass(this);
         databaseHandler=new DatabaseHandler(OnlineCenter.this);
         ipAddres=databaseHandler.getIp();
-        fillEngineerInfoList(0);
+       fillEngineerInfoList(0);
         timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                fillEngineerInfoList(1);
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
 
-            }
+//                fillEngineerInfoList(1);
 
-        }, 0, 3000);
+//            }
+//
+//        }, 0, 2000);
         fillHoldList();
         //fillListTest();
         //fillSpennerSystem(systemsList);
@@ -288,6 +290,9 @@ public class OnlineCenter extends AppCompatActivity {
                     }
                 }
             });
+        }else{
+            engineerAdapter = new adapterGridEngineer(this, engineerInfoList);
+            gridView.setAdapter(engineerAdapter);
         }
     }
 
@@ -306,12 +311,16 @@ public class OnlineCenter extends AppCompatActivity {
 
         adapterGridSystem adapterSystem = new adapterGridSystem(this, listOfsystem);
         SysGrid.setAdapter(adapterSystem);
+        systype.setMovementMethod(new ScrollingMovementMethod());
 
         SysGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                systype.setText(listOfsystem.get(position).getSystemName());
+
+                    systype.setText(listOfsystem.get(position).getSystemName());
+
                 fillSysDialog.dismiss();
+
 
             }
         });
@@ -383,6 +392,8 @@ public class OnlineCenter extends AppCompatActivity {
 
                                 }
                                 try{
+                                    systemsList.clear();
+                                    systemsList.add(new Systems ("system Not Known","-1"));
                                 JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
                                 Log.e("systemInfoArray", "" + systemInfoArray);
                                 for (int i = 0; i < systemInfoArray.length(); i++) {
@@ -400,6 +411,8 @@ public class OnlineCenter extends AppCompatActivity {
 //                                systemGridDialog(systemsList);
                                 sendEngineerToAdapter();
                             }
+
+
 
 
                         } catch (Exception e) {
@@ -490,6 +503,8 @@ public class OnlineCenter extends AppCompatActivity {
                 {
                     clearData();// after sucsess
                     deleteFromHoldList();
+                    hold_List.clear();
+                    fillHoldList();
                 }
 
             }
@@ -527,7 +542,10 @@ public class OnlineCenter extends AppCompatActivity {
                         companeyInfo.setSystemId(sys_Id);
                         companeyInfo.setChechout(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getCheakOutTime());
                         companeyInfo.setproblem(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getProplem());
+                        companeyInfo.setSerial(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getSerial());
+
                         Log.e("HOLDp", "UPDATE=-->" + companeyInfo.getSystemName().toString());
+                        Log.e("HOLDp1", "UPDATE=-->" + companeyInfo.getSerial().toString());
 
                         JSONObject data = companeyInfo.getData();
                         Log.e("HOLDp", "" + data);
@@ -567,7 +585,7 @@ public class OnlineCenter extends AppCompatActivity {
                     }
                 })
                         .show();
-                Toast.makeText(this, "you can't check in Hold companey", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "you can't check in Hold company", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -627,13 +645,14 @@ public class OnlineCenter extends AppCompatActivity {
 //            Log.e("sys_name",""+sys_name);
 //        }
         sys_name=systype.getText().toString();
-        sys_Id = getSystemId(sys_name);
+        sys_Id = getSystemId(sys_name.replace(",",""));
         if (engineerInfoList.size() == 0) {
             stateCompaney = 0;// hold
         } else {
             stateCompaney = 1;
         }
-        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
+        Log.e("call_id1",""+CallId+"    "+sys_Id);
 
         JSONObject obj = new JSONObject();
         if (engineerInfoList.size() != 0) {
@@ -649,7 +668,9 @@ public class OnlineCenter extends AppCompatActivity {
             obj.put("CHECH_OUT_TIME", "'00:00:00'");
             obj.put("PROBLEM", "'problem'");
             obj.put("CALL_CENTER_ID", "'"+CallId+"'");
-
+            obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
+            obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
+            obj.put("SERIAL", "'"+"222"+"'");
         } else {
             // hold company data
             obj.put("CUST_NAME", "'" + customerName + "'");
@@ -726,6 +747,7 @@ public class OnlineCenter extends AppCompatActivity {
                     info.setCompanyName(companey_name.getText().toString());
                     info.setPhoneNo(telephone_no.getText().toString());
                     info.setCustomerName(customer_name.getText().toString());
+                    info.setSystemName(systype.getText().toString());
                     info.setState("0");
                     info.setCheakInTime(time);
                     JSONObject data = null;

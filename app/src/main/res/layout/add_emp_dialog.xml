@@ -44,34 +44,34 @@
         android:padding="30dp">
 
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:gravity="center"
-            android:padding="5dp">
+        <!--<TableRow-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="5dp"-->
+            <!--android:gravity="center"-->
+            <!--android:padding="5dp">-->
 
-            <TextView
-                android:id="@+id/textiew4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="@string/eng_id"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
+            <!--<TextView-->
+                <!--android:id="@+id/textiew4"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="2"-->
+                <!--android:gravity="center"-->
+                <!--android:text="@string/eng_id"-->
+                <!--android:textColor="@color/black"-->
+                <!--android:textSize="16sp" />-->
 
-            <EditText
-                android:id="@+id/EngId"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:padding="5dp"
-                android:textColor="@color/black" />
+            <!--<EditText-->
+                <!--android:id="@+id/EngId"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:ems="10"-->
+                <!--android:inputType="textPersonName"-->
+                <!--android:padding="5dp"-->
+                <!--android:textColor="@color/black" />-->
 
-        </TableRow>
+        <!--</TableRow>-->
 
         <TableRow
             android:layout_width="match_parent"

@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_school_black_24dp"
+                    app:srcCompat="@drawable/fs"
                     tools:ignore="VectorDrawableCompat" />
 
 

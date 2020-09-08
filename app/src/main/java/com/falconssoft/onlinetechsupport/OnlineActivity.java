@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,13 +17,16 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,7 +37,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NotificationCompat;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
+import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -49,7 +60,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -76,7 +89,8 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     private CircularView.OptionsBuilder builder;
     //    private CircleTimeView timer;
     private EditText problem;
-    private TextView phoneNo, system, username;
+    private TextView phoneNo, username;
+    public static TextView  system;
     private Button exitBreak, new_customer;
     private FloatingActionButton addactionButton;
     private Snackbar snackbar;
@@ -99,6 +113,8 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     public static final String ONLINE_SYS_ID = "system_id";
     public static final String ONLINE_PROBLEM = "problem";
     public static final String ONLINE_CHECH_OUT_TIME = "check_out_time";
+    public static final String ONLINE_SERIAL = "ONLINE_SERIAL";
+    List <Systems>systemsListActivity;
     Timer timer;
     //     MediaPlayer mp;
     Animation animations;
@@ -125,6 +141,17 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         username = findViewById(R.id.online_username);
         problem = findViewById(R.id.online_problem);
         online_new_customer = findViewById(R.id.online_new_customer);
+        systemsListActivity=new ArrayList<>();
+
+        system.setMovementMethod(new ScrollingMovementMethod());
+        fillEngineerInfoList();
+
+        system.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                systemGridDialog(systemsListActivity);
+            }
+        });
 
 //        phoneNo = findViewById(R.id.online_image_phone);
 //        system = findViewById(R.id.online_image_system);
@@ -223,12 +250,13 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                         customerOnline.setPhoneNo("" + phoneNo.getText());
                         customerOnline.setCheakInTime(onlineSharedPreferences.getString(ONLINE_CHECH_IN_TIME, null));
                         customerOnline.setCompanyName(onlineSharedPreferences.getString(ONLINE_COMPANY_NAME, null));
-                        customerOnline.setSystemName(onlineSharedPreferences.getString(ONLINE_SYSTEM_NAME, null));
+                        customerOnline.setSystemName(system.getText().toString());
                         customerOnline.setSystemId(onlineSharedPreferences.getString(ONLINE_SYS_ID, null));
                         customerOnline.setEngineerID(sharedPreferences.getString(LOGIN_ID, null));
                         customerOnline.setEngineerName(sharedPreferences.getString(LOGIN_NAME, null));
                         customerOnline.setCheakOutTime(onlineSharedPreferences.getString(ONLINE_CHECH_OUT_TIME, null));
                         customerOnline.setCustomerState(2);
+                        customerOnline.setSerial(onlineSharedPreferences.getString(ONLINE_SERIAL, null));
 
                         customerOnlineGlobel = new CustomerOnline();
                         customerOnlineGlobel = customerOnline;
@@ -331,6 +359,39 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    public void  systemGridDialog(final List<Systems> listOfsystem){
+
+        final Dialog fillSysDialog = new Dialog(OnlineActivity.this,R.style.Theme_Dialog);
+        fillSysDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        fillSysDialog.setCancelable(true);
+        fillSysDialog.setContentView(R.layout.sys_dialog);
+//                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
+
+        final GridView SysGrid;
+
+        SysGrid=fillSysDialog.findViewById(R.id.Sysgrid);
+//        SysGrid
+
+        adapterGridSystem adapterSystem = new adapterGridSystem(this, listOfsystem);
+        SysGrid.setAdapter(adapterSystem);
+
+        SysGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if( !system.getText().toString().contains(listOfsystem.get(position).getSystemName())) {
+                    system.setText(system.getText().toString() + "," + listOfsystem.get(position).getSystemName());
+                }else{
+                    Toast.makeText(OnlineActivity.this, "This System ADD Before", Toast.LENGTH_SHORT).show();
+                }
+                fillSysDialog.dismiss();
+
+            }
+        });
+
+        fillSysDialog.show();
+    }
+
+
     void blinking() {
 
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
@@ -360,6 +421,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         onlineEditor.putString(ONLINE_PHONE_NO, customerOnline.getPhoneNo());
         onlineEditor.putString(ONLINE_SYSTEM_NAME, customerOnline.getSystemName());
         onlineEditor.putString(ONLINE_SYS_ID, customerOnline.getSystemId());
+        onlineEditor.putString(ONLINE_SERIAL, customerOnline.getSerial());
         onlineEditor.commit();
 
     }
@@ -369,7 +431,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
         presenterClass.setState(engId, 0);// checkout
         snackbar = Snackbar.make(coordinatorLayout, Html.fromHtml("<font color=\"#3167F0\">Checked out Successfully</font>"), Snackbar.LENGTH_SHORT);
         View snackbarLayout = snackbar.getView();
-        TextView textViewSnackbar = snackbarLayout.findViewById(com.google.android.material.R.id.snackbar_text);
+        TextView textViewSnackbar = snackbarLayout.findViewById(R.id.snackbar_text);
         textViewSnackbar.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0);
         textViewSnackbar.setCompoundDrawablePadding(15);
         snackbar.show();
@@ -397,6 +459,68 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 
         NotificationManager nm = (NotificationManager) OnlineActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
         nm.notify(1, b.build());
+    }
+
+
+    private void fillEngineerInfoList() {
+//        if(TextUtils.isEmpty(ipAddres)){
+//            Toast.makeText(this, "ip Not Found,Please Add Ip", Toast.LENGTH_SHORT).show();
+//        }
+        databaseHandler=new DatabaseHandler(OnlineActivity.this);
+        String ipAddres=databaseHandler.getIp();
+        final String url = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
+
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject jsonObject) {
+                        try {
+
+                                try{
+                                    JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
+                                    Log.e("systemInfoArray", "" + systemInfoArray);
+                                    for (int i = 0; i < systemInfoArray.length(); i++) {
+                                        JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
+                                        Systems systemInfo = new Systems();
+                                        systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
+                                        systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
+                                        systemsListActivity.add(systemInfo);
+                                        Log.e("textM","!!text"+systemsListActivity.get(i).getSystemName());
+                                    }
+                                }catch (Exception e){
+                                    Log.e("No_Sys       ","Exception");
+
+                                }
+//                                fillSpennerSystem(systemsList);
+//                                systemGridDialog(systemsList);
+
+
+
+                        } catch (Exception e) {
+                            Log.e("Exception", "" + e.getMessage());
+                        }
+                    }
+
+
+                }
+
+                , new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if ((error instanceof NoConnectionError)) {
+                    Toast.makeText(OnlineActivity.this,
+                            "تأكد من اتصال الانترنت",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                Log.e("onErrorResponse: ", "" + error);
+            }
+
+        });
+        MySingeltone.getmInstance(OnlineActivity.this).addToRequestQueue(stringRequest);
+
+
     }
 
 
@@ -456,6 +580,8 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                     object.put("ENG_ID", customerOnlineGlobel.getEngineerID());
                     object.put("ENG_NAME", customerOnlineGlobel.getEngineerName());
                     object.put("STATE", 2);
+                    object.put("SERIAL", customerOnlineGlobel.getSerial());
+
 //                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -466,7 +592,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
                 URL url = new URL(link);
                 Log.e("urlStringProblem= ", "" + url.toString());
                 Log.e("urlStringData= ", "" + data);
-
+                Log.e("serial12344 = ", "" + customerOnlineGlobel.getSerial());
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
@@ -527,6 +653,11 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 
 
         }
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }
