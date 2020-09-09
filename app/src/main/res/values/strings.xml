@@ -46,4 +46,8 @@
     <string name="states">States :</string>
     <string name="problem_detail">Problem Detail :</string>
     <string name="done">Done</string>
+    <string name="areyouSureExit">Are You Sure Exit?</string>
+    <string name="warning">Warning</string>
+    <string name="no">No</string>
+    <string name="dialog_ok">Ok</string>
 </resources>

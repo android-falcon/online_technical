@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -73,19 +75,19 @@ import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
 public class OnlineCenter extends AppCompatActivity {
     GridView gridView;
      public static RecyclerView recyclerView;
-    List<EngineerInfo> engineerInfoList, listEngforAdapter;
+     public  static List<EngineerInfo> engineerInfoList, listEngforAdapter;
     List<ManagerLayout> holdCompaney;
     public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState,systype;
-    TextView callCenterName,LogInTime;
+    TextView callCenterName,LogInTime,deletaAllText;
 //    Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     DatabaseHandler databaseHandler;
 
     String ipAddres = "";
-    List<Systems> systemsList;
+    public  static  List<Systems> systemsList;
     LinearLayoutManager layoutManager;
     int stateCompaney = -1, selectedEngId = 0,EngId=-1;
-    String selectedEngineer = "";
+      String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
     Timer timer;
     public static JSONObject updateHold;
@@ -93,6 +95,7 @@ public class OnlineCenter extends AppCompatActivity {
     int idForDelete=0;
     private PresenterClass presenterClass;
     public  static boolean isInHold=false;
+    AlphaAnimation buttonClick;
 
 
 
@@ -100,7 +103,14 @@ public class OnlineCenter extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_online_center);
+        try {
+            setContentView(R.layout.activity_online_center);
+        }
+        catch (Exception e)
+        {
+            Log.e("setContentView",""+e.getMessage());
+        }
+
         initialView();
         systype.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,15 +128,15 @@ public class OnlineCenter extends AppCompatActivity {
         ipAddres=databaseHandler.getIp();
        fillEngineerInfoList(0);
         timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
 
-//                fillEngineerInfoList(1);
+                fillEngineerInfoList(1);
 
-//            }
-//
-//        }, 0, 2000);
+            }
+
+        }, 0, 2000);
         fillHoldList();
         //fillListTest();
         //fillSpennerSystem(systemsList);
@@ -136,7 +146,7 @@ public class OnlineCenter extends AppCompatActivity {
     }
 
     @SuppressLint("WrongConstant")
-    private void fillHoldList() {
+    public void fillHoldList() {
 
         ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
         managerImport.startSending("GetHold");
@@ -281,12 +291,14 @@ public class OnlineCenter extends AppCompatActivity {
                             .setIcon(android.R.drawable.ic_input_add)
                             .show();
 
-                    if (gridView.isItemChecked(arg2)) {
-//                    arg1= gridView.getChildAt(arg2);
-//                    arg1.setBackgroundColor(getResources().getColor(R.color.layer4));
-                    } else {
-//
-                        arg1.setBackgroundColor(getResources().getColor(R.color.layer3)); //the color code is the background color of GridView
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                        if (gridView.isItemChecked(arg2)) {
+    //                    arg1= gridView.getChildAt(arg2);
+    //                    arg1.setBackgroundColor(getResources().getColor(R.color.layer4));
+                        } else {
+    //
+                            arg1.setBackgroundColor(getResources().getColor(R.color.layer3)); //the color code is the background color of GridView
+                        }
                     }
                 }
             });
@@ -453,6 +465,7 @@ public class OnlineCenter extends AppCompatActivity {
 //    }
 
     private void initialView() {
+        buttonClick = new AlphaAnimation(1F, 0.1F);
         gridView = (GridView) findViewById(R.id.grid);
         recyclerView = findViewById(R.id.recycler);
         customer_name = findViewById(R.id.customer_name);
@@ -469,6 +482,14 @@ public class OnlineCenter extends AppCompatActivity {
         systype=findViewById(R.id.systype);
         textState=findViewById(R.id.textState);
         callCenterName=findViewById(R.id.callCenterName);
+        deletaAllText=findViewById(R.id.deletaAllText);
+        deletaAllText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(buttonClick);
+                clearText();
+            }
+        });
         LogInTime=findViewById(R.id.LogInTime);
         textState.addTextChangedListener(new TextWatcher() {
             @Override
@@ -558,7 +579,7 @@ public class OnlineCenter extends AppCompatActivity {
 
                 }
             } else {
-                new SweetAlertDialog(OnlineCenter.this,R.style.alert_dialog_dark)
+                new SweetAlertDialog(OnlineCenter.this)
                         .setTitleText("WARNING")
                         .setContentText("does not exist engineering  available  do you want to add  this customer to hold list ?")
                         .setConfirmText("Yes,add it")
@@ -613,11 +634,8 @@ public class OnlineCenter extends AppCompatActivity {
     }
 
     public void clearData() {
-        customer_name.setText("");
-        customer_name.requestFocus();
-        companey_name.setText("");
-        telephone_no.setText("");
-        systype.setText("");
+        clearText();
+
         if(engineerInfoList.size()!=0)
         {
             engineerInfoList.remove(selectedEngId);
@@ -627,6 +645,14 @@ public class OnlineCenter extends AppCompatActivity {
         }
 
 
+    }
+
+    private void clearText() {
+        customer_name.setText("");
+        customer_name.requestFocus();
+        companey_name.setText("");
+        telephone_no.setText("");
+        systype.setText("");
     }
 
     private JSONObject getData() throws JSONException {
@@ -691,7 +717,7 @@ public class OnlineCenter extends AppCompatActivity {
 
     }
 
-    private String getSystemId(String name) {
+    public String getSystemId(String name) {
         String sys_id = "";
         for (int i = 0; i < systemsList.size(); i++) {
             if (systemsList.get(i).getSystemName().equals(name)) {
@@ -735,6 +761,7 @@ public class OnlineCenter extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     public void addToHoldList(View view) {
         if (view.getId() == R.id.btn_hold) {
+            view.startAnimation(buttonClick);
             if (checkRequiredData()) {
                 if (engineerInfoList.size() == 0) {
                     Date currentTimeAndDate = Calendar.getInstance().getTime();
@@ -779,5 +806,29 @@ public class OnlineCenter extends AppCompatActivity {
 
             }
         }
+    }
+    @Override
+    public void onBackPressed() {
+        new SweetAlertDialog(OnlineCenter.this)
+                .setTitleText(getResources().getString(R.string.warning))
+                .setContentText(getResources().getString(R.string.areyouSureExit))
+                .setConfirmText(getResources().getString(R.string.dialog_ok))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @SuppressLint("WrongConstant")
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+
+                        finish();
+                        sDialog.dismissWithAnimation();
+                    }
+                }).setCancelText(getResources().getString(R.string.no)).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+
+            }
+        })
+                .show();
+
     }
 }

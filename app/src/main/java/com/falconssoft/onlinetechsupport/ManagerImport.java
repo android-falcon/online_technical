@@ -447,6 +447,8 @@ Log.e("tag_itemCard", "****saveSuccess");
 
             if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
                 sendSucsses=true;
+
+                startSending("GetHold");
                 text_finish.setText("finish");
                 Log.e("updatehold", "****Success");
                 new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
