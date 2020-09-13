@@ -74,7 +74,7 @@ import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
 
 public class OnlineCenter extends AppCompatActivity {
     GridView gridView;
-     public static RecyclerView recyclerView;
+     public static RecyclerView recyclerView,recyclerViewCheckIn;
      public  static List<EngineerInfo> engineerInfoList, listEngforAdapter;
     List<ManagerLayout> holdCompaney;
     public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState,systype;
@@ -96,7 +96,10 @@ public class OnlineCenter extends AppCompatActivity {
     private PresenterClass presenterClass;
     public  static boolean isInHold=false;
     AlphaAnimation buttonClick;
-
+    public static List<ManagerLayout> checkInList;
+    Spinner spinnerPhone;
+List<String> spinnerPhoneList;
+ArrayAdapter <String> spinnerPhoneAdapter;
 
 
     @SuppressLint("WrongConstant")
@@ -112,6 +115,12 @@ public class OnlineCenter extends AppCompatActivity {
         }
 
         initialView();
+
+
+        fillPhoneSpinner();
+
+        checkInList=new ArrayList<>();
+        checkInList.clear();
         systype.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,11 +146,35 @@ public class OnlineCenter extends AppCompatActivity {
             }
 
         }, 0, 2000);
+
+
+
+
         fillHoldList();
         //fillListTest();
         //fillSpennerSystem(systemsList);
 
+        FillCheckIn();
 
+
+    }
+
+    void fillPhoneSpinner(){
+        spinnerPhoneList=new ArrayList<>();
+        spinnerPhoneList.clear();
+        spinnerPhoneList.add("06");
+        spinnerPhoneList.add("078");
+        spinnerPhoneList.add("079");
+
+        spinnerPhoneAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
+        spinnerPhoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPhone.setAdapter(spinnerPhoneAdapter);
+    }
+
+    void FillCheckIn(){
+
+        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+        managerImport.startSending("GetCheckInList");
 
     }
 
@@ -468,10 +501,12 @@ public class OnlineCenter extends AppCompatActivity {
         buttonClick = new AlphaAnimation(1F, 0.1F);
         gridView = (GridView) findViewById(R.id.grid);
         recyclerView = findViewById(R.id.recycler);
+        recyclerViewCheckIn = findViewById(R.id.recyclerChechIn);
         customer_name = findViewById(R.id.customer_name);
         companey_name = findViewById(R.id.companey_name);
         telephone_no = findViewById(R.id.telephone_no);
 //        spenner_systems = findViewById(R.id.spenner_systems);
+        spinnerPhone=findViewById(R.id.spinnerPhone);
         engineerInfoList = new ArrayList<>();
         listEngforAdapter = new ArrayList<>();
         holdCompaney = new ArrayList<>();
@@ -525,6 +560,7 @@ public class OnlineCenter extends AppCompatActivity {
                     clearData();// after sucsess
                     deleteFromHoldList();
                     hold_List.clear();
+                    FillCheckIn();
                     fillHoldList();
                 }
 
@@ -596,6 +632,8 @@ public class OnlineCenter extends AppCompatActivity {
                                 layoutManager.setOrientation(VERTICAL);
                                 final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
                                 recyclerView.setAdapter(companyAdapter);
+
+
                                 sDialog.dismissWithAnimation();
                             }
                         }).setCancelText("No").setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
@@ -661,7 +699,16 @@ public class OnlineCenter extends AppCompatActivity {
 
         customerName = customer_name.getText().toString();
         companeyName = companey_name.getText().toString();
-        tele = telephone_no.getText().toString();
+
+        String phoneFirst="";
+
+        try{
+            phoneFirst=spinnerPhone.getSelectedItem().toString();
+        }catch (Exception e){
+            phoneFirst="06";
+        }
+
+        tele = phoneFirst+telephone_no.getText().toString();
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
         time = df.format(currentTimeAndDate);

@@ -30,7 +30,7 @@
     <string name="add_system">Add System</string>
     <string name="system_problem">System problem ...</string>
     <string name="customer">Customer</string>
-    <string name="phone_number">Phone Number</string>
+    <string name="phone_number">Phone NO.</string>
     <string name="system">System</string>
     <string name="new_customer">get Customer</string>
     <string name="eng_id">Eng ID :</string>
@@ -50,4 +50,5 @@
     <string name="warning">Warning</string>
     <string name="no">No</string>
     <string name="dialog_ok">Ok</string>
+    <string name="list_work"> Work List</string>
 </resources>

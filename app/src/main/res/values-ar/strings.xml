@@ -50,5 +50,6 @@
     <string name="warning">Warning</string>
     <string name="no">No</string>
     <string name="dialog_ok">Ok</string>
+    <string name="list_work">List Work</string>
 
 </resources>

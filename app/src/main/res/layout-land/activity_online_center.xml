@@ -146,12 +146,9 @@
                             android:layout_marginRight="5dp"
                             android:layout_weight="2"
                             android:background="@drawable/edittext_back"
-                            android:elevation="2dp"
-
+                            android:padding="5dp"
                             android:gravity="center"
                             android:inputType="textNoSuggestions"
-                            android:padding="3dp"
-
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -191,8 +188,7 @@
 
                             android:gravity="center"
                             android:inputType="textNoSuggestions"
-                            android:padding="3dp"
-
+                            android:padding="5dp"
                             android:textSize="16sp" />
 
                     </LinearLayout>
@@ -220,20 +216,33 @@
 
                             android:textSize="16sp" />
 
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:background="@drawable/edittext_back"
+                            android:padding="5dp"
+                            android:orientation="horizontal">
+                        <Spinner
+                            android:id="@+id/spinnerPhone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.5" />
+
                         <EditText
                             android:id="@+id/telephone_no"
                             android:layout_width="0dp"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="5dp"
                             android:layout_weight="2"
-                            android:background="@drawable/edittext_back"
-                            android:elevation="2dp"
                             android:gravity="center"
                             android:inputType="number"
+                            android:maxLength="7"
                             android:padding="3dp"
+                            android:background="@drawable/bac_list"
 
                             android:textSize="16sp" />
-
+                        </LinearLayout>
                     </LinearLayout>
 
                     <LinearLayout
@@ -263,15 +272,15 @@
                         <TextView
                             android:id="@+id/systype"
                             android:layout_width="0dp"
-                            android:layout_height="40dp"
+                            android:layout_height="match_parent"
                             android:layout_marginRight="5dp"
                             android:layout_weight="2"
                             android:background="@drawable/edittext_back"
                             android:elevation="2dp"
                             android:gravity="center"
-                            android:hint="click to choess system"
+                            android:hint="Click to Choice System"
                             android:inputType="number"
-                            android:padding="10dp"
+                            android:padding="5dp"
                             android:scrollbars="horizontal"
                             android:textColor="@color/black"
                             android:textSize="16sp" />
@@ -355,6 +364,12 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="horizontal">
+
         <GridView
             android:id="@+id/grid"
             android:layout_width="match_parent"
@@ -364,9 +379,53 @@
             android:background="@color/layer1"
             android:horizontalSpacing="2dp"
             android:listSelector="@color/black"
-            android:numColumns="3"
+            android:numColumns="2"
             android:padding="5dp"
             android:verticalSpacing="7dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:text="0"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="0.6"
+                android:gravity="center"
+                android:text="@string/list_work"
+                android:textColor="@color/darkblue_1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/text_delet_ids"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerChechIn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="15dp"
+                android:layout_weight="4"
+                android:background="@drawable/background_container"
+                android:elevation="5dp"
+
+
+                android:padding="10dp" />
+
+        </LinearLayout>
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="match_parent"
