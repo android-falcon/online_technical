@@ -17,7 +17,7 @@
     <string name="in_service">In Process</string>
     <string name="waiting">Waiting In Hold</string>
     <string name="out_service">Finish Complete</string>
-    <string name="add_employees">Add Employees</string>
+    <string name="add_employees">Add Employee</string>
     <string name="user_name">User Name :</string>
     <string name="password_">Password :</string>
     <string name="manager">Manager</string>
@@ -50,4 +50,15 @@
     <string name="warning">Warning</string>
     <string name="no">No</string>
     <string name="dialog_ok">Ok</string>
+    <string name="call_center_report">Call Center Report</string>
+    <string name="company">company</string>
+    <string name="check_in_time">Check In</string>
+    <string name="check_out_time">Check Out</string>
+    <string name="problem">Problem</string>
+    <string name="transaction_date">Transaction Date</string>
+    <string name="phone">phone</string>
+    <string name="eng">Engineer</string>
+    <string name="report">report</string>
+    <string name="date">date</string>
+    <string name="no_data_exsist">No Data Exsist</string>
 </resources>

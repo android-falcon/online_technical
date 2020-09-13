@@ -12,12 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:fontFamily="serif"
+        android:fontFamily="@font/keania_one"
         android:gravity="center"
         android:text="@string/action_settings"
         android:textColor="@color/darkblue_1"
-        android:textSize="30sp"
-      />
+        android:textSize="30sp" />
 
     <LinearLayout
         android:id="@+id/linearOne"
@@ -75,13 +74,14 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_weight="0"
-            android:text="IP"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textColor="@color/darkblue_2"
             android:background="@drawable/icon_f"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
             android:padding="10dp"
-            />
+            android:text="IP"
+            android:textColor="@color/darkblue_2"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/settings_ip"
@@ -91,17 +91,14 @@
             android:background="@drawable/edit_text_f"
             android:drawablePadding="5dp"
             android:ems="10"
-            android:fontFamily="serif"
+            android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:hint="IP Address"
             android:inputType="textPersonName"
             android:minHeight="50dp"
             android:nextFocusDown="@id/login_password"
             android:padding="10dp"
-            android:textSize="15sp"
-            />
-
-
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Button
@@ -111,10 +108,10 @@
         android:layout_marginTop="52dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/button_f"
-        android:fontFamily="serif"
+        android:fontFamily="@font/averia_libre_light"
         android:text="@string/done"
         android:textAllCaps="false"
         android:textColor="@color/white"
-       />
+        android:textSize="16sp" />
 
 </LinearLayout>

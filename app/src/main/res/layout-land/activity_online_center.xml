@@ -20,12 +20,14 @@
             android:id="@+id/textView11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginLeft="30dp"
-            android:gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
 
+            android:gravity="center"
             android:text="@string/call_center"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/callCenterName"
@@ -34,9 +36,11 @@
             android:layout_weight="1"
 
 
-            android:textStyle="italic"
+            android:fontFamily="@font/averia_libre_light"
 
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/textView15"
@@ -51,10 +55,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
+            android:fontFamily="@font/averia_libre_light"
 
+            android:gravity="center"
             android:text="LogIn Time :"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/LogInTime"
@@ -131,13 +137,14 @@
                             android:layout_weight="1.2"
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
                             android:inputType="number"
                             android:padding="1dp"
                             android:text="@string/customer_name"
-                            android:textColor="@color/darkblue_1"
 
-                            android:textSize="16sp" />
+                            android:textColor="@color/darkblue_1"
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/customer_name"
@@ -148,11 +155,12 @@
                             android:background="@drawable/edittext_back"
                             android:elevation="2dp"
 
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
                             android:inputType="textNoSuggestions"
-                            android:padding="3dp"
 
-                            android:textSize="16sp" />
+                            android:padding="3dp"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
@@ -173,12 +181,13 @@
 
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
                             android:inputType="number"
                             android:padding="1dp"
                             android:text="@string/company_name"
                             android:textColor="@color/darkblue_1"
-                            android:textSize="16sp" />
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/companey_name"
@@ -189,11 +198,12 @@
                             android:background="@drawable/edittext_back"
                             android:elevation="2dp"
 
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
                             android:inputType="textNoSuggestions"
-                            android:padding="3dp"
 
-                            android:textSize="16sp" />
+                            android:padding="3dp"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
@@ -212,13 +222,14 @@
 
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
                             android:inputType="number"
                             android:padding="1dp"
                             android:text="@string/phone_number"
-                            android:textColor="@color/darkblue_1"
 
-                            android:textSize="16sp" />
+                            android:textColor="@color/darkblue_1"
+                            android:textSize="18sp" />
 
                         <EditText
                             android:id="@+id/telephone_no"
@@ -228,11 +239,12 @@
                             android:layout_weight="2"
                             android:background="@drawable/edittext_back"
                             android:elevation="2dp"
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
                             android:inputType="number"
-                            android:padding="3dp"
 
-                            android:textSize="16sp" />
+                            android:padding="3dp"
+                            android:textSize="18sp" />
 
                     </LinearLayout>
 
@@ -252,13 +264,14 @@
 
                             android:background="@drawable/edittext_white_border"
                             android:elevation="2dp"
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
                             android:inputType="number"
                             android:padding="1dp"
                             android:text="@string/system_type"
-                            android:textColor="@color/darkblue_1"
 
-                            android:textSize="16sp" />
+                            android:textColor="@color/darkblue_1"
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/systype"
@@ -268,13 +281,14 @@
                             android:layout_weight="2"
                             android:background="@drawable/edittext_back"
                             android:elevation="2dp"
+                            android:fontFamily="@font/averia_libre_light"
                             android:gravity="center"
-                            android:hint="click to choess system"
+                            android:hint="click to choose system"
                             android:inputType="number"
                             android:padding="10dp"
                             android:scrollbars="horizontal"
                             android:textColor="@color/black"
-                            android:textSize="16sp" />
+                            android:textSize="18sp" />
                         <!--android:textColor="@color/white"-->
 
                         <!--android:padding="3dp"-->
@@ -327,9 +341,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
                     android:layout_weight="0.6"
+                    android:fontFamily="@font/averia_libre_light"
                     android:gravity="center"
                     android:text="@string/hold_customer_list"
                     android:textColor="@color/darkblue_1"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -386,6 +402,7 @@
                 android:background="@drawable/background_hold"
 
                 android:elevation="5dp"
+                android:fontFamily="@font/averia_libre_light"
                 android:gravity="center"
                 android:onClick="addToHoldList"
                 android:text="@string/hold"

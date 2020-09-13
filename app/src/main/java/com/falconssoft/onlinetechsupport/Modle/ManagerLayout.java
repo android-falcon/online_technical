@@ -16,7 +16,7 @@ public class ManagerLayout {
     private String holdTime;
     private String callCenterId;
     private String serial;
-
+    private String transactionDate;
 
     public ManagerLayout() {
 
@@ -34,6 +34,14 @@ public class ManagerLayout {
         this.State = state;
         this.systemId = systemId;
         this.Proplem = proplem;
+    }
+
+    public String getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(String transactionDate) {
+        this.transactionDate = transactionDate;
     }
 
     public void setCustomerName(String customerName) {

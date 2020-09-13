@@ -25,4 +25,7 @@
         <item name="android:windowExitAnimation">@anim/left</item>
     </style>
 
+    <style name="MyActionBarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">#FFFDFA</item>
+    </style>
 </resources>
