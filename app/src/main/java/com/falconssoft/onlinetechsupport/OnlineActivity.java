@@ -1,20 +1,14 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.app.Dialog;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.icu.util.Calendar;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -43,7 +37,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
-import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -69,12 +62,10 @@ import java.util.TimerTask;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pl.droidsonroids.gif.GifImageView;
-import ticker.views.com.ticker.widgets.circular.timer.callbacks.CircularViewCallback;
 import ticker.views.com.ticker.widgets.circular.timer.view.CircularView;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
-import static com.falconssoft.onlinetechsupport.LoginActivity.editor;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 
 //import android.support.design.widget.Snackbar;
@@ -260,7 +251,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 
                         customerOnlineGlobel = new CustomerOnline();
                         customerOnlineGlobel = customerOnline;
-                        new SyncManagerLayoutIN().execute();
+                        new UpdateProblemSolved().execute();
 
 
 //                        presenterClass.pushCustomerProblem(customerOnline, 0);// check out
@@ -524,7 +515,7 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    private class SyncManagerLayoutIN extends AsyncTask<String, String, String> {
+    private class UpdateProblemSolved extends AsyncTask<String, String, String> {
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
@@ -540,33 +531,10 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
             try {
                 ipAdress = databaseHandler.getIp();
                 String link = "http://" + ipAdress + "//onlineTechnicalSupport/export.php";
-                // ITEM_CARD
 
-//                JSONObject obj = new JSONObject();
-//                JSONArray NEWI=new JSONArray();
-
-                //                    obj.put("CUST_NAME", "'Eng Tahani'");
-//                    obj.put("COMPANY_NAME", "'Falcons'");
-//                    obj.put("SYSTEM_NAME", "'Accounting'");
-//                    obj.put("PHONE_NO", "'015454'");
-//                    obj.put("CHECH_IN_TIME", "'03:30'");
-//                    obj.put("STATE", "'1'");
-//                    obj.put("ENG_NAME", "'ENG.RAWAN'");
-
-//                NEWI.put(datatoSend);
                 JSONObject object = new JSONObject();
                 try {
-//                    object.put("CHECH_OUT_TIME", "00:00:00");
-//                    object.put("PROBLEM", "aNDROID 100");
-//                    object.put("CUST_NAME", "FALCONS");
-//                    object.put("CHECH_IN_TIME", "hjh");
-//                    object.put("COMPANY_NAME", "hjh");
-//                    object.put("PHONE_NO", "hjh");
-//                    object.put("SYSTEM_NAME", "hjh");
-//                    object.put("SYS_ID", "hjh");
-//                    object.put("ENG_ID", "2");
-//                    object.put("ENG_NAME", "hjh");
-//                    object.put("STATE", "2");
+
                     Log.e("problemDataurlString = ", "" + customerOnlineGlobel.getProblem());
 
                     object.put("CHECH_OUT_TIME", "00:00:00");

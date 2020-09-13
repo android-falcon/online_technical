@@ -46,18 +46,19 @@
     <string name="states">الحاله :</string>
     <string name="problem_detail">وصف المشكله :</string>
     <string name="done">تم </string>
-    <string name="areyouSureExit">Are You Sure Exit?</string>
-    <string name="warning">Warning</string>
-    <string name="no">No</string>
-    <string name="dialog_ok">Ok</string>
-    <string name="company">company</string>
-    <string name="check_in_time">Check In</string>
-    <string name="check_out_time">Check Out</string>
-    <string name="problem">Problem</string>
-    <string name="transaction_date">Transaction Date</string>
-    <string name="phone">phone</string>
-    <string name="report">report</string>
-    <string name="date">date</string>
-    <string name="no_data_exsist">No Data Exsist</string>
+    <string name="areyouSureExit">هل تريد الخروج؟</string>
+    <string name="warning">تحذير</string>
+    <string name="no">لا</string>
+    <string name="dialog_ok">موافق</string>
+    <string name="list_work">List Work</string>
+    <string name="company">الشركة</string>
+    <string name="check_in_time">وقت البدء</string>
+    <string name="check_out_time">وقت الانتهاء</string>
+    <string name="problem">المشكلة</string>
+    <string name="transaction_date">وقت العملية</string>
+    <string name="phone">الرقم</string>
+    <string name="report">تقرير</string>
+    <string name="date">تاريخ</string>
+    <string name="no_data_exsist">لا يوجد بيانات</string>
 
 </resources>

@@ -16,6 +16,8 @@ public class ManagerLayout {
     private String holdTime;
     private String callCenterId;
     private String serial;
+    private String engId;
+
     private String transactionDate;
 
     public ManagerLayout() {
@@ -162,5 +164,13 @@ public class ManagerLayout {
 
     public void setSerial(String serial) {
         this.serial = serial;
+    }
+
+    public String getEngId() {
+        return engId;
+    }
+
+    public void setEngId(String engId) {
+        this.engId = engId;
     }
 }

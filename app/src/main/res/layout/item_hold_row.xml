@@ -20,7 +20,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:padding="5dp"
-            android:text=" Companey falcons"
+            android:text=" Company falcons"
 
             android:textColor="@color/darkblue_"
             android:textSize="16sp" />
