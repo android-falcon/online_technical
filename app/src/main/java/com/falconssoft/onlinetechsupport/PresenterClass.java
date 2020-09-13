@@ -70,6 +70,58 @@ public class PresenterClass {
 
     //****************************************** Login **************************************
 
+//    public void getLoginData() {
+////        ipAddres = databaseHandler.getIp();
+//        urlLogin = URL + "export.php";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("USERNAME", "wael");
+//            jsonObject.put("PASSWORD", "1111");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, jsonObject, new LoginDataClass(), new LoginDataClass());
+//        requestQueue.add(loginRequest);
+//    }
+//
+//    class LoginDataClass implements Response.Listener<JSONObject>, Response.ErrorListener {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//            Log.e("presenter/e", "test/ " + error.getMessage());
+//
+//        }
+//
+//        @Override
+//        public void onResponse(JSONObject response) {
+//            Log.e("presenter", "test/ " + response.toString());
+//            try {
+//                databaseHandler.deleteLoginData();
+//                list.clear();
+//                JSONArray jsonArray = response.getJSONArray("ENGINEER_INFO");
+//                int i = 0;
+//                while (i < jsonArray.length()) {
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                    EngineerInfo engineerInfo = new EngineerInfo();
+//                    engineerInfo.setId(jsonObject.getString("ENG_ID"));
+//                    engineerInfo.setName(jsonObject.getString("ENG_NAME"));
+//                    engineerInfo.setState(jsonObject.getInt("STATE"));
+//                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
+//                    engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
+//                    list.add(engineerInfo);
+//                    i++;
+//                    Log.e("EmployList", "LoginDataClass/ " + engineerInfo.getName() + "  " + engineerInfo.getPassword());
+//                }
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            databaseHandler.addLoginInfo(list);
+//        }
+//    }// ststus 2 ///////// cusomer
+
+    //****************************************** Login **************************************
+
     public void getLoginData() {
 //        ipAddres = databaseHandler.getIp();
         urlLogin = URL + "import.php?FLAG=0";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
@@ -353,6 +405,8 @@ public class PresenterClass {
                         obj.setSystemId(finalObject.getString("SYS_ID"));
                         obj.setHoldTime(finalObject.getString("HOLD_TIME"));
                         obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+                        obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
+
 
                         callCenterList.add(obj);
                     }

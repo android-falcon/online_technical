@@ -21,7 +21,7 @@
         android:padding="10dp"/>
 
     <TableRow
-        android:background="@color/white"
+        android:background="@color/darkblue_1"
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -30,10 +30,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/eng"
-            android:textColor="@color/darkblue_1"
-            android:fontFamily="@font/averia_libre_light"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/system"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -53,7 +53,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/problem"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -63,7 +63,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/customer"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -73,7 +73,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/phone"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -83,7 +83,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/company"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -93,7 +93,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/check_in_time"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -103,7 +103,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/check_out_time"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -113,7 +113,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/hold"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
@@ -123,7 +123,7 @@
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/transaction_date"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/white"
             android:textSize="16sp" />
 
     </TableRow>
