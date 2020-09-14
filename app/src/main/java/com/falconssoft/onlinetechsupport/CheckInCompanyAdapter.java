@@ -223,10 +223,29 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                 if(!engName.equals("-1")) {
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
 
-                        managerLayout.setProplem(problem.getText().toString());
+                        String problems = problem.getText().toString();
+                        managerLayout.setProplem(problems);
                         managerLayout.setConvertFlag(convFalg);
+                        Log.e("problemSize", "" + problems.length());
 
-                      new   UpdateProblemSolved(managerLayout,dialog).execute();
+
+                        if (!isProbablyArabic(problems)){
+                            if (problems.length() <= 255) {
+
+                                new UpdateProblemSolved(managerLayout, dialog).execute();
+
+                            } else {
+                                Toast.makeText(context, "Max Length of problem 255 Char", Toast.LENGTH_SHORT).show();
+                            }
+                    }else {
+                            if (problems.length() <= 142) {
+
+                                new UpdateProblemSolved(managerLayout, dialog).execute();
+
+                            } else {
+                                Toast.makeText(context, "Max Length of problem  142 Char", Toast.LENGTH_SHORT).show();
+                            }
+                        }
                     } else {
                         Toast.makeText(context, "Please add problem first!", Toast.LENGTH_SHORT).show();
                     }
@@ -366,6 +385,14 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
     }
 
-
+    public static boolean isProbablyArabic(String s) {//know if char is arabic or eng
+        for (int i = 0; i < s.length();) {
+            int c = s.codePointAt(i);
+            if (c >= 0x0600 && c <= 0x06E0)
+                return true;
+            i += Character.charCount(c);
+        }
+        return false;
+    }
 
 }
