@@ -165,6 +165,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         spinnerPhoneList.add("06");
         spinnerPhoneList.add("078");
         spinnerPhoneList.add("079");
+        spinnerPhoneList.add("077");
 
         spinnerPhoneAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
         spinnerPhoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

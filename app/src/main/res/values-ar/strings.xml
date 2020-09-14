@@ -60,5 +60,11 @@
     <string name="report">تقرير</string>
     <string name="date">تاريخ</string>
     <string name="no_data_exsist">لا يوجد بيانات</string>
-
+    <string name="call_center_report">تقرير مركز الاتصال </string>
+    <string name="eng">المهندس</string>
+    <string name="convert">Convert</string>
+    <string name="solved">Solved</string>
+    <string name="convert_to_software_department">Convert To Software Department</string>
+    <string name="convert_to_out_door">Convert To Out Door</string>
+    <string name="convert_to_contracts_department">Convert To Contracts Department</string>
 </resources>

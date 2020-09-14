@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bac1"
-    android:layout_width="match_parent"
+    android:layout_width="450dp"
     android:layout_height="wrap_content"
     android:background="@drawable/bac_list"
     android:orientation="vertical"
@@ -53,11 +53,86 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:orientation="vertical"
-       >
+        android:background="@drawable/stroke_f"
+        android:orientation="vertical">
 
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
+
+                <RadioGroup
+                    android:id="@+id/radioGroupSolved"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/SolvedRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:checked="true"
+                        android:text="@string/solved"
+                        android:textColor="@color/goldf"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <RadioButton
+                        android:id="@+id/ConvertRadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/convert"
+                        android:textColor="@color/goldf"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <RadioGroup
+                android:id="@+id/ConvertLinear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:background="@drawable/background_container"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/SoftwareRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:checked="true"
+                    android:text="@string/convert_to_software_department"
+                    android:textColor="@color/darkblue_2" />
+
+                <RadioButton
+                    android:id="@+id/outDoorButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/convert_to_out_door"
+                    android:textColor="@color/darkblue_2" />
+
+                <RadioButton
+                    android:id="@+id/contractsRadioButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/convert_to_contracts_department"
+                    android:textColor="@color/darkblue_2" />
+            </RadioGroup>
+        </LinearLayout>
 
         <EditText
             android:id="@+id/online_problem"
@@ -68,15 +143,14 @@
             android:gravity="start"
             android:hint="@string/system_problem"
             android:inputType="textMultiLine"
-            android:minLines="14"
+            android:minLines="9"
             android:padding="10dp"
             android:textColor="@color/darkblue_2"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
-            app:layout_constraintVertical_bias="0.0"
-            />
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </LinearLayout>

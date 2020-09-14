@@ -16,9 +16,13 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,6 +66,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
     String ipAdress="";
      DatabaseHandler databaseHandler;
+    String convFalg="0";
 
     public CheckInCompanyAdapter(OnlineCenter context, List<ManagerLayout> companeyInfo) {
         this.context = context;
@@ -138,6 +143,48 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.check_in_dialog);
 
+        RadioGroup radioGroupSolved;
+        final RadioButton solved,convert,softConver,doorConvert,contractConvert;
+
+        final LinearLayout convertLinear;
+
+        solved=dialog.findViewById(R.id.SolvedRadioButton);
+        convert=dialog.findViewById(R.id.ConvertRadioButton);
+        softConver=dialog.findViewById(R.id.SoftwareRadioButton);
+        doorConvert=dialog.findViewById(R.id.outDoorButton);
+        contractConvert=dialog.findViewById(R.id.contractsRadioButton);
+
+        convertLinear=dialog.findViewById(R.id.ConvertLinear);
+
+        radioGroupSolved=dialog.findViewById(R.id.radioGroupSolved);
+
+        convertLinear.setVisibility(View.GONE);
+
+
+        solved.setOnCheckedChangeListener(new RadioButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+                    convFalg="0";
+                    convertLinear.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+
+        convert.setOnCheckedChangeListener(new RadioButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if(isChecked){
+//                    convFalg="1";
+                    convertLinear.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
 
         TextView engName=dialog.findViewById(R.id.engName);
         final EditText problem=dialog.findViewById(R.id.online_problem);
@@ -157,12 +204,28 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                     engName="-1";
                 }
 
+
+                if(!solved.isChecked()) {
+                    if (softConver.isChecked()) {
+                        convFalg = "1";//soft
+                    } else if (doorConvert.isChecked()) {
+                        convFalg = "2";//door
+                    } else if (contractConvert.isChecked()) {
+                        convFalg = "3";//con
+                    }
+                }else {
+                    convFalg = "0";//solved
+                }
+
+
                 Toast.makeText(context, "in Online Add!", Toast.LENGTH_SHORT).show();
 
                 if(!engName.equals("-1")) {
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
 
                         managerLayout.setProplem(problem.getText().toString());
+                        managerLayout.setConvertFlag(convFalg);
+
                       new   UpdateProblemSolved(managerLayout,dialog).execute();
                     } else {
                         Toast.makeText(context, "Please add problem first!", Toast.LENGTH_SHORT).show();
@@ -222,6 +285,8 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                     object.put("ENG_NAME", managerLayout.getEnginerName());
                     object.put("STATE", 0);
                     object.put("SERIAL", managerLayout.getSerial());
+                    object.put("CONVERT_STATE", managerLayout.getConvertFlag());
+
 
 //                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
                 } catch (JSONException e) {

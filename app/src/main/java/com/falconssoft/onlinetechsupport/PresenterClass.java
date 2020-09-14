@@ -56,6 +56,7 @@ public class PresenterClass {
         databaseHandler = new DatabaseHandler(context);
         list = new ArrayList<>();
         URL = "http://" + databaseHandler.getIp() + "/onlineTechnicalSupport/";
+        Log.e("URL",""+URL);
 
     }
 
@@ -125,6 +126,8 @@ public class PresenterClass {
     public void getLoginData() {
 //        ipAddres = databaseHandler.getIp();
         urlLogin = URL + "import.php?FLAG=0";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
+        Log.e("URL",""+urlLogin);
+
         loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, null, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
     }

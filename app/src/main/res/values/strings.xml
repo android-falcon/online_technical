@@ -50,7 +50,6 @@
     <string name="warning">Warning</string>
     <string name="no">No</string>
     <string name="dialog_ok">Ok</string>
-    <string name="list_work"> Work List</string>
     <string name="call_center_report">Call Center Report</string>
     <string name="company">company</string>
     <string name="check_in_time">Check In</string>
@@ -63,4 +62,9 @@
     <string name="date">date</string>
     <string name="no_data_exsist">No Data Exsist</string>
     <string name="list_work"> Service Customer List  </string>
+    <string name="convert">Convert</string>
+    <string name="solved">Solved</string>
+    <string name="convert_to_software_department">Convert To Software Department</string>
+    <string name="convert_to_out_door">Convert To Out Door</string>
+    <string name="convert_to_contracts_department">Convert To Contracts Department</string>
 </resources>
