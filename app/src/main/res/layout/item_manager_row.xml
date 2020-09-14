@@ -28,18 +28,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.85"
+                android:fontFamily="@font/averia_libre_light"
                 android:padding="5dp"
                 android:text="Company Name"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/EngName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:fontFamily="@font/averia_libre_light"
                 android:padding="5dp"
                 android:text="Engeneering name"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:id="@+id/time"
@@ -64,9 +68,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:fontFamily="@font/averia_libre_light"
                     android:gravity="center"
                     android:text="Time"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
                 <!--<com.robinhood.ticker.TickerView-->
                 <!--android:id="@+id/timeLoading"-->

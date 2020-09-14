@@ -47,7 +47,7 @@
             android:minHeight="50dp"
             android:nextFocusDown="@id/login_password"
             android:padding="10dp"
-            android:textSize="15sp"
+            android:textSize="16sp"
             tools:layout_editor_absoluteX="120dp"
             tools:layout_editor_absoluteY="398dp" />
 
@@ -92,7 +92,7 @@
             android:inputType="textPassword"
             android:minHeight="50dp"
             android:padding="10dp"
-            android:textSize="15sp"
+            android:textSize="16sp"
             tools:layout_editor_absoluteX="120dp"
             tools:layout_editor_absoluteY="398dp" />
 

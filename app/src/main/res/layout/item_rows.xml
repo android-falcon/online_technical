@@ -13,15 +13,16 @@
         android:id="@+id/textView_Nmae"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Eng tahani ghano"
         android:layout_marginStart="20dp"
-        android:padding="18dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/edittext_back"
+        android:fontFamily="@font/averia_libre_light"
+        android:gravity="center"
+        android:padding="18dp"
+        android:text="Eng tahani ghano"
         android:textColor="@color/darkblue_1"
-        android:textSize="15dp"
-        android:layout_marginLeft="20dp" />
+        android:textSize="16sp" />
 
 
     <de.hdodenhof.circleimageview.CircleImageView

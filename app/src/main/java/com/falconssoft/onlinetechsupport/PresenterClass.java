@@ -1,8 +1,8 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -18,6 +18,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,20 +27,17 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
-import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
 
 public class PresenterClass {
     private String getDataState = "1";
-    private String urlImportCustomer, urlLogin, urlState, urlPushProblem;
+    private String urlImportCustomer, urlLogin, urlState, urlPushProblem, urlCallCenterReport;
     private RequestQueue requestQueue;
     private JsonObjectRequest loginRequest, objectRequest;
-    //    private JsonArrayRequest  pushProblemRequest;
+    private JsonArrayRequest callCenterRequest;
     private StringRequest stateRequest, pushProblemRequest;
     private Context context;
     private DatabaseHandler databaseHandler;
@@ -46,14 +45,17 @@ public class PresenterClass {
     private List<CustomerOnline> onlineList;
     private OnlineActivity onlineActivity;
     private CustomerOnline customerOnline;
-    private String value;
-    private String ipAddres;
+    private String value, URL;
+    private List<ManagerLayout> callCenterList = new ArrayList<>();
+    private CallCenterTrackingReport callCenterTrackingReport;
+//    private String ipAddres;
 
     public PresenterClass(Context context) {
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(context);
         databaseHandler = new DatabaseHandler(context);
         list = new ArrayList<>();
+        URL = "http://" + databaseHandler.getIp() + "/onlineTechnicalSupport/";
 
     }
 
@@ -68,10 +70,62 @@ public class PresenterClass {
 
     //****************************************** Login **************************************
 
+//    public void getLoginData() {
+////        ipAddres = databaseHandler.getIp();
+//        urlLogin = URL + "export.php";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("USERNAME", "wael");
+//            jsonObject.put("PASSWORD", "1111");
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, jsonObject, new LoginDataClass(), new LoginDataClass());
+//        requestQueue.add(loginRequest);
+//    }
+//
+//    class LoginDataClass implements Response.Listener<JSONObject>, Response.ErrorListener {
+//        @Override
+//        public void onErrorResponse(VolleyError error) {
+//            Log.e("presenter/e", "test/ " + error.getMessage());
+//
+//        }
+//
+//        @Override
+//        public void onResponse(JSONObject response) {
+//            Log.e("presenter", "test/ " + response.toString());
+//            try {
+//                databaseHandler.deleteLoginData();
+//                list.clear();
+//                JSONArray jsonArray = response.getJSONArray("ENGINEER_INFO");
+//                int i = 0;
+//                while (i < jsonArray.length()) {
+//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                    EngineerInfo engineerInfo = new EngineerInfo();
+//                    engineerInfo.setId(jsonObject.getString("ENG_ID"));
+//                    engineerInfo.setName(jsonObject.getString("ENG_NAME"));
+//                    engineerInfo.setState(jsonObject.getInt("STATE"));
+//                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
+//                    engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
+//                    list.add(engineerInfo);
+//                    i++;
+//                    Log.e("EmployList", "LoginDataClass/ " + engineerInfo.getName() + "  " + engineerInfo.getPassword());
+//                }
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//            databaseHandler.addLoginInfo(list);
+//        }
+//    }// ststus 2 ///////// cusomer
+
+    //****************************************** Login **************************************
+
     public void getLoginData() {
-        ipAddres = databaseHandler.getIp();
-        urlLogin = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
-        loginRequest = new JsonObjectRequest(Request.Method.GET,urlLogin, null, new LoginDataClass(), new LoginDataClass());
+//        ipAddres = databaseHandler.getIp();
+        urlLogin = URL + "import.php?FLAG=0";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
+        loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, null, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
     }
 
@@ -117,7 +171,7 @@ public class PresenterClass {
         if (isTimerWork || dataState.equals("get")) {
             Log.e("getCustomer/e", "data " + dataState + " isWork  " + isTimerWork);
 
-            ipAddres = databaseHandler.getIp();
+//            ipAddres = databaseHandler.getIp();
             getDataState = dataState;
 //        List<EngineerInfo>userDat=databaseHandler.getLoginData();
 //        String engID="-2";
@@ -127,7 +181,7 @@ public class PresenterClass {
 
             String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
             //http://10.0.0.214/onlineTechnicalSupport/import.php?FLAG="2"&ENG_ID="2"
-            urlImportCustomer = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=" + engId;
+            urlImportCustomer = URL + "import.php?FLAG=2&ENG_ID=" + engId;
             objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, null, new CustomersDataClass(), new CustomersDataClass());
             Log.e("presenter/e", "getCustomersData/urllll" + urlImportCustomer);
 
@@ -171,7 +225,7 @@ public class PresenterClass {
                         customerOnline.setSystemName(jsonObject.getString("SYSTEM_NAME"));
                         customerOnline.setSystemId(jsonObject.getString("SYS_ID"));
                         customerOnline.setSerial(jsonObject.getString("SERIAL"));
-                        Log.e("name", customerOnline.getCustomerName()+"    ==>"+ customerOnline.getSerial());
+                        Log.e("name", customerOnline.getCustomerName() + "    ==>" + customerOnline.getSerial());
 
                         break;
                     }
@@ -206,8 +260,8 @@ public class PresenterClass {
 //        object.put("ENG_NAME", "'" + customerOnline.getEngineerName() + "'");
 
 //    "http://10.0.0.214/onlineTechnicalSupport/import.php?LOG_IN_OUT=0&ENG_ID=&STATE="
-        ipAddres = databaseHandler.getIp();
-        urlPushProblem = "http://" + ipAddres + "/onlineTechnicalSupport/export.php";//?LOG_IN_OUT=0&ENG_ID="
+//        ipAddres = databaseHandler.getIp();
+        urlPushProblem = URL + "export.php";//?LOG_IN_OUT=0&ENG_ID="
 //        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
         Log.e("push", urlPushProblem);
 
@@ -288,8 +342,8 @@ public class PresenterClass {
     //****************************************** State **************************************
 
     public void setState(String engId, int state) {
-        ipAddres = databaseHandler.getIp();
-        urlState = "http://" + ipAddres + "/onlineTechnicalSupport/export.php?LOG_IN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
+//        ipAddres = databaseHandler.getIp();
+        urlState = URL + "export.php?LOG_IN_OUT=0&ENG_ID=" + engId + "&STATE=" + state;
         stateRequest = new StringRequest(Request.Method.GET, urlState, new StateClass(), new StateClass());
         Log.e("setStateGGG///", "engId" + engId + "state" + state + "url" + urlState);
 
@@ -309,6 +363,61 @@ public class PresenterClass {
 
         }
     }// ststus 2 ///////// cusomer
+
+    //****************************************** setCallCenterData  **************************************
+
+    public void getCallCenterData(CallCenterTrackingReport callCenterTrackingReport) {
+
+//        ipAddres = databaseHandler.getIp();
+        this.callCenterTrackingReport = callCenterTrackingReport;
+        urlCallCenterReport = URL + "import.php?FLAG=1";
+        callCenterRequest = new JsonArrayRequest(Request.Method.GET, urlCallCenterReport, null, new CallCenterClass(), new CallCenterClass());
+//        Log.e("setStateGGG///", "engId" + engId + "state" + state + "url" + urlState);
+
+        requestQueue.add(callCenterRequest);
+    }
+
+    class CallCenterClass implements Response.Listener<JSONArray>, Response.ErrorListener {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e("presenter/e", "CallCenterData/ " + error.getMessage());
+
+        }
+
+        @Override
+        public void onResponse(JSONArray response) {
+            Log.e("presenter", "CallCenterData/ " + response);
+            JSONArray jsonArray = new JSONArray();
+            try {
+                jsonArray = response.getJSONObject(1).getJSONArray("CUSTOMER_INFO");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject finalObject = (JSONObject) jsonArray.get(i);
+                        ManagerLayout obj = new ManagerLayout();
+                        obj.setCompanyName(finalObject.getString("COMPANY_NAME"));
+                        obj.setCustomerName(finalObject.getString("CUST_NAME"));
+                        obj.setCheakInTime(finalObject.getString("CHECH_IN_TIME"));
+                        obj.setCheakOutTime(finalObject.getString("CHECH_OUT_TIME"));
+                        obj.setEnginerName(finalObject.getString("ENG_NAME"));
+                        obj.setPhoneNo(finalObject.getString("PHONE_NO"));
+                        obj.setState(finalObject.getString("STATE"));
+                        obj.setProplem(finalObject.getString("PROBLEM"));
+                        obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
+                        obj.setSystemId(finalObject.getString("SYS_ID"));
+                        obj.setHoldTime(finalObject.getString("HOLD_TIME"));
+                        obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+                        obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
+
+
+                        callCenterList.add(obj);
+                    }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            callCenterTrackingReport.fillAdapter(callCenterList);
+
+        }
+    }
 
 
 }

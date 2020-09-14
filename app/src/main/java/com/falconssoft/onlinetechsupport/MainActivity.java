@@ -2,12 +2,16 @@ package com.falconssoft.onlinetechsupport;
 
 import android.animation.Animator;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -25,11 +29,13 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
+import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,10 +44,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
     public static List<ManagerLayout> cheakIn, cheakout, hold;
-    ImageView addEmp,AddSystem;
+    //    ImageView addEmp, AddSystem;
     ListView listCheakIn, listCheakout, holds;
     ImageView falcon;
     Animation animZoom;
@@ -53,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     ManagerLayOutAdapter2 managerLayOutAdapter2;
     ManagerLayOutAdapter3 managerLayOutAdapter3;
     String ipAddres = "5.189.130.98:8085";
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,15 +77,18 @@ public class MainActivity extends AppCompatActivity {
 //        RecyclerView recyclerView = null;
 //        recyclerView.getAdapter().notifyItemInserted(position);
 //        recyclerView.getAdapter().notifyItemRangeInserted(positionStart, itemCount);
+        toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
         waite = findViewById(R.id.waite);
-        addEmp=  findViewById(R.id.addEmp);
-        AddSystem= findViewById(R.id.addSys);
+//        addEmp = findViewById(R.id.addEmp);
+//        AddSystem = findViewById(R.id.addSys);
 
         refresh = findViewById(R.id.refresh);
         imageMove = findViewById(R.id.imageMove);
         cheakIn = new ArrayList<>();
         cheakout = new ArrayList<>();
         hold = new ArrayList<>();
+
         listCheakIn = findViewById(R.id.listCheakIn);
         listCheakout = findViewById(R.id.listCheakout);
         holds = findViewById(R.id.hold);
@@ -89,22 +100,22 @@ public class MainActivity extends AppCompatActivity {
         final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
         falcon.startAnimation(animZoom);
 
-        addEmp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AddEmploy();
-
-            }
-        });
-
-        AddSystem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AddSystem();
-            }
-        });
+//        addEmp.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                AddEmploy();
+//
+//            }
+//        });
+//
+//        AddSystem.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                AddSystem();
+//            }
+//        });
 
 //        cheakIn.clear();
 //        cheakout.clear();
@@ -185,7 +196,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public ImageView insertImage(View view, String picItem, ListView toView) {
 
@@ -243,31 +253,30 @@ public class MainActivity extends AppCompatActivity {
 
         return imageView;
     }
-    public void  AddEmploy(){
 
-        final Dialog AddEmployeDialog = new Dialog(MainActivity.this,R.style.Theme_Dialog);
+    void addEmploy() {
+
+        final Dialog AddEmployeDialog = new Dialog(MainActivity.this, R.style.Theme_Dialog);
         AddEmployeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         AddEmployeDialog.setCancelable(true);
         AddEmployeDialog.setContentView(R.layout.add_emp_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-        final EditText UserName,Password;//,EngId;
-        final RadioButton Manager,Online,callCenter;
-        Button add,cancel;
+        final EditText UserName, Password;//,EngId;
+        final RadioButton Manager, Online, callCenter;
+        TextView add, cancel;
 
 
-
-        UserName=AddEmployeDialog.findViewById(R.id.UserName);
-        Password=AddEmployeDialog.findViewById(R.id.password);
+        UserName = AddEmployeDialog.findViewById(R.id.UserName);
+        Password = AddEmployeDialog.findViewById(R.id.password);
 //        EngId=AddEmployeDialog.findViewById(R.id.EngId);
 
-        Manager=AddEmployeDialog.findViewById(R.id.managerRadio);
-        Online =AddEmployeDialog.findViewById(R.id.OnlineRadio);
-        callCenter=AddEmployeDialog.findViewById(R.id.CallRadio);
+        Manager = AddEmployeDialog.findViewById(R.id.managerRadio);
+        Online = AddEmployeDialog.findViewById(R.id.OnlineRadio);
+        callCenter = AddEmployeDialog.findViewById(R.id.CallRadio);
 
-        add =AddEmployeDialog.findViewById(R.id.Addbutton);
-        cancel =AddEmployeDialog.findViewById(R.id.Cancelbutton);
-
+        add = AddEmployeDialog.findViewById(R.id.Addbutton);
+        cancel = AddEmployeDialog.findViewById(R.id.Cancelbutton);
 
 
 //        Manager.setChecked(true);
@@ -275,17 +284,17 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!UserName.getText().toString().equals("")&&!Password.getText().toString().equals("")){
+                if (!UserName.getText().toString().equals("") && !Password.getText().toString().equals("")) {
 
-                    JSONObject obj=new JSONObject();
-                    EngineerInfo engineerInfo=new EngineerInfo();
-                    int EngType=0;
-                    if(Manager.isChecked()){
-                        EngType=0;
-                    }else if(Online.isChecked()){
-                        EngType=2;
-                    }else if(callCenter.isChecked()){
-                        EngType=1;
+                    JSONObject obj = new JSONObject();
+                    EngineerInfo engineerInfo = new EngineerInfo();
+                    int EngType = 0;
+                    if (Manager.isChecked()) {
+                        EngType = 0;
+                    } else if (Online.isChecked()) {
+                        EngType = 2;
+                    } else if (callCenter.isChecked()) {
+                        EngType = 1;
                     }
 
                     engineerInfo.setEng_type(EngType);
@@ -296,11 +305,11 @@ public class MainActivity extends AppCompatActivity {
 
 
                     try {
-                        obj= engineerInfo.getData();
+                        obj = engineerInfo.getData();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    ManagerExport managerExport=new ManagerExport(MainActivity.this,obj);
+                    ManagerExport managerExport = new ManagerExport(MainActivity.this, obj);
                     managerExport.startSending("AddEmp");
 //                    EngId.setText("");
                     UserName.setText("");
@@ -315,32 +324,31 @@ public class MainActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             AddEmployeDialog.dismiss();
+                AddEmployeDialog.dismiss();
             }
         });
 
 
         AddEmployeDialog.show();
     }
-    public void  AddSystem(){
 
-        final Dialog AddSystem = new Dialog(MainActivity.this,R.style.Theme_Dialog);
+    void addSystem() {
+
+        final Dialog AddSystem = new Dialog(MainActivity.this, R.style.Theme_Dialog);
         AddSystem.requestWindowFeature(Window.FEATURE_NO_TITLE);
         AddSystem.setCancelable(true);
         AddSystem.setContentView(R.layout.add_sys_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
         final EditText SystemName;//,SysId;
-        Button add,cancel;
+        TextView add, cancel;
 
 
-
-        SystemName=AddSystem.findViewById(R.id.sysName);
+        SystemName = AddSystem.findViewById(R.id.sysName);
 //        SysId=AddSystem.findViewById(R.id.sysId);
 
-        add =AddSystem.findViewById(R.id.Addbutton);
-        cancel =AddSystem.findViewById(R.id.Cancelbutton);
-
+        add = AddSystem.findViewById(R.id.Addbutton);
+        cancel = AddSystem.findViewById(R.id.Cancelbutton);
 
 
 //        Manager.setChecked(true);
@@ -348,21 +356,21 @@ public class MainActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {///*&&!SysId.getText().toString().equals("")*/
-                if(!SystemName.getText().toString().equals("")){
+                if (!SystemName.getText().toString().equals("")) {
 
-                    JSONObject obj=new JSONObject();
-                    Systems systems=new Systems();
+                    JSONObject obj = new JSONObject();
+                    Systems systems = new Systems();
 
                     systems.setSystemName(SystemName.getText().toString());
                     systems.setSystemNo("*");
 
 
                     try {
-                        obj= systems.getData();
+                        obj = systems.getData();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    ManagerExport managerExport=new ManagerExport(MainActivity.this,obj);
+                    ManagerExport managerExport = new ManagerExport(MainActivity.this, obj);
                     managerExport.startSending("AddSystem");
                     SystemName.setText("");
 //                    SysId.setText("");
@@ -383,4 +391,29 @@ public class MainActivity extends AppCompatActivity {
 
         AddSystem.show();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.control_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_add_system:
+                addSystem();
+                return true;
+            case R.id.menu_add_employee:
+                addEmploy();
+                return true;
+            case R.id.menu_report:
+                Intent intent = new Intent(MainActivity.this, CallCenterTrackingReport.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

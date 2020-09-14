@@ -81,8 +81,10 @@
     <color name="alpha_grayf">#FFFFFF</color>
 
     <color name="white_dark2">#FFFFFF</color>
+    <color name="row_color_yellow">#22FDA100</color>
 
-<!--    <color name="main_green_color">#EBE7D433</color>-->
+
+    <!--    <color name="main_green_color">#EBE7D433</color>-->
 
 
 </resources>
