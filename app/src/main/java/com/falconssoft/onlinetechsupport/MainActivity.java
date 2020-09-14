@@ -292,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
                     engineerInfo.setName(UserName.getText().toString());
                     engineerInfo.setId("*");
                     engineerInfo.setPassword(Password.getText().toString());
-                    engineerInfo.setState(-1);
+                    engineerInfo.setState(0);
 
 
                     try {
