@@ -30,6 +30,7 @@
                 android:layout_weight="0.85"
                 android:fontFamily="@font/averia_libre_light"
                 android:padding="5dp"
+                android:gravity="center"
                 android:text="Company Name"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />
@@ -41,6 +42,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/averia_libre_light"
                 android:padding="5dp"
+                android:gravity="center"
                 android:text="Engeneering name"
                 android:textColor="@android:color/black"
                 android:textSize="16sp" />

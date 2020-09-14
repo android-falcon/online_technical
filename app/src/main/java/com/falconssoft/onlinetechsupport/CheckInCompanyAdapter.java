@@ -230,7 +230,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
 
                         if (!isProbablyArabic(problems)){
-                            if (problems.length() <= 255) {
+                            if (problems.length() <= 500) {
 
                                 new UpdateProblemSolved(managerLayout, dialog).execute();
 
@@ -238,12 +238,12 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                                 Toast.makeText(context, "Max Length of problem 255 Char", Toast.LENGTH_SHORT).show();
                             }
                     }else {
-                            if (problems.length() <= 142) {
+                            if (problems.length() <= 130) {
 
                                 new UpdateProblemSolved(managerLayout, dialog).execute();
 
                             } else {
-                                Toast.makeText(context, "Max Length of problem  142 Char", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Max Length of problem  130 Char", Toast.LENGTH_SHORT).show();
                             }
                         }
                     } else {

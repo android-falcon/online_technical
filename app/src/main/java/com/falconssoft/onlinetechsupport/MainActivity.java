@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
 //        animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
 //        falcon.startAnimation(animZoom);
         falcon = findViewById(R.id.falcon);
-        final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
-        falcon.startAnimation(animZoom);
+//        final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
+//        falcon.startAnimation(animZoom);
 
 //        addEmp.setOnClickListener(new View.OnClickListener() {
 //            @Override
