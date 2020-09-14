@@ -221,6 +221,8 @@ public class ManagerImport {
                         obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
                         obj.setEngId(finalObject.getString("ENG_ID"));
                         obj.setSerial(finalObject.getString("SERIAL"));
+                        obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
+                        Log.e("finalObjectConvert",""+obj.getConvertFlag());
 
                         obj.setCurrentTime(curentTime);
 

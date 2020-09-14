@@ -183,15 +183,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //
-        T = new Timer();
-        T.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ManagerImport managerImport = new ManagerImport(MainActivity.this);
-                managerImport.startSending("Manager");
-            }
-
-        }, 0, 1000);
+//        T = new Timer();
+//        T.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                ManagerImport managerImport = new ManagerImport(MainActivity.this);
+//                managerImport.startSending("Manager");
+//            }
+//
+//        }, 0, 1000);
 
 
     }

@@ -67,4 +67,5 @@
     <string name="convert_to_software_department">Convert To Software Department</string>
     <string name="convert_to_out_door">Convert To Out Door</string>
     <string name="convert_to_contracts_department">Convert To Contracts Department</string>
+    <string name="solve_state">Solve State</string>
 </resources>
