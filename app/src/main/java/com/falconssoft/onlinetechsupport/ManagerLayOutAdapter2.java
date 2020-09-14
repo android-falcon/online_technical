@@ -4,6 +4,7 @@ package com.falconssoft.onlinetechsupport;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -100,7 +101,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     dialog.setContentView(R.layout.information_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-                    TextView customer,company,phone,system,eng,time,states,titel,problem;
+                    TextView customer,company,phone,system,eng,time,states,titel,problem,stateOfSolve;
                     LinearLayout bac1,bac2;
 
 
@@ -115,6 +116,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     eng=dialog.findViewById(R.id.engName);
                     time=dialog.findViewById(R.id.time);
                     states=dialog.findViewById(R.id.state);
+                    stateOfSolve=dialog.findViewById(R.id.stateOfSolve);
                     String statesString ="";
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);
@@ -157,7 +159,36 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     eng.setText("" + itemsList.get(i).getEnginerName());
                     time.setText("" + itemsList.get(i).getCheakInTime());
                     states.setText(statesString);
-                    problem.setText("" + itemsList.get(i).getProplem());
+                    String problemStr=itemsList.get(i).getProplem();
+//                    Log.e("problemStr",""+problemStr.length());
+                    if(problemStr.length()>=20)
+                    {
+                        problem.setText(""+problemStr.substring(0,35));
+                    }
+                    else {
+                        problem.setText("" + itemsList.get(i).getProplem());
+                    }
+//
+
+                    String solveState="";
+                    int stateProblem=Integer.parseInt(itemsList.get(i).getConvertFlag());
+                    switch (stateProblem){
+                        case 0:
+                            solveState=context.getResources().getString(R.string.solved);
+                            break;
+                        case 1:
+                            solveState=context.getResources().getString(R.string.convert_to_software_department);
+                            break;
+                        case 2:
+                            solveState=context.getResources().getString(R.string.convert_to_out_door);
+                            break;
+                        case 3:
+                            solveState=context.getResources().getString(R.string.convert_to_contracts_department);
+                            break;
+
+                    }
+
+                    stateOfSolve.setText(""+solveState);
 
 //                    Toast.makeText(context, "main "+ holder.EngName.getText().toString(), Toast.LENGTH_SHORT).show();
 
