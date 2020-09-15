@@ -78,7 +78,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
             holder.EngName.setText("" + itemsList.get(i).getEnginerName());
 //            holder.timeLoading.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCheakOutTime()));
-            holder.timeLoading.setText(itemsList.get(i).getCheakInTime());
+            holder.timeLoading.setText(itemsList.get(i).getCheakOutTime());
             switch (col){
                 case 0:
                     holder.time.setBackground(context.getResources().getDrawable(R.drawable.bac_list_0));
@@ -157,7 +157,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     phone.setText("" + itemsList.get(i).getPhoneNo());
                     system.setText("" + itemsList.get(i).getSystemName());
                     eng.setText("" + itemsList.get(i).getEnginerName());
-                    time.setText("" + itemsList.get(i).getCheakInTime());
+                    time.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCheakOutTime()));
                     states.setText(statesString);
                     String problemStr=itemsList.get(i).getProplem();
 //                    Log.e("problemStr",""+problemStr.length());

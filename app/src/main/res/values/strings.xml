@@ -42,7 +42,7 @@
     <string name="hold">Hold</string>
     <string name="more_information">More Information</string>
     <string name="eng_name">Eng Name :</string>
-    <string name="time_loading">Time Loading :</string>
+    <string name="time_loading"> Loading Time :</string>
     <string name="states">States :</string>
     <string name="problem_detail">Problem Detail :</string>
     <string name="done">Done</string>
