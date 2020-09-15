@@ -31,6 +31,7 @@ import java.util.List;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
+import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.callCenterList;
 
 public class PresenterClass {
     private String getDataState = "1";
@@ -46,7 +47,7 @@ public class PresenterClass {
     private OnlineActivity onlineActivity;
     private CustomerOnline customerOnline;
     private String value, URL;
-    private List<ManagerLayout> callCenterList = new ArrayList<>();
+//    private List<ManagerLayout> callCenterList = new ArrayList<>();
     private CallCenterTrackingReport callCenterTrackingReport;
 //    private String ipAddres;
 
@@ -414,7 +415,7 @@ public class PresenterClass {
                 e.printStackTrace();
             }
 
-            callCenterTrackingReport.fillAdapter(callCenterList);
+            callCenterTrackingReport.fillAdapter();
 
         }
     }
