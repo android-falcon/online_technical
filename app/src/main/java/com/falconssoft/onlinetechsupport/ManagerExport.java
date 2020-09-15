@@ -119,7 +119,7 @@ DatabaseHandler databaseHandler;
                 inputStream.close();
                 httpURLConnection.disconnect();
 
-                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+                Log.e("tag", "ItemOCode -->" + stringBuffer.toString()+"   "+data);
 
                 return stringBuffer.toString();
 

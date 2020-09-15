@@ -126,6 +126,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             contentValues = new ContentValues();
 
+            contentValues.put(SETTINGS_ID, "00");
             contentValues.put(SETTINGS_IP_ADDRESS, ip);
 
 

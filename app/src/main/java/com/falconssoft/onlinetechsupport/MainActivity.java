@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
 //        animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
 //        falcon.startAnimation(animZoom);
         falcon = findViewById(R.id.falcon);
-        final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
-        falcon.startAnimation(animZoom);
+//        final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
+//        falcon.startAnimation(animZoom);
 
 //        addEmp.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -183,15 +183,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
 //
-        T = new Timer();
-        T.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                ManagerImport managerImport = new ManagerImport(MainActivity.this);
-                managerImport.startSending("Manager");
-            }
-
-        }, 0, 1000);
+//        T = new Timer();
+//        T.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                ManagerImport managerImport = new ManagerImport(MainActivity.this);
+//                managerImport.startSending("Manager");
+//            }
+//
+//        }, 0, 1000);
 
 
     }
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                     engineerInfo.setName(UserName.getText().toString());
                     engineerInfo.setId("*");
                     engineerInfo.setPassword(Password.getText().toString());
-                    engineerInfo.setState(-1);
+                    engineerInfo.setState(0);
 
 
                     try {

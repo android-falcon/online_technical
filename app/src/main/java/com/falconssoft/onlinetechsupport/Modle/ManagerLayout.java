@@ -19,6 +19,7 @@ public class ManagerLayout {
     private String engId;
 
     private String transactionDate;
+    private String convertFlag;
 
     public ManagerLayout() {
 
@@ -172,5 +173,13 @@ public class ManagerLayout {
 
     public void setEngId(String engId) {
         this.engId = engId;
+    }
+
+    public String getConvertFlag() {
+        return convertFlag;
+    }
+
+    public void setConvertFlag(String convertFlag) {
+        this.convertFlag = convertFlag;
     }
 }
