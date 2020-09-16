@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -55,6 +56,7 @@ public class ManagerImport {
     public  static boolean sendSucsses=false;
     public  static String ipAddres ="";
     DatabaseHandler databaseHandler;
+    public static TextView countOfCall=null;
 
 
     public ManagerImport(Context context) {//, JSONObject obj
@@ -77,7 +79,8 @@ public class ManagerImport {
             new SyncHoldLayout().execute();
         if (flag.equals("GetCheckInList"))
             new GetCheckInList().execute();
-
+        if (flag.equals("CountCallWork"))
+            new CountCallWork().execute();
 
 
 
@@ -520,6 +523,8 @@ Log.e("tag_itemCard", "****saveSuccess");
                 }
 
 
+
+
             }  else {
                 sendSucsses=false;
                 Log.e("tag_itemCard", "****Failed to export data");
@@ -620,6 +625,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                         .setContentText("send hold data Success")
 //                        .hideConfirmButton()
                         .show();
+
 
                     textState.setText("Success");
 
@@ -757,6 +763,124 @@ Log.e("tag_itemCard", "****saveSuccess");
 
             }  else {
                 Log.e("tag_itemCard", "****Failed to export data");
+            }
+
+        }
+    }
+
+    private class CountCallWork extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+                final String callId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=4&CALL_ID="+callId;
+                // ITEM_CARD
+
+
+//                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
+////
+                Log.e("CountCallWork",""+callId +"   " +link);
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("CALL_COUNT")) {
+                Log.e("CALL_COUNT", "****Success");
+//                progressDialog.dismiss();
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject COUNT = new JSONObject(JsonResponse);
+
+                    JSONArray parentArrayS = COUNT.getJSONArray("CALL_COUNT");
+
+                    JSONObject CURRENT_Count = parentArrayS.getJSONObject(0);
+
+                    String count=CURRENT_Count.getString("COUNT");
+                    Log.e("CURRENT_TIME",""+CURRENT_Count.getString("COUNT"));
+                    countOfCall.setText(""+count);
+
+
+                    Log.e("tag_itemCard", "****saveSuccess");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
+//                if (pd != null) {
+//                    pd.dismiss();
+//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText(context.getResources().getString(R.string.ops))
+//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
+//                            .show();
+//                }
+
+
             }
 
         }

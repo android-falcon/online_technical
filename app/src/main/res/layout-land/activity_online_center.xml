@@ -65,6 +65,8 @@
             android:textStyle="italic"
             android:textColor="@color/white"
             />
+
+
     </TableRow>
     <RelativeLayout
         android:layout_height="match_parent"
@@ -72,15 +74,8 @@
         android:layout_weight="5"
 
         >
-        <TextView
-            android:id="@+id/deletaAllText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_delete_forever_black_24dp"
-            android:elevation="2dp"
-            android:gravity="left"
-            android:padding="1dp"
-            />
+
+
         <LinearLayout
             android:id="@+id/mainLinear"
             android:layout_width="match_parent"
@@ -449,9 +444,33 @@
                     android:onClick="addToHoldList"
                     android:text="@string/hold"
                     android:textColor="@color/darkblue_" />
+
+
             </LinearLayout>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/deletaAllText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_delete_forever_black_24dp"
+            android:elevation="2dp"
+            android:gravity="left"
+            android:padding="1dp"
+            />
+
+        <TextView
+            android:id="@+id/countOfCallWork"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
+            android:background="@drawable/background_hold"
+            android:gravity="center"
+            android:text="no"
+            android:textColor="@color/white_dark"
+            android:textSize="20sp" />
     </RelativeLayout>
 
 </LinearLayout>

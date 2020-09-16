@@ -161,13 +161,13 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     states.setText(statesString);
                     String problemStr=itemsList.get(i).getProplem();
 //                    Log.e("problemStr",""+problemStr.length());
-                    if(problemStr.length()>=20)
-                    {
-                        problem.setText(""+problemStr.substring(0,35));
-                    }
-                    else {
+//                    if(problemStr.length()>=20)
+//                    {
+//                        problem.setText(""+problemStr.substring(0,35));
+//                    }
+//                    else {
                         problem.setText("" + itemsList.get(i).getProplem());
-                    }
+//                    }
 //
 
                     String solveState="";

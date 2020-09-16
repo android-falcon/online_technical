@@ -37,7 +37,7 @@
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
             android:layout_marginEnd="5dp"
-            android:layout_weight="0"
+            android:layout_weight="1"
             android:orientation="horizontal"
             android:paddingVertical="10dp"
             >
@@ -48,6 +48,7 @@
                 android:fontFamily="serif"
                 android:paddingLeft="5dp"
                 android:text="@string/eng"
+
                 android:textSize="15sp" />
 
             <Spinner
@@ -55,7 +56,48 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
+
+
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:paddingVertical="10dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:paddingLeft="5dp"
+                android:text="@string/date"
+
+                android:textSize="15sp" />
+
+            <Spinner
+                android:id="@+id/callCenter_report_dateSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/count"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="serif"
+            android:gravity="end|center"
+            android:paddingLeft="5dp"
+            android:text=""
+            android:textColor="@color/goldf"
+            android:textSize="15sp" />
 
     </LinearLayout>
 

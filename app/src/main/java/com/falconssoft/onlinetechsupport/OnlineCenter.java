@@ -70,6 +70,7 @@ import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
+import static com.falconssoft.onlinetechsupport.ManagerImport.countOfCall;
 import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
 
 public class OnlineCenter extends AppCompatActivity {
@@ -100,6 +101,7 @@ public class OnlineCenter extends AppCompatActivity {
     Spinner spinnerPhone;
 List<String> spinnerPhoneList;
 ArrayAdapter <String> spinnerPhoneAdapter;
+TextView countOfCallWork;
 
 
     @SuppressLint("WrongConstant")
@@ -148,6 +150,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         }, 0, 4000);
 
 
+        callCountCalling();
 
 
         fillHoldList();
@@ -155,6 +158,25 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         //fillSpennerSystem(systemsList);
 
         FillCheckIn();
+
+        countOfCallWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                callCountCalling();
+
+            }
+        });
+
+
+    }
+
+    void callCountCalling (){
+
+        countOfCall=countOfCallWork;
+
+        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+        managerImport.startSending("CountCallWork");
 
 
     }
@@ -526,6 +548,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
                 clearText();
             }
         });
+        countOfCallWork=findViewById(R.id.countOfCallWork);
         LogInTime=findViewById(R.id.LogInTime);
         textState.addTextChangedListener(new TextWatcher() {
             @Override
@@ -563,6 +586,9 @@ ArrayAdapter <String> spinnerPhoneAdapter;
                     hold_List.clear();
                     FillCheckIn();
                     fillHoldList();
+
+                    callCountCalling();
+
                 }
 
             }

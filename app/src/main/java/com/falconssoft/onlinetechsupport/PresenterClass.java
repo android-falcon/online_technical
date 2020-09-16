@@ -26,11 +26,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
+import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.DateList;
 import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.callCenterList;
 
 public class PresenterClass {
@@ -393,6 +398,9 @@ public class PresenterClass {
             Log.e("presenter", "CallCenterData/ " + response);
             JSONArray jsonArray = new JSONArray();
             try {
+                callCenterList.clear();
+                DateList.clear();
+
                 jsonArray = response.getJSONObject(1).getJSONArray("CUSTOMER_INFO");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject finalObject = (JSONObject) jsonArray.get(i);
@@ -413,7 +421,11 @@ public class PresenterClass {
 
 
                         callCenterList.add(obj);
+                        DateList.add((finalObject.getString("DATE_OF_TRANSACTION")));
                     }
+
+                callCenterTrackingReport.fillDateSpinner();
+                Log.e("setListDateSizePr",""+"     \n"+DateList.size());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
