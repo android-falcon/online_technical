@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+import com.falconssoft.onlinetechsupport.Modle.Systems;
+import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,6 +34,9 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
+import static com.falconssoft.onlinetechsupport.MainActivity.countChickHold;
+import static com.falconssoft.onlinetechsupport.MainActivity.countChickIn;
+import static com.falconssoft.onlinetechsupport.MainActivity.countChickOut;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.MainActivity.refresh;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.checkInList;
@@ -39,6 +45,10 @@ import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerViewCheckIn;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.textState;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_finish;
+import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engList;
+import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engMList;
+import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemList;
+import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemMList;
 
 
 public class ManagerImport {
@@ -57,6 +67,7 @@ public class ManagerImport {
     public  static String ipAddres ="";
     DatabaseHandler databaseHandler;
     public static TextView countOfCall=null;
+    CallCenterTrackingReport callCenterTrackingReport;
 
 
     public ManagerImport(Context context) {//, JSONObject obj
@@ -84,9 +95,19 @@ public class ManagerImport {
 
 
 
+
+
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
+
+
+
+    public void startSendingEngSys(CallCenterTrackingReport callCenterTrackingReport) {
+
+            new SystemEngineer(callCenterTrackingReport).execute();
+    }
+
     public void startSendingData(JSONObject data,boolean holds) {
         sendSucsses=false;
          datatoSend=data;
@@ -239,12 +260,18 @@ public class ManagerImport {
 
 
                     }
+
+                    countChickHold.setText(""+hold.size());
+                    countChickOut.setText(""+cheakout.size());
+                    countChickIn.setText(""+cheakIn.size());
                     refresh.setText("1");
 
 
                     int cheakInCount1=cheakIn.size();
                     int cheakoutCount1=cheakout.size();
                     int holdCount1=hold.size();
+
+
 
                     if(cheakInCount1>cheakInCount){
                         refresh.setText("2");
@@ -886,6 +913,175 @@ Log.e("tag_itemCard", "****saveSuccess");
         }
     }
 
+
+    private class SystemEngineer extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+CallCenterTrackingReport callCenterTrackingReport;
+        public SystemEngineer(CallCenterTrackingReport callCenterTrackingReport) {
+            this.callCenterTrackingReport=callCenterTrackingReport;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=0";
+
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && (JsonResponse.contains("ENGINEER_INFO")||JsonResponse.contains("SYSTEMS"))) {
+                Log.e("CALL_COUNT", "****Success");
+//                progressDialog.dismiss();
+                JsonResponseSave = JsonResponse;
+                JSONObject jsonObject= null;
+                try {
+                    jsonObject = new JSONObject(JsonResponse);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                try {
+
+
+                    JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
+                    Log.e("info", "" + info);
+                    engMList.clear();
+                    engList.clear();
+                    engMList.add(0,new EngineerInfo());
+                    engList.add(0,"All");
+                    for (int i = 0; i < info.length(); i++) {
+                        JSONObject engineerInfoObject = info.getJSONObject(i);
+                        EngineerInfo engineerInfo = new EngineerInfo();
+                        engineerInfo.setName(engineerInfoObject.getString("ENG_NAME"));
+                        engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
+                        engineerInfo.setEng_type(engineerInfoObject.getInt("ENG_TYPE"));
+                        engineerInfo.setState(engineerInfoObject.getInt("STATE"));
+
+                        Log.e("ENG_TYPE",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
+                        if( engineerInfo.getEng_type()==2)
+                        {
+
+                            //arr
+                            engMList.add(engineerInfo);
+                            engList.add(engineerInfo.getName());
+
+
+                        }
+
+
+
+                    }
+
+
+
+
+                    Log.e("tag_itemCard", "****saveSuccess");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+                try{
+                    JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
+                    systemMList.clear();
+                    systemList.clear();
+                    systemMList.add(0,new Systems());
+                    systemList.add("All");
+                    for (int i = 0; i < systemInfoArray.length(); i++) {
+                        JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
+                        Systems systemInfo = new Systems();
+                        systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
+                        systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
+
+                        systemMList.add(systemInfo);
+                        systemList.add(systemInfo.getSystemName());
+                    }
+                }catch (Exception e){
+                    Log.e("No_Sys       ","Exception");
+
+                }
+
+
+                callCenterTrackingReport.fillSpinners();
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
+//                if (pd != null) {
+//                    pd.dismiss();
+//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText(context.getResources().getString(R.string.ops))
+//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
+//                            .show();
+//                }
+
+
+            }
+
+        }
+    }
+
     @SuppressLint("WrongConstant")
     private void setHoldList() {
         LinearLayoutManager llm = new LinearLayoutManager(context);
@@ -914,6 +1110,9 @@ Log.e("tag_itemCard", "****saveSuccess");
             recyclerViewCheckIn.setAdapter(companyAdapter);
         }
     }
+
+
+
 
 
 }

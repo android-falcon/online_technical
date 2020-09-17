@@ -72,7 +72,7 @@ public class ManagerLayOutAdapter extends BaseAdapter {
         }
 
         private class ViewHolder {
-            TextView companyName, EngName,timeLoading;
+            TextView companyName, EngName,timeLoading,CheckOutTime,CheckInTime;
 
             LinearLayout time,mainLiner;
         }
@@ -90,7 +90,10 @@ public class ManagerLayOutAdapter extends BaseAdapter {
             holder.timeLoading =  view.findViewById(R.id.timeLoading);
             holder.time=(LinearLayout) view.findViewById(R.id.time);
             holder.mainLiner=(LinearLayout) view.findViewById(R.id.mainLiner);
-
+            holder.CheckOutTime= view.findViewById(R.id.CheckOutTime);
+            holder.CheckInTime= view.findViewById(R.id.CheckInTime);
+            holder.CheckOutTime.setVisibility(View.GONE);
+            holder.CheckInTime.setText("" + itemsList.get(i).getCheakInTime());
 
 //            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
 //

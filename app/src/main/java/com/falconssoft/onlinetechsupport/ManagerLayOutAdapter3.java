@@ -56,7 +56,7 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
         }
 
         private class ViewHolder {
-            TextView companyName, EngName, timeLoading;
+            TextView companyName, EngName, timeLoading,CheckInTime,CheckOutTime;
             LinearLayout time,mainLiner;
         }
 
@@ -73,6 +73,16 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
             holder.timeLoading = (TextView) view.findViewById(R.id.timeLoading);
             holder.time=(LinearLayout) view.findViewById(R.id.time);
             holder.mainLiner=(LinearLayout) view.findViewById(R.id.mainLiner);
+
+
+            holder.CheckOutTime= view.findViewById(R.id.CheckOutTime);
+            holder.CheckInTime= view.findViewById(R.id.CheckInTime);
+
+            holder.CheckInTime.setTextColor(context.getResources().getColor(R.color.falconColor));
+            holder.CheckOutTime.setVisibility(View.GONE);
+            holder.CheckInTime.setText("" + itemsList.get(i).getHoldTime());
+
+
 
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
             holder.EngName.setText("" + itemsList.get(i).getEnginerName());
