@@ -5,10 +5,14 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.icu.util.Calendar;
+import android.icu.util.TimeZone;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
@@ -28,6 +32,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -196,6 +204,7 @@ public class ManagerImport {
             return null;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
@@ -246,6 +255,7 @@ public class ManagerImport {
                         obj.setEngId(finalObject.getString("ENG_ID"));
                         obj.setSerial(finalObject.getString("SERIAL"));
                         obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
+                        obj.setCallCenterName(finalObject.getString("CALL_CENTER_NAME"));
                         Log.e("finalObjectConvert",""+obj.getConvertFlag());
 
                         obj.setCurrentTime(curentTime);
@@ -1112,7 +1122,31 @@ CallCenterTrackingReport callCenterTrackingReport;
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static String getDateTime(Date date) {
 
+        Date d2 = new Date( date.getTime() + 1 * 60 * 60 * 1000 );
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        String dateTime = dateFormat.format(d2);
+//        Log.e("getDateTime",date+"       -->"+dateTime+"\n");
+        return dateTime;
+    }
+
+
+    public Date formatDate(String date) {
+
+//        Log.e("date", date);
+        String myFormat = "HH:mm:ss"; //In which you need put here
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
+        Date d = null;
+        try {
+            d = simpleDateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return d;
+    }
 
 
 }

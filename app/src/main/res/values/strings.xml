@@ -69,4 +69,5 @@
     <string name="convert_to_contracts_department">Convert To Contracts Department</string>
     <string name="solve_state">Solve State</string>
     <string name="search">Search</string>
+    <string name="call_center_name">Call Center Name</string>
 </resources>

@@ -10,8 +10,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_height="120dp"
+        android:layout_margin="5dp"
         android:background="@drawable/bac_list"
         android:elevation="@dimen/cardview_default_elevation"
         app:cardCornerRadius="5dp">
@@ -35,16 +35,17 @@
                 <TextView
                     android:id="@+id/CheckInTime"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.3"
                     android:fontFamily="@font/averia_libre_light"
+                    android:lines="1"
                     android:padding="3dp"
                     android:text="00:00:00"
                     android:textColor="@color/greenColor" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="clip_horizontal|center"
                     android:layout_weight="0.3"
                     android:gravity="center"
@@ -53,10 +54,11 @@
                     <TextView
                         android:id="@+id/companyName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.85"
                         android:fontFamily="@font/averia_libre_light"
                         android:gravity="center"
+                        android:lines="3"
                         android:padding="5dp"
                         android:text="Company Name"
                         android:textColor="@android:color/black"
@@ -65,21 +67,24 @@
                     <TextView
                         android:id="@+id/EngName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:fontFamily="@font/averia_libre_light"
                         android:gravity="center"
+                        android:lines="3"
                         android:padding="5dp"
                         android:text="Engeneering name"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
                 </LinearLayout>
+
                 <TextView
                     android:id="@+id/CheckOutTime"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="0.3"
                     android:fontFamily="@font/averia_libre_light"
+                    android:lines="1"
                     android:padding="3dp"
                     android:text="00:00:00"
                     android:textColor="@color/greenColor" />

@@ -20,6 +20,8 @@ public class ManagerLayout {
 
     private String transactionDate;
     private String convertFlag;
+    private String callCenterName;
+
 
     public ManagerLayout() {
 
@@ -181,5 +183,13 @@ public class ManagerLayout {
 
     public void setConvertFlag(String convertFlag) {
         this.convertFlag = convertFlag;
+    }
+
+    public String getCallCenterName() {
+        return callCenterName;
+    }
+
+    public void setCallCenterName(String callCenterName) {
+        this.callCenterName = callCenterName;
     }
 }

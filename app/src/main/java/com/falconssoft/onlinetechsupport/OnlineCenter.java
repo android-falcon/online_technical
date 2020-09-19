@@ -188,6 +188,8 @@ TextView countOfCallWork;
         spinnerPhoneList.add("078");
         spinnerPhoneList.add("079");
         spinnerPhoneList.add("077");
+        spinnerPhoneList.add("+966");
+        spinnerPhoneList.add("+964");
 
         spinnerPhoneAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
         spinnerPhoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -752,7 +754,8 @@ TextView countOfCallWork;
             stateCompaney = 1;
         }
         final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
-        Log.e("call_id1",""+CallId+"    "+sys_Id);
+        final String CallName = LoginActivity.sharedPreferences.getString(LOGIN_NAME, "-1");
+        Log.e("call_id1",""+CallId+"    "+sys_Id +"    "+ CallName);
 
         JSONObject obj = new JSONObject();
         if (engineerInfoList.size() != 0) {
@@ -771,6 +774,7 @@ TextView countOfCallWork;
             obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
             obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
             obj.put("SERIAL", "'"+"222"+"'");
+            obj.put("CALL_CENTER_NAME", "'"+CallName+"'");
         } else {
             // hold company data
             obj.put("CUST_NAME", "'" + customerName + "'");

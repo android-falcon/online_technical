@@ -177,6 +177,32 @@
                 android:padding="5dp">
 
                 <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/averia_libre_light"
+                    android:text="@string/call_center_name"
+                    android:textColor="@color/darkBlueColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/call_center_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/averia_libre_light"
+                    android:textAlignment="center"
+                    android:textColor="@color/darkBlueColor"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="5dp">
+
+                <TextView
                     android:id="@+id/textView14"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -278,6 +304,8 @@
                     android:textColor="@color/darkBlueColor"
                     android:textSize="16sp" />
             </TableRow>
+
+
         </TableLayout>
     </LinearLayout>
 
