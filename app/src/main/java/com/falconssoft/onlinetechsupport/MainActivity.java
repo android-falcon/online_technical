@@ -54,13 +54,15 @@ public class MainActivity extends AppCompatActivity {
     Animation animZoom;
     Timer T;
     RelativeLayout imageMove;
-    public static TextView refresh;
+    public static TextView refresh,countChickHold,countChickOut,countChickIn;
     TextView waite;
     ManagerLayOutAdapter managerLayOutAdapter1;
     ManagerLayOutAdapter2 managerLayOutAdapter2;
     ManagerLayOutAdapter3 managerLayOutAdapter3;
     String ipAddres = "5.189.130.98:8085";
     private Toolbar toolbar;
+    ManagerImport managerImport;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
 //        AddSystem = findViewById(R.id.addSys);
 
         refresh = findViewById(R.id.refresh);
+        countChickHold= findViewById(R.id.countChickHold);
+        countChickOut= findViewById(R.id.countChickOut);
+        countChickIn= findViewById(R.id.countChickIn);
         imageMove = findViewById(R.id.imageMove);
         cheakIn = new ArrayList<>();
         cheakout = new ArrayList<>();
@@ -92,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
         listCheakIn = findViewById(R.id.listCheakIn);
         listCheakout = findViewById(R.id.listCheakout);
         holds = findViewById(R.id.hold);
-        ManagerImport managerImport = new ManagerImport(MainActivity.this);
+         managerImport = new ManagerImport(MainActivity.this);
         managerImport.startSending("Manager");
 //        animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
 //        falcon.startAnimation(animZoom);
@@ -182,16 +187,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//
-//        T = new Timer();
-//        T.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                ManagerImport managerImport = new ManagerImport(MainActivity.this);
-//                managerImport.startSending("Manager");
-//            }
-//
-//        }, 0, 1000);
+         managerImport = new ManagerImport(MainActivity.this);
+        T = new Timer();
+        T.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                managerImport.startSending("Manager");
+            }
+
+        }, 0, 1000);
 
 
     }

@@ -72,7 +72,7 @@ public class ManagerLayOutAdapter extends BaseAdapter {
         }
 
         private class ViewHolder {
-            TextView companyName, EngName,timeLoading;
+            TextView companyName, EngName,timeLoading,CheckOutTime,CheckInTime;
 
             LinearLayout time,mainLiner;
         }
@@ -90,29 +90,11 @@ public class ManagerLayOutAdapter extends BaseAdapter {
             holder.timeLoading =  view.findViewById(R.id.timeLoading);
             holder.time=(LinearLayout) view.findViewById(R.id.time);
             holder.mainLiner=(LinearLayout) view.findViewById(R.id.mainLiner);
+            holder.CheckOutTime= view.findViewById(R.id.CheckOutTime);
+            holder.CheckInTime= view.findViewById(R.id.CheckInTime);
+            holder.CheckOutTime.setVisibility(View.GONE);
+            holder.CheckInTime.setText("" + itemsList.get(i).getCheakInTime());
 
-
-//            SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-//
-//            Date d1 = null;
-//            Date d2 = null;
-//            long diffSeconds=0,diffMinutes=0,diffHours = 0;
-//            try {
-//                d1 = format.parse(itemsList.get(i).getCheakInTime());
-//                d2 = format.parse(itemsList.get(i).getCurrentTime());
-//
-//                //in milliseconds
-//                long diff = d2.getTime() - d1.getTime();
-//
-//                 diffSeconds = diff / 1000 % 60;
-//                 diffMinutes = diff / (60 * 1000) % 60;
-//                 diffHours = diff / (60 * 60 * 1000) % 24;
-////                long diffDays = diff / (24 * 60 * 60 * 1000);
-//
-//
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
 
 
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
@@ -145,7 +127,7 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                     dialog.setContentView(R.layout.information_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-                    TextView customer,company,phone,system,eng,time,states,titel,problem;
+                    TextView customer,company,phone,system,eng,time,states,titel,problem,callCenterName;
                     LinearLayout bac1,bac2;
 
 
@@ -160,6 +142,7 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                     eng=dialog.findViewById(R.id.engName);
                     time=dialog.findViewById(R.id.time);
                     states=dialog.findViewById(R.id.state);
+                    callCenterName=dialog.findViewById(R.id.call_center_name);
                     String statesString ="";
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);
@@ -203,6 +186,7 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                     time.setText("" + itemsList.get(i).getCheakInTime());
                     states.setText(statesString);
                     problem.setText("" + itemsList.get(i).getProplem());
+                    callCenterName.setText(""+itemsList.get(i).getCallCenterName());
 
 //                    Toast.makeText(context, "main "+ holder.EngName.getText().toString(), Toast.LENGTH_SHORT).show();
 

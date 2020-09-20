@@ -1,8 +1,11 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -26,11 +29,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
+import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.DateList;
 import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.callCenterList;
 
 public class PresenterClass {
@@ -374,7 +382,7 @@ public class PresenterClass {
 
 //        ipAddres = databaseHandler.getIp();
         this.callCenterTrackingReport = callCenterTrackingReport;
-        urlCallCenterReport = URL + "import.php?FLAG=1";
+        urlCallCenterReport = URL + "import.php?FLAG=5";
         callCenterRequest = new JsonArrayRequest(Request.Method.GET, urlCallCenterReport, null, new CallCenterClass(), new CallCenterClass());
 //        Log.e("setStateGGG///", "engId" + engId + "state" + state + "url" + urlState);
 
@@ -388,11 +396,15 @@ public class PresenterClass {
 
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public void onResponse(JSONArray response) {
             Log.e("presenter", "CallCenterData/ " + response);
             JSONArray jsonArray = new JSONArray();
             try {
+                callCenterList.clear();
+                DateList.clear();
+
                 jsonArray = response.getJSONObject(1).getJSONArray("CUSTOMER_INFO");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject finalObject = (JSONObject) jsonArray.get(i);
@@ -413,7 +425,11 @@ public class PresenterClass {
 
 
                         callCenterList.add(obj);
+                        DateList.add((finalObject.getString("DATE_OF_TRANSACTION")));
                     }
+
+                callCenterTrackingReport.fillDateSpinner();
+                Log.e("setListDateSizePr",""+"     \n"+DateList.size());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

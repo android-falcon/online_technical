@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bac1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bac_list"
+    android:orientation="vertical"
+    android:padding="30dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:padding="10dp"
+        android:text="@string/transfer"
+        android:gravity="center"
+        android:textColor="@color/darkblue_2"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!--<ImageView-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="9"-->
+        <!--app:srcCompat="@drawable/ic_person_add_black_24dp_white"-->
+        <!--tools:ignore="VectorDrawableCompat" />-->
+
+        <Spinner
+            android:id="@+id/engSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:textColor="@color/darkblue_2"
+            android:textSize="20sp" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/online_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check"
+            android:tint="@color/darkblue_1"
+            app:backgroundTint="@color/goldf"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.994" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bac2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:orientation="vertical">
+
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginBottom="10dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:orientation="horizontal">-->
+
+                <!--<RadioGroup-->
+                    <!--android:id="@+id/radioGroupSolved"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/SolvedRadioButton"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:checked="true"-->
+                        <!--android:text="@string/solved"-->
+                        <!--android:textColor="@color/goldf"-->
+                        <!--android:textSize="18sp"-->
+                        <!--android:textStyle="bold" />-->
+
+                    <!--<RadioButton-->
+                        <!--android:id="@+id/ConvertRadioButton"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:text="@string/convert"-->
+                        <!--android:textColor="@color/goldf"-->
+                        <!--android:textSize="18sp"-->
+                        <!--android:textStyle="bold" />-->
+                <!--</RadioGroup>-->
+            <!--</LinearLayout>-->
+
+            <!--<RadioGroup-->
+                <!--android:id="@+id/ConvertLinear"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_margin="10dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:background="@drawable/background_container"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/SoftwareRadioButton"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:checked="true"-->
+                    <!--android:text="@string/convert_to_software_department"-->
+                    <!--android:textColor="@color/darkblue_2" />-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/outDoorButton"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/convert_to_out_door"-->
+                    <!--android:textColor="@color/darkblue_2" />-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/contractsRadioButton"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="@string/convert_to_contracts_department"-->
+                    <!--android:textColor="@color/darkblue_2" />-->
+            <!--</RadioGroup>-->
+        <!--</LinearLayout>-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:text="@string/problem"
+            android:background="@drawable/button_f_"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+        <EditText
+            android:id="@+id/online_problem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/stroke_f"
+            android:fontFamily="serif"
+            android:gravity="start"
+            android:hint="@string/system_problem"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:maxLines="5"
+            android:padding="10dp"
+            android:text="@string/transfer_to_another_engineer"
+            android:textColor="@color/darkblue_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/transfer_reason"
+            android:background="@drawable/button_f_"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+
+        <EditText
+            android:id="@+id/online_reason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:background="@drawable/stroke_f"
+            android:fontFamily="serif"
+            android:gravity="start"
+            android:hint="@string/transfer_reason"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:maxLines="5"
+            android:padding="10dp"
+
+            android:textColor="@color/darkblue_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+            app:layout_constraintVertical_bias="0.0" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -57,7 +57,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
         }
 
         private class ViewHolder {
-            TextView companyName, EngName, timeLoading;
+            TextView companyName, EngName, timeLoading,CheckOutTime,CheckInTime;
             LinearLayout time,mainLiner;
         }
 
@@ -74,11 +74,18 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
             holder.timeLoading = (TextView) view.findViewById(R.id.timeLoading);
             holder.time=(LinearLayout) view.findViewById(R.id.time);
             holder.mainLiner=(LinearLayout) view.findViewById(R.id.mainLiner);
+            holder.CheckOutTime= view.findViewById(R.id.CheckOutTime);
+            holder.CheckInTime= view.findViewById(R.id.CheckInTime);
+            holder.CheckOutTime.setVisibility(View.VISIBLE);
+
+            holder.CheckOutTime.setTextColor(context.getResources().getColor(R.color.darkblue_2));
+            holder.CheckInTime.setText("" + itemsList.get(i).getCheakInTime());
+            holder.CheckOutTime.setText("" + itemsList.get(i).getCheakOutTime());
 
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
             holder.EngName.setText("" + itemsList.get(i).getEnginerName());
 //            holder.timeLoading.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCheakOutTime()));
-            holder.timeLoading.setText(itemsList.get(i).getCheakInTime());
+            holder.timeLoading.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCheakOutTime()));
             switch (col){
                 case 0:
                     holder.time.setBackground(context.getResources().getDrawable(R.drawable.bac_list_0));
@@ -101,7 +108,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     dialog.setContentView(R.layout.information_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-                    TextView customer,company,phone,system,eng,time,states,titel,problem,stateOfSolve;
+                    TextView customer,company,phone,system,eng,time,states,titel,problem,stateOfSolve,callCenterName;
                     LinearLayout bac1,bac2;
 
 
@@ -117,6 +124,8 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     time=dialog.findViewById(R.id.time);
                     states=dialog.findViewById(R.id.state);
                     stateOfSolve=dialog.findViewById(R.id.stateOfSolve);
+                    callCenterName=dialog.findViewById(R.id.call_center_name);
+
                     String statesString ="";
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);
@@ -157,17 +166,19 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     phone.setText("" + itemsList.get(i).getPhoneNo());
                     system.setText("" + itemsList.get(i).getSystemName());
                     eng.setText("" + itemsList.get(i).getEnginerName());
-                    time.setText("" + itemsList.get(i).getCheakInTime());
+                    time.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCheakOutTime()));
+                    callCenterName.setText(""+itemsList.get(i).getCallCenterName());
+
                     states.setText(statesString);
                     String problemStr=itemsList.get(i).getProplem();
 //                    Log.e("problemStr",""+problemStr.length());
-                    if(problemStr.length()>=20)
-                    {
-                        problem.setText(""+problemStr.substring(0,35));
-                    }
-                    else {
+//                    if(problemStr.length()>=20)
+//                    {
+//                        problem.setText(""+problemStr.substring(0,35));
+//                    }
+//                    else {
                         problem.setText("" + itemsList.get(i).getProplem());
-                    }
+//                    }
 //
 
                     String solveState="";
@@ -184,6 +195,10 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                             break;
                         case 3:
                             solveState=context.getResources().getString(R.string.convert_to_contracts_department);
+                            break;
+
+                        case 4:
+                            solveState=context.getResources().getString(R.string.transfer_to_another_engineer);
                             break;
 
                     }
