@@ -86,11 +86,13 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         List<ManagerLayout> filtered = new ArrayList<>();
         for (int i = 0; i < tempList.size(); i++) {
             String engineer = (Integer.parseInt(tempList.get(i).getCallCenterId()) == 2 ? "Sara" : "Manal");
+            Log.e("compare",engineerText +  engineer + (engineerText.equals(engineer)));
             if (engineerText.equals("All") || engineerText.equals(engineer)) {
                 filtered.add(tempList.get(i));
             }
         }
 
-        fillAdapter();
+        adapter = new CallCenterTrackingAdapter(this, filtered);
+        recyclerView.setAdapter(adapter);
     }
 }
