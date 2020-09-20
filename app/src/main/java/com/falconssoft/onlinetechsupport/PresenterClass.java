@@ -382,7 +382,7 @@ public class PresenterClass {
 
 //        ipAddres = databaseHandler.getIp();
         this.callCenterTrackingReport = callCenterTrackingReport;
-        urlCallCenterReport = URL + "import.php?FLAG=1";
+        urlCallCenterReport = URL + "import.php?FLAG=5";
         callCenterRequest = new JsonArrayRequest(Request.Method.GET, urlCallCenterReport, null, new CallCenterClass(), new CallCenterClass());
 //        Log.e("setStateGGG///", "engId" + engId + "state" + state + "url" + urlState);
 

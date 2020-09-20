@@ -2,6 +2,7 @@ package com.falconssoft.onlinetechsupport;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -76,6 +77,9 @@ public class ManagerImport {
     DatabaseHandler databaseHandler;
     public static TextView countOfCall=null;
     CallCenterTrackingReport callCenterTrackingReport;
+   ManagerLayout managerLayoutTrans;
+   int flag=0;
+   Dialog dialogs;
 
 
     public ManagerImport(Context context) {//, JSONObject obj
@@ -116,10 +120,13 @@ public class ManagerImport {
             new SystemEngineer(callCenterTrackingReport).execute();
     }
 
-    public void startSendingData(JSONObject data,boolean holds) {
+    public void startSendingData(JSONObject data,boolean holds,int flagT,ManagerLayout managerLayout,Dialog dialog) {
         sendSucsses=false;
          datatoSend=data;
        holdin=holds;
+       managerLayoutTrans=managerLayout;
+        flag=flagT;
+        dialogs=dialog;
 
             new SyncManagerLayoutIN().execute();
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
@@ -256,6 +263,8 @@ public class ManagerImport {
                         obj.setSerial(finalObject.getString("SERIAL"));
                         obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
                         obj.setCallCenterName(finalObject.getString("CALL_CENTER_NAME"));
+                        obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
+
                         Log.e("finalObjectConvert",""+obj.getConvertFlag());
 
                         obj.setCurrentTime(curentTime);
@@ -425,6 +434,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                         obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
                         obj.setEngId(finalObject.getString("ENG_ID"));
                         obj.setSerial(finalObject.getString("SERIAL"));
+                        obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
                         obj.setCurrentTime(curentTime);
 
 
@@ -554,6 +564,23 @@ Log.e("tag_itemCard", "****saveSuccess");
 //                        .setContentText(" Send Sucsseful")
 ////                        .hideConfirmButton()
 //                        .show();
+
+                //[{"STATE_DESC":"CUSTOMER_INFO SUCCESS","SERIAL":176}]
+                String Serial="";
+                try {
+                    JSONArray jsonArray=new JSONArray(JsonResponse);
+                    JSONObject jsonObject=jsonArray.getJSONObject(0);
+                     Serial =jsonObject.getString("SERIAL");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+                if(flag==8){
+                    managerLayoutTrans.setTransferToSerial(Serial);
+                   new  UpdateTransferSolved(managerLayoutTrans,dialogs).execute();
+                }
 
                 if(holdin){
                     textState.setText("Success");
@@ -782,6 +809,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                         obj.setSystemId(finalObject.getString("SYS_ID"));
                         obj.setCurrentTime(curentTime);
                         obj.setSerial(finalObject.getString("SERIAL"));
+                        obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
 
                         if(obj.getState().equals("0")&& finalObject.getString("CALL_CENTER_ID").equals( LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1"))){
                             hold_List.add(obj);
@@ -1133,19 +1161,139 @@ CallCenterTrackingReport callCenterTrackingReport;
         return dateTime;
     }
 
+    private class UpdateTransferSolved extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
 
-    public Date formatDate(String date) {
+        Dialog dialog;
+        ManagerLayout managerLayout;
 
-//        Log.e("date", date);
-        String myFormat = "HH:mm:ss"; //In which you need put here
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(myFormat, Locale.US);
-        Date d = null;
-        try {
-            d = simpleDateFormat.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        public UpdateTransferSolved(ManagerLayout managerLayout,Dialog dialog) {
+            this.managerLayout = managerLayout;
+            this.dialog=dialog;
         }
-        return d;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "//onlineTechnicalSupport/export.php";
+
+                JSONObject object = new JSONObject();
+                try {
+
+                    Log.e("problemDataurlString = ", "" + managerLayout.getSerial());
+
+                    object.put("CHECH_OUT_TIME", "00:00:00");
+                    object.put("PROBLEM", managerLayout.getProplem());
+                    object.put("CUST_NAME", managerLayout.getCustomerName());
+                    object.put("CHECH_IN_TIME", managerLayout.getCheakInTime());
+                    object.put("COMPANY_NAME", managerLayout.getCompanyName());
+                    object.put("PHONE_NO", managerLayout.getPhoneNo());
+                    object.put("SYSTEM_NAME", managerLayout.getSystemName());
+                    object.put("SYS_ID", managerLayout.getSystemId());
+                    object.put("ENG_ID", managerLayout.getEngId());
+                    object.put("ENG_NAME", managerLayout.getEnginerName());
+                    object.put("STATE", 0);
+                    object.put("SERIAL", managerLayout.getSerial());
+                    object.put("CONVERT_STATE", managerLayout.getConvertFlag());
+
+                    object.put("TRANSFER_FLAG", managerLayout.getTransferFlag());
+                    object.put("TRANSFER_TO_ENG_ID", managerLayout.getTransferToEngId());
+                    object.put("TRANSFER_TO_ENG_NAME", managerLayout.getTransferToEngName());
+                    object.put("TRANSFER_RESON", managerLayout.getTransferReason());
+                    object.put("TRANSFER_TO_SERIAL", managerLayout.getTransferToSerial());
+
+                    if(managerLayout.getOriginalSerial().equals("-2")) {
+                        object.put("ORGINAL_SERIAL", "-1");
+                    }else {
+                        object.put("ORGINAL_SERIAL", managerLayout.getOriginalSerial());
+                    }
+
+
+//                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String data = "TRANSFER_SOLVED=" + URLEncoder.encode(object.toString(), "UTF-8");
+
+                URL url = new URL(link);
+                Log.e("TRANSFER_SOLVED= ", "" + url.toString());
+                Log.e("TRANSFER_SOLVED= ", "" + data);
+//                Log.e("serial12344 = ", "" + customerOnlineGlobel.getSerial());
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+                wr.writeBytes(data);
+                wr.flush();
+                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCodegggppp -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("PROBLEM_SOLVED SUCCESS")) {
+                Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
+//                hideCustomerLinear();
+
+                dialog.dismiss();
+//                context.FillCheckIn();
+                text_finish.setText("finish");
+
+            } else {
+
+                Log.e("PROBLEM_SOLVED_", "****Failed to export data");
+
+            }
+
+
+        }
+
     }
 
 

@@ -197,6 +197,10 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                             solveState=context.getResources().getString(R.string.convert_to_contracts_department);
                             break;
 
+                        case 4:
+                            solveState=context.getResources().getString(R.string.transfer_to_another_engineer);
+                            break;
+
                     }
 
                     stateOfSolve.setText(""+solveState);

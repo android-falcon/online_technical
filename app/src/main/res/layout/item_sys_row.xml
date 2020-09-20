@@ -68,7 +68,7 @@
             <TextView
                 android:id="@+id/systemName"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="90dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="5dp"
