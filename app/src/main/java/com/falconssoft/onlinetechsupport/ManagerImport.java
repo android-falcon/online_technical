@@ -558,7 +558,7 @@ Log.e("tag_itemCard", "****saveSuccess");
             //&& JsonResponse.contains("CUST_NAME")
             if (JsonResponse != null && JsonResponse.contains("CUSTOMER_INFO SUCCESS")) {
                 sendSucsses=true;
-                text_finish.setText("finish");
+
                 Log.e("tag_ItemOCodeSS", "****Success");
 //                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
 //                        .setTitleText("")
@@ -584,7 +584,10 @@ Log.e("tag_itemCard", "****saveSuccess");
                     managerLayoutTrans.setTransferToSerial(Serial);
                     managerLayoutTrans.setEngId(""+id);
                     textState.setText("Success");
+                    text_finish.setText("AddFinish");
                    new  UpdateTransferSolved(managerLayoutTrans,dialogs).execute();
+                }else {
+                    text_finish.setText("finish");
                 }
 
                 if(holdin){

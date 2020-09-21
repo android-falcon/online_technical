@@ -601,6 +601,12 @@ TextView countOfCallWork;
 
                     callCountCalling();
 
+                }else if(text_finish.getText().toString().equals("AddFinish")){
+                    deleteFromHoldList();
+                    hold_List.clear();
+                    FillCheckIn();
+                    fillHoldList();
+                    callCountCalling();
                 }
 
             }
