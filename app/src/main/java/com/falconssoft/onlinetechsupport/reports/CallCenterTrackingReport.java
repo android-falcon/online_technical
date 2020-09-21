@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -55,11 +57,15 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
     public static List<Systems> systemMList=new ArrayList<Systems>();
     public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
-   int inEng=0;
+    int inEng=0;
     int inSys=0;
+    TextView infoTableReport;
+
     TextView fromDate,toDate;
     private int timeFlag = 0;// 0=> from, 1=> to
     EditText customerEText,phoneEText,companyEText;
+    LinearLayout search;
+
     LinearLayout search;
     private Calendar calendar;
     private SimpleDateFormat dateFormat, dfReport;
@@ -72,6 +78,13 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
 
         presenterClass = new PresenterClass(this);
         presenterClass.getCallCenterData(this);
+        infoTableReport= findViewById(R.id.infoTableReport);
+        infoTableReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogInfoColor();
+            }
+        });
         recyclerView = findViewById(R.id.callCenter_report_recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         callCenterSpinner = findViewById(R.id.callCenter_report_engSpinner);
@@ -168,6 +181,14 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
             }
         };
         return date;
+    }
+
+    private void dialogInfoColor() {
+        Dialog dialog = new Dialog(CallCenterTrackingReport.this,R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.information_dialog_table_color);
+        dialog.show();
     }
 
 
