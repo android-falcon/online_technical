@@ -428,7 +428,7 @@ public class PresenterClass {
                         DateList.add((finalObject.getString("DATE_OF_TRANSACTION")));
                     }
 
-                callCenterTrackingReport.fillDateSpinner();
+//                callCenterTrackingReport.fillDateSpinner();
                 Log.e("setListDateSizePr",""+"     \n"+DateList.size());
             } catch (JSONException e) {
                 e.printStackTrace();
