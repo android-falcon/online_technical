@@ -47,14 +47,14 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
 
 
 
-        if (list.get(i).getState().equals("1")) {
+        if (list.get(i).getState().equals("1")) {// in service
             holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.greenColor2));
 
-        } else if (list.get(i).getState().equals("2")) {
-            holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.layer2));
+        } else if (list.get(i).getState().equals("2")) {// check out
+            holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.light_blue_over));
 
-        } else if (list.get(i).getState().equals("0")) {
-            holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.yellow1));
+        } else if (list.get(i).getState().equals("0")) {// hold
+            holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.goldf2));
 
         }
 

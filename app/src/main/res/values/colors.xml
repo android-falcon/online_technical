@@ -9,7 +9,7 @@
     <color name="white">#F7F4F6</color>
     <color name="RedColor">#F84343</color>
     <color name="greenColor">#12880B</color>
-    <color name="greenColor2">#9568F75F</color>
+    <color name="greenColor2">#7793B391</color>
     <color name="noColor">#0012880B</color>
 
     <color name="blueColor">#4FB5FA</color>
@@ -58,7 +58,7 @@
     <color name="red_dark">#791916</color>
 
     <color name="exit_hover">#E77471</color>
-    <color name="light_blue_over">#E0FFFF</color>
+    <color name="light_blue_over">#C1E0FFFF</color>
     <color name="light_blue">#C2DFFF</color>
     <color name="dark_blue">#89cbee</color>
     <color name="blue_ice">#368BC1</color>
@@ -72,6 +72,7 @@
 
     <color name="grayf">#ABFFFFFF</color>
     <color name="goldf">#C9A63C</color>
+    <color name="goldf2">#99F5D160</color>
     <color name="gray2f">#59D8D4D4</color>
     <color name="greenf">#44FF03</color>
     <color name="redf">#FC2828</color>
