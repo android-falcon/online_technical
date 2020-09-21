@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -29,6 +31,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -42,7 +45,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     private PresenterClass presenterClass;
     public static List<ManagerLayout> callCenterList = new ArrayList<>();
     private ArrayAdapter<String> callCenterAdapter,dateAdapter,engAdapter,sysAdapter;
-    private Spinner callCenterSpinner,dateSpinner,engSpinner,sysSpinner;
+    private Spinner callCenterSpinner,engSpinner,sysSpinner;//dateSpinner
     private String engineerText = "All", DateText = "All",engText="All",systemText="All";
     private List<String> engineerList = new ArrayList<>();
     private List<ManagerLayout> tempList = new ArrayList<>();
@@ -54,10 +57,13 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
    int inEng=0;
     int inSys=0;
-
+    TextView fromDate,toDate;
+    private int timeFlag = 0;// 0=> from, 1=> to
     EditText customerEText,phoneEText,companyEText;
-LinearLayout search;
-
+    LinearLayout search;
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat, dfReport;
+    private Date date;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +81,7 @@ LinearLayout search;
         phoneEText=findViewById(R.id.callCenter_report_phone);
         companyEText=findViewById(R.id.eng_report_company);
         search=findViewById(R.id.search);
-        dateSpinner= findViewById(R.id.callCenter_report_dateSpinner);
+//        dateSpinner= findViewById(R.id.callCenter_report_dateSpinner);
         adapter = new CallCenterTrackingAdapter(this, callCenterList);
         recyclerView.setAdapter(adapter);
         count=findViewById(R.id.count);
@@ -87,12 +93,43 @@ LinearLayout search;
         callCenterSpinner.setAdapter(callCenterAdapter);
         callCenterSpinner.setOnItemSelectedListener(this);
 
+        fromDate=findViewById(R.id.fromDate);
+        toDate=findViewById(R.id.toDate);
+
         ManagerImport managerImport=new ManagerImport(CallCenterTrackingReport.this);
         managerImport.startSendingEngSys(CallCenterTrackingReport.this);
 
 //        customerEText.addTextChangedListener(textWatcher);
 //        phoneEText.addTextChangedListener(textWatcher);
 //        companyEText.addTextChangedListener(textWatcher);
+
+        date = Calendar.getInstance().getTime();
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        fromDate.setText(dateFormat.format(date));
+        toDate.setText(dateFormat.format(date));
+
+
+        fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timeFlag = 0;
+                new DatePickerDialog(CallCenterTrackingReport.this, openDatePickerDialog(timeFlag), calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timeFlag = 1;
+                new DatePickerDialog(CallCenterTrackingReport.this, openDatePickerDialog(timeFlag), calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
 
         search.setOnClickListener(new View.OnClickListener() {
@@ -104,6 +141,33 @@ LinearLayout search;
             }
         });
 
+    }
+
+
+    public DatePickerDialog.OnDateSetListener openDatePickerDialog(final int flag) {
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                // TODO Auto-generated method stub
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                String myFormat = "dd/MM/yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+                if (flag == 0)
+                    fromDate.setText(sdf.format(calendar.getTime()));
+                else
+                    toDate.setText(sdf.format(calendar.getTime()));
+
+                if (!fromDate.getText().toString().equals("") && !toDate.getText().toString().equals("")) {
+                    filter();
+                }
+            }
+        };
+        return date;
     }
 
 
@@ -160,11 +224,11 @@ LinearLayout search;
                 Log.e("engineer1", engineerText);
                 filter();
                 break;
-            case R.id.callCenter_report_dateSpinner:
-                DateText = parent.getSelectedItem().toString();
-                Log.e("DateText", DateText);
-                filter();
-                break;
+//            case R.id.callCenter_report_dateSpinner:
+//                DateText = parent.getSelectedItem().toString();
+//                Log.e("DateText", DateText);
+//                filter();
+//                break;
 
 
             case R.id.eng_report_dateSpinner:
@@ -194,29 +258,29 @@ LinearLayout search;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void fillDateSpinner(){
-
-        Set<String> set = new HashSet<>(DateList);
-        dateListReal.clear();
-        dateListReal.addAll(set);
-
-        dateListReal.add(0,"All");
-
-        List<String> dateDayList=new ArrayList<>();
-        dateDayList.add(0,"All");
-
-        for (int i=1;i<dateListReal.size();i++) {
-    String input_date = dateListReal.get(i);
-    String day=getDate(input_date);
-    dateDayList.add(i,input_date+"   ("+day+")");
-
-}
-        dateAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, dateDayList);
-        dateAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
-        dateSpinner.setAdapter(dateAdapter);
-        dateSpinner.setOnItemSelectedListener(this);
-
-    }
+//    public void fillDateSpinner(){
+//
+//        Set<String> set = new HashSet<>(DateList);
+//        dateListReal.clear();
+//        dateListReal.addAll(set);
+//
+//        dateListReal.add(0,"All");
+//
+//        List<String> dateDayList=new ArrayList<>();
+//        dateDayList.add(0,"All");
+//
+//        for (int i=1;i<dateListReal.size();i++) {
+//    String input_date = dateListReal.get(i);
+//    String day=getDate(input_date);
+//    dateDayList.add(i,input_date+"   ("+day+")");
+//
+//}
+//        dateAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, dateDayList);
+//        dateAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
+//        dateSpinner.setAdapter(dateAdapter);
+//        dateSpinner.setOnItemSelectedListener(this);
+//
+//    }
 
 
     String getDate(String input_date){
@@ -286,14 +350,15 @@ LinearLayout search;
                 company="All";
             }
 
-
-            /*(formatDate(details.get(m).getDate()).after(formatDate(fromDateLocal))
-                    || formatDate(details.get(m).getDate()).equals(formatDate(fromDateLocal)))
-                    && (formatDate(details.get(m).getDate()).before(formatDate(toDateLocal))
-                    || formatDate(details.get(m).getDate()).equals(formatDate(toDateLocal)))*/
+           String  fromDateLocal="",toDateLocal="";
+            fromDateLocal=fromDate.getText().toString();
+            toDateLocal=toDate.getText().toString();
 
             if ((engineerText.equals("All") || engineerText.equals(engineer))
-                    &&((formatDate(tempList.get(i).getTransactionDate()).equals(formatDate(DateText)))||DateText.equals("All"))
+                    &&((formatDate(tempList.get(i).getTransactionDate()).after(formatDate(fromDateLocal))
+                    || formatDate(tempList.get(i).getTransactionDate()).equals(formatDate(fromDateLocal)))
+                    && (formatDate(tempList.get(i).getTransactionDate()).before(formatDate(toDateLocal))
+                    || formatDate(tempList.get(i).getTransactionDate()).equals(formatDate(toDateLocal))))
                     &&(engText.equals("All") || tempList.get(i).getEnginerName().equals(engText))
                     &&(systemText.equals("All") || tempList.get(i).getSystemName().equals(systemText))
                     &&(company.equals("All")||tempList.get(i).getCompanyName().contains(company))
