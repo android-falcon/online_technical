@@ -245,8 +245,6 @@ LinearLayout search;
             tempList.add(object);
         }
 
-
-
         List<ManagerLayout> filtered = new ArrayList<>();
         for (int i = 0; i < tempList.size(); i++) {
             String engineer = (Integer.parseInt(tempList.get(i).getCallCenterId()) == 2 ? "Sarah" : "Manal");
