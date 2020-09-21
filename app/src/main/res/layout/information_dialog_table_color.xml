@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+
+    android:background="@color/colorPrimaryDark"
+    >
+    <TextView
+        android:id="@+id/textView2d2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="3"
+        android:fontFamily="@font/averia_libre_light"
+        android:textColor="@color/white_dark"
+        android:text="Help Info ! "
+        android:textSize="16sp" />
+    <LinearLayout
+        android:background="@drawable/bac_list_2"
+        android:layout_height="wrap_content"
+        android:padding="40dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent">
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:background="@color/greenColor2"
+                android:fontFamily="@font/averia_libre_light"
+                android:textColor="@color/darkBlueColor"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/customerName22"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/averia_libre_light"
+                android:textAlignment="center"
+                android:text="Customer In Services"
+                android:textColor="@color/darkBlueColor"
+                android:textSize="16sp" />
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textView411"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:fontFamily="@font/averia_libre_light"
+                android:background="@color/light_blue_over"
+
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/customerName11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/averia_libre_light"
+                android:textAlignment="center"
+                android:text="Customer Check Out "
+                android:textColor="@color/darkBlueColor"
+                android:textSize="16sp" />
+
+        </TableRow>
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:fontFamily="@font/averia_libre_light"
+
+                android:background="@color/goldf2"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/customerName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/averia_libre_light"
+                android:textAlignment="center"
+                android:text="Customer In Hold"
+                android:textColor="@color/darkBlueColor"
+                android:textSize="16sp" />
+
+        </TableRow>
+    </LinearLayout>
+
+</LinearLayout>
