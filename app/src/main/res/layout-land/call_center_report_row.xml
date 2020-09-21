@@ -4,6 +4,7 @@
     android:layout_height="wrap_content">
 
     <TableRow
+        android:id="@+id/row_mainLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
@@ -14,9 +15,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:paddingVertical="15dp"
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
+            android:paddingVertical="15dp"
             android:text="@string/eng"
             android:textColor="@color/black"
             android:textSize="16sp" />

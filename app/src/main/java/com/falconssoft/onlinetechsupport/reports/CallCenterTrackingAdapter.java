@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,20 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
         holder.hold.setText(list.get(i).getHoldTime());
         holder.transactionDate.setText(list.get(i).getTransactionDate());
 
+
+
+        if (list.get(i).getState().equals("1")) {
+            holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.greenColor2));
+
+        } else if (list.get(i).getState().equals("2")) {
+            holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.layer2));
+
+        } else if (list.get(i).getState().equals("0")) {
+            holder.row_mainLayout.setBackgroundColor(context.getResources().getColor(R.color.yellow1));
+
+        }
+
+
     }
 
     @Override
@@ -53,6 +68,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
 
     class CallCenterTrackingViewHolder extends RecyclerView.ViewHolder{
         TextView eng, system, problem, customer, phone, company, checkIn, checkOut, hold, transactionDate;
+        TableRow row_mainLayout;
 
         public CallCenterTrackingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -67,6 +83,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
             checkOut = itemView.findViewById(R.id.callCenter_report_checkOut);
             hold = itemView.findViewById(R.id.callCenter_report_hold);
             transactionDate = itemView.findViewById(R.id.callCenter_report_transTime);
+            row_mainLayout=itemView.findViewById(R.id.row_mainLayout);
 
         }
     }
