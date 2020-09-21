@@ -42,7 +42,7 @@
     <string name="hold">Hold</string>
     <string name="more_information">More Information</string>
     <string name="eng_name">Eng Name :</string>
-    <string name="time_loading">Time Loading :</string>
+    <string name="time_loading"> Loading Time :</string>
     <string name="states">States :</string>
     <string name="problem_detail">Problem Detail :</string>
     <string name="done">Done</string>
@@ -59,7 +59,7 @@
     <string name="phone">phone</string>
     <string name="eng">Engineer</string>
     <string name="report">report</string>
-    <string name="date">date</string>
+    <string name="date">Date</string>
     <string name="no_data_exsist">No Data Exsist</string>
     <string name="list_work"> Service Customer List  </string>
     <string name="convert">Convert</string>
@@ -68,4 +68,9 @@
     <string name="convert_to_out_door">Convert To Out Door</string>
     <string name="convert_to_contracts_department">Convert To Contracts Department</string>
     <string name="solve_state">Solve State</string>
+    <string name="search">Search</string>
+    <string name="call_center_name">Call Center Name</string>
+    <string name="transfer">Transfer</string>
+    <string name="transfer_reason">Transfer Reason</string>
+    <string name="transfer_to_another_engineer">Transfer to another Engineer</string>
 </resources>

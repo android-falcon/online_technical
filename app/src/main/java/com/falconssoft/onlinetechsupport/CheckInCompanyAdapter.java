@@ -23,17 +23,27 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
 import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
+import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,14 +55,21 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.EngId;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.engStringName;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.isInHold;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_delet_id;
@@ -64,6 +81,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
     List<CompaneyInfo> companeyInfos=new ArrayList<>();
      int row_index=-1;
 
+     ManagerLayout managerLayoutTransfer=new ManagerLayout();
     String ipAdress="";
      DatabaseHandler databaseHandler;
     String convFalg="0";
@@ -72,6 +90,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
         this.context = context;
         this.companey = companeyInfo;
         databaseHandler=new DatabaseHandler(context);
+
     }
 
     @NonNull
@@ -92,8 +111,10 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                 @Override
                 public void onClick(View v) {
 //                    notifyDataSetChanged();
+                     getChoesDialog(companey.get(i));
+                     managerLayoutTransfer=companey.get(i);
+//                    checkInDialog(companey.get(i));
 
-                    checkInDialog(companey.get(i));
 
                 }
 
@@ -230,7 +251,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
 
                         if (!isProbablyArabic(problems)){
-                            if (problems.length() <= 255) {
+                            if (problems.length() <= 500) {
 
                                 new UpdateProblemSolved(managerLayout, dialog).execute();
 
@@ -238,12 +259,12 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                                 Toast.makeText(context, "Max Length of problem 255 Char", Toast.LENGTH_SHORT).show();
                             }
                     }else {
-                            if (problems.length() <= 142) {
+                            if (problems.length() <= 130) {
 
                                 new UpdateProblemSolved(managerLayout, dialog).execute();
 
                             } else {
-                                Toast.makeText(context, "Max Length of problem  142 Char", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Max Length of problem  130 Char", Toast.LENGTH_SHORT).show();
                             }
                         }
                     } else {
@@ -259,6 +280,206 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
 
         dialog.show();
+
+    }
+
+    void TransferDialog(final ManagerLayout managerLayout ){
+        final Dialog dialog = new Dialog(context,R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.transfer_dialog);
+
+        final Spinner engSpinner=dialog.findViewById(R.id.engSpinner);
+        final EditText problem=dialog.findViewById(R.id.online_problem);
+
+        final EditText reason=dialog.findViewById(R.id.online_reason);
+
+//       fillEngineerInfoList(engSpinner);
+        fillSpinner(engSpinner);
+
+
+
+
+
+
+        FloatingActionButton addActionButton=dialog.findViewById(R.id.online_add);
+
+        try {
+
+            engSpinner.setSelection(engStringName.indexOf(managerLayout.getEnginerName()));
+        }catch (Exception e){
+
+        }
+
+        addActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String engName="";
+                try {
+                    engName=managerLayout.getEnginerName();
+
+                }catch (Exception e){
+                    engName="-1";
+                }
+
+                Toast.makeText(context, "in Online Add!", Toast.LENGTH_SHORT).show();
+
+                if(!engName.equals("-1")) {
+                    if (!TextUtils.isEmpty(problem.getText().toString())) {
+                        if (!TextUtils.isEmpty(reason.getText().toString())) {
+
+                            EngId=Integer.parseInt(managerLayout.getEngId());
+                        String problems = problem.getText().toString();
+                        String reasons = reason.getText().toString();
+
+
+                        String engNames = "";
+                        String idEng = "";
+                        int engIdPos;
+                        try {
+                            engNames = engSpinner.getSelectedItem().toString();
+                            engIdPos = engSpinner.getSelectedItemPosition();
+                            idEng = engInfoTra.get(engIdPos).getId();
+                            Log.e("Transeng_idtrans", "" + idEng);
+                            Log.e("Transeng_name", "" + engNames);
+
+                        } catch (Exception e) {
+                            idEng = managerLayout.getEngId();
+                        }
+
+                        managerLayout.setEnginerName(engNames);
+                        managerLayout.setEngId(idEng);
+
+
+                        //________________________transData
+                        managerLayoutTransfer.setProplem(problems);
+                        managerLayoutTransfer.setConvertFlag("4");//transfer to another eng
+                        managerLayoutTransfer.setTransferReason(reasons);
+                        managerLayoutTransfer.setTransferFlag("1");
+                        managerLayoutTransfer.setTransferToEngId(idEng);
+                        managerLayoutTransfer.setTransferToEngName(engNames);
+                        managerLayoutTransfer.setTransferToSerial("");
+
+
+                        Log.e("problemSize", "" + problems.length());
+
+
+                        if (!isProbablyArabic(problems)) {
+                            if (problems.length() <= 500) {
+
+//                                new UpdateTransferSolved(managerLayout, dialog).execute();
+
+                                saveTrans(managerLayout, dialog);
+
+                            } else {
+                                Toast.makeText(context, "Max Length of problem 255 Char", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            if (problems.length() <= 130) {
+
+                                saveTrans(managerLayout, dialog);
+//                                new UpdateTransferSolved(managerLayout, dialog).execute();
+
+                            } else {
+                                Toast.makeText(context, "Max Length of problem  130 Char", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }else {
+                            Toast.makeText(context, "Please add Reason first!", Toast.LENGTH_SHORT).show();
+                    }
+                    } else {
+                        Toast.makeText(context, "Please add problem first!", Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+
+                }
+
+
+            }
+        });
+
+
+        dialog.show();
+
+    }
+
+    void saveTrans(ManagerLayout managerLayout,Dialog dialog){
+
+        JSONObject data = null;
+        try {
+            data = getData(managerLayout);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e("data", "" + data);
+        ManagerImport managerImport = new ManagerImport(context);
+        managerImport.startSendingData(data, false,8,managerLayoutTransfer,dialog);
+
+    }
+
+
+    private JSONObject getData(ManagerLayout managerLayout) throws JSONException {
+        String time = "", sys_name = "", sys_Id = "";
+        String customerName = "", companeyName = "", tele = "";
+
+        customerName = managerLayout.getCustomerName();
+        companeyName =  managerLayout.getCompanyName();
+
+//        String phoneFirst="";
+
+//        try{
+//            phoneFirst=spinnerPhone.getSelectedItem().toString();
+//        }catch (Exception e){
+//            phoneFirst="06";
+//        }
+
+        tele =  managerLayout.getPhoneNo();
+        Date currentTimeAndDate = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
+        time = df.format(currentTimeAndDate);
+//        sys_name = spenner_systems.getSelectedItem().toString();
+//        if(spenner_systems.getCount()!=0){
+//            sys_name = spenner_systems.getSelectedItem().toString();
+//            Log.e("sys_name",""+sys_name);
+//        }
+        sys_name= managerLayout.getSystemName();
+        sys_Id = managerLayout.getSystemId();
+
+        String engName=managerLayout.getEnginerName();
+        String engId=managerLayout.getEngId();
+
+
+        final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
+        final String CallName = LoginActivity.sharedPreferences.getString(LOGIN_NAME, "-1");
+        Log.e("call_id1",""+CallId+"    "+sys_Id +"    "+ CallName);
+
+        JSONObject obj = new JSONObject();
+
+            obj.put("CUST_NAME", "'" + customerName + "'");
+            obj.put("COMPANY_NAME", "'" + companeyName + "'");
+            obj.put("SYSTEM_NAME", "'" + sys_name + "'");
+            obj.put("PHONE_NO", "'" + tele + "'");
+            obj.put("CHECH_IN_TIME", "'" + time + "'");
+            obj.put("STATE", "'1'");// state for companey // 1 --> check in  // 2 ---> check out  0----> hold
+            obj.put("ENG_NAME", "'" + engName + "'");
+            obj.put("ENG_ID", "'" + engId + "'");
+            obj.put("SYS_ID", "'" + sys_Id + "'");
+            obj.put("CHECH_OUT_TIME", "'00:00:00'");
+            obj.put("PROBLEM", "'problem'");
+            obj.put("CALL_CENTER_ID", "'"+CallId+"'");
+            obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
+            obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
+            obj.put("SERIAL", "'"+"222"+"'");
+            obj.put("CALL_CENTER_NAME", "'"+CallName+"'");
+            obj.put("TRANSFER_FLAG", "'2'");
+           if(managerLayout.getOriginalSerial().equals("-1")||managerLayout.getOriginalSerial().equals("-2")) {
+               obj.put("ORGINAL_SERIAL", managerLayout.getSerial());
+               }else{
+               obj.put("ORGINAL_SERIAL", managerLayout.getOriginalSerial());
+           }
+
+        return obj;
+
 
     }
 
@@ -385,6 +606,66 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
     }
 
+
+
+
+    void getChoesDialog(final ManagerLayout managerLayout){
+        final Button itemCard = new Button(context);
+        final Button itemSwitch = new Button(context);
+        final Button sl = new Button(context);
+
+        itemCard.setText(context.getResources().getString(R.string.check_out_time));
+        itemSwitch.setText(context.getResources().getString(R.string.transfer));
+
+        itemCard.setTextColor(Color.WHITE);
+        itemSwitch.setTextColor(Color.WHITE);
+
+        if (SweetAlertDialog.DARK_STYLE) {
+            itemCard.setTextColor(Color.WHITE);
+            itemSwitch.setTextColor(Color.WHITE);
+        }
+
+        itemCard.setHovered(true);
+        sl.setHeight(14);
+        itemCard.setBackground(context.getResources().getDrawable(R.drawable.button_f));
+        itemSwitch.setBackground(context.getResources().getDrawable(R.drawable.button_f));
+        sl.setBackground(context.getResources().getDrawable(R.drawable.bac_list));
+        LinearLayout linearLayout = new LinearLayout(context.getApplicationContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(itemCard);
+        linearLayout.addView( sl);
+        linearLayout.addView(itemSwitch);
+
+
+
+        final SweetAlertDialog dialog = new SweetAlertDialog(context, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                .setTitleText("")
+                .hideConfirmButton();
+
+        dialog.setCustomView(linearLayout);
+        dialog.show();
+
+
+        itemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkInDialog(managerLayout);
+                dialog.dismissWithAnimation();
+            }
+        });
+
+        itemSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TransferDialog(managerLayout);
+                dialog.dismissWithAnimation();
+
+            }
+        });
+
+
+    }
+
     public static boolean isProbablyArabic(String s) {//know if char is arabic or eng
         for (int i = 0; i < s.length();) {
             int c = s.codePointAt(i);
@@ -394,5 +675,13 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
         }
         return false;
     }
+
+
+   void  fillSpinner(Spinner engSpinner){
+       ArrayAdapter <String> spinnerEngAdapter=new ArrayAdapter<String>(context, R.layout.spinner_text, engStringName);
+//       spinnerEngAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       engSpinner.setAdapter(spinnerEngAdapter);
+//
+   }
 
 }

@@ -70,12 +70,13 @@ import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
+import static com.falconssoft.onlinetechsupport.ManagerImport.countOfCall;
 import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
 
 public class OnlineCenter extends AppCompatActivity {
     GridView gridView;
      public static RecyclerView recyclerView,recyclerViewCheckIn;
-     public  static List<EngineerInfo> engineerInfoList, listEngforAdapter;
+     public  static List<EngineerInfo> engineerInfoList, listEngforAdapter,engInfoTra;
     List<ManagerLayout> holdCompaney;
     public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState,systype;
     TextView callCenterName,LogInTime,deletaAllText;
@@ -86,7 +87,7 @@ public class OnlineCenter extends AppCompatActivity {
     String ipAddres = "";
     public  static  List<Systems> systemsList;
     LinearLayoutManager layoutManager;
-    int stateCompaney = -1, selectedEngId = 0,EngId=-1;
+    public  static int stateCompaney = -1, selectedEngId = 0,EngId=-1;
       String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
     Timer timer;
@@ -100,6 +101,8 @@ public class OnlineCenter extends AppCompatActivity {
     Spinner spinnerPhone;
 List<String> spinnerPhoneList;
 ArrayAdapter <String> spinnerPhoneAdapter;
+TextView countOfCallWork;
+    public static List<String >engStringName=new ArrayList<>();
 
 
     @SuppressLint("WrongConstant")
@@ -115,7 +118,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         }
 
         initialView();
-
+        engInfoTra=new ArrayList<>();
 
         fillPhoneSpinner();
 
@@ -148,6 +151,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         }, 0, 4000);
 
 
+        callCountCalling();
 
 
         fillHoldList();
@@ -155,6 +159,25 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         //fillSpennerSystem(systemsList);
 
         FillCheckIn();
+
+        countOfCallWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                callCountCalling();
+
+            }
+        });
+
+
+    }
+
+    void callCountCalling (){
+
+        countOfCall=countOfCallWork;
+
+        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+        managerImport.startSending("CountCallWork");
 
 
     }
@@ -166,6 +189,8 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         spinnerPhoneList.add("078");
         spinnerPhoneList.add("079");
         spinnerPhoneList.add("077");
+        spinnerPhoneList.add("+966");
+        spinnerPhoneList.add("+964");
 
         spinnerPhoneAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
         spinnerPhoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -374,7 +399,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         fillSysDialog.show();
     }
 
-    private void fillEngineerInfoList(final int flag) {
+    public void fillEngineerInfoList(final int flag) {
 //        if(TextUtils.isEmpty(ipAddres)){
 //            Toast.makeText(this, "ip Not Found,Please Add Ip", Toast.LENGTH_SHORT).show();
 //        }
@@ -394,6 +419,8 @@ ArrayAdapter <String> spinnerPhoneAdapter;
 
                                 JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
                                 Log.e("info", "" + info);
+                                engInfoTra.clear();
+                                engStringName.clear();
                                 for (int i = 0; i < info.length(); i++) {
                                     JSONObject engineerInfoObject = info.getJSONObject(i);
                                     EngineerInfo engineerInfo = new EngineerInfo();
@@ -403,6 +430,13 @@ ArrayAdapter <String> spinnerPhoneAdapter;
                                     engineerInfo.setState(engineerInfoObject.getInt("STATE"));
 
                                     Log.e("ENG_TYPE",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
+
+                                    if(engineerInfo.getEng_type()==2){
+                                        engInfoTra.add(engineerInfo);
+                                        engStringName.add(engineerInfo.getName());
+
+                                    }
+
                                     if( engineerInfo.getEng_type()==2&& engineerInfo.getState()==0)
                                     {
                                         engineerInfoList.add(engineerInfo);
@@ -413,8 +447,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
                                 }
                                 sendEngineerToAdapter();
 
-                            }
-                            else {
+                            } else {
                                 engineerInfoList.clear();
 
                                 try {
@@ -457,6 +490,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
 //                                systemGridDialog(systemsList);
                                 sendEngineerToAdapter();
                             }
+
 
 
 
@@ -526,6 +560,7 @@ ArrayAdapter <String> spinnerPhoneAdapter;
                 clearText();
             }
         });
+        countOfCallWork=findViewById(R.id.countOfCallWork);
         LogInTime=findViewById(R.id.LogInTime);
         textState.addTextChangedListener(new TextWatcher() {
             @Override
@@ -563,6 +598,15 @@ ArrayAdapter <String> spinnerPhoneAdapter;
                     hold_List.clear();
                     FillCheckIn();
                     fillHoldList();
+
+                    callCountCalling();
+
+                }else if(text_finish.getText().toString().equals("AddFinish")){
+                    deleteFromHoldList();
+                    hold_List.clear();
+                    FillCheckIn();
+                    fillHoldList();
+                    callCountCalling();
                 }
 
             }
@@ -574,15 +618,16 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         });
     }
 
+
     public void sendCompaneyInfo() throws JSONException {
         boolean isfaull = checkRequiredData();
         if (isfaull) {
             if (engineerInfoList.size() != 0) {
                 if(!isInHold) {
-                    JSONObject data = getData();
+                    JSONObject data = getData("0",1);
                     Log.e("data", "" + data);
                     ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                    managerImport.startSendingData(data, true);
+                    managerImport.startSendingData(data, true,0,null,null);
                 }else{
                     if(!text_delet_id.getText().toString().equals("")) {
                         CompaneyInfo companeyInfo = new CompaneyInfo();
@@ -675,12 +720,15 @@ ArrayAdapter <String> spinnerPhoneAdapter;
     public void clearData() {
         clearText();
 
-        if(engineerInfoList.size()!=0)
-        {
-            engineerInfoList.remove(selectedEngId);
-            engineerAdapter = new adapterGridEngineer(this, engineerInfoList);
-            gridView.setAdapter(engineerAdapter);
-            engineerAdapter.notifyDataSetChanged();
+        try {
+            if (engineerInfoList.size() != 0) {
+                engineerInfoList.remove(selectedEngId);
+                engineerAdapter = new adapterGridEngineer(this, engineerInfoList);
+                gridView.setAdapter(engineerAdapter);
+                engineerAdapter.notifyDataSetChanged();
+            }
+        }catch (Exception e){
+            Log.e("error ","clearData "+e);
         }
 
 
@@ -694,7 +742,8 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         systype.setText("");
     }
 
-    private JSONObject getData() throws JSONException {
+    private JSONObject getData(String transferFlag,int isHold) throws JSONException {
+//        isHold ======> for hold work without eng list
         String time = "", sys_name = "", sys_Id = "";
         String customerName = "", companeyName = "", tele = "";
 
@@ -720,16 +769,28 @@ ArrayAdapter <String> spinnerPhoneAdapter;
 //        }
         sys_name=systype.getText().toString();
         sys_Id = getSystemId(sys_name.replace(",",""));
-        if (engineerInfoList.size() == 0) {
+//        if (engineerInfoList.size() == 0) {
+//            stateCompaney = 0;// hold
+//        } else {
+//            stateCompaney = 1;
+//        }
+
+        if (isHold == 0) {
             stateCompaney = 0;// hold
         } else {
             stateCompaney = 1;
         }
+
+
         final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
-        Log.e("call_id1",""+CallId+"    "+sys_Id);
+        final String CallName = LoginActivity.sharedPreferences.getString(LOGIN_NAME, "-1");
+        Log.e("call_id1",""+CallId+"    "+sys_Id +"    "+ CallName);
 
         JSONObject obj = new JSONObject();
-        if (engineerInfoList.size() != 0) {
+
+
+
+        if (engineerInfoList.size() != 0 ||isHold!=0) {
             obj.put("CUST_NAME", "'" + customerName + "'");
             obj.put("COMPANY_NAME", "'" + companeyName + "'");
             obj.put("SYSTEM_NAME", "'" + sys_name + "'");
@@ -745,6 +806,9 @@ ArrayAdapter <String> spinnerPhoneAdapter;
             obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
             obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
             obj.put("SERIAL", "'"+"222"+"'");
+            obj.put("CALL_CENTER_NAME", "'"+CallName+"'");
+            obj.put("TRANSFER_FLAG", "'"+transferFlag+"'");
+            obj.put("ORGINAL_SERIAL", "'-2'");
         } else {
             // hold company data
             obj.put("CUST_NAME", "'" + customerName + "'");
@@ -811,46 +875,68 @@ ArrayAdapter <String> spinnerPhoneAdapter;
         if (view.getId() == R.id.btn_hold) {
             view.startAnimation(buttonClick);
             if (checkRequiredData()) {
-                if (engineerInfoList.size() == 0) {
-                    Date currentTimeAndDate = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("hh:mm");
-                    String time = df.format(currentTimeAndDate);
-                    Log.e("timeHold", "" + time);
-                    LinearLayoutManager llm = new LinearLayoutManager(this);
-                    llm.setOrientation(LinearLayoutManager.VERTICAL);
-                    ManagerLayout info = new ManagerLayout();
-                    info.setCompanyName(companey_name.getText().toString());
-                    info.setPhoneNo(telephone_no.getText().toString());
-                    info.setCustomerName(customer_name.getText().toString());
-                    info.setSystemName(systype.getText().toString());
-                    info.setState("0");
-                    info.setCheakInTime(time);
-                    JSONObject data = null;
-                    try {
-                        data = getData();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Log.e("data", "" + data);
-                    ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                    managerImport.startSendingData(data,false);
+//                if (engineerInfoList.size() == 0) {
 
-                    holdCompaney.add(info);
-                    hold_List.add(info);
-                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
-
-                    recyclerView.setLayoutManager(llm);
-                    recyclerView.setAdapter(companyAdapter);
-                    clearData();
-
-                } else {
-                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("warning!!")
-                            .setContentText("there is engineer available !!!")
-//                            .hideConfirmButton()
+                            .setContentText("Add To Hold List !!!")
+                           .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                               @Override
+                               public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                   Date currentTimeAndDate = Calendar.getInstance().getTime();
+                                   SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+                                   String time = df.format(currentTimeAndDate);
+                                   Log.e("timeHold", "" + time);
+                                   LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
+                                   llm.setOrientation(LinearLayoutManager.VERTICAL);
+                                   ManagerLayout info = new ManagerLayout();
+                                   info.setCompanyName(companey_name.getText().toString());
+                                   info.setPhoneNo(telephone_no.getText().toString());
+                                   info.setCustomerName(customer_name.getText().toString());
+                                   info.setSystemName(systype.getText().toString());
+                                   info.setState("0");
+                                   info.setCheakInTime(time);
+                                   JSONObject data = null;
+                                   try {
+                                       data = getData("0",0);
+                                   } catch (JSONException e) {
+                                       e.printStackTrace();
+                                   }
+                                   Log.e("data", "" + data);
+                                   ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                                   managerImport.startSendingData(data,false ,0,null,null);
+
+                                   holdCompaney.add(info);
+                                   hold_List.add(info);
+                                   final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
+
+                                   recyclerView.setLayoutManager(llm);
+                                   recyclerView.setAdapter(companyAdapter);
+                                   clearData();
+                                   sweetAlertDialog.dismissWithAnimation();
+
+                               }
+                           })
+                            .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                    sweetAlertDialog.dismissWithAnimation();
+
+                                }
+                            })
                             .show();
 
-                }
+
+//                } else {
+//                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText("warning!!")
+//                            .setContentText("there is engineer available !!!")
+////                            .hideConfirmButton()
+//                            .show();
+//
+//                }
 
             }
         }

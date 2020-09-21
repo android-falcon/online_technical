@@ -231,14 +231,14 @@ public class OnlineActivity extends AppCompatActivity implements View.OnClickLis
 //                        currentTime = Calendar.getInstance().getTime();
                         Log.e("time", "" + currentTime);
                         onlineEditor = onlineSharedPreferences.edit();
-                        onlineEditor.putString(ONLINE_PROBLEM, "" + problem.getText());
+                        onlineEditor.putString(ONLINE_PROBLEM, "" + problem.getText().toString());
                         onlineEditor.putString(ONLINE_CHECH_OUT_TIME, "" + "00:00:00");
                         onlineEditor.commit();
 
                         CustomerOnline customerOnline = new CustomerOnline();
-                        customerOnline.setProblem("" + problem.getText());
-                        customerOnline.setCustomerName("" + username.getText());
-                        customerOnline.setPhoneNo("" + phoneNo.getText());
+                        customerOnline.setProblem("" + problem.getText().toString());
+                        customerOnline.setCustomerName("" + username.getText().toString());
+                        customerOnline.setPhoneNo("" + phoneNo.getText().toString());
                         customerOnline.setCheakInTime(onlineSharedPreferences.getString(ONLINE_CHECH_IN_TIME, null));
                         customerOnline.setCompanyName(onlineSharedPreferences.getString(ONLINE_COMPANY_NAME, null));
                         customerOnline.setSystemName(system.getText().toString());

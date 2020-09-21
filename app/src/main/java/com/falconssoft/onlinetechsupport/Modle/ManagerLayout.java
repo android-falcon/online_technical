@@ -20,7 +20,17 @@ public class ManagerLayout {
 
     private String transactionDate;
     private String convertFlag;
+    private String callCenterName;
 
+
+
+    private String transferFlag;
+    private String transferToEngName;
+
+    private String transferToEngId;
+    private String transferReason;
+    private String transferToSerial;
+    private String originalSerial;
     public ManagerLayout() {
 
     }
@@ -181,5 +191,61 @@ public class ManagerLayout {
 
     public void setConvertFlag(String convertFlag) {
         this.convertFlag = convertFlag;
+    }
+
+    public String getCallCenterName() {
+        return callCenterName;
+    }
+
+    public void setCallCenterName(String callCenterName) {
+        this.callCenterName = callCenterName;
+    }
+
+    public String getTransferFlag() {
+        return transferFlag;
+    }
+
+    public void setTransferFlag(String transferFlag) {
+        this.transferFlag = transferFlag;
+    }
+
+    public String getTransferToEngName() {
+        return transferToEngName;
+    }
+
+    public void setTransferToEngName(String transferToEngName) {
+        this.transferToEngName = transferToEngName;
+    }
+
+    public String getTransferToEngId() {
+        return transferToEngId;
+    }
+
+    public void setTransferToEngId(String transferToEngId) {
+        this.transferToEngId = transferToEngId;
+    }
+
+    public String getTransferReason() {
+        return transferReason;
+    }
+
+    public void setTransferReason(String transferReason) {
+        this.transferReason = transferReason;
+    }
+
+    public String getTransferToSerial() {
+        return transferToSerial;
+    }
+
+    public void setTransferToSerial(String transferToSerial) {
+        this.transferToSerial = transferToSerial;
+    }
+
+    public String getOriginalSerial() {
+        return originalSerial;
+    }
+
+    public void setOriginalSerial(String originalSerial) {
+        this.originalSerial = originalSerial;
     }
 }

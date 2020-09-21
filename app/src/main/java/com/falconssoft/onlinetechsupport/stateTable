@@ -5,3 +5,11 @@ State for Eng
 
 State for company
 1 --> check in  // 2 ---> check out  0----> hold
+
+
+original_serial
+{
+-2--> no trans
+-1 --> masterTrans
+other No --> serial of master
+}

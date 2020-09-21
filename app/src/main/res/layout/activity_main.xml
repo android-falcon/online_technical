@@ -25,6 +25,7 @@
                 android:id="@+id/falcon"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
                 app:srcCompat="@drawable/falconssoftlogo" />
 
@@ -49,20 +50,35 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
-
-                <TextView
-                    android:id="@+id/textView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bac_list_1"
+                    android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:gravity="center"
                     android:padding="10dp"
+                    android:layout_weight="1"
                     android:text="@string/in_service"
                     android:textColor="@color/greenColor"
                     android:textSize="20sp"
                     android:fontFamily="@font/keania_one"
                      />
-
+                    <TextView
+                        android:id="@+id/countChickIn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text=""
+                        android:layout_weight="0.8"
+                        android:textColor="@color/greenColor"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/keania_one"
+                        />
+                </LinearLayout>
                 <ListView
                     android:id="@+id/listCheakIn"
                     android:layout_width="match_parent"
@@ -87,18 +103,35 @@
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:padding="5dp">
-
-                <TextView
-                    android:id="@+id/textView2"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bac_list_2"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/out_service"
-                    android:textColor="@color/darkblue_2"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/keania_one" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/out_service"
+                        android:textColor="@color/darkblue_2"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/keania_one" />
+                    <TextView
+                        android:id="@+id/countChickOut"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:layout_weight="0.8"
+                        android:textColor="@color/darkblue_2"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/keania_one"
+                        />
+                </LinearLayout>
+
 
                 <ListView
                     android:id="@+id/listCheakout"
@@ -120,17 +153,36 @@
                 android:orientation="vertical"
                 android:padding="5dp">
 
-                <TextView
-                    android:id="@+id/waite"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bac_list_3"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="@string/waiting"
-                    android:textColor="@color/falconColor"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/keania_one" />
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/waite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:layout_weight="1"
+                        android:text="@string/waiting"
+                        android:textColor="@color/falconColor"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/keania_one" />
+                    <TextView
+                        android:id="@+id/countChickHold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:text=""
+                        android:layout_weight="0.8"
+                        android:textColor="@color/falconColor"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/keania_one"
+                        />
+                </LinearLayout>
+
+
 
                 <ListView
                     android:id="@+id/hold"
