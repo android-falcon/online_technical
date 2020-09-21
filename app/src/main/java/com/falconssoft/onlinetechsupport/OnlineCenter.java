@@ -624,7 +624,7 @@ TextView countOfCallWork;
         if (isfaull) {
             if (engineerInfoList.size() != 0) {
                 if(!isInHold) {
-                    JSONObject data = getData("0");
+                    JSONObject data = getData("0",1);
                     Log.e("data", "" + data);
                     ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
                     managerImport.startSendingData(data, true,0,null,null);
@@ -742,7 +742,8 @@ TextView countOfCallWork;
         systype.setText("");
     }
 
-    private JSONObject getData(String transferFlag) throws JSONException {
+    private JSONObject getData(String transferFlag,int isHold) throws JSONException {
+//        isHold ======> for hold work without eng list
         String time = "", sys_name = "", sys_Id = "";
         String customerName = "", companeyName = "", tele = "";
 
@@ -768,17 +769,28 @@ TextView countOfCallWork;
 //        }
         sys_name=systype.getText().toString();
         sys_Id = getSystemId(sys_name.replace(",",""));
-        if (engineerInfoList.size() == 0) {
+//        if (engineerInfoList.size() == 0) {
+//            stateCompaney = 0;// hold
+//        } else {
+//            stateCompaney = 1;
+//        }
+
+        if (isHold == 0) {
             stateCompaney = 0;// hold
         } else {
             stateCompaney = 1;
         }
+
+
         final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
         final String CallName = LoginActivity.sharedPreferences.getString(LOGIN_NAME, "-1");
         Log.e("call_id1",""+CallId+"    "+sys_Id +"    "+ CallName);
 
         JSONObject obj = new JSONObject();
-        if (engineerInfoList.size() != 0) {
+
+
+
+        if (engineerInfoList.size() != 0 ||isHold!=0) {
             obj.put("CUST_NAME", "'" + customerName + "'");
             obj.put("COMPANY_NAME", "'" + companeyName + "'");
             obj.put("SYSTEM_NAME", "'" + sys_name + "'");
@@ -863,46 +875,68 @@ TextView countOfCallWork;
         if (view.getId() == R.id.btn_hold) {
             view.startAnimation(buttonClick);
             if (checkRequiredData()) {
-                if (engineerInfoList.size() == 0) {
-                    Date currentTimeAndDate = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("hh:mm");
-                    String time = df.format(currentTimeAndDate);
-                    Log.e("timeHold", "" + time);
-                    LinearLayoutManager llm = new LinearLayoutManager(this);
-                    llm.setOrientation(LinearLayoutManager.VERTICAL);
-                    ManagerLayout info = new ManagerLayout();
-                    info.setCompanyName(companey_name.getText().toString());
-                    info.setPhoneNo(telephone_no.getText().toString());
-                    info.setCustomerName(customer_name.getText().toString());
-                    info.setSystemName(systype.getText().toString());
-                    info.setState("0");
-                    info.setCheakInTime(time);
-                    JSONObject data = null;
-                    try {
-                        data = getData("0");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Log.e("data", "" + data);
-                    ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                    managerImport.startSendingData(data,false ,0,null,null);
+//                if (engineerInfoList.size() == 0) {
 
-                    holdCompaney.add(info);
-                    hold_List.add(info);
-                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
-
-                    recyclerView.setLayoutManager(llm);
-                    recyclerView.setAdapter(companyAdapter);
-                    clearData();
-
-                } else {
-                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                             .setTitleText("warning!!")
-                            .setContentText("there is engineer available !!!")
-//                            .hideConfirmButton()
+                            .setContentText("Add To Hold List !!!")
+                           .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                               @Override
+                               public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                   Date currentTimeAndDate = Calendar.getInstance().getTime();
+                                   SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+                                   String time = df.format(currentTimeAndDate);
+                                   Log.e("timeHold", "" + time);
+                                   LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
+                                   llm.setOrientation(LinearLayoutManager.VERTICAL);
+                                   ManagerLayout info = new ManagerLayout();
+                                   info.setCompanyName(companey_name.getText().toString());
+                                   info.setPhoneNo(telephone_no.getText().toString());
+                                   info.setCustomerName(customer_name.getText().toString());
+                                   info.setSystemName(systype.getText().toString());
+                                   info.setState("0");
+                                   info.setCheakInTime(time);
+                                   JSONObject data = null;
+                                   try {
+                                       data = getData("0",0);
+                                   } catch (JSONException e) {
+                                       e.printStackTrace();
+                                   }
+                                   Log.e("data", "" + data);
+                                   ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                                   managerImport.startSendingData(data,false ,0,null,null);
+
+                                   holdCompaney.add(info);
+                                   hold_List.add(info);
+                                   final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
+
+                                   recyclerView.setLayoutManager(llm);
+                                   recyclerView.setAdapter(companyAdapter);
+                                   clearData();
+                                   sweetAlertDialog.dismissWithAnimation();
+
+                               }
+                           })
+                            .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                    sweetAlertDialog.dismissWithAnimation();
+
+                                }
+                            })
                             .show();
 
-                }
+
+//                } else {
+//                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText("warning!!")
+//                            .setContentText("there is engineer available !!!")
+////                            .hideConfirmButton()
+//                            .show();
+//
+//                }
 
             }
         }
