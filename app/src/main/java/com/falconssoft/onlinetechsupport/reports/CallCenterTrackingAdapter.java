@@ -110,7 +110,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
         dialog.setContentView(R.layout.information_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-        TextView customer,company,phone,system,eng,time,states,titel,problem,callCenterName;
+        TextView customer,company,phone,system,eng,time,states,titel,problem,callCenterName,stateOfSolve,dateOfTran;
         LinearLayout bac1,bac2;
 
 
@@ -126,6 +126,8 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
         time=dialog.findViewById(R.id.time);
         states=dialog.findViewById(R.id.state);
         callCenterName=dialog.findViewById(R.id.call_center_name);
+        stateOfSolve=dialog.findViewById(R.id.stateOfSolve);
+        dateOfTran=dialog.findViewById(R.id.dateOfTran);
         String statesString ="";
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);
@@ -164,12 +166,39 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
         customer.setText("" + itemsList.getCustomerName());
         company.setText("" + itemsList.getCompanyName());
         phone.setText("" + itemsList.getPhoneNo());
-        system.setText("" + itemsList.getSystemName());
+        String sys=itemsList.getSystemName().replace("\\n"," ");
+        system.setText(sys);
         eng.setText("" + itemsList.getEnginerName());
         time.setText("" + itemsList.getCheakInTime());
         states.setText(statesString);
         problem.setText("" + itemsList.getProplem());
         callCenterName.setText(""+itemsList.getCallCenterName());
+        dateOfTran.setText(""+itemsList.getTransactionDate());
+
+
+        String solveState="";
+        int stateProblem=Integer.parseInt(itemsList.getConvertFlag());
+        switch (stateProblem){
+            case 0:
+                solveState=context.getResources().getString(R.string.solved);
+                break;
+            case 1:
+                solveState=context.getResources().getString(R.string.convert_to_software_department);
+                break;
+            case 2:
+                solveState=context.getResources().getString(R.string.convert_to_out_door);
+                break;
+            case 3:
+                solveState=context.getResources().getString(R.string.convert_to_contracts_department);
+                break;
+
+            case 4:
+                solveState=context.getResources().getString(R.string.transfer_to_another_engineer);
+                break;
+
+        }
+
+        stateOfSolve.setText(""+solveState);
 
 //                    Toast.makeText(context, "main "+ holder.EngName.getText().toString(), Toast.LENGTH_SHORT).show();
 

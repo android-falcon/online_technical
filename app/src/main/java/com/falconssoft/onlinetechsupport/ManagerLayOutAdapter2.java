@@ -108,7 +108,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     dialog.setContentView(R.layout.information_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-                    TextView customer,company,phone,system,eng,time,states,titel,problem,stateOfSolve,callCenterName;
+                    TextView customer,company,phone,system,eng,time,states,titel,problem,stateOfSolve,callCenterName,dateOfTran;
                     LinearLayout bac1,bac2;
 
 
@@ -125,7 +125,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     states=dialog.findViewById(R.id.state);
                     stateOfSolve=dialog.findViewById(R.id.stateOfSolve);
                     callCenterName=dialog.findViewById(R.id.call_center_name);
-
+                    dateOfTran=dialog.findViewById(R.id.dateOfTran);
                     String statesString ="";
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);
@@ -168,6 +168,8 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
                     eng.setText("" + itemsList.get(i).getEnginerName());
                     time.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCheakOutTime()));
                     callCenterName.setText(""+itemsList.get(i).getCallCenterName());
+                    dateOfTran.setText(""+itemsList.get(i).getTransactionDate());
+
 
                     states.setText(statesString);
                     String problemStr=itemsList.get(i).getProplem();

@@ -265,7 +265,7 @@ public class ManagerImport {
                         obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
                         obj.setCallCenterName(finalObject.getString("CALL_CENTER_NAME"));
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
-
+                        obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
                         Log.e("finalObjectConvert",""+obj.getConvertFlag());
 
                         obj.setCurrentTime(curentTime);

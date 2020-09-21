@@ -747,8 +747,8 @@ TextView countOfCallWork;
         String time = "", sys_name = "", sys_Id = "";
         String customerName = "", companeyName = "", tele = "";
 
-        customerName = customer_name.getText().toString();
-        companeyName = companey_name.getText().toString();
+        customerName = customer_name.getText().toString().replace("'","");
+        companeyName = companey_name.getText().toString().replace("'","");
 
         String phoneFirst="";
 
