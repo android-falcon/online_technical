@@ -65,8 +65,6 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     private int timeFlag = 0;// 0=> from, 1=> to
     EditText customerEText,phoneEText,companyEText;
     LinearLayout search;
-
-    LinearLayout search;
     private Calendar calendar;
     private SimpleDateFormat dateFormat, dfReport;
     private Date date;
