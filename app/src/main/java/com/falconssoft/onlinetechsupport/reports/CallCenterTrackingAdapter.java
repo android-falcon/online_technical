@@ -1,9 +1,14 @@
 package com.falconssoft.onlinetechsupport.reports;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -33,7 +38,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CallCenterTrackingViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull CallCenterTrackingViewHolder holder, final int i) {
         holder.eng.setText(list.get(i).getEnginerName());
         holder.system.setText(list.get(i).getSystemName());
         holder.problem.setText(list.get(i).getProplem());
@@ -58,6 +63,15 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
 
         }
 
+
+        holder.row_mainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                informationDialog(Integer.parseInt(list.get(i).getState()),list.get(i));
+
+            }
+        });
 
     }
 
@@ -86,5 +100,81 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
             row_mainLayout=itemView.findViewById(R.id.row_mainLayout);
 
         }
+    }
+
+    void informationDialog (int col ,ManagerLayout itemsList){
+
+        Dialog dialog = new Dialog(context,R.style.Theme_Dialog);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.information_dialog);
+//                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
+
+        TextView customer,company,phone,system,eng,time,states,titel,problem,callCenterName;
+        LinearLayout bac1,bac2;
+
+
+        bac1=dialog.findViewById(R.id.bac1);
+        bac2=dialog.findViewById(R.id.bac2);
+        problem=dialog.findViewById(R.id.problem);
+        titel =dialog.findViewById(R.id.tital);
+        customer=dialog.findViewById(R.id.customerName);
+        company=dialog.findViewById(R.id.company);
+        phone=dialog.findViewById(R.id.phone);
+        system=dialog.findViewById(R.id.system);
+        eng=dialog.findViewById(R.id.engName);
+        time=dialog.findViewById(R.id.time);
+        states=dialog.findViewById(R.id.state);
+        callCenterName=dialog.findViewById(R.id.call_center_name);
+        String statesString ="";
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
+//                    dialog.ge.startAnimation(animation);
+        dialog.getWindow().getAttributes().windowAnimations = R.style.Theme_Dialog;
+        switch (col){
+            case 1:
+                titel.setBackground(context.getResources().getDrawable(R.drawable.bac_list_1));
+                titel.setTextColor(context.getResources().getColor(R.color.greenColor));
+                bac1.setBackgroundColor(context.getResources().getColor(R.color.greenColor2));
+                bac2.setBackground(context.getResources().getDrawable(R.drawable.bac_list_1));
+                statesString="Check In";
+                states.setTextColor(context.getResources().getColor(R.color.greenColor));
+
+                break;
+            case 2:
+                titel.setBackground(context.getResources().getDrawable(R.drawable.bac_list_2));
+                titel.setTextColor(context.getResources().getColor(R.color.darkblue_2));
+                bac1.setBackgroundColor(context.getResources().getColor(R.color.light_blue_over));
+                bac2.setBackground(context.getResources().getDrawable(R.drawable.bac_list_2));
+                statesString="Check Out";
+                states.setTextColor(context.getResources().getColor(R.color.darkblue_2));
+
+                break;
+            case 0:
+                titel.setBackground(context.getResources().getDrawable(R.drawable.bac_list_3));
+                titel.setTextColor(context.getResources().getColor(R.color.falconColor));
+                bac1.setBackgroundColor(context.getResources().getColor(R.color.goldf2));
+                bac2.setBackground(context.getResources().getDrawable(R.drawable.bac_list_3));
+                statesString="In Hold ";
+                states.setTextColor(context.getResources().getColor(R.color.falconColor));
+                break;
+        }
+
+
+
+        customer.setText("" + itemsList.getCustomerName());
+        company.setText("" + itemsList.getCompanyName());
+        phone.setText("" + itemsList.getPhoneNo());
+        system.setText("" + itemsList.getSystemName());
+        eng.setText("" + itemsList.getEnginerName());
+        time.setText("" + itemsList.getCheakInTime());
+        states.setText(statesString);
+        problem.setText("" + itemsList.getProplem());
+        callCenterName.setText(""+itemsList.getCallCenterName());
+
+//                    Toast.makeText(context, "main "+ holder.EngName.getText().toString(), Toast.LENGTH_SHORT).show();
+
+        dialog.show();
+
+
     }
 }

@@ -287,6 +287,11 @@ LinearLayout search;
             }
 
 
+            /*(formatDate(details.get(m).getDate()).after(formatDate(fromDateLocal))
+                    || formatDate(details.get(m).getDate()).equals(formatDate(fromDateLocal)))
+                    && (formatDate(details.get(m).getDate()).before(formatDate(toDateLocal))
+                    || formatDate(details.get(m).getDate()).equals(formatDate(toDateLocal)))*/
+
             if ((engineerText.equals("All") || engineerText.equals(engineer))
                     &&((formatDate(tempList.get(i).getTransactionDate()).equals(formatDate(DateText)))||DateText.equals("All"))
                     &&(engText.equals("All") || tempList.get(i).getEnginerName().equals(engText))
