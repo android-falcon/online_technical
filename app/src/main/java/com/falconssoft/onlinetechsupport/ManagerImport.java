@@ -48,6 +48,7 @@ import static com.falconssoft.onlinetechsupport.MainActivity.countChickIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.countChickOut;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.MainActivity.refresh;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.EngId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.checkInList;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.hold_List;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
@@ -578,7 +579,11 @@ Log.e("tag_itemCard", "****saveSuccess");
 
 
                 if(flag==8){
+                    int id=EngId;
+                    EngId=Integer.parseInt(managerLayoutTrans.getEngId());
                     managerLayoutTrans.setTransferToSerial(Serial);
+                    managerLayoutTrans.setEngId(""+id);
+                    textState.setText("Success");
                    new  UpdateTransferSolved(managerLayoutTrans,dialogs).execute();
                 }
 

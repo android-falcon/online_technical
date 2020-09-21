@@ -67,6 +67,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.EngId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engStringName;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engineerInfoList;
@@ -327,6 +328,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
                         if (!TextUtils.isEmpty(reason.getText().toString())) {
 
+                            EngId=Integer.parseInt(managerLayout.getEngId());
                         String problems = problem.getText().toString();
                         String reasons = reason.getText().toString();
 

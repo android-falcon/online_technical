@@ -87,7 +87,7 @@ public class OnlineCenter extends AppCompatActivity {
     String ipAddres = "";
     public  static  List<Systems> systemsList;
     LinearLayoutManager layoutManager;
-    int stateCompaney = -1, selectedEngId = 0,EngId=-1;
+    public  static int stateCompaney = -1, selectedEngId = 0,EngId=-1;
       String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
     Timer timer;
@@ -714,12 +714,15 @@ TextView countOfCallWork;
     public void clearData() {
         clearText();
 
-        if(engineerInfoList.size()!=0)
-        {
-            engineerInfoList.remove(selectedEngId);
-            engineerAdapter = new adapterGridEngineer(this, engineerInfoList);
-            gridView.setAdapter(engineerAdapter);
-            engineerAdapter.notifyDataSetChanged();
+        try {
+            if (engineerInfoList.size() != 0) {
+                engineerInfoList.remove(selectedEngId);
+                engineerAdapter = new adapterGridEngineer(this, engineerInfoList);
+                gridView.setAdapter(engineerAdapter);
+                engineerAdapter.notifyDataSetChanged();
+            }
+        }catch (Exception e){
+            Log.e("error ","clearData "+e);
         }
 
 
