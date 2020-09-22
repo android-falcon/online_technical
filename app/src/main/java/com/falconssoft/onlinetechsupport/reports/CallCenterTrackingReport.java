@@ -210,10 +210,10 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     }
 
     public void fillAdapter() {
-        adapter = new CallCenterTrackingAdapter(this, callCenterList);
-        recyclerView.setAdapter(adapter);
-//        filter();
-        count.setText(""+callCenterList.size());
+//        adapter = new CallCenterTrackingAdapter(this, callCenterList);
+//        recyclerView.setAdapter(adapter);
+        filter();
+//        count.setText(""+callCenterList.size());
     }
 
 

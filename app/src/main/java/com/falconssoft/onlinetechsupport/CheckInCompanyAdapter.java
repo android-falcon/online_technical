@@ -239,7 +239,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                 }
 
 
-                Toast.makeText(context, "in Online Add!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "in Online Add!", Toast.LENGTH_SHORT).show();
 
                 if(!engName.equals("-1")) {
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
@@ -295,21 +295,14 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
         final EditText reason=dialog.findViewById(R.id.online_reason);
 
 //       fillEngineerInfoList(engSpinner);
-        fillSpinner(engSpinner);
-
-
-
 
 
 
         FloatingActionButton addActionButton=dialog.findViewById(R.id.online_add);
 
-        try {
 
-            engSpinner.setSelection(engStringName.indexOf(managerLayout.getEnginerName()));
-        }catch (Exception e){
 
-        }
+        fillSpinner(engSpinner);
 
         addActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,7 +315,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                     engName="-1";
                 }
 
-                Toast.makeText(context, "in Online Add!", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "in Online Add!", Toast.LENGTH_SHORT).show();
 
                 if(!engName.equals("-1")) {
                     if (!TextUtils.isEmpty(problem.getText().toString())) {
@@ -369,7 +362,11 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
 //                                new UpdateTransferSolved(managerLayout, dialog).execute();
 
-                                saveTrans(managerLayout, dialog);
+                                if(!engName.equals(engNames)) {
+                                    saveTrans(managerLayout, dialog);
+                                }else {
+                                    Toast.makeText(context, "Can not Trans To Same Engineer", Toast.LENGTH_SHORT).show();
+                                }
 
                             } else {
                                 Toast.makeText(context, "Max Length of problem 255 Char", Toast.LENGTH_SHORT).show();
@@ -377,7 +374,11 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                         } else {
                             if (problems.length() <= 130) {
 
-                                saveTrans(managerLayout, dialog);
+                                if(!engName.equals(engNames)) {
+                                    saveTrans(managerLayout, dialog);
+                                }else {
+                                    Toast.makeText(context, "Can not Trans To Same Engineer", Toast.LENGTH_SHORT).show();
+                                }
 //                                new UpdateTransferSolved(managerLayout, dialog).execute();
 
                             } else {
