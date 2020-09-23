@@ -31,6 +31,9 @@ public class ManagerLayout {
     private String transferReason;
     private String transferToSerial;
     private String originalSerial;
+
+    private String holdReason;
+
     public ManagerLayout() {
 
     }
@@ -247,5 +250,13 @@ public class ManagerLayout {
 
     public void setOriginalSerial(String originalSerial) {
         this.originalSerial = originalSerial;
+    }
+
+    public String getHoldReason() {
+        return holdReason;
+    }
+
+    public void setHoldReason(String holdReason) {
+        this.holdReason = holdReason;
     }
 }

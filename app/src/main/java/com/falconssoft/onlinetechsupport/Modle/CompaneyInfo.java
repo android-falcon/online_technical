@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 
 public class CompaneyInfo {
     private String companyName;
@@ -23,6 +24,24 @@ public class CompaneyInfo {
     private String problem;
     private String serial;
 
+
+    private String engId;
+
+    private String transactionDate;
+    private String convertFlag;
+    private String callCenterName;
+
+
+
+    private String transferFlag;
+    private String transferToEngName;
+
+    private String transferToEngId;
+    private String transferReason;
+    private String transferToSerial;
+    private String originalSerial;
+
+    private String holdReason;
 
 
     public CompaneyInfo() {
@@ -124,6 +143,94 @@ public class CompaneyInfo {
         this.serial = serial;
     }
 
+    public String getProblem() {
+        return problem;
+    }
+
+    public void setProblem(String problem) {
+        this.problem = problem;
+    }
+
+    public String getTransactionDate() {
+        return transactionDate;
+    }
+
+    public void setTransactionDate(String transactionDate) {
+        this.transactionDate = transactionDate;
+    }
+
+    public String getConvertFlag() {
+        return convertFlag;
+    }
+
+    public void setConvertFlag(String convertFlag) {
+        this.convertFlag = convertFlag;
+    }
+
+    public String getCallCenterName() {
+        return callCenterName;
+    }
+
+    public void setCallCenterName(String callCenterName) {
+        this.callCenterName = callCenterName;
+    }
+
+    public String getTransferFlag() {
+        return transferFlag;
+    }
+
+    public void setTransferFlag(String transferFlag) {
+        this.transferFlag = transferFlag;
+    }
+
+    public String getTransferToEngName() {
+        return transferToEngName;
+    }
+
+    public void setTransferToEngName(String transferToEngName) {
+        this.transferToEngName = transferToEngName;
+    }
+
+    public String getTransferToEngId() {
+        return transferToEngId;
+    }
+
+    public void setTransferToEngId(String transferToEngId) {
+        this.transferToEngId = transferToEngId;
+    }
+
+    public String getTransferReason() {
+        return transferReason;
+    }
+
+    public void setTransferReason(String transferReason) {
+        this.transferReason = transferReason;
+    }
+
+    public String getTransferToSerial() {
+        return transferToSerial;
+    }
+
+    public void setTransferToSerial(String transferToSerial) {
+        this.transferToSerial = transferToSerial;
+    }
+
+    public String getOriginalSerial() {
+        return originalSerial;
+    }
+
+    public void setOriginalSerial(String originalSerial) {
+        this.originalSerial = originalSerial;
+    }
+
+    public String getHoldReason() {
+        return holdReason;
+    }
+
+    public void setHoldReason(String holdReason) {
+        this.holdReason = holdReason;
+    }
+
     public JSONObject getData() throws JSONException {
 
         JSONObject obj = new JSONObject();
@@ -139,11 +246,18 @@ public class CompaneyInfo {
         obj.put("CHECH_OUT_TIME", "'00:00:00'");
         obj.put("PROBLEM", "'problem'");
         final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1");
+        final String CallName = LoginActivity.sharedPreferences.getString(LOGIN_NAME, "-1");
         Log.e("call_id2",""+CallId);
         obj.put("CALL_CENTER_ID", "'"+CallId+"'");
         obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
         obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
         obj.put("SERIAL", serial);
+        obj.put("CALL_CENTER_NAME", "'" + CallName + "'");
+        obj.put("TRANSFER_FLAG", "'0'");
+        obj.put("ORGINAL_SERIAL", "'-2'");
+        obj.put("HOLD_REASON", holdReason);
+
+
 
         return  obj;
 

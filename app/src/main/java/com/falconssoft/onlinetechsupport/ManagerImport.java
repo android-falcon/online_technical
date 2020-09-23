@@ -266,6 +266,7 @@ public class ManagerImport {
                         obj.setCallCenterName(finalObject.getString("CALL_CENTER_NAME"));
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
                         obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
+//                        obj.setHoldReason(finalObject.getString("HOLD_REASON"));
                         Log.e("finalObjectConvert",""+obj.getConvertFlag());
 
                         obj.setCurrentTime(curentTime);
@@ -585,6 +586,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                     managerLayoutTrans.setEngId(""+id);
                     textState.setText("Success");
                     text_finish.setText("AddFinish");
+                    Log.e("UpdateTransferSolved",EngId+"     "+id);
                    new  UpdateTransferSolved(managerLayoutTrans,dialogs).execute();
                 }else {
                     text_finish.setText("finish");
