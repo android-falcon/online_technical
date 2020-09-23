@@ -1221,8 +1221,10 @@ CallCenterTrackingReport callCenterTrackingReport;
 
                     if(managerLayout.getOriginalSerial().equals("-2")) {
                         object.put("ORGINAL_SERIAL", "-1");
+                        Log.e("ORGINAL_SERIALI","getSerial "+managerLayout.getOriginalSerial());
                     }else {
                         object.put("ORGINAL_SERIAL", managerLayout.getOriginalSerial());
+                        Log.e("ORGINAL_SERIALI","getOriginalSerial "+managerLayout.getOriginalSerial());
                     }
 
 

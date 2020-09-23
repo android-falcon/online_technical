@@ -475,9 +475,14 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
             obj.put("TRANSFER_FLAG", "'2'");
            if(managerLayout.getOriginalSerial().equals("-1")||managerLayout.getOriginalSerial().equals("-2")) {
                obj.put("ORGINAL_SERIAL", managerLayout.getSerial());
+               Log.e("ORGINAL_SERIAL","getSerial "+managerLayout.getSerial());
                }else{
                obj.put("ORGINAL_SERIAL", managerLayout.getOriginalSerial());
+               Log.e("ORGINAL_SERIAL","getOriginalSerial "+managerLayout.getSerial());
            }
+
+
+
 
         return obj;
 
