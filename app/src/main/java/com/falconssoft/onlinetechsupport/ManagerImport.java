@@ -20,6 +20,7 @@ import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,10 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.falconssoft.onlinetechsupport.GClass.engList;
+import static com.falconssoft.onlinetechsupport.GClass.engMList;
+import static com.falconssoft.onlinetechsupport.GClass.systemList;
+import static com.falconssoft.onlinetechsupport.GClass.systemMList;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
@@ -55,10 +60,10 @@ import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerViewCheckIn;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.textState;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_finish;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engList;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engMList;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemList;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemMList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engMList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemMList;
 
 
 public class ManagerImport {
@@ -78,6 +83,7 @@ public class ManagerImport {
     DatabaseHandler databaseHandler;
     public static TextView countOfCall=null;
     CallCenterTrackingReport callCenterTrackingReport;
+    EngineersTrackingReport engineersTrackingReport;
    ManagerLayout managerLayoutTrans;
    int flag=0;
    Dialog dialogs;
@@ -116,10 +122,10 @@ public class ManagerImport {
 
 
 
-    public void startSendingEngSys(CallCenterTrackingReport callCenterTrackingReport) {
+    public void startSendingEngSys(Object object,int flag) {
 
-            new SystemEngineer(callCenterTrackingReport).execute();
-    }
+            new SystemEngineer(object,flag).execute();
+        }
 
     public void startSendingData(JSONObject data,boolean holds,int flagT,ManagerLayout managerLayout,Dialog dialog) {
         sendSucsses=false;
@@ -966,9 +972,17 @@ Log.e("tag_itemCard", "****saveSuccess");
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
-CallCenterTrackingReport callCenterTrackingReport;
-        public SystemEngineer(CallCenterTrackingReport callCenterTrackingReport) {
-            this.callCenterTrackingReport=callCenterTrackingReport;
+Object object;
+int sysEngFlag=0;
+//EngineersTrackingReport engineersTrackingReport;
+        public SystemEngineer(Object object,int flag) {
+            this.sysEngFlag=flag;
+            if(sysEngFlag==0) {
+
+                callCenterTrackingReport=(CallCenterTrackingReport) object;
+            }else {
+              engineersTrackingReport = (EngineersTrackingReport) object;
+            }
         }
 
         @Override
@@ -1110,8 +1124,13 @@ CallCenterTrackingReport callCenterTrackingReport;
 
                 }
 
+                if(sysEngFlag==0) {
 
-                callCenterTrackingReport.fillSpinners();
+                    callCenterTrackingReport.fillSpinners();
+                }else {
+                    engineersTrackingReport.fillSpinners();
+                }
+
 
             }  else {
                 Log.e("tag_itemCard", "****Failed to export data");

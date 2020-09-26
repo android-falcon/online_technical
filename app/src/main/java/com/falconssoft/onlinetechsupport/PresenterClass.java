@@ -396,9 +396,9 @@ public class PresenterClass {
 
     //****************************************** getTrackingEngineerReportData  **************************************
 
-    public void getTrackingEngineerReportData(EngineersTrackingReport engineersTrackingReport, int serial,int childIndex) {
+    public void getTrackingEngineerReportData(EngineersTrackingReport engineersTrackingReport, int serial) {
         this.serial = serial;
-        this.childIndex = childIndex;
+
         this.engineersTrackingReport = engineersTrackingReport;
         urlEngineersTracking = URL + "import.php?FLAG=6&SERIAL=" + serial;//http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=6&SERIAL=-1
         engineersTrackingRequest = new JsonObjectRequest(Request.Method.GET, urlEngineersTracking, null, new TrackingEngineerClass(), new TrackingEngineerClass());
@@ -463,7 +463,7 @@ public class PresenterClass {
                 }
 
                 if (serial == -1)
-                    engineersTrackingReport.engineersTrackingReportFilter();
+                    engineersTrackingReport.fillAdapter();
                 else
                     engineersTrackingReport.fillChildData(childList);
             } catch (JSONException e) {

@@ -40,6 +40,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import static com.falconssoft.onlinetechsupport.GClass.engList;
+import static com.falconssoft.onlinetechsupport.GClass.systemList;
+
 public class CallCenterTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private RecyclerView recyclerView;
@@ -54,9 +57,9 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     TextView count;
     public static List<String> DateList=new ArrayList<>();
     List<String> dateListReal=new ArrayList<String>();
-    public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
-    public static List<Systems> systemMList=new ArrayList<Systems>();
-    public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
+//    public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
+//    public static List<Systems> systemMList=new ArrayList<Systems>();
+//    public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
     int inEng=0;
     int inSys=0;
     TextView infoTableReport;
@@ -108,7 +111,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         toDate=findViewById(R.id.toDate);
 
         ManagerImport managerImport=new ManagerImport(CallCenterTrackingReport.this);
-        managerImport.startSendingEngSys(CallCenterTrackingReport.this);
+        managerImport.startSendingEngSys(CallCenterTrackingReport.this,0);
 
 //        customerEText.addTextChangedListener(textWatcher);
 //        phoneEText.addTextChangedListener(textWatcher);
