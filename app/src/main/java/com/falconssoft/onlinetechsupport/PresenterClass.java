@@ -424,6 +424,7 @@ public class PresenterClass {
                         obj.setCallCenterName(finalObject.getString("CALL_CENTER_NAME"));
                         obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
                         obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
+                        obj.setHoldReason(finalObject.getString("HOLD_REASON"));
 
 
                         callCenterList.add(obj);
