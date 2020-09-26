@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingDefaultResource">
+
+    <TableRow
+        android:id="@+id/engineersTracking_row_tableRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@color/yellow_alpha">
+
+        <TextView
+            android:id="@+id/engineersTracking_row_eng_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:paddingVertical="15dp"
+            android:text="@string/eng"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_system"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/system"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_problem"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/problem"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_customer"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/customer"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_phone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/phone"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_company"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/company"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_checkIn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/check_in_time"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_checkOut"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/check_out_time"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_hold"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/hold"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/engineersTracking_row_transTime"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/engineersTracking_row_show_details"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight=".2"
+            android:gravity="center"
+            android:src="@drawable/ic_arrow_drop_down"/>
+
+    </TableRow>
+
+    <LinearLayout
+        android:id="@+id/engineersTracking_row_children_header"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:background="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <TableLayout
+            android:id="@+id/engineersTracking_row_children_table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:ignore="MissingDefaultResource">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tracking Call"
+        android:background="@color/colorPrimaryDark"
+        android:textSize="25sp"
+        android:fontFamily="@font/keania_one"
+        android:textColor="@color/white_dark2"
+        android:padding="10dp"
+        />
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:paddingVertical="15dp"
+            android:text="@string/eng"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/system"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/problem"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/customer"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/phone"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/company"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/check_in_time"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/check_out_time"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/hold"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:fontFamily="@font/averia_libre_light"
+            android:gravity="center"
+            android:text="@string/date"
+            android:textColor="@color/white_dark2"
+            android:textSize="15sp" />
+
+
+    </TableRow>
+
+    <View
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <TableLayout
+        android:id="@+id/engineersTrackingDialog_children_table"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"/>
+
+
+</LinearLayout>

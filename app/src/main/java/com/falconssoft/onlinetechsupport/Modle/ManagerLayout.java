@@ -22,7 +22,7 @@ public class ManagerLayout {
     private String convertFlag;
     private String callCenterName;
 
-
+    private boolean showDetails;
 
     private String transferFlag;
     private String transferToEngName;
@@ -55,6 +55,14 @@ public class ManagerLayout {
 
     public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
+    }
+
+    public boolean isShowDetails() {
+        return showDetails;
+    }
+
+    public void setShowDetails(boolean showDetails) {
+        this.showDetails = showDetails;
     }
 
     public void setCustomerName(String customerName) {

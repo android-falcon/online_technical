@@ -36,6 +36,7 @@ import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -415,6 +416,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.menu_report:
                 Intent intent = new Intent(MainActivity.this, CallCenterTrackingReport.class);
                 startActivity(intent);
+                return true;
+            case R.id.menu_engineers_tracking_report:
+                Intent intent2 = new Intent(MainActivity.this, EngineersTrackingReport.class);
+                startActivity(intent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -33,7 +33,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
     @NonNull
     @Override
     public CallCenterTrackingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.call_center_report_row, parent, false);
+                View view = LayoutInflater.from(context).inflate(R.layout.call_center_report_row, parent, false);
         return new CallCenterTrackingViewHolder(view);
     }
 

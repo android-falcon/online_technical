@@ -23,6 +23,7 @@ import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,12 +41,14 @@ import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
 import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.DateList;
 import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.callCenterList;
+import static com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport.childList;
+import static com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport.engineerTrackingList;
 
 public class PresenterClass {
     private String getDataState = "1";
-    private String urlImportCustomer, urlLogin, urlState, urlPushProblem, urlCallCenterReport;
+    private String urlImportCustomer, urlLogin, urlState, urlPushProblem, urlCallCenterReport, urlEngineersTracking;
     private RequestQueue requestQueue;
-    private JsonObjectRequest loginRequest, objectRequest;
+    private JsonObjectRequest loginRequest, objectRequest, engineersTrackingRequest;
     private JsonArrayRequest callCenterRequest;
     private StringRequest stateRequest, pushProblemRequest;
     private Context context;
@@ -55,8 +58,12 @@ public class PresenterClass {
     private OnlineActivity onlineActivity;
     private CustomerOnline customerOnline;
     private String value, URL;
-//    private List<ManagerLayout> callCenterList = new ArrayList<>();
+    private int serial, childIndex;
+
+    //    private List<ManagerLayout> callCenterList = new ArrayList<>();
     private CallCenterTrackingReport callCenterTrackingReport;
+    private EngineersTrackingReport engineersTrackingReport;
+
 //    private String ipAddres;
 
     public PresenterClass(Context context) {
@@ -64,8 +71,8 @@ public class PresenterClass {
         this.requestQueue = Volley.newRequestQueue(context);
         databaseHandler = new DatabaseHandler(context);
         list = new ArrayList<>();
-        URL = "http://" + databaseHandler.getIp() + "/onlineTechnicalSupport/";
-        Log.e("URL",""+URL);
+        URL = "http://" + databaseHandler.getIp() + "/onlineTechnicalSupport/";//http://5.189.130.98:8085/onlineTechnicalSupport/
+        Log.e("URL", "" + URL);
 
     }
 
@@ -76,66 +83,12 @@ public class PresenterClass {
         onlineList = new ArrayList<>();
     }
 
-// -1 log out
-
-    //****************************************** Login **************************************
-
-//    public void getLoginData() {
-////        ipAddres = databaseHandler.getIp();
-//        urlLogin = URL + "export.php";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
-//        JSONObject jsonObject = new JSONObject();
-//        try {
-//            jsonObject.put("USERNAME", "wael");
-//            jsonObject.put("PASSWORD", "1111");
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, jsonObject, new LoginDataClass(), new LoginDataClass());
-//        requestQueue.add(loginRequest);
-//    }
-//
-//    class LoginDataClass implements Response.Listener<JSONObject>, Response.ErrorListener {
-//        @Override
-//        public void onErrorResponse(VolleyError error) {
-//            Log.e("presenter/e", "test/ " + error.getMessage());
-//
-//        }
-//
-//        @Override
-//        public void onResponse(JSONObject response) {
-//            Log.e("presenter", "test/ " + response.toString());
-//            try {
-//                databaseHandler.deleteLoginData();
-//                list.clear();
-//                JSONArray jsonArray = response.getJSONArray("ENGINEER_INFO");
-//                int i = 0;
-//                while (i < jsonArray.length()) {
-//                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                    EngineerInfo engineerInfo = new EngineerInfo();
-//                    engineerInfo.setId(jsonObject.getString("ENG_ID"));
-//                    engineerInfo.setName(jsonObject.getString("ENG_NAME"));
-//                    engineerInfo.setState(jsonObject.getInt("STATE"));
-//                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
-//                    engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
-//                    list.add(engineerInfo);
-//                    i++;
-//                    Log.e("EmployList", "LoginDataClass/ " + engineerInfo.getName() + "  " + engineerInfo.getPassword());
-//                }
-//
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//            databaseHandler.addLoginInfo(list);
-//        }
-//    }// ststus 2 ///////// cusomer
-
     //****************************************** Login **************************************
 
     public void getLoginData() {
 //        ipAddres = databaseHandler.getIp();
         urlLogin = URL + "import.php?FLAG=0";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
-        Log.e("URL",""+urlLogin);
+        Log.e("URL", "" + urlLogin);
 
         loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, null, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
@@ -176,7 +129,6 @@ public class PresenterClass {
         }
     }// ststus 2 ///////// cusomer
 
-//    json object problem_solved
     //****************************************** Customers Data **************************************
 
     public void getCustomersData(String dataState) {
@@ -406,37 +358,115 @@ public class PresenterClass {
                 DateList.clear();
 
                 jsonArray = response.getJSONObject(1).getJSONArray("CUSTOMER_INFO");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject finalObject = (JSONObject) jsonArray.get(i);
-                        ManagerLayout obj = new ManagerLayout();
-                        obj.setCompanyName(finalObject.getString("COMPANY_NAME"));
-                        obj.setCustomerName(finalObject.getString("CUST_NAME"));
-                        obj.setCheakInTime(finalObject.getString("CHECH_IN_TIME"));
-                        obj.setCheakOutTime(finalObject.getString("CHECH_OUT_TIME"));
-                        obj.setEnginerName(finalObject.getString("ENG_NAME"));
-                        obj.setPhoneNo(finalObject.getString("PHONE_NO"));
-                        obj.setState(finalObject.getString("STATE"));
-                        obj.setProplem(finalObject.getString("PROBLEM"));
-                        obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
-                        obj.setSystemId(finalObject.getString("SYS_ID"));
-                        obj.setHoldTime(finalObject.getString("HOLD_TIME"));
-                        obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
-                        obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
-                        obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject finalObject = (JSONObject) jsonArray.get(i);
+                    ManagerLayout obj = new ManagerLayout();
+                    obj.setCompanyName(finalObject.getString("COMPANY_NAME"));
+                    obj.setCustomerName(finalObject.getString("CUST_NAME"));
+                    obj.setCheakInTime(finalObject.getString("CHECH_IN_TIME"));
+                    obj.setCheakOutTime(finalObject.getString("CHECH_OUT_TIME"));
+                    obj.setEnginerName(finalObject.getString("ENG_NAME"));
+                    obj.setPhoneNo(finalObject.getString("PHONE_NO"));
+                    obj.setState(finalObject.getString("STATE"));
+                    obj.setProplem(finalObject.getString("PROBLEM"));
+                    obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
+                    obj.setSystemId(finalObject.getString("SYS_ID"));
+                    obj.setHoldTime(finalObject.getString("HOLD_TIME"));
+                    obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+                    obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
+                    obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
 
 
-                        callCenterList.add(obj);
-                        DateList.add((finalObject.getString("DATE_OF_TRANSACTION")));
-                    }
+                    callCenterList.add(obj);
+                    DateList.add((finalObject.getString("DATE_OF_TRANSACTION")));
+                }
 
 //                callCenterTrackingReport.fillDateSpinner();
-                Log.e("setListDateSizePr",""+"     \n"+DateList.size());
+                Log.e("setListDateSizePr", "" + "     \n" + DateList.size());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
             callCenterTrackingReport.fillAdapter();
 
+        }
+    }
+
+    //****************************************** getTrackingEngineerReportData  **************************************
+
+    public void getTrackingEngineerReportData(EngineersTrackingReport engineersTrackingReport, int serial,int childIndex) {
+        this.serial = serial;
+        this.childIndex = childIndex;
+        this.engineersTrackingReport = engineersTrackingReport;
+        urlEngineersTracking = URL + "import.php?FLAG=6&SERIAL=" + serial;//http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=6&SERIAL=-1
+        engineersTrackingRequest = new JsonObjectRequest(Request.Method.GET, urlEngineersTracking, null, new TrackingEngineerClass(), new TrackingEngineerClass());
+
+        requestQueue.add(engineersTrackingRequest);
+    }
+
+    class TrackingEngineerClass implements Response.Listener<JSONObject>, Response.ErrorListener {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e("presenter/e", "TrackingEngineerClass/ " + error.getMessage());
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onResponse(JSONObject response) {
+            Log.e("presenter", "TrackingEngineerClass/ " + response);
+            JSONArray jsonArray;
+            try {
+                if (serial == -1)
+                    engineerTrackingList.clear();
+                else
+                    childList.clear();
+//                DateList.clear();
+
+                jsonArray = response.getJSONArray("ENGINEER_TRACK");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject finalObject = (JSONObject) jsonArray.get(i);
+                    ManagerLayout obj = new ManagerLayout();
+                    obj.setCustomerName(finalObject.getString("CUST_NAME"));
+                    obj.setCompanyName(finalObject.getString("COMPANY_NAME"));
+                    obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
+                    obj.setPhoneNo(finalObject.getString("PHONE_NO"));
+                    obj.setCheakInTime(finalObject.getString("CHECH_IN_TIME"));
+                    obj.setState(finalObject.getString("STATE"));
+                    obj.setEngId(finalObject.getString("ENG_ID"));
+                    obj.setSystemId(finalObject.getString("SYS_ID"));
+                    obj.setCheakOutTime(finalObject.getString("CHECH_OUT_TIME"));
+                    obj.setProplem(finalObject.getString("PROBLEM"));
+                    obj.setHoldTime(finalObject.getString("HOLD_TIME"));
+                    obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
+                    obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+                    obj.setSerial(finalObject.getString("SERIAL"));
+                    obj.setEnginerName(finalObject.getString("ENG_NAME"));
+
+                    obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
+                    obj.setCallCenterName(finalObject.getString("CALL_CENTER_NAME"));
+                    obj.setTransferFlag(finalObject.getString("TRANSFER_FLAG"));
+                    obj.setTransferToEngId(finalObject.getString("TRANSFER_TO_ENG_ID"));
+                    obj.setTransferToEngName(finalObject.getString("TRANSFER_TO_ENG_NAME"));
+                    obj.setTransferReason(finalObject.getString("TRANSFER_RESON"));
+                    obj.setTransferToSerial(finalObject.getString("TRANSFER_TO_SERIAL"));
+                    obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
+                    obj.setShowDetails(false);
+
+                    if (serial == -1)
+                        engineerTrackingList.add(obj);
+                    else
+                        childList.add(obj);
+//                    DateList.add((finalObject.getString("DATE_OF_TRANSACTION")));
+                }
+
+                if (serial == -1)
+                    engineersTrackingReport.engineersTrackingReportFilter();
+                else
+                    engineersTrackingReport.fillChildData(childList);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

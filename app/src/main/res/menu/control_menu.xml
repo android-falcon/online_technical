@@ -12,4 +12,8 @@
     <item
         android:id="@+id/menu_report"
         android:title="@string/call_center_report"/>
+
+    <item
+        android:id="@+id/menu_engineers_tracking_report"
+        android:title="@string/tracking_report"/>
 </menu>
