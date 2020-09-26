@@ -358,23 +358,25 @@ public class PresenterClass {
                 DateList.clear();
 
                 jsonArray = response.getJSONObject(1).getJSONArray("CUSTOMER_INFO");
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject finalObject = (JSONObject) jsonArray.get(i);
-                    ManagerLayout obj = new ManagerLayout();
-                    obj.setCompanyName(finalObject.getString("COMPANY_NAME"));
-                    obj.setCustomerName(finalObject.getString("CUST_NAME"));
-                    obj.setCheakInTime(finalObject.getString("CHECH_IN_TIME"));
-                    obj.setCheakOutTime(finalObject.getString("CHECH_OUT_TIME"));
-                    obj.setEnginerName(finalObject.getString("ENG_NAME"));
-                    obj.setPhoneNo(finalObject.getString("PHONE_NO"));
-                    obj.setState(finalObject.getString("STATE"));
-                    obj.setProplem(finalObject.getString("PROBLEM"));
-                    obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
-                    obj.setSystemId(finalObject.getString("SYS_ID"));
-                    obj.setHoldTime(finalObject.getString("HOLD_TIME"));
-                    obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
-                    obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
-                    obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject finalObject = (JSONObject) jsonArray.get(i);
+                        ManagerLayout obj = new ManagerLayout();
+                        obj.setCompanyName(finalObject.getString("COMPANY_NAME"));
+                        obj.setCustomerName(finalObject.getString("CUST_NAME"));
+                        obj.setCheakInTime(finalObject.getString("CHECH_IN_TIME"));
+                        obj.setCheakOutTime(finalObject.getString("CHECH_OUT_TIME"));
+                        obj.setEnginerName(finalObject.getString("ENG_NAME"));
+                        obj.setPhoneNo(finalObject.getString("PHONE_NO"));
+                        obj.setState(finalObject.getString("STATE"));
+                        obj.setProplem(finalObject.getString("PROBLEM"));
+                        obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
+                        obj.setSystemId(finalObject.getString("SYS_ID"));
+                        obj.setHoldTime(finalObject.getString("HOLD_TIME"));
+                        obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+                        obj.setCallCenterName(finalObject.getString("CALL_CENTER_NAME"));
+                        obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
+                        obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
+                        obj.setHoldReason(finalObject.getString("HOLD_REASON"));
 
 
                     callCenterList.add(obj);

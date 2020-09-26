@@ -38,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.isInHold;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.systype;
@@ -125,12 +126,12 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
         lp.gravity = Gravity.CENTER;
         ArrayList<String> nameOfEngi=new ArrayList<>();
         final ListView listEngennering = dialog.findViewById(R.id.listViewEngineering);
-        if(engineerInfoList.size()!=0)
+        if(engInfoTra.size()!=0)
         {
-            for(int i=0;i<engineerInfoList.size();i++)
+            for(int i=0;i<engInfoTra.size();i++)
             {
 //                nameOfEngi.add("tahani");
-                nameOfEngi.add(engineerInfoList.get(i).getName());
+                nameOfEngi.add(engInfoTra.get(i).getName());
             }
             Log.e("nameOfEngi",""+nameOfEngi.size());
 
@@ -145,8 +146,8 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
                 rowEng=position;
                 listEngennering.requestFocusFromTouch();
                 listEngennering.setSelection(position);
-                selectedId=engineerInfoList.get(position).getId();
-                selectedEngineer=engineerInfoList.get(position).getName();
+                selectedId=engInfoTra.get(position).getId();
+                selectedEngineer=engInfoTra.get(position).getName();
 
 //               Log.e( "getSelectedItem",""+listEngennering.getSelectedItem().toString());
                 Log.e( "getItemsCanFocus",""+listEngennering.getItemsCanFocus());

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
@@ -16,8 +17,10 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.Adapter;
 import android.widget.AdapterView;
@@ -25,6 +28,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,6 +49,7 @@ import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 import org.json.JSONArray;
@@ -75,34 +80,35 @@ import static com.falconssoft.onlinetechsupport.ManagerImport.sendSucsses;
 
 public class OnlineCenter extends AppCompatActivity {
     GridView gridView;
-     public static RecyclerView recyclerView,recyclerViewCheckIn;
-     public  static List<EngineerInfo> engineerInfoList, listEngforAdapter,engInfoTra;
+    public static RecyclerView recyclerView, recyclerViewCheckIn;
+    public static List<EngineerInfo> engineerInfoList, listEngforAdapter, engInfoTra;
     List<ManagerLayout> holdCompaney;
-    public  static TextView customer_name, companey_name, telephone_no,text_delet_id,text_finish,textState,systype;
-    TextView callCenterName,LogInTime,deletaAllText;
-//    Spinner spenner_systems;
+    public static TextView customer_name, companey_name, telephone_no, text_delet_id, text_finish, textState, systype;
+    TextView callCenterName, LogInTime, deletaAllText,secandCall;
+    //    Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     DatabaseHandler databaseHandler;
 
     String ipAddres = "";
-    public  static  List<Systems> systemsList;
+    public static List<Systems> systemsList;
     LinearLayoutManager layoutManager;
-    public  static int stateCompaney = -1, selectedEngId = 0,EngId=-1;
-      String selectedEngineer = "";
+    public static int stateCompaney = -1, selectedEngId = 0, EngId = -1;
+    String holdReasonText = "";
+    String selectedEngineer = "";
     adapterGridEngineer engineerAdapter;
     Timer timer;
     public static JSONObject updateHold;
     public static List<ManagerLayout> hold_List;
-    int idForDelete=0;
+    int idForDelete = 0;
     private PresenterClass presenterClass;
-    public  static boolean isInHold=false;
+    public static boolean isInHold = false;
     AlphaAnimation buttonClick;
     public static List<ManagerLayout> checkInList;
     Spinner spinnerPhone;
-List<String> spinnerPhoneList;
-ArrayAdapter <String> spinnerPhoneAdapter;
-TextView countOfCallWork;
-    public static List<String >engStringName=new ArrayList<>();
+    List<String> spinnerPhoneList;
+    ArrayAdapter<String> spinnerPhoneAdapter;
+    TextView countOfCallWork;
+    public static List<String> engStringName = new ArrayList<>();
 
 
     @SuppressLint("WrongConstant")
@@ -111,18 +117,16 @@ TextView countOfCallWork;
         super.onCreate(savedInstanceState);
         try {
             setContentView(R.layout.activity_online_center);
-        }
-        catch (Exception e)
-        {
-            Log.e("setContentView",""+e.getMessage());
+        } catch (Exception e) {
+            Log.e("setContentView", "" + e.getMessage());
         }
 
         initialView();
-        engInfoTra=new ArrayList<>();
+        engInfoTra = new ArrayList<>();
 
         fillPhoneSpinner();
 
-        checkInList=new ArrayList<>();
+        checkInList = new ArrayList<>();
         checkInList.clear();
         systype.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,11 +138,11 @@ TextView countOfCallWork;
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy   hh:mm:ss");
         String time = df.format(currentTimeAndDate);
-        LogInTime.setText(""+time);
+        LogInTime.setText("" + time);
         presenterClass = new PresenterClass(this);
-        databaseHandler=new DatabaseHandler(OnlineCenter.this);
-        ipAddres=databaseHandler.getIp();
-       fillEngineerInfoList(0);
+        databaseHandler = new DatabaseHandler(OnlineCenter.this);
+        ipAddres = databaseHandler.getIp();
+        fillEngineerInfoList(0);
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -170,11 +174,105 @@ TextView countOfCallWork;
         });
 
 
+        secandCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                boolean isfaull = checkRequiredData();
+                if (isfaull) {
+                    dialogEngineering(OnlineCenter.this);
+                }
+
+            }
+        });
+
+
     }
 
-    void callCountCalling (){
 
-        countOfCall=countOfCallWork;
+    private void dialogEngineering(final Context context1) {
+
+        final Dialog dialog = new Dialog(context1);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.engeneering_dialog);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+        ArrayList<String> nameOfEngi=new ArrayList<>();
+        final ListView listEngennering = dialog.findViewById(R.id.listViewEngineering);
+
+        final int[] rowEng = new int[1];
+        final String[] selectedId = new String[1];
+        if( engInfoTra.size()!=0)
+        {
+            for(int i=0;i<engInfoTra.size();i++)
+            {
+//                nameOfEngi.add("tahani");
+                nameOfEngi.add(engInfoTra.get(i).getName());
+            }
+            Log.e("nameOfEngi",""+nameOfEngi.size());
+
+//                    simple_list_item_1 simple_list_item_activated_1
+            ArrayAdapter<String> itemsAdapter =
+                    new ArrayAdapter<String>(OnlineCenter.this, android.R.layout.simple_list_item_1, nameOfEngi);
+            listEngennering.setAdapter(itemsAdapter);
+        }
+        listEngennering.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                rowEng[0] =position;
+                listEngennering.requestFocusFromTouch();
+                listEngennering.setSelection(position);
+                selectedId[0] =engInfoTra.get(position).getId();
+                EngId=Integer.parseInt(selectedId[0]);
+                selectedEngineer=engInfoTra.get(position).getName();
+
+//               Log.e( "getSelectedItem",""+listEngennering.getSelectedItem().toString());
+                Log.e( "getItemsCanFocus",""+listEngennering.getItemsCanFocus());
+                Log.e("position",""+position+"\t"+ selectedId[0]);
+
+            }
+        });
+
+
+        Button btn_send = dialog.findViewById(R.id.btn_send);
+
+        btn_send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(rowEng[0] ==-1)
+                {
+                    Toast.makeText(OnlineCenter.this, "Select Engineer", Toast.LENGTH_SHORT).show();
+
+                }
+                else {
+                        JSONObject data = null;
+                        try {
+                            data = getData("0", 1);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.e("data", "" + data);
+                        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                        managerImport.startSendingData(data, true, 0, null, null);
+
+                        dialog.dismiss();
+
+
+                }
+
+            }
+        });
+        dialog.show();
+
+    }
+
+    void callCountCalling() {
+
+        countOfCall = countOfCallWork;
 
         ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
         managerImport.startSending("CountCallWork");
@@ -182,8 +280,8 @@ TextView countOfCallWork;
 
     }
 
-    void fillPhoneSpinner(){
-        spinnerPhoneList=new ArrayList<>();
+    void fillPhoneSpinner() {
+        spinnerPhoneList = new ArrayList<>();
         spinnerPhoneList.clear();
         spinnerPhoneList.add("06");
         spinnerPhoneList.add("078");
@@ -192,12 +290,12 @@ TextView countOfCallWork;
         spinnerPhoneList.add("+966");
         spinnerPhoneList.add("+964");
 
-        spinnerPhoneAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
+        spinnerPhoneAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
         spinnerPhoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPhone.setAdapter(spinnerPhoneAdapter);
     }
 
-    void FillCheckIn(){
+    void FillCheckIn() {
 
         ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
         managerImport.startSending("GetCheckInList");
@@ -236,7 +334,7 @@ TextView countOfCallWork;
                                     int arg2, long arg3) {
                 selectedEngineer = engineerInfoList.get(arg2).getName();
                 selectedEngId = arg2;
-                EngId= Integer.parseInt(engineerInfoList.get(arg2).getId());
+                EngId = Integer.parseInt(engineerInfoList.get(arg2).getId());
                 for (int i = 0; i < gridView.getChildCount(); i++) {
                     if (i != arg2) {
                         gridView.getChildAt(i).setBackgroundColor(getResources().getColor(R.color.layer1));
@@ -288,8 +386,7 @@ TextView countOfCallWork;
     @SuppressLint("WrongConstant")
     private void sendEngineerToAdapter() {
         int engType = 0;
-        if(engineerInfoList.size()!=0)
-        {
+        if (engineerInfoList.size() != 0) {
             listEngforAdapter.clear();
             for (int i = 0; i < engineerInfoList.size(); i++) {
                 engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
@@ -312,7 +409,7 @@ TextView countOfCallWork;
                                         final int arg2, long arg3) {
                     selectedEngineer = engineerInfoList.get(arg2).getName();
                     selectedEngId = arg2;
-                    EngId= Integer.parseInt(engineerInfoList.get(arg2).getId());
+                    EngId = Integer.parseInt(engineerInfoList.get(arg2).getId());
 
                     for (int i = 0; i < gridView.getChildCount(); i++) {
                         if (i != arg2) {
@@ -352,24 +449,24 @@ TextView countOfCallWork;
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
                         if (gridView.isItemChecked(arg2)) {
-    //                    arg1= gridView.getChildAt(arg2);
-    //                    arg1.setBackgroundColor(getResources().getColor(R.color.layer4));
+                            //                    arg1= gridView.getChildAt(arg2);
+                            //                    arg1.setBackgroundColor(getResources().getColor(R.color.layer4));
                         } else {
-    //
+                            //
                             arg1.setBackgroundColor(getResources().getColor(R.color.layer3)); //the color code is the background color of GridView
                         }
                     }
                 }
             });
-        }else{
+        } else {
             engineerAdapter = new adapterGridEngineer(this, engineerInfoList);
             gridView.setAdapter(engineerAdapter);
         }
     }
 
-    public void  systemGridDialog(final List<Systems>listOfsystem){
+    public void systemGridDialog(final List<Systems> listOfsystem) {
 
-        final Dialog fillSysDialog = new Dialog(OnlineCenter.this,R.style.Theme_Dialog);
+        final Dialog fillSysDialog = new Dialog(OnlineCenter.this, R.style.Theme_Dialog);
         fillSysDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         fillSysDialog.setCancelable(true);
         fillSysDialog.setContentView(R.layout.sys_dialog);
@@ -377,7 +474,7 @@ TextView countOfCallWork;
 
         final GridView SysGrid;
 
-        SysGrid=fillSysDialog.findViewById(R.id.Sysgrid);
+        SysGrid = fillSysDialog.findViewById(R.id.Sysgrid);
 //        SysGrid
 
         adapterGridSystem adapterSystem = new adapterGridSystem(this, listOfsystem);
@@ -388,7 +485,7 @@ TextView countOfCallWork;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                    systype.setText(listOfsystem.get(position).getSystemName());
+                systype.setText(listOfsystem.get(position).getSystemName());
 
                 fillSysDialog.dismiss();
 
@@ -403,8 +500,8 @@ TextView countOfCallWork;
 //        if(TextUtils.isEmpty(ipAddres)){
 //            Toast.makeText(this, "ip Not Found,Please Add Ip", Toast.LENGTH_SHORT).show();
 //        }
-        databaseHandler=new DatabaseHandler(OnlineCenter.this);
-        ipAddres=databaseHandler.getIp();
+        databaseHandler = new DatabaseHandler(OnlineCenter.this);
+        ipAddres = databaseHandler.getIp();
         final String url = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
 
         JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.GET, url, (JSONObject) null,
@@ -413,7 +510,7 @@ TextView countOfCallWork;
                     @Override
                     public void onResponse(JSONObject jsonObject) {
                         try {
-                            if(flag!=0)// 0 ---->  just first time
+                            if (flag != 0)// 0 ---->  just first time
                             {
                                 engineerInfoList.clear();
 
@@ -429,18 +526,17 @@ TextView countOfCallWork;
                                     engineerInfo.setEng_type(engineerInfoObject.getInt("ENG_TYPE"));
                                     engineerInfo.setState(engineerInfoObject.getInt("STATE"));
 
-                                    Log.e("ENG_TYPE",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
+                                    Log.e("ENG_TYPE", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
-                                    if(engineerInfo.getEng_type()==2){
+                                    if (engineerInfo.getEng_type() == 2) {
                                         engInfoTra.add(engineerInfo);
                                         engStringName.add(engineerInfo.getName());
 
                                     }
 
-                                    if( engineerInfo.getEng_type()==2&& engineerInfo.getState()==0)
-                                    {
+                                    if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
                                         engineerInfoList.add(engineerInfo);
-                                        Log.e("ENG_TYPE_in",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
+                                        Log.e("ENG_TYPE_in", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
                                     }
 
@@ -464,35 +560,35 @@ TextView countOfCallWork;
                                             engineerInfoList.add(engineerInfo);
 
                                         }
+//                                        if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() != 0 ) {
+//                                            engineerNotAvil.add(engineerInfo);
+//                                        }
 
                                     }
                                 } catch (Exception e) {
                                     Log.e("No_Eng", "Exception");
 
                                 }
-                                try{
+                                try {
                                     systemsList.clear();
-                                    systemsList.add(new Systems ("system Not Known","-1"));
-                                JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
-                                Log.e("systemInfoArray", "" + systemInfoArray);
-                                for (int i = 0; i < systemInfoArray.length(); i++) {
-                                    JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
-                                    Systems systemInfo = new Systems();
-                                    systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
-                                    systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
-                                    systemsList.add(systemInfo);
-                                }
-                            }catch (Exception e){
-                                Log.e("No_Sys       ","Exception");
+                                    systemsList.add(new Systems("system Not Known", "-1"));
+                                    JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
+                                    Log.e("systemInfoArray", "" + systemInfoArray);
+                                    for (int i = 0; i < systemInfoArray.length(); i++) {
+                                        JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
+                                        Systems systemInfo = new Systems();
+                                        systemInfo.setSystemName(systemInfoObject.getString("SYSTEM_NAME"));
+                                        systemInfo.setSystemNo(systemInfoObject.getString("SYSTEM_NO"));
+                                        systemsList.add(systemInfo);
+                                    }
+                                } catch (Exception e) {
+                                    Log.e("No_Sys       ", "Exception");
 
-                            }
+                                }
 //                                fillSpennerSystem(systemsList);
 //                                systemGridDialog(systemsList);
                                 sendEngineerToAdapter();
                             }
-
-
-
 
 
                         } catch (Exception e) {
@@ -541,18 +637,20 @@ TextView countOfCallWork;
         companey_name = findViewById(R.id.companey_name);
         telephone_no = findViewById(R.id.telephone_no);
 //        spenner_systems = findViewById(R.id.spenner_systems);
-        spinnerPhone=findViewById(R.id.spinnerPhone);
+        spinnerPhone = findViewById(R.id.spinnerPhone);
         engineerInfoList = new ArrayList<>();
+//        engineerNotAvil= new ArrayList<>();
         listEngforAdapter = new ArrayList<>();
+        secandCall=findViewById(R.id.secandCall);
         holdCompaney = new ArrayList<>();
         systemsList = new ArrayList<>();
-        hold_List=new ArrayList<>();
-        text_delet_id=findViewById(R.id.text_delet_id);
-        text_finish=findViewById(R.id.text_finish);
-        systype=findViewById(R.id.systype);
-        textState=findViewById(R.id.textState);
-        callCenterName=findViewById(R.id.callCenterName);
-        deletaAllText=findViewById(R.id.deletaAllText);
+        hold_List = new ArrayList<>();
+        text_delet_id = findViewById(R.id.text_delet_id);
+        text_finish = findViewById(R.id.text_finish);
+        systype = findViewById(R.id.systype);
+        textState = findViewById(R.id.textState);
+        callCenterName = findViewById(R.id.callCenterName);
+        deletaAllText = findViewById(R.id.deletaAllText);
         deletaAllText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -560,8 +658,8 @@ TextView countOfCallWork;
                 clearText();
             }
         });
-        countOfCallWork=findViewById(R.id.countOfCallWork);
-        LogInTime=findViewById(R.id.LogInTime);
+        countOfCallWork = findViewById(R.id.countOfCallWork);
+        LogInTime = findViewById(R.id.LogInTime);
         textState.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -571,9 +669,9 @@ TextView countOfCallWork;
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if(textState.getText().toString().equals("Success")){
+                if (textState.getText().toString().equals("Success")) {
                     presenterClass.setState(String.valueOf(EngId), 1);// checkin
-                    Log.e("textStateEngid",""+EngId);
+                    Log.e("textStateEngid", "" + EngId);
                     textState.setText("1");
                 }
             }
@@ -591,8 +689,7 @@ TextView countOfCallWork;
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(text_finish.getText().toString().equals("finish"))
-                {
+                if (text_finish.getText().toString().equals("finish")) {
                     clearData();// after sucsess
                     deleteFromHoldList();
                     hold_List.clear();
@@ -601,7 +698,7 @@ TextView countOfCallWork;
 
                     callCountCalling();
 
-                }else if(text_finish.getText().toString().equals("AddFinish")){
+                } else if (text_finish.getText().toString().equals("AddFinish")) {
                     deleteFromHoldList();
                     hold_List.clear();
                     FillCheckIn();
@@ -623,13 +720,13 @@ TextView countOfCallWork;
         boolean isfaull = checkRequiredData();
         if (isfaull) {
             if (engineerInfoList.size() != 0) {
-                if(!isInHold) {
-                    JSONObject data = getData("0",1);
+                if (!isInHold) {
+                    JSONObject data = getData("0", 1);
                     Log.e("data", "" + data);
                     ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                    managerImport.startSendingData(data, true,0,null,null);
-                }else{
-                    if(!text_delet_id.getText().toString().equals("")) {
+                    managerImport.startSendingData(data, true, 0, null, null);
+                } else {
+                    if (!text_delet_id.getText().toString().equals("")) {
                         CompaneyInfo companeyInfo = new CompaneyInfo();
 
                         String sys_Id = getSystemId(hold_List.get(Integer.parseInt(text_delet_id.getText().toString())).getSystemName());
@@ -656,7 +753,7 @@ TextView countOfCallWork;
                         managerImport.startUpdateHold(data);
 
                     }
-                    isInHold=false;
+                    isInHold = false;
 
 
                 }
@@ -700,10 +797,9 @@ TextView countOfCallWork;
 
     @SuppressLint("WrongConstant")
     private void deleteFromHoldList() {
-        if(!text_delet_id.getText().toString().equals(""))
-        {
-            idForDelete=Integer.parseInt(text_delet_id.getText().toString());
-            Log.e("idForDelete",""+idForDelete);
+        if (!text_delet_id.getText().toString().equals("")) {
+            idForDelete = Integer.parseInt(text_delet_id.getText().toString());
+            Log.e("idForDelete", "" + idForDelete);
             hold_List.remove(idForDelete);
 //            recyclerView.removeViewAt(idForDelete);
             LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
@@ -727,8 +823,8 @@ TextView countOfCallWork;
                 gridView.setAdapter(engineerAdapter);
                 engineerAdapter.notifyDataSetChanged();
             }
-        }catch (Exception e){
-            Log.e("error ","clearData "+e);
+        } catch (Exception e) {
+            Log.e("error ", "clearData " + e);
         }
 
 
@@ -742,23 +838,23 @@ TextView countOfCallWork;
         systype.setText("");
     }
 
-    private JSONObject getData(String transferFlag,int isHold) throws JSONException {
+    private JSONObject getData(String transferFlag, int isHold) throws JSONException {
 //        isHold ======> for hold work without eng list
         String time = "", sys_name = "", sys_Id = "";
         String customerName = "", companeyName = "", tele = "";
 
-        customerName = customer_name.getText().toString().replace("'","");
-        companeyName = companey_name.getText().toString().replace("'","");
+        customerName = customer_name.getText().toString().replace("'", "");
+        companeyName = companey_name.getText().toString().replace("'", "");
 
-        String phoneFirst="";
+        String phoneFirst = "";
 
-        try{
-            phoneFirst=spinnerPhone.getSelectedItem().toString();
-        }catch (Exception e){
-            phoneFirst="06";
+        try {
+            phoneFirst = spinnerPhone.getSelectedItem().toString();
+        } catch (Exception e) {
+            phoneFirst = "06";
         }
 
-        tele = phoneFirst+telephone_no.getText().toString();
+        tele = phoneFirst + telephone_no.getText().toString();
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
         time = df.format(currentTimeAndDate);
@@ -767,8 +863,8 @@ TextView countOfCallWork;
 //            sys_name = spenner_systems.getSelectedItem().toString();
 //            Log.e("sys_name",""+sys_name);
 //        }
-        sys_name=systype.getText().toString();
-        sys_Id = getSystemId(sys_name.replace(",",""));
+        sys_name = systype.getText().toString();
+        sys_Id = getSystemId(sys_name.replace(",", ""));
 //        if (engineerInfoList.size() == 0) {
 //            stateCompaney = 0;// hold
 //        } else {
@@ -784,13 +880,12 @@ TextView countOfCallWork;
 
         final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
         final String CallName = LoginActivity.sharedPreferences.getString(LOGIN_NAME, "-1");
-        Log.e("call_id1",""+CallId+"    "+sys_Id +"    "+ CallName);
+        Log.e("call_id1", "" + CallId + "    " + sys_Id + "    " + CallName);
 
         JSONObject obj = new JSONObject();
 
-
-
-        if (engineerInfoList.size() != 0 ||isHold!=0) {
+//engineerInfoList.size() != 0 ||
+        if ( isHold != 0) {
             obj.put("CUST_NAME", "'" + customerName + "'");
             obj.put("COMPANY_NAME", "'" + companeyName + "'");
             obj.put("SYSTEM_NAME", "'" + sys_name + "'");
@@ -802,13 +897,14 @@ TextView countOfCallWork;
             obj.put("SYS_ID", "'" + sys_Id + "'");
             obj.put("CHECH_OUT_TIME", "'00:00:00'");
             obj.put("PROBLEM", "'problem'");
-            obj.put("CALL_CENTER_ID", "'"+CallId+"'");
-            obj.put("HOLD_TIME", "'"+"00:00:00"+"'");
+            obj.put("CALL_CENTER_ID", "'" + CallId + "'");
+            obj.put("HOLD_TIME", "'" + "00:00:00" + "'");
             obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
-            obj.put("SERIAL", "'"+"222"+"'");
-            obj.put("CALL_CENTER_NAME", "'"+CallName+"'");
-            obj.put("TRANSFER_FLAG", "'"+transferFlag+"'");
+            obj.put("SERIAL", "'" + "222" + "'");
+            obj.put("CALL_CENTER_NAME", "'" + CallName + "'");
+            obj.put("TRANSFER_FLAG", "'" + transferFlag + "'");
             obj.put("ORGINAL_SERIAL", "'-2'");
+            obj.put("HOLD_REASON", "''");
         } else {
             // hold company data
             obj.put("CUST_NAME", "'" + customerName + "'");
@@ -822,7 +918,15 @@ TextView countOfCallWork;
             obj.put("SYS_ID", "'" + sys_Id + "'");
             obj.put("CHECH_OUT_TIME", "'00:00:00'");
             obj.put("PROBLEM", "'problem'");
-            obj.put("CALL_CENTER_ID", "'"+CallId+"'");
+            obj.put("CALL_CENTER_ID", "'" + CallId + "'");
+            obj.put("HOLD_TIME", "'" + "00:00:00" + "'");
+            obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
+            obj.put("SERIAL", "'" + "222" + "'");
+            obj.put("CALL_CENTER_NAME", "'" + CallName + "'");
+            obj.put("TRANSFER_FLAG", "'" + transferFlag + "'");
+            obj.put("ORGINAL_SERIAL", "'-2'");
+            obj.put("HOLD_REASON", "'"+holdReasonText+"'");
+            Log.e("holdReasonText","reason "+holdReasonText);
         }
         return obj;
 
@@ -843,13 +947,13 @@ TextView countOfCallWork;
     }
 
     private boolean checkRequiredData() {
-        String customerName = "", companeyName = "", tele = "",systemName="";
+        String customerName = "", companeyName = "", tele = "", systemName = "";
         customerName = customer_name.getText().toString();
         companeyName = companey_name.getText().toString();
         tele = telephone_no.getText().toString();
-        systemName=systype.getText().toString();
+        systemName = systype.getText().toString();
 
-        if ((!TextUtils.isEmpty(customerName)) && (!TextUtils.isEmpty(companeyName)) && (!TextUtils.isEmpty(tele)) &&  (!TextUtils.isEmpty(systemName))) {
+        if ((!TextUtils.isEmpty(customerName)) && (!TextUtils.isEmpty(companeyName)) && (!TextUtils.isEmpty(tele)) && (!TextUtils.isEmpty(systemName))) {
             return true;
 
         } else {
@@ -860,8 +964,7 @@ TextView countOfCallWork;
                 companey_name.setError("Required");
             } else if (TextUtils.isEmpty(tele)) {
                 telephone_no.setError("Required");
-            }
-            else if (TextUtils.isEmpty(systemName)) {
+            } else if (TextUtils.isEmpty(systemName)) {
                 systype.setError("Required");
             }
             return false;
@@ -877,56 +980,28 @@ TextView countOfCallWork;
             if (checkRequiredData()) {
 //                if (engineerInfoList.size() == 0) {
 
-                    new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                            .setTitleText("warning!!")
-                            .setContentText("Add To Hold List !!!")
-                           .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                               @Override
-                               public void onClick(SweetAlertDialog sweetAlertDialog) {
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("warning!!")
+                        .setContentText("Add To Hold List !!!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
 
-                                   Date currentTimeAndDate = Calendar.getInstance().getTime();
-                                   SimpleDateFormat df = new SimpleDateFormat("hh:mm");
-                                   String time = df.format(currentTimeAndDate);
-                                   Log.e("timeHold", "" + time);
-                                   LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
-                                   llm.setOrientation(LinearLayoutManager.VERTICAL);
-                                   ManagerLayout info = new ManagerLayout();
-                                   info.setCompanyName(companey_name.getText().toString());
-                                   info.setPhoneNo(telephone_no.getText().toString());
-                                   info.setCustomerName(customer_name.getText().toString());
-                                   info.setSystemName(systype.getText().toString());
-                                   info.setState("0");
-                                   info.setCheakInTime(time);
-                                   JSONObject data = null;
-                                   try {
-                                       data = getData("0",0);
-                                   } catch (JSONException e) {
-                                       e.printStackTrace();
-                                   }
-                                   Log.e("data", "" + data);
-                                   ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                                   managerImport.startSendingData(data,false ,0,null,null);
+                                holdListDialog();
+                                sweetAlertDialog.dismissWithAnimation();
 
-                                   holdCompaney.add(info);
-                                   hold_List.add(info);
-                                   final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
 
-                                   recyclerView.setLayoutManager(llm);
-                                   recyclerView.setAdapter(companyAdapter);
-                                   clearData();
-                                   sweetAlertDialog.dismissWithAnimation();
+                            }
+                        })
+                        .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
 
-                               }
-                           })
-                            .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
 
-                                    sweetAlertDialog.dismissWithAnimation();
-
-                                }
-                            })
-                            .show();
+                            }
+                        })
+                        .show();
 
 
 //                } else {
@@ -941,6 +1016,73 @@ TextView countOfCallWork;
             }
         }
     }
+
+    @SuppressLint("WrongConstant")
+    void holdListDialog() {
+
+        final Dialog holdDialog = new Dialog(OnlineCenter.this,R.style.Theme_Dialog);
+        holdDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        holdDialog.setCancelable(true);
+        holdDialog.setContentView(R.layout.hold_dialog);
+        holdDialog.setCanceledOnTouchOutside(true);
+
+        FloatingActionButton addList = holdDialog.findViewById(R.id.hold_reason);
+        final EditText holdReason = holdDialog.findViewById(R.id.holdEdit_reason);
+
+
+        addList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (!TextUtils.isEmpty(holdReason.getText().toString())) {
+                    Date currentTimeAndDate = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+                    String time = df.format(currentTimeAndDate);
+                    Log.e("timeHold", "" + time);
+                    LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
+                    llm.setOrientation(LinearLayoutManager.VERTICAL);
+                    ManagerLayout info = new ManagerLayout();
+                    info.setCompanyName(companey_name.getText().toString());
+                    info.setPhoneNo(telephone_no.getText().toString());
+                    info.setCustomerName(customer_name.getText().toString());
+                    info.setSystemName(systype.getText().toString());
+                    info.setHoldReason(holdReason.getText().toString());
+                    holdReasonText = holdReason.getText().toString();
+                    info.setState("0");
+                    info.setCheakInTime(time);
+                    JSONObject data = null;
+                    try {
+                        data = getData("0", 0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("data", "" + data);
+                    ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                    managerImport.startSendingData(data, false, 0, null, null);
+
+                    holdCompaney.add(info);
+//                    hold_List.add(info);
+//                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
+//
+//                    recyclerView.setLayoutManager(llm);
+//                    recyclerView.setAdapter(companyAdapter);
+                    clearData();
+                    holdDialog.dismiss();
+                } else {
+
+                    Toast.makeText(OnlineCenter.this, "Please add Reason ", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
+
+        holdDialog.show();
+
+
+    }
+
     @Override
     public void onBackPressed() {
         new SweetAlertDialog(OnlineCenter.this)

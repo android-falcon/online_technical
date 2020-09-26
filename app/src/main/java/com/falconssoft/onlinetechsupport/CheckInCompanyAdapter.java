@@ -473,6 +473,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
             obj.put("SERIAL", "'"+"222"+"'");
             obj.put("CALL_CENTER_NAME", "'"+CallName+"'");
             obj.put("TRANSFER_FLAG", "'2'");
+            obj.put("HOLD_REASON", "''");
            if(managerLayout.getOriginalSerial().equals("-1")||managerLayout.getOriginalSerial().equals("-2")) {
                obj.put("ORGINAL_SERIAL", managerLayout.getSerial());
                Log.e("ORGINAL_SERIAL","getSerial "+managerLayout.getSerial());

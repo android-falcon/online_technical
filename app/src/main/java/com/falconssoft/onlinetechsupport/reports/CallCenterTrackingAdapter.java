@@ -110,7 +110,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
         dialog.setContentView(R.layout.information_dialog);
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
-        TextView customer,company,phone,system,eng,time,states,titel,problem,callCenterName,stateOfSolve,dateOfTran;
+        TextView customer,company,phone,system,eng,time,states,titel,problem,callCenterName,stateOfSolve,dateOfTran,hold_reason;
         LinearLayout bac1,bac2;
 
 
@@ -128,6 +128,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
         callCenterName=dialog.findViewById(R.id.call_center_name);
         stateOfSolve=dialog.findViewById(R.id.stateOfSolve);
         dateOfTran=dialog.findViewById(R.id.dateOfTran);
+        hold_reason=dialog.findViewById(R.id.hold_reason);
         String statesString ="";
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);
@@ -174,7 +175,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
         problem.setText("" + itemsList.getProplem());
         callCenterName.setText(""+itemsList.getCallCenterName());
         dateOfTran.setText(""+itemsList.getTransactionDate());
-
+        hold_reason.setText(""+itemsList.getHoldReason());
 
         String solveState="";
         int stateProblem=Integer.parseInt(itemsList.getConvertFlag());
