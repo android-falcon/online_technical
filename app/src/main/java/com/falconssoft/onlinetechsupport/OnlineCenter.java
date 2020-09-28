@@ -144,15 +144,15 @@ public class OnlineCenter extends AppCompatActivity {
         ipAddres = databaseHandler.getIp();
         fillEngineerInfoList(0);
         timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-
-                fillEngineerInfoList(1);
-
-            }
-
-        }, 0, 4000);
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//
+//                fillEngineerInfoList(1);
+//
+//            }
+//
+//        }, 0, 4000);
 
 
         callCountCalling();
