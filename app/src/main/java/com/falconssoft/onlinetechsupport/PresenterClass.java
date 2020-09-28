@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
+import static com.falconssoft.onlinetechsupport.LoginActivity.intentText;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
 import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.DateList;
 import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.callCenterList;
@@ -53,7 +54,7 @@ public class PresenterClass {
     private StringRequest stateRequest, pushProblemRequest;
     private Context context;
     private DatabaseHandler databaseHandler;
-    private List<EngineerInfo> list;
+    public static  List<EngineerInfo> listInfo;
     private List<CustomerOnline> onlineList;
     private OnlineActivity onlineActivity;
     private CustomerOnline customerOnline;
@@ -70,7 +71,7 @@ public class PresenterClass {
         this.context = context;
         this.requestQueue = Volley.newRequestQueue(context);
         databaseHandler = new DatabaseHandler(context);
-        list = new ArrayList<>();
+        listInfo = new ArrayList<>();
         URL = "http://" + databaseHandler.getIp() + "/onlineTechnicalSupport/";//http://5.189.130.98:8085/onlineTechnicalSupport/
         Log.e("URL", "" + URL);
 
@@ -85,19 +86,24 @@ public class PresenterClass {
 
     //****************************************** Login **************************************
 
-    public void getLoginData() {
+    public void getLoginData(String userName,String password) throws JSONException {
 //        ipAddres = databaseHandler.getIp();
-        urlLogin = URL + "import.php?FLAG=0";//"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
+        // http://10.0.0.214/onlineTechnicalSupport/export.php?AUTHENTECATION={"USER_NAME":"nour","PASSWORD":"1111"}
+        urlLogin = URL + "export.php?AUTHENTECATION=";  //"http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
         Log.e("URL", "" + urlLogin);
 
-        loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin, null, new LoginDataClass(), new LoginDataClass());
+        JSONObject userInfo=new JSONObject();
+        userInfo.put("USER_NAME",userName);
+        userInfo.put("PASSWORD",password);
+        Log.e("URLuserInfo", "" + urlLogin+userInfo);
+        loginRequest = new JsonObjectRequest(Request.Method.GET, urlLogin+userInfo, null, new LoginDataClass(), new LoginDataClass());
         requestQueue.add(loginRequest);
     }
 
     class LoginDataClass implements Response.Listener<JSONObject>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
-//            Log.e("presenter/e", "LoginDataClass/ " + error.getMessage());
+            Log.e("presenter/e", "LoginDataClass/ " + error.getMessage());
 
         }
 
@@ -105,27 +111,39 @@ public class PresenterClass {
         public void onResponse(JSONObject response) {
             Log.e("presenter", "LoginDataClass/ " + response.toString());
             try {
-                databaseHandler.deleteLoginData();
-                list.clear();
-                JSONArray jsonArray = response.getJSONArray("ENGINEER_INFO");
-                int i = 0;
-                while (i < jsonArray.length()) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                    EngineerInfo engineerInfo = new EngineerInfo();
-                    engineerInfo.setId(jsonObject.getString("ENG_ID"));
-                    engineerInfo.setName(jsonObject.getString("ENG_NAME"));
-                    engineerInfo.setState(jsonObject.getInt("STATE"));
-                    engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
-                    engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
-                    list.add(engineerInfo);
-                    i++;
-                    Log.e("EmployList", "LoginDataClass/ " + engineerInfo.getName() + "  " + engineerInfo.getPassword());
-                }
+                if(response.toString().contains("ENGINEER_INFO"))
+                {
+//                    databaseHandler.deleteLoginData();
+                    listInfo.clear();
+                    JSONArray jsonArray = response.getJSONArray("ENGINEER_INFO");
+                    int i = 0;
+                    while (i < jsonArray.length()) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        EngineerInfo engineerInfo = new EngineerInfo();
+                        engineerInfo.setId(jsonObject.getString("ENG_ID"));
+                        engineerInfo.setName(jsonObject.getString("ENG_NAME"));
+                        engineerInfo.setState(jsonObject.getInt("STATE"));
+                        engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
+                        engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
+                        listInfo.add(engineerInfo);
+                        i++;
+                        Log.e("EmployList", "LoginDataClass/ " + engineerInfo.getName() + "  " + engineerInfo.getPassword());
+                    }
+                    intentText.setText("start");
 
+
+//                databaseHandler.addLoginInfo(list);
+                }
+                else {
+                    if(response.toString().contains("AUTHENTECATION_FAIL"))
+                {
+                    Toast.makeText(context, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
+                }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            databaseHandler.addLoginInfo(list);
+
         }
     }// ststus 2 ///////// cusomer
 

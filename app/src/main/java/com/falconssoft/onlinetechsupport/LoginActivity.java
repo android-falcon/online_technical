@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -13,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,13 +23,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.falconssoft.onlinetechsupport.PresenterClass.listInfo;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText id, username, password,IP;
+    public  static TextView intentText;
     private Button done, login;
     private ImageView settings, logo;
     private int employeeID;
@@ -36,7 +44,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Dialog settingDialog;
     private PresenterClass presenterClass;
     private DatabaseHandler handler;
-    List<EngineerInfo> list;
+//    List<EngineerInfo> list;
+    boolean found = false;
 
     public static SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
@@ -46,6 +55,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String LOGIN_STATE = "state";
     public static final String LOGIN_PASSWORD = "password";
     public static final String LOGIN_TYPE = "type";
+    String localUsername;
+    String localPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         handler = new DatabaseHandler(this);
         presenterClass = new PresenterClass(this);
-        presenterClass.getLoginData();
+
         sharedPreferences = getSharedPreferences(LOGIN_PREFERNCES, Context.MODE_PRIVATE);
         settings = findViewById(R.id.login_settings);
         login = findViewById(R.id.login_login);
@@ -62,6 +74,73 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         username = findViewById(R.id.login_username);
         password = findViewById(R.id.login_password);
         username.requestFocus();
+        intentText=findViewById(R.id.intentText);
+        intentText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().equals("start"))
+                {
+                    for (int i = 0; i < listInfo.size(); i++)
+                        if (localUsername.toLowerCase().equals(listInfo.get(i).getName().toLowerCase())
+                                && localPassword.equals(listInfo.get(i).getPassword())) {//
+                            found = true;
+                            editor = sharedPreferences.edit();
+                            editor.putString(LOGIN_NAME, listInfo.get(i).getName());
+                            editor.putString(LOGIN_ID, listInfo.get(i).getId());
+                            editor.putInt(LOGIN_STATE, listInfo.get(i).getState());
+                            editor.putString(LOGIN_PASSWORD, listInfo.get(i).getPassword());
+                            editor.putInt(LOGIN_TYPE, listInfo.get(i).getEng_type());
+                            editor.commit();
+
+                            switch (listInfo.get(i).getEng_type()) {
+                                case 0:// manager
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    break;
+                                case 1:// call center
+                                    Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                    startActivity(intent2);
+                                    break;
+                                case 2:// online
+                                    Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+                                    startActivity(intent3);
+                                    break;
+                            }
+                            presenterClass.setState(listInfo.get(i).getId(), 0);// log in
+                            break;
+                        }
+
+                    if (!found) {
+                        if (localUsername.equals("Manager")&&localPassword.equals("1234m")) {
+
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+
+                        }else if(localUsername.equals("online")&&localPassword.equals("1234o")){
+
+                            Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+                            startActivity(intent3);
+                        }else  if(localUsername.equals("callCenter")&&localPassword.equals("1234c")){
+                            Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+                            startActivity(intent2);
+                        }else{
+                            Toast.makeText(LoginActivity.this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+            }
+        });
 
         animation = AnimationUtils.loadAnimation(this, R.anim.pop_up);
         logo.startAnimation(animation);
@@ -73,67 +152,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_login:
 //                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
 //                startActivity(intent2);
-                list = handler.getLoginData();
-                String localUsername = username.getText().toString();
-                String localPassword = password.getText().toString();
-                boolean found = false;
+//                list = handler.getLoginData();
+                 localUsername = username.getText().toString();
+                 localPassword = password.getText().toString();
+
 
                 if (!TextUtils.isEmpty(localUsername))
                     if (!TextUtils.isEmpty(localPassword)) {
-
-                        for (int i = 0; i < list.size(); i++)
-                            if (localUsername.toLowerCase().equals(list.get(i).getName().toLowerCase())
-                                    && localPassword.equals(list.get(i).getPassword())) {//
-                                found = true;
-                                editor = sharedPreferences.edit();
-                                editor.putString(LOGIN_NAME, list.get(i).getName());
-                                editor.putString(LOGIN_ID, list.get(i).getId());
-                                editor.putInt(LOGIN_STATE, list.get(i).getState());
-                                editor.putString(LOGIN_PASSWORD, list.get(i).getPassword());
-                                editor.putInt(LOGIN_TYPE, list.get(i).getEng_type());
-                                editor.commit();
-
-                                switch (list.get(i).getEng_type()) {
-                                    case 0:// manager
-                                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                        startActivity(intent);
-                                        break;
-                                    case 1:// call center
-                                        Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
-                                        startActivity(intent2);
-                                        break;
-                                    case 2:// online
-                                        Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
-                                        startActivity(intent3);
-                                        break;
-                                }
-                                presenterClass.setState(list.get(i).getId(), 0);// log in
-                                break;
-                            }
-
-                        if (!found) {
-                            if (localUsername.equals("Manager")&&localPassword.equals("1234m")) {
-
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                startActivity(intent);
-
-                            }else if(localUsername.equals("online")&&localPassword.equals("1234o")){
-
-                                Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
-                                startActivity(intent3);
-                            }else  if(localUsername.equals("callCenter")&&localPassword.equals("1234c")){
-                                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
-                                startActivity(intent2);
-                            }else{
-                                Toast.makeText(this, "Username or Password isn't Existing!", Toast.LENGTH_SHORT).show();
-                            }
+                        try {
+                            presenterClass.getLoginData(localUsername,localPassword);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+
                     } else {
                         animation = AnimationUtils.loadAnimation(this, R.anim.shake);
                         password.startAnimation(animation);
@@ -183,7 +221,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             handler.addIPSetting(employeeIP);
                             Toast.makeText(LoginActivity.this, "Save Success", Toast.LENGTH_SHORT).show();
                             settingDialog.dismiss();
-                            presenterClass.getLoginData();
+//                            presenterClass.getLoginData();
 
                         }else{}
 
