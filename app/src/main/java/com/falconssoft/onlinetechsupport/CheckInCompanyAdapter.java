@@ -128,7 +128,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                 viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
             }
-    }
+    } 
 
 
     @Override
