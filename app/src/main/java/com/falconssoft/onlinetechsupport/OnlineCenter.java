@@ -7,11 +7,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -85,7 +88,7 @@ public class OnlineCenter extends AppCompatActivity {
     public static RecyclerView recyclerView, recyclerViewCheckIn;
     public static List<EngineerInfo> engineerInfoList, listEngforAdapter, engInfoTra;
     List<ManagerLayout> holdCompaney;
-    public static TextView customer_name, companey_name, telephone_no, text_delet_id, text_finish, textState, systype;
+    public static TextView customer_name, companey_name, telephone_no, text_delet_id, text_finish, textState, systype,mSpeakBtn,btnSpeakPhone,btnSpeekCompany;
     TextView callCenterName, LogInTime, deletaAllText,secandCall;
     //    Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
@@ -115,6 +118,9 @@ public class OnlineCenter extends AppCompatActivity {
     CountryCodePicker countryCodePicker;
     GClass gClass=new GClass(null,null);
     public static int isShow=0;
+    private static final int REQ_CODE_SPEECH_INPUT = 100;
+    private static final int REQ_CODE_SPEECH_INPUT_Company = 200;
+    private static final int REQ_CODE_SPEECH_INPUT_Phone = 300;
 RelativeLayout relative;
     @SuppressLint("WrongConstant")
     @Override
@@ -241,7 +247,36 @@ RelativeLayout relative;
 
         }
     };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    customer_name.setText(result.get(0));
+                }
+                break;
+            }
+            case REQ_CODE_SPEECH_INPUT_Company: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    companey_name.setText(result.get(0));
+                }
+                break;
+            }
+            case REQ_CODE_SPEECH_INPUT_Phone: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    telephone_no.setText(result.get(0));
+                }
+                break;
+            }
+
+
+        }
+    }
     private void dialogEngineering(final Context context1) {
 
         final Dialog dialog = new Dialog(context1);
@@ -717,6 +752,10 @@ RelativeLayout relative;
         recyclerk.setVisibility(View.GONE);
         countOfCallWork = findViewById(R.id.countOfCallWork);
         LogInTime = findViewById(R.id.LogInTime);
+        mSpeakBtn=findViewById(R.id.btnSpeak);
+        btnSpeakPhone=findViewById(R.id.btnSpeakPhone);
+        btnSpeekCompany=findViewById(R.id.btnSpeakCompany);
+
         textState.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -770,8 +809,53 @@ RelativeLayout relative;
 
             }
         });
-    }
+        mSpeakBtn.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                startVoiceInput(1);
+            }
+        });
+        btnSpeakPhone.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startVoiceInput(3);
+            }
+        });
+        btnSpeekCompany.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startVoiceInput(2);
+            }
+        });
+    }
+    private void startVoiceInput(int flag) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hello, How can I help you?");
+        try {
+            if(flag==1)
+            {
+                startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+            }
+            else
+                if(flag==2)
+            {
+
+                startActivityForResult(intent, REQ_CODE_SPEECH_INPUT_Company);
+            }
+                else   if(flag==3)
+                {
+                    startActivityForResult(intent, REQ_CODE_SPEECH_INPUT_Phone);
+                }
+
+        } catch (ActivityNotFoundException a) {
+
+        }
+    }
 
     public void sendCompaneyInfo() throws JSONException {
         boolean isfaull = checkRequiredData();
