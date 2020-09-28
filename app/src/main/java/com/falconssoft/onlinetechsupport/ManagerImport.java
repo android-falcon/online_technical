@@ -20,6 +20,7 @@ import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,11 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.falconssoft.onlinetechsupport.GClass.customerPhoneNo;
+import static com.falconssoft.onlinetechsupport.GClass.engList;
+import static com.falconssoft.onlinetechsupport.GClass.engMList;
+import static com.falconssoft.onlinetechsupport.GClass.systemList;
+import static com.falconssoft.onlinetechsupport.GClass.systemMList;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
@@ -55,10 +61,10 @@ import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerViewCheckIn;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.textState;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_finish;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engList;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engMList;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemList;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemMList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engMList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemList;
+//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemMList;
 
 
 public class ManagerImport {
@@ -78,6 +84,7 @@ public class ManagerImport {
     DatabaseHandler databaseHandler;
     public static TextView countOfCall=null;
     CallCenterTrackingReport callCenterTrackingReport;
+    EngineersTrackingReport engineersTrackingReport;
    ManagerLayout managerLayoutTrans;
    int flag=0;
    Dialog dialogs;
@@ -105,7 +112,8 @@ public class ManagerImport {
             new GetCheckInList().execute();
         if (flag.equals("CountCallWork"))
             new CountCallWork().execute();
-
+        if (flag.equals("CustomerPhone"))
+            new ImportPhoneNo().execute();
 
 
 
@@ -116,10 +124,10 @@ public class ManagerImport {
 
 
 
-    public void startSendingEngSys(CallCenterTrackingReport callCenterTrackingReport) {
+    public void startSendingEngSys(Object object,int flag) {
 
-            new SystemEngineer(callCenterTrackingReport).execute();
-    }
+            new SystemEngineer(object,flag).execute();
+        }
 
     public void startSendingData(JSONObject data,boolean holds,int flagT,ManagerLayout managerLayout,Dialog dialog) {
         sendSucsses=false;
@@ -966,9 +974,17 @@ Log.e("tag_itemCard", "****saveSuccess");
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
-CallCenterTrackingReport callCenterTrackingReport;
-        public SystemEngineer(CallCenterTrackingReport callCenterTrackingReport) {
-            this.callCenterTrackingReport=callCenterTrackingReport;
+Object object;
+int sysEngFlag=0;
+//EngineersTrackingReport engineersTrackingReport;
+        public SystemEngineer(Object object,int flag) {
+            this.sysEngFlag=flag;
+            if(sysEngFlag==0) {
+
+                callCenterTrackingReport=(CallCenterTrackingReport) object;
+            }else {
+              engineersTrackingReport = (EngineersTrackingReport) object;
+            }
         }
 
         @Override
@@ -1110,8 +1126,13 @@ CallCenterTrackingReport callCenterTrackingReport;
 
                 }
 
+                if(sysEngFlag==0) {
 
-                callCenterTrackingReport.fillSpinners();
+                    callCenterTrackingReport.fillSpinners();
+                }else {
+                    engineersTrackingReport.fillSpinners();
+                }
+
 
             }  else {
                 Log.e("tag_itemCard", "****Failed to export data");
@@ -1308,5 +1329,117 @@ CallCenterTrackingReport callCenterTrackingReport;
 
     }
 
+    private class ImportPhoneNo extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=7";
+                // ITEM_CARD
+
+
+//                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
+////
+
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("CUSTOMER_PHONE_tag", "stringBuffer -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("CUSTOMER_PHONE_tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("CUSTOMER_PHONE")) {
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject jsonObject=new JSONObject(JsonResponse);
+                    JSONArray parentArrayS = jsonObject.getJSONArray("CUSTOMER_PHONE");
+
+                    customerPhoneNo.clear();
+
+                    for (int i = 0; i < parentArrayS.length(); i++) {
+                        JSONObject finalObject = parentArrayS.getJSONObject(i);
+
+                        ManagerLayout customerInfo=new ManagerLayout();
+                        customerInfo.setPhoneNo(finalObject.getString("PHONE_NO"));
+                        customerInfo.setCustomerName(finalObject.getString("CUST_NAME"));
+                        customerInfo.setCompanyName(finalObject.getString("COMPANY_NAME"));
+
+                        customerPhoneNo.add(customerInfo);
+//                        Log.e("customerPhoneNo", "****  "+customerPhoneNo.get(i));
+                    }
+
+                    Log.e("customerPhoneNo", "****saveSuccess");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("customerPhoneNo", "****Failed to export data");
+
+
+            }
+
+        }
+    }
 }

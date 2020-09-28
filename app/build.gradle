@@ -49,6 +49,8 @@ dependencies {
     //implementation 'com.github.thomper:sweet-alert-dialog:1.4.0'
 
     implementation 'com.github.f0ris.sweetalert:library:1.5.6'
+    implementation 'com.github.VyacheslavMartynenko:CountryCodePickerProject:v2.1.1'
+
 
 
 

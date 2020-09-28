@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 
 import org.json.JSONException;
 
@@ -78,6 +79,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         login.setOnClickListener(this);
         settings.setOnClickListener(this);
+        ManagerImport managerImport=new ManagerImport(LoginActivity.this);
+        managerImport.startSending("CustomerPhone");
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.login_login:
+//                Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);
+//                startActivity(intent2);
+                list = handler.getLoginData();
+                String localUsername = username.getText().toString();
+                String localPassword = password.getText().toString();
+                boolean found = false;
         intentText=findViewById(R.id.intentText);
         intentText.addTextChangedListener(new TextWatcher() {
             @Override

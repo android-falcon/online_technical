@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -13,23 +14,37 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.falconssoft.onlinetechsupport.GClass;
+import com.falconssoft.onlinetechsupport.ManagerImport;
+import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.PresenterClass;
 import com.falconssoft.onlinetechsupport.PresenterInterface;
 import com.falconssoft.onlinetechsupport.R;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
-public class EngineersTrackingReport extends AppCompatActivity {
+import static com.falconssoft.onlinetechsupport.GClass.engList;
+import static com.falconssoft.onlinetechsupport.GClass.systemList;
+
+public class EngineersTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private RecyclerView recyclerView;
     private EngineersTrackingAdapter adapter;
@@ -38,6 +53,24 @@ public class EngineersTrackingReport extends AppCompatActivity {
     public static List<ManagerLayout> childList = new ArrayList<>();
 
     private PresenterClass presenterClass;
+    private List<ManagerLayout> tempList = new ArrayList<>();
+    EditText customerEText,phoneEText,companyEText;
+    TextView fromDate,toDate;
+    GClass gClass=new GClass(EngineersTrackingReport.this,null);
+    private Calendar calendar;
+    private String engineerText = "All", DateText = "All",engText="All",systemText="All";
+    int inEng=0;
+    int inSys=0;
+    private Date date;
+   int  timeFlag=0;
+    private SimpleDateFormat dateFormat, dfReport;
+    LinearLayout search;
+    private Spinner callCenterSpinner,engSpinner,sysSpinner;//dateSpinner
+    List<String>engineerList;
+    private ArrayAdapter<String> callCenterAdapter,dateAdapter,engAdapter,sysAdapter;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,20 +79,148 @@ public class EngineersTrackingReport extends AppCompatActivity {
 
         listSize = findViewById(R.id.tracking_report_count);
         recyclerView = findViewById(R.id.tracking_report_recyclerView);
+        customerEText=findViewById(R.id.callCenter_report_Customer);
+        phoneEText=findViewById(R.id.callCenter_report_phone);
+        companyEText=findViewById(R.id.eng_report_company);
+        callCenterSpinner = findViewById(R.id.callCenter_report_engSpinner);
+        engSpinner= findViewById(R.id.eng_report_dateSpinner);
+        sysSpinner=findViewById(R.id.sys_report_dateSpinner);
+        fromDate=findViewById(R.id.fromDate);
+        toDate=findViewById(R.id.toDate);
+        search=findViewById(R.id.search);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         presenterClass = new PresenterClass(this);
-        presenterClass.getTrackingEngineerReportData(this, -1, -1);// when child
+        presenterClass.getTrackingEngineerReportData(this, -1);// when child
+        engineerList=new ArrayList<>();
+
+
+
+        date = Calendar.getInstance().getTime();
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        fromDate.setText(dateFormat.format(date));
+        toDate.setText(dateFormat.format(date));
+
+        ManagerImport managerImport=new ManagerImport(EngineersTrackingReport.this);
+        managerImport.startSendingEngSys(EngineersTrackingReport.this,1);
+        fromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timeFlag = 0;
+                new DatePickerDialog(EngineersTrackingReport.this, gClass.openDatePickerDialog(timeFlag,fromDate,toDate,1), calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        toDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                timeFlag = 1;
+                new DatePickerDialog(EngineersTrackingReport.this, gClass.openDatePickerDialog(timeFlag,fromDate,toDate,1), calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                filter();
+
+            }
+        });
+
+
+
+
+        fillCallCenterSpinner();
+        fillSpinners();
 
     }
 
-    public void engineersTrackingReportFilter() {
-        listSize.setText("" + engineerTrackingList.size());
-        adapter = new EngineersTrackingAdapter(this);
+
+    public void fillAdapter() {
+
+        filter();
+    }
+
+
+    void fillCallCenterSpinner(){
+        engineerList.add(0, "All");
+        engineerList.add("Sarah");
+        engineerList.add("Manal");
+        callCenterAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engineerList);
+        callCenterAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
+        callCenterSpinner.setAdapter(callCenterAdapter);
+        callCenterSpinner.setOnItemSelectedListener(this);
+    }
+
+    void filter() {
+        tempList.clear();
+        for (int i = 0; i < engineerTrackingList.size(); i++) {
+            ManagerLayout object = new ManagerLayout();
+            object = engineerTrackingList.get(i);
+            tempList.add(object);
+        }
+
+        List<ManagerLayout> filtered = new ArrayList<>();
+        for (int i = 0; i < tempList.size(); i++) {
+            String engineer = (Integer.parseInt(tempList.get(i).getCallCenterId()) == 2 ? "Sarah" : "Manal");
+
+            String customer,phone,company;
+
+            if(!customerEText.getText().toString().equals("")){
+                customer=customerEText.getText().toString();
+            }else {
+                customer="All";
+            }
+
+            if(!phoneEText.getText().toString().equals("")){
+                phone=phoneEText.getText().toString();
+            }else {
+                phone="All";
+            }
+
+            if(!companyEText.getText().toString().equals("")){
+                company=companyEText.getText().toString();
+            }else {
+                company="All";
+            }
+
+            String  fromDateLocal="",toDateLocal="";
+            fromDateLocal=fromDate.getText().toString();
+            toDateLocal=toDate.getText().toString();
+
+            if ((engineerText.equals("All") || engineerText.equals(engineer))
+                    &&((gClass.formatDate(tempList.get(i).getTransactionDate()).after(gClass.formatDate(fromDateLocal))
+                    || gClass.formatDate(tempList.get(i).getTransactionDate()).equals(gClass.formatDate(fromDateLocal)))
+                    && (gClass.formatDate(tempList.get(i).getTransactionDate()).before(gClass.formatDate(toDateLocal))
+                    || gClass.formatDate(tempList.get(i).getTransactionDate()).equals(gClass.formatDate(toDateLocal))))
+                    &&(engText.equals("All") || tempList.get(i).getEnginerName().equals(engText))
+                    &&(systemText.equals("All") || tempList.get(i).getSystemName().equals(systemText))
+                    &&(company.equals("All")||tempList.get(i).getCompanyName().contains(company))
+                    &&(phone.equals("All")||tempList.get(i).getPhoneNo().contains(phone))
+                    &&(customer.equals("All")||tempList.get(i).getCustomerName().contains(customer))) {
+
+                filtered.add(tempList.get(i));
+            }
+        }
+
+        adapter = new EngineersTrackingAdapter(this,filtered);
         recyclerView.setAdapter(adapter);
+        listSize.setText(""+filtered.size());
     }
 
-    public void getChildData(int index) {
-        presenterClass.getTrackingEngineerReportData(this, Integer.parseInt(engineerTrackingList.get(index).getSerial()), index);
+//    public void engineersTrackingReportFilter() {
+//        listSize.setText("" + engineerTrackingList.size());
+//        adapter = new EngineersTrackingAdapter(this);
+//        recyclerView.setAdapter(adapter);
+//    }
+
+    public void getChildData(int serial ) {
+        presenterClass.getTrackingEngineerReportData(this,serial);
     }
 
     public void fillChildData(List<ManagerLayout> list) {
@@ -160,6 +321,64 @@ public class EngineersTrackingReport extends AppCompatActivity {
         Window window = dialog.getWindow();
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         dialog.show();
+    }
+
+    public  void fillSpinners(){
+
+
+
+        engAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engList);
+        engAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
+        engSpinner.setAdapter(engAdapter);
+        engSpinner.setOnItemSelectedListener(this);
+
+
+
+        sysAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, systemList);
+        sysAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
+        sysSpinner.setAdapter(sysAdapter);
+        sysSpinner.setOnItemSelectedListener(this);
+
+
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (parent.getId()) {
+            case R.id.callCenter_report_engSpinner:
+                engineerText = parent.getSelectedItem().toString();
+                Log.e("engineer1", engineerText);
+                filter();
+                break;
+//            case R.id.callCenter_report_dateSpinner:
+//                DateText = parent.getSelectedItem().toString();
+//                Log.e("DateText", DateText);
+//                filter();
+//                break;
+
+
+            case R.id.eng_report_dateSpinner:
+                engText = parent.getSelectedItem().toString();
+                Log.e("engText", engText);
+                inEng=position;
+                filter();
+                break;
+
+
+
+            case R.id.sys_report_dateSpinner:
+                systemText = parent.getSelectedItem().toString();
+                inSys=position;
+                Log.e("systemText", systemText);
+                filter();
+                break;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
 }

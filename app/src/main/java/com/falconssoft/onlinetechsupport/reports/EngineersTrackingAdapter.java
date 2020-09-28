@@ -19,22 +19,21 @@ import com.falconssoft.onlinetechsupport.R;
 
 import java.util.List;
 
-import static com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport.engineerTrackingList;
 
 class EngineersTrackingAdapter extends RecyclerView.Adapter<EngineersTrackingAdapter.EngineersTrackingViewHolder> {
 
     private List<ManagerLayout> childList;
     private EngineersTrackingReport context;
-
-    public EngineersTrackingAdapter(EngineersTrackingReport context) {
-//        this.list = list;
+    private List<ManagerLayout> engTrackingList;
+    public EngineersTrackingAdapter(EngineersTrackingReport context, List<ManagerLayout> engTrackingList) {
+        this.engTrackingList = engTrackingList;
         this.context = context;
     }
 
-    public EngineersTrackingAdapter(EngineersTrackingReport context, List<ManagerLayout> childList) {
-        this.childList = childList;
-        this.context = context;
-    }
+//    public EngineersTrackingAdapter(EngineersTrackingReport context, List<ManagerLayout> childList) {
+//        this.childList = childList;
+//        this.context = context;
+//    }
 
     @NonNull
     @Override
@@ -46,25 +45,25 @@ class EngineersTrackingAdapter extends RecyclerView.Adapter<EngineersTrackingAda
     @Override
     public void onBindViewHolder(@NonNull final EngineersTrackingViewHolder holder, final int i) {
 
-        holder.eng.setText(engineerTrackingList.get(i).getEnginerName());
-        holder.system.setText(engineerTrackingList.get(i).getSystemName());
-        holder.problem.setText(engineerTrackingList.get(i).getProplem());
-        holder.customer.setText(engineerTrackingList.get(i).getCustomerName());
-        holder.phone.setText(engineerTrackingList.get(i).getPhoneNo());
-        holder.company.setText(engineerTrackingList.get(i).getCompanyName());
-        holder.checkIn.setText(engineerTrackingList.get(i).getCheakInTime());
-        holder.checkOut.setText(engineerTrackingList.get(i).getCheakOutTime());
-        holder.hold.setText(engineerTrackingList.get(i).getHoldTime());
-        holder.transactionDate.setText(engineerTrackingList.get(i).getTransactionDate());
+        holder.eng.setText(engTrackingList.get(i).getEnginerName());
+        holder.system.setText(engTrackingList.get(i).getSystemName());
+        holder.problem.setText(engTrackingList.get(i).getProplem());
+        holder.customer.setText(engTrackingList.get(i).getCustomerName());
+        holder.phone.setText(engTrackingList.get(i).getPhoneNo());
+        holder.company.setText(engTrackingList.get(i).getCompanyName());
+        holder.checkIn.setText(engTrackingList.get(i).getCheakInTime());
+        holder.checkOut.setText(engTrackingList.get(i).getCheakOutTime());
+        holder.hold.setText(engTrackingList.get(i).getHoldTime());
+        holder.transactionDate.setText(engTrackingList.get(i).getTransactionDate());
 
 //        if (engineerTrackingList.get(i).isShowDetails()){
 //            fillChildData(i,holder.childrenLinear);
 //        }
 
-        if (engineerTrackingList.get(i).getState().equals("1")) {// in service/ check in
+        if (engTrackingList.get(i).getState().equals("1")) {// in service/ check in
             holder.tableRow.setBackgroundColor(context.getResources().getColor(R.color.greenColor2));
 
-        } else if (engineerTrackingList.get(i).getState().equals("2")) {// check out
+        } else if (engTrackingList.get(i).getState().equals("2")) {// check out
             holder.tableRow.setBackgroundColor(context.getResources().getColor(R.color.light_blue_over));
 
         }
@@ -73,7 +72,7 @@ class EngineersTrackingAdapter extends RecyclerView.Adapter<EngineersTrackingAda
         holder.showDetails.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                context.getChildData(i);
+                context.getChildData(Integer.parseInt(engTrackingList.get(i).getSerial()));
 //            if (engineerTrackingList.get(i).isShowDetails()){
 //                engineerTrackingList.get(i).setShowDetails(false);
 //                holder.showDetails.setImageResource(R.drawable.ic_arrow_drop_down);
@@ -92,7 +91,7 @@ class EngineersTrackingAdapter extends RecyclerView.Adapter<EngineersTrackingAda
 
     @Override
     public int getItemCount() {
-        return engineerTrackingList.size();
+        return engTrackingList.size();
     }
 
     class EngineersTrackingViewHolder extends RecyclerView.ViewHolder{

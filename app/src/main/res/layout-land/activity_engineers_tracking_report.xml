@@ -44,7 +44,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -63,7 +62,7 @@
             >
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginRight="5dp"
@@ -72,6 +71,80 @@
                 android:orientation="horizontal"
                 android:paddingVertical="10dp"
                 >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:paddingLeft="5dp"
+                    android:text="@string/from_date"
+
+                    android:textSize="15sp" />
+
+                <!--<Spinner-->
+                <!--android:id="@+id/callCenter_report_dateSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
+                <TextView
+                    android:id="@+id/fromDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:paddingLeft="5dp"
+                    android:text="@string/to_date"
+
+                    android:textSize="15sp" />
+
+                <!--<Spinner-->
+                <!--android:id="@+id/callCenter_report_dateSpinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
+
+                <TextView
+                    android:id="@+id/toDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,46 +161,18 @@
                     android:layout_height="wrap_content" />
 
 
-
             </LinearLayout>
+
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="serif"
-                    android:paddingLeft="5dp"
-                    android:text="@string/date"
-
-                    android:textSize="15sp" />
-
-                <Spinner
-                    android:id="@+id/callCenter_report_dateSpinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:layout_marginRight="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                >
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -144,18 +189,17 @@
                     android:layout_height="wrap_content" />
 
 
-
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                >
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -172,30 +216,30 @@
                     android:layout_height="wrap_content" />
 
 
-
             </LinearLayout>
 
         </LinearLayout>
 
+
+
         <LinearLayout
+            android:id="@+id/linearCustomer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginHorizontal="5dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            >
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                >
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -210,21 +254,21 @@
                 <EditText
                     android:id="@+id/callCenter_report_Customer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
 
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                >
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -238,21 +282,22 @@
                 <EditText
                     android:id="@+id/callCenter_report_phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:inputType="phone" />
 
 
             </LinearLayout>
+
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginRight="5dp"
                 android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                >
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -266,37 +311,38 @@
                 <EditText
                     android:id="@+id/eng_report_company"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
 
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/search"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="0.1"
+                android:layout_weight="1.2"
                 android:background="@drawable/icon_f"
                 android:orientation="horizontal"
-                android:paddingVertical="10dp"
-                >
+                android:paddingVertical="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_search_black_24dp"
                     android:fontFamily="serif"
                     android:paddingLeft="5dp"
                     android:text="@string/search"
-                    android:drawableStart="@drawable/ic_search_black_24dp"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
 
-
             </LinearLayout>
+
         </LinearLayout>
+
+
     </LinearLayout>
 
     <TableRow

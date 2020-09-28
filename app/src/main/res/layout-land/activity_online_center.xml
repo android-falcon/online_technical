@@ -69,11 +69,14 @@
 
     </TableRow>
     <RelativeLayout
+        android:id="@+id/relative"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:layout_weight="5"
 
         >
+
+
 
 
         <LinearLayout
@@ -109,6 +112,65 @@
                         android:layout_weight="6"
                         android:orientation="vertical"
                         android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="1.2"
+                                android:background="@drawable/edittext_white_border"
+                                android:gravity="center"
+                                android:padding="1dp"
+                                android:text="@string/phone_number"
+                                android:textColor="@color/darkblue_1"
+
+                                android:textSize="16sp" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="2"
+                                android:orientation="horizontal"
+                                android:padding="0dp">
+
+
+                                <com.hbb20.CountryCodePicker
+                                    android:id="@+id/spinnerPhone"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginHorizontal="5dp"
+                                    android:layout_weight="1.5"
+                                    android:gravity="center"
+                                    app:ccp_contentColor="@color/darkblue_2"
+                                    app:ccp_defaultNameCode="JO"
+                                    app:ccp_showFlag="false"
+                                    app:ccp_showNameCode="false"
+                                    android:visibility="gone"
+
+                                    />
+
+                                <EditText
+                                    android:id="@+id/telephone_no"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="5dp"
+                                    android:layout_weight="2"
+                                    android:background="@drawable/edittext_back"
+                                    android:gravity="center"
+                                    android:inputType="phone"
+                                    android:padding="3dp"
+                                    android:textSize="16sp" />
+
+
+                            </LinearLayout>
+                        </LinearLayout>
 
 
                         <LinearLayout
@@ -188,58 +250,7 @@
 
                         </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1"
-                            android:orientation="horizontal">
 
-                            <TextView
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_marginRight="10dp"
-                                android:layout_weight="1.2"
-
-                                android:background="@drawable/edittext_white_border"
-                                android:elevation="2dp"
-                                android:gravity="center"
-                                android:inputType="number"
-                                android:padding="1dp"
-                                android:text="@string/phone_number"
-                                android:textColor="@color/darkblue_1"
-
-                                android:textSize="16sp" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="2"
-                                android:background="@drawable/edittext_back"
-                                android:orientation="horizontal"
-                                android:padding="5dp">
-
-                                <Spinner
-                                    android:id="@+id/spinnerPhone"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1.5" />
-
-                                <EditText
-                                    android:id="@+id/telephone_no"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginRight="5dp"
-                                    android:layout_weight="2"
-                                    android:background="@drawable/bac_list"
-                                    android:gravity="center"
-                                    android:inputType="number"
-
-                                    android:padding="3dp"
-
-                                    android:textSize="16sp" />
-                            </LinearLayout>
-                        </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -499,7 +510,22 @@
             android:textColor="@color/white_dark"
             android:textSize="20sp" />
 
-
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerk"
+            android:layout_width="wrap_content"
+            android:layout_height="265dp"
+            android:layout_below="@+id/countOfCallWork"
+            android:layout_alignEnd="@+id/mainLinear"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="453dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="29dp"
+            android:layout_marginBottom="75dp"
+            android:layout_toEndOf="@+id/deletaAllText"
+            android:layout_weight="4"
+            android:background="@drawable/background_checkin"
+            android:elevation="5dp"
+            android:padding="10dp" />
 
     </RelativeLayout>
 
