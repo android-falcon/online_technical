@@ -41,6 +41,7 @@ import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.falconssoft.onlinetechsupport.GClass.customerPhoneNo;
 import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engMList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
@@ -111,7 +112,8 @@ public class ManagerImport {
             new GetCheckInList().execute();
         if (flag.equals("CountCallWork"))
             new CountCallWork().execute();
-
+        if (flag.equals("CustomerPhone"))
+            new ImportPhoneNo().execute();
 
 
 
@@ -1327,5 +1329,117 @@ int sysEngFlag=0;
 
     }
 
+    private class ImportPhoneNo extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=7";
+                // ITEM_CARD
+
+
+//                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
+////
+
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("CUSTOMER_PHONE_tag", "stringBuffer -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("CUSTOMER_PHONE_tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("CUSTOMER_PHONE")) {
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject jsonObject=new JSONObject(JsonResponse);
+                    JSONArray parentArrayS = jsonObject.getJSONArray("CUSTOMER_PHONE");
+
+                    customerPhoneNo.clear();
+
+                    for (int i = 0; i < parentArrayS.length(); i++) {
+                        JSONObject finalObject = parentArrayS.getJSONObject(i);
+
+                        ManagerLayout customerInfo=new ManagerLayout();
+                        customerInfo.setPhoneNo(finalObject.getString("PHONE_NO"));
+                        customerInfo.setCustomerName(finalObject.getString("CUST_NAME"));
+                        customerInfo.setCompanyName(finalObject.getString("COMPANY_NAME"));
+
+                        customerPhoneNo.add(customerInfo);
+//                        Log.e("customerPhoneNo", "****  "+customerPhoneNo.get(i));
+                    }
+
+                    Log.e("customerPhoneNo", "****saveSuccess");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("customerPhoneNo", "****Failed to export data");
+
+
+            }
+
+        }
+    }
 }

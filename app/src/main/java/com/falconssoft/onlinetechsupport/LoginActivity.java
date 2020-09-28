@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         login.setOnClickListener(this);
         settings.setOnClickListener(this);
+        ManagerImport managerImport=new ManagerImport(LoginActivity.this);
+        managerImport.startSending("CustomerPhone");
+
     }
 
     @Override

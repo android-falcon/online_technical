@@ -1,10 +1,23 @@
 package com.falconssoft.onlinetechsupport;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
+import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
+import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
@@ -17,6 +30,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.falconssoft.onlinetechsupport.OnlineCenter.hold_List;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.isShow;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
+
 public class GClass {
     private Calendar calendar;
     private SimpleDateFormat dateFormat, dfReport;
@@ -27,7 +44,8 @@ public class GClass {
     public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
     public static List<Systems> systemMList=new ArrayList<Systems>();
     public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
-
+    public static List<ManagerLayout> customerPhoneNo=new ArrayList<>();
+    ArrayAdapter<String>spinnerPhoneAdapter;
 
     public GClass( EngineersTrackingReport engineersTrackingReport,CallCenterTrackingReport callCenterTrackingReport) {
 
@@ -87,4 +105,34 @@ public class GClass {
         };
         return date;
     }
+
+
+  @SuppressLint("WrongConstant")
+  void  fillSearchCustomerPhoneNo(RecyclerView spinnerPhoneNo , String contentPhNo , String contentCustomer , String contentCompany , Context context, EditText editText){
+        List<ManagerLayout>spinnerPhoneListTemp = new ArrayList<>();
+      spinnerPhoneListTemp.clear();
+
+        for(int i=0;i<customerPhoneNo.size();i++){
+            if(customerPhoneNo.get(i).getPhoneNo().contains(contentPhNo)&&customerPhoneNo.get(i).getCustomerName().contains(contentCustomer)
+                    &&customerPhoneNo.get(i).getCompanyName().contains(contentCompany)){
+
+                ManagerLayout phoneNo=customerPhoneNo.get(i);
+                spinnerPhoneListTemp.add(phoneNo);
+
+            }
+
+        }
+
+        if(spinnerPhoneListTemp.size()!=0) {
+            LinearLayoutManager llm = new LinearLayoutManager(context);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            searchCustomerAdapter searchCustomerAdapt = new searchCustomerAdapter((OnlineCenter) context, spinnerPhoneListTemp, editText);
+            spinnerPhoneNo.setLayoutManager(llm);
+            spinnerPhoneNo.setAdapter(searchCustomerAdapt);
+            isShow=0;
+        }else {
+            spinnerPhoneNo.setVisibility(View.GONE);
+        }
+  }
+
 }

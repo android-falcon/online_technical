@@ -30,6 +30,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.hbb20.CountryCodePicker;
 
 
 import org.json.JSONArray;
@@ -104,13 +106,16 @@ public class OnlineCenter extends AppCompatActivity {
     public static boolean isInHold = false;
     AlphaAnimation buttonClick;
     public static List<ManagerLayout> checkInList;
-    Spinner spinnerPhone;
     List<String> spinnerPhoneList;
     ArrayAdapter<String> spinnerPhoneAdapter;
     TextView countOfCallWork;
     public static List<String> engStringName = new ArrayList<>();
 
-
+    public static  RecyclerView recyclerk;
+    CountryCodePicker countryCodePicker;
+    GClass gClass=new GClass(null,null);
+    public static int isShow=0;
+RelativeLayout relative;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +126,11 @@ public class OnlineCenter extends AppCompatActivity {
             Log.e("setContentView", "" + e.getMessage());
         }
 
+
         initialView();
         engInfoTra = new ArrayList<>();
 
-        fillPhoneSpinner();
+//        fillPhoneSpinner();
 
         checkInList = new ArrayList<>();
         checkInList.clear();
@@ -187,8 +193,54 @@ public class OnlineCenter extends AppCompatActivity {
         });
 
 
+//        spinnerPhoneSS.setVisibility(View.GONE);
+
+        gClass.fillSearchCustomerPhoneNo(recyclerk,"","","",OnlineCenter.this, (EditText) telephone_no);
+
+        telephone_no.addTextChangedListener(textWatcher);
+        companey_name.addTextChangedListener(textWatcher);
+        customer_name.addTextChangedListener(textWatcher);
+        relative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerk.setVisibility(View.GONE);
+                isShow=0;
+            }
+        });
+
     }
 
+
+    TextWatcher textWatcher=new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                spinnerPhoneSS.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            if(!TextUtils.isEmpty(s.toString())) {
+                if (isShow == 0) {
+                    recyclerk.setVisibility(View.VISIBLE);
+                    isShow = 1;//for search dialog is open or not
+                } else if (isShow == 1) {
+                    recyclerk.setVisibility(View.GONE);
+                    isShow = 1;
+                }
+
+
+                gClass.fillSearchCustomerPhoneNo(recyclerk, telephone_no.getText().toString(),customer_name.getText().toString(),companey_name.getText().toString(), OnlineCenter.this, (EditText) telephone_no);
+            }else {
+                recyclerk.setVisibility(View.GONE);
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
 
     private void dialogEngineering(final Context context1) {
 
@@ -280,20 +332,20 @@ public class OnlineCenter extends AppCompatActivity {
 
     }
 
-    void fillPhoneSpinner() {
-        spinnerPhoneList = new ArrayList<>();
-        spinnerPhoneList.clear();
-        spinnerPhoneList.add("06");
-        spinnerPhoneList.add("078");
-        spinnerPhoneList.add("079");
-        spinnerPhoneList.add("077");
-        spinnerPhoneList.add("+966");
-        spinnerPhoneList.add("+964");
-
-        spinnerPhoneAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
-        spinnerPhoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerPhone.setAdapter(spinnerPhoneAdapter);
-    }
+//    void fillPhoneSpinner() {
+//        spinnerPhoneList = new ArrayList<>();
+//        spinnerPhoneList.clear();
+//        spinnerPhoneList.add("06");
+//        spinnerPhoneList.add("078");
+//        spinnerPhoneList.add("079");
+//        spinnerPhoneList.add("077");
+//        spinnerPhoneList.add("+966");
+//        spinnerPhoneList.add("+964");
+//
+//        spinnerPhoneAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerPhoneList);
+//        spinnerPhoneAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerPhone.setAdapter(spinnerPhoneAdapter);
+//    }
 
     void FillCheckIn() {
 
@@ -637,7 +689,7 @@ public class OnlineCenter extends AppCompatActivity {
         companey_name = findViewById(R.id.companey_name);
         telephone_no = findViewById(R.id.telephone_no);
 //        spenner_systems = findViewById(R.id.spenner_systems);
-        spinnerPhone = findViewById(R.id.spinnerPhone);
+        countryCodePicker= findViewById(R.id.spinnerPhone);
         engineerInfoList = new ArrayList<>();
 //        engineerNotAvil= new ArrayList<>();
         listEngforAdapter = new ArrayList<>();
@@ -650,6 +702,7 @@ public class OnlineCenter extends AppCompatActivity {
         systype = findViewById(R.id.systype);
         textState = findViewById(R.id.textState);
         callCenterName = findViewById(R.id.callCenterName);
+        relative= findViewById(R.id.relative);
         deletaAllText = findViewById(R.id.deletaAllText);
         deletaAllText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -658,6 +711,10 @@ public class OnlineCenter extends AppCompatActivity {
                 clearText();
             }
         });
+
+        countryCodePicker.setVisibility(View.GONE);
+        recyclerk=findViewById(R.id.recyclerk);
+        recyclerk.setVisibility(View.GONE);
         countOfCallWork = findViewById(R.id.countOfCallWork);
         LogInTime = findViewById(R.id.LogInTime);
         textState.addTextChangedListener(new TextWatcher() {
@@ -849,12 +906,13 @@ public class OnlineCenter extends AppCompatActivity {
         String phoneFirst = "";
 
         try {
-            phoneFirst = spinnerPhone.getSelectedItem().toString();
+//            phoneFirst = spinnerPhone.getSelectedItem().toString();
+            phoneFirst=countryCodePicker.getSelectedCountryCode().toString();
         } catch (Exception e) {
             phoneFirst = "06";
         }
 
-        tele = phoneFirst + telephone_no.getText().toString();
+        tele =  telephone_no.getText().toString();
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
         time = df.format(currentTimeAndDate);
