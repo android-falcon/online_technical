@@ -167,6 +167,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (!TextUtils.isEmpty(localUsername))
                     if (!TextUtils.isEmpty(localPassword)) {
                         try {
+                            presenterClass = new PresenterClass(this);
                             presenterClass.getLoginData(localUsername,localPassword);
                         } catch (JSONException e) {
                             e.printStackTrace();
