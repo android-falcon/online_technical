@@ -44,6 +44,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import static com.falconssoft.onlinetechsupport.GClass.customerPhoneNo;
 import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engMList;
+import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
 import static com.falconssoft.onlinetechsupport.GClass.systemMList;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
@@ -1070,6 +1071,8 @@ int sysEngFlag=0;
                     JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
                     Log.e("info", "" + info);
                     engMList.clear();
+                    engineerInfoList.clear();
+                    engineerInfoList.add(0,"All");
                     engList.clear();
                     engMList.add(0,new EngineerInfo());
                     engList.add(0,"All");
@@ -1091,6 +1094,12 @@ int sysEngFlag=0;
 
 
                         }
+                        else {
+                            if(engineerInfo.getEng_type()==1)
+
+                            engineerInfoList.add(engineerInfo.getName());
+                        }
+
 
 
 

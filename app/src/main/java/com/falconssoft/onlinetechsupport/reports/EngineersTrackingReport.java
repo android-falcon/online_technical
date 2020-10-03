@@ -42,6 +42,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.falconssoft.onlinetechsupport.GClass.engList;
+import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
 
 public class EngineersTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -148,13 +149,13 @@ public class EngineersTrackingReport extends AppCompatActivity implements Adapte
 
 
     void fillCallCenterSpinner(){
-        engineerList.add(0, "All");
-        engineerList.add("Sarah");
-        engineerList.add("Manal");
-        callCenterAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engineerList);
-        callCenterAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
-        callCenterSpinner.setAdapter(callCenterAdapter);
-        callCenterSpinner.setOnItemSelectedListener(this);
+//        engineerList.add(0, "All");
+//        engineerList.add("Sarah");
+//        engineerList.add("Manal");
+//        callCenterAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engineerInfoList);
+//        callCenterAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
+//        callCenterSpinner.setAdapter(callCenterAdapter);
+//        callCenterSpinner.setOnItemSelectedListener(this);
     }
 
     void filter() {
@@ -167,8 +168,8 @@ public class EngineersTrackingReport extends AppCompatActivity implements Adapte
 
         List<ManagerLayout> filtered = new ArrayList<>();
         for (int i = 0; i < tempList.size(); i++) {
-            String engineer = (Integer.parseInt(tempList.get(i).getCallCenterId()) == 2 ? "Sarah" : "Manal");
-
+//            String engineer = (Integer.parseInt(tempList.get(i).getCallCenterId()) == 2 ? "Sarah" : "Manal");
+            String engineer = tempList.get(i).getCallCenterName();
             String customer,phone,company;
 
             if(!customerEText.getText().toString().equals("")){
@@ -325,7 +326,10 @@ public class EngineersTrackingReport extends AppCompatActivity implements Adapte
 
     public  void fillSpinners(){
 
-
+        callCenterAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engineerInfoList);
+        callCenterAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
+        callCenterSpinner.setAdapter(callCenterAdapter);
+        callCenterSpinner.setOnItemSelectedListener(this);
 
         engAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engList);
         engAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);

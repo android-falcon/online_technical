@@ -258,9 +258,10 @@
                     android:paddingVertical="10dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="serif"
+                        android:layout_weight="1.1"
                         android:paddingLeft="5dp"
                         android:text="@string/customer"
 
@@ -270,8 +271,21 @@
                     <EditText
                         android:id="@+id/callCenter_report_Customer"
                         android:layout_width="match_parent"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:gravity="center" />
+                    <TextView
+                        android:id="@+id/btnSpeakCustomer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+
+                        android:background="@drawable/ic_mic_black_24dp"
+                        android:elevation="2dp"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textColor="@color/darkblue_1"
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>
@@ -316,9 +330,10 @@
                     android:paddingVertical="10dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="serif"
+                        android:layout_weight="1"
                         android:paddingLeft="5dp"
                         android:text="@string/company"
 
@@ -328,7 +343,20 @@
                         android:id="@+id/eng_report_company"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/btnSpeakCompany"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+
+                        android:background="@drawable/ic_mic_black_24dp"
+                        android:elevation="2dp"
+                        android:gravity="center"
+                        android:padding="1dp"
+                        android:textColor="@color/darkblue_1"
+                        android:textSize="16sp" />
 
 
                 </LinearLayout>

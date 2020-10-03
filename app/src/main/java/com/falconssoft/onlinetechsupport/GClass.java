@@ -44,6 +44,8 @@ public class GClass {
     public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
     public static List<Systems> systemMList=new ArrayList<Systems>();
     public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
+    public static List<String> engineerInfoList=new ArrayList<>();
+
     public static List<ManagerLayout> customerPhoneNo=new ArrayList<>();
     ArrayAdapter<String>spinnerPhoneAdapter;
 

@@ -7,8 +7,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -21,13 +24,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.falconssoft.onlinetechsupport.DatabaseHandler;
 import com.falconssoft.onlinetechsupport.ManagerImport;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
+import com.falconssoft.onlinetechsupport.MySingeltone;
+import com.falconssoft.onlinetechsupport.OnlineCenter;
 import com.falconssoft.onlinetechsupport.PresenterClass;
 import com.falconssoft.onlinetechsupport.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -41,10 +56,12 @@ import java.util.Locale;
 import java.util.Set;
 
 import static com.falconssoft.onlinetechsupport.GClass.engList;
+import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
 
 public class CallCenterTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
+    DatabaseHandler databaseHandler;
     private RecyclerView recyclerView;
     private CallCenterTrackingAdapter adapter;
     private PresenterClass presenterClass;
@@ -57,6 +74,10 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     TextView count;
     public static List<String> DateList=new ArrayList<>();
     List<String> dateListReal=new ArrayList<String>();
+
+
+    private static final int REQ_CODE_SPEECH_INPUT_Company = 200;
+    private static final int REQ_CODE_SPEECH_INPUT_CUSTOMER = 300;
 //    public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
 //    public static List<Systems> systemMList=new ArrayList<Systems>();
 //    public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
@@ -64,7 +85,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     int inSys=0;
     TextView infoTableReport;
 
-    TextView fromDate,toDate;
+    TextView fromDate,toDate,btnSpeakCompany,btnSpeakCustomer;
     private int timeFlag = 0;// 0=> from, 1=> to
     EditText customerEText,phoneEText,companyEText;
     LinearLayout search;
@@ -99,16 +120,28 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         adapter = new CallCenterTrackingAdapter(this, callCenterList);
         recyclerView.setAdapter(adapter);
         count=findViewById(R.id.count);
-        engineerList.add(0, "All");
-        engineerList.add("Sarah");
-        engineerList.add("Manal");
-        callCenterAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engineerList);
-        callCenterAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
-        callCenterSpinner.setAdapter(callCenterAdapter);
-        callCenterSpinner.setOnItemSelectedListener(this);
+
+//        engineerList.add("Sarah");
+//        engineerList.add("Manal");
+
+
 
         fromDate=findViewById(R.id.fromDate);
         toDate=findViewById(R.id.toDate);
+        btnSpeakCompany=findViewById(R.id.btnSpeakCompany);
+        btnSpeakCustomer=findViewById(R.id.btnSpeakCustomer);
+        btnSpeakCompany.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startVoiceInput(1);
+            }
+        });
+        btnSpeakCustomer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startVoiceInput(2);
+            }
+        });
 
         ManagerImport managerImport=new ManagerImport(CallCenterTrackingReport.this);
         managerImport.startSendingEngSys(CallCenterTrackingReport.this,0);
@@ -156,8 +189,52 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         });
 
     }
+    private void startVoiceInput(int flag) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ar");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hello, How can I help you?");
+        try {
+            if(flag==1)// search company
+            {
+                startActivityForResult(intent, REQ_CODE_SPEECH_INPUT_Company);
+            }
+            else
+            if(flag==2)
+            {
+
+                startActivityForResult(intent, REQ_CODE_SPEECH_INPUT_CUSTOMER);
+            }
 
 
+        } catch (ActivityNotFoundException a) {
+
+        }
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT_Company: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    companyEText.setText(result.get(0));
+                }
+                break;
+            }
+            case REQ_CODE_SPEECH_INPUT_CUSTOMER: {
+                if (resultCode == RESULT_OK && null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    customerEText.setText(result.get(0));
+                }
+                break;
+            }
+
+
+
+        }
+    }
     public DatePickerDialog.OnDateSetListener openDatePickerDialog(final int flag) {
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
@@ -196,6 +273,10 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     public  void fillSpinners(){
 
 
+        callCenterAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engineerInfoList);
+        callCenterAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
+        callCenterSpinner.setAdapter(callCenterAdapter);
+        callCenterSpinner.setOnItemSelectedListener(this);
 
         engAdapter = new ArrayAdapter<>(this, R.layout.spinner_layout, engList);
         engAdapter.setDropDownViewResource(R.layout.spinner_drop_down_layout);
@@ -242,8 +323,10 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.callCenter_report_engSpinner:
+                Log.e("engineer1", "onItemSelected");
                 engineerText = parent.getSelectedItem().toString();
-                Log.e("engineer1", engineerText);
+
+                Log.e("engineer1", engineerText+position);
                 filter();
                 break;
 //            case R.id.callCenter_report_dateSpinner:
@@ -333,7 +416,9 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
 
         List<ManagerLayout> filtered = new ArrayList<>();
         for (int i = 0; i < tempList.size(); i++) {
-            String engineer = (Integer.parseInt(tempList.get(i).getCallCenterId()) == 2 ? "Sarah" : "Manal");
+//            String engineer = (Integer.parseInt(tempList.get(i).getCallCenterId()) == 2 ? "Sarah" : "Manal");
+
+            String engineer = tempList.get(i).getCallCenterName();
 //            int indexEng= engMList.indexOf(engText);
 //            String IdEng="-1";
 //            if(indexEng!=-1){
@@ -410,5 +495,6 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         }
         return d;
     }
+
 
 }
