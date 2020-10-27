@@ -2,22 +2,37 @@ package com.falconssoft.onlinetechsupport.reports;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.falconssoft.onlinetechsupport.ManagerExport;
+import com.falconssoft.onlinetechsupport.ManagerImport;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+import com.falconssoft.onlinetechsupport.OnlineCenter;
 import com.falconssoft.onlinetechsupport.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingAdapter.CallCenterTrackingViewHolder> {
@@ -69,6 +84,52 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
             public void onClick(View v) {
 
                 informationDialog(Integer.parseInt(list.get(i).getState()),list.get(i));
+
+            }
+        });
+
+
+        holder.problem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(list.get(i).getState().equals("2")){
+
+                    final Dialog updateDialog = new Dialog(context,R.style.Theme_Dialog);
+                    updateDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    updateDialog.setCancelable(true);
+                    updateDialog.setContentView(R.layout.problem_dialog);
+                    updateDialog.setCanceledOnTouchOutside(true);
+
+                    FloatingActionButton addList = updateDialog.findViewById(R.id.hold_reason);
+                    final EditText newProblem = updateDialog.findViewById(R.id.holdEdit_reason);
+
+
+                    addList.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (!TextUtils.isEmpty(newProblem.getText().toString())) {
+                                list.get(i).setProplem(newProblem.getText().toString());
+                                ManagerExport managerExport=new ManagerExport(context,null);
+                                managerExport.UpdateProblemFun(list.get(i),newProblem.getText().toString());
+
+                                updateDialog.dismiss();
+                            } else {
+
+                                Toast.makeText(context, "Please add Reason ", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        }
+                    });
+
+
+                    updateDialog.show();
+//                    Toast.makeText(context, i+"problem "+list.get(i).getProplem(), Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(context, i+"Can Not Change Problem", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });

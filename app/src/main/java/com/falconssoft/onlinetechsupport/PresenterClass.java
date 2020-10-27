@@ -395,7 +395,9 @@ public class PresenterClass {
                         obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
                         obj.setConvertFlag(finalObject.getString("CONVERT_STATE"));
                         obj.setHoldReason(finalObject.getString("HOLD_REASON"));
-
+                        obj.setSerial(finalObject.getString("SERIAL"));
+                        obj.setEngId(finalObject.getString("ENG_ID"));
+                        obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
 
                     callCenterList.add(obj);
                     DateList.add((finalObject.getString("DATE_OF_TRANSACTION")));
