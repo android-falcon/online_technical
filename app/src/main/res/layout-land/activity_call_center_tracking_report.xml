@@ -397,6 +397,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/engOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -439,6 +440,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/phoneOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -449,6 +451,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/companyOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -497,6 +500,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/dateTransOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.2"

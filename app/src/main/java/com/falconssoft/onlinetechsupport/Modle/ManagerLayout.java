@@ -1,8 +1,8 @@
 package com.falconssoft.onlinetechsupport.Modle;
 
 public class ManagerLayout {
-    private String customerName ;
-    private String companyName ;
+    private String customerName;
+    private String companyName;
     private String systemName;
     private String phoneNo;
     private String cheakInTime;
@@ -34,6 +34,17 @@ public class ManagerLayout {
 
     private String holdReason;
 
+
+    private double hour;
+    private double count;
+
+
+    private String firstHour;
+    private double firstHourCount;
+
+    private String secondHour;
+    private double secondHourCount;
+
     public ManagerLayout() {
 
     }
@@ -46,7 +57,7 @@ public class ManagerLayout {
         this.phoneNo = phoneNo;
         this.cheakInTime = cheakInTime;
         this.cheakOutTime = cheakOutTime;
-        this. EnginerName = enginerName;
+        this.EnginerName = enginerName;
         this.State = state;
         this.systemId = systemId;
         this.Proplem = proplem;
@@ -266,5 +277,53 @@ public class ManagerLayout {
 
     public void setHoldReason(String holdReason) {
         this.holdReason = holdReason;
+    }
+
+    public double getHour() {
+        return hour;
+    }
+
+    public void setHour(double hour) {
+        this.hour = hour;
+    }
+
+    public double getCount() {
+        return count;
+    }
+
+    public void setCount(double count) {
+        this.count = count;
+    }
+
+    public String getFirstHour() {
+        return firstHour;
+    }
+
+    public void setFirstHour(String firstHour) {
+        this.firstHour = firstHour;
+    }
+
+    public double getFirstHourCount() {
+        return firstHourCount;
+    }
+
+    public void setFirstHourCount(double firstHourCount) {
+        this.firstHourCount = firstHourCount;
+    }
+
+    public String getSecondHour() {
+        return secondHour;
+    }
+
+    public void setSecondHour(String secondHour) {
+        this.secondHour = secondHour;
+    }
+
+    public double getSecondHourCount() {
+        return secondHourCount;
+    }
+
+    public void setSecondHourCount(double secondHourCount) {
+        this.secondHourCount = secondHourCount;
     }
 }

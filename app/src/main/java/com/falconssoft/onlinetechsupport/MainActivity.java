@@ -421,6 +421,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(MainActivity.this, EngineersTrackingReport.class);
                 startActivity(intent2);
                 return true;
+
+            case R.id.DashBoard:
+                Intent intent3 = new Intent(MainActivity.this, DashBoard.class);
+                startActivity(intent3);
+//                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

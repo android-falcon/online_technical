@@ -36,7 +36,9 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -44,8 +46,20 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import static com.falconssoft.onlinetechsupport.GClass.customerPhoneNo;
 import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engMList;
+import static com.falconssoft.onlinetechsupport.GClass.engPerHourList;
+import static com.falconssoft.onlinetechsupport.GClass.engPerSysList;
 import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
+import static com.falconssoft.onlinetechsupport.GClass.holdCounts;
+import static com.falconssoft.onlinetechsupport.GClass.inCount;
+import static com.falconssoft.onlinetechsupport.GClass.listOfCallHour;
+import static com.falconssoft.onlinetechsupport.GClass.listOfCallHourByEng;
+import static com.falconssoft.onlinetechsupport.GClass.managerDashBord;
+import static com.falconssoft.onlinetechsupport.GClass.outCount;
+import static com.falconssoft.onlinetechsupport.GClass.sizeProgress;
+import static com.falconssoft.onlinetechsupport.GClass.systemDashBordListByEng;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
+import static com.falconssoft.onlinetechsupport.GClass.systemListDashBoardSystem;
+import static com.falconssoft.onlinetechsupport.GClass.systemListDashOnlyMax;
 import static com.falconssoft.onlinetechsupport.GClass.systemMList;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
@@ -62,11 +76,6 @@ import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerView;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.recyclerViewCheckIn;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.textState;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_finish;
-//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engList;
-//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.engMList;
-//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemList;
-//import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.systemMList;
-
 
 public class ManagerImport {
 
@@ -86,9 +95,13 @@ public class ManagerImport {
     public static TextView countOfCall=null;
     CallCenterTrackingReport callCenterTrackingReport;
     EngineersTrackingReport engineersTrackingReport;
+    DashBoard dashBoard;
+    String EngIdDashBord,sysIdDashboard;
    ManagerLayout managerLayoutTrans;
    int flag=0;
    Dialog dialogs;
+   String  fDateDash,sDateDash,dateTime;
+
 
 
     public ManagerImport(Context context) {//, JSONObject obj
@@ -148,6 +161,43 @@ public class ManagerImport {
         new updateHoldLayout().execute();
     }
 
+
+    public void dashBoardData(Object object,String date){
+        dashBoard =(DashBoard)object;
+        dateTime=date;
+        new importDataDashBord().execute();
+        new importDataDashBordEng().execute();
+        new getDataSystem().execute();
+        new getInOutHoldDataByDate().execute();
+
+    }
+
+    public void dashBoardDataByEngId(Object object,String engId,String date){
+        dashBoard =(DashBoard)object;
+        EngIdDashBord=engId;
+        dateTime=date;
+        new getDataByEngId().execute();
+        new getDataSystemByEngId().execute();
+
+    }
+
+    public void dashBoardDataBySysId(Object object,String sysId,String date){
+        dashBoard =(DashBoard)object;
+        sysIdDashboard=sysId;
+        dateTime=date;
+        new getDataBySysId().execute();
+
+    }
+
+
+    public void dashBoardDataByTwoDate(Object object,String fDate ,String sDate){
+        dashBoard =(DashBoard)object;
+        fDateDash=fDate;
+        sDateDash=sDate;
+
+        new getDataByTowDate().execute();
+
+    }
 
     private class SyncManagerLayout extends AsyncTask<String, String, String> {
         private String JsonResponse = null;
@@ -294,6 +344,8 @@ public class ManagerImport {
                     countChickHold.setText(""+hold.size());
                     countChickOut.setText(""+cheakout.size());
                     countChickIn.setText(""+cheakIn.size());
+
+//                    inCount=cheakIn.size();
                     refresh.setText("1");
 
 
@@ -983,9 +1035,12 @@ int sysEngFlag=0;
             if(sysEngFlag==0) {
 
                 callCenterTrackingReport=(CallCenterTrackingReport) object;
-            }else {
+            }else if(sysEngFlag==1){
               engineersTrackingReport = (EngineersTrackingReport) object;
+            }else if(sysEngFlag==2){
+                dashBoard =(DashBoard)object;
             }
+
         }
 
         @Override
@@ -1138,8 +1193,14 @@ int sysEngFlag=0;
                 if(sysEngFlag==0) {
 
                     callCenterTrackingReport.fillSpinners();
-                }else {
+                }else if(sysEngFlag==1){
                     engineersTrackingReport.fillSpinners();
+                }else if(sysEngFlag==2){
+//                    dashBoard.fillChart();
+                    GClass gClass=new GClass(null,null,null);
+                    gClass.filllistOfEngList();
+                    gClass.filllistOfSystemList();
+
                 }
 
 
@@ -1450,5 +1511,1172 @@ int sysEngFlag=0;
             }
 
         }
+    }
+
+    private class importDataDashBord extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+                //{"CHECH_IN_HOUR":[{"HOUR":"13","COUNT(*)":"9"},{"HOUR":"11","COUNT(*)":"11"},{"HOUR":"12","COUNT(*)":"20"},{"HOUR":"10","COUNT(*)":"8"}],"HOLD_HOUR":[{"HOUR2":"13","COUNT(*)":"9"},{"HOUR2":"11","COUNT(*)":"11"},{"HOUR2":"12","COUNT(*)":"20"},{"HOUR2":"10","COUNT(*)":"8"}],"CHECH_OUT_HOUR":[{"HOUR3":"00","COUNT(*)":"6"},
+                // {"HOUR3":"13","COUNT(*)":"9"},{"HOUR3":"11","COUNT(*)":"11"},{"HOUR3":"12","COUNT(*)":"18"},{"HOUR3":"10","COUNT(*)":"4"}]}
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=8&DATE='"+dateTime+"'";
+                // ITEM_CARD
+
+
+//                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
+////
+
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "MDashBoard -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+// //{"CHECH_IN_HOUR":[{"HOUR":"13","COUNT(*)":"9"},{"HOUR":"11","COUNT(*)":"11"},{"HOUR":"12","COUNT(*)":"20"},
+// {"HOUR":"10","COUNT(*)":"8"}],"HOLD_HOUR":[{"HOUR2":"13","COUNT(*)":"9"},
+// {"HOUR2":"11","COUNT(*)":"11"},{"HOUR2":"12","COUNT(*)":"20"},{"HOUR2":"10","COUNT(*)":"8"}],"CHECH_OUT_HOUR":[{"HOUR3":"00","COUNT(*)":"6"},
+//                // {"HOUR3":"13","COUNT(*)":"9"},{"HOUR3":"11","COUNT(*)":"11"},{"HOUR3":"12","COUNT(*)":"18"},{"HOUR3":"10","COUNT(*)":"4"}]}
+//
+            if (JsonResponse != null && JsonResponse.contains("CHECH_IN_HOUR")) {
+                Log.e("tag_ItemOCode", "****Success");
+//                progressDialog.dismiss();
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    listOfCallHour.clear();
+                    GClass gClass=new GClass(null,null,null);
+                    gClass.filllistOfCallHour();
+                    List<ManagerLayout> temp=new ArrayList<>();
+                    List<ManagerLayout> temp2=new ArrayList<>();
+                    List<ManagerLayout> temp3=new ArrayList<>();
+
+                    try {
+
+
+                    JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("CHECH_IN_HOUR");
+
+                        inCount=0;
+                        outCount=0;
+                        holdCounts=0;
+
+                    for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
+                        JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
+
+                        ManagerLayout obj = new ManagerLayout();
+                        obj.setHour(finalObject.getDouble("HOUR"));
+                        obj.setCount(finalObject.getDouble("COUNT(*)"));
+
+//                        inCount= (int) obj.getCount();
+                        listOfCallHour.get(0).get((int) obj.getHour()).setCount(obj.getCount());
+
+
+                    }
+
+                    }catch (Exception e){
+//                        ManagerLayout managerLayout=new ManagerLayout();
+//                        managerLayout.setHour(0);
+//                        managerLayout.setCount(0);
+//
+//                        temp.add(managerLayout);
+//                        listOfCallHour.add(temp);
+                    }
+
+                    try {
+                    JSONArray HOLD_HOUR = parentArrayS.getJSONArray("HOLD_HOUR");
+
+
+                    for (int i = 0; i < HOLD_HOUR.length(); i++) {
+                        JSONObject finalObject = HOLD_HOUR.getJSONObject(i);
+
+                        ManagerLayout obj = new ManagerLayout();
+                        obj.setHour(finalObject.getDouble("HOUR2"));
+                        obj.setCount(finalObject.getDouble("COUNT(*)"));
+//                        holdCounts= (int) obj.getCount();
+//                        temp2.add(obj);
+                        listOfCallHour.get(1).get((int) obj.getHour()).setCount(obj.getCount());
+
+                    }
+//                    listOfCallHour.add(temp2);
+                    }catch (Exception e){
+//                        ManagerLayout managerLayout=new ManagerLayout();
+//                        managerLayout.setHour(0);
+//                        managerLayout.setCount(0);
+//
+//                        temp2.add(managerLayout);
+//                        listOfCallHour.add(temp2);
+                    }
+
+                      try{
+                    JSONArray CHECH_OUT_HOUR = parentArrayS.getJSONArray("CHECH_OUT_HOUR");
+                    for (int i = 0; i < CHECH_OUT_HOUR.length(); i++) {
+                        JSONObject finalObject = CHECH_OUT_HOUR.getJSONObject(i);
+
+                        ManagerLayout obj = new ManagerLayout();
+                        obj.setHour(finalObject.getDouble("HOUR3"));
+                        obj.setCount(finalObject.getDouble("COUNT(*)"));
+//                        temp3.add(obj);
+//                        outCount= (int) (outCount+obj.getCount());
+
+                        listOfCallHour.get(2).get((int) obj.getHour()).setCount(obj.getCount());
+
+//                        dashBoard.dataCall();
+                    }
+//                    listOfCallHour.add(temp3);
+                }catch (Exception e){
+
+//                          ManagerLayout managerLayout=new ManagerLayout();
+//                          managerLayout.setHour(0);
+//                          managerLayout.setCount(0);
+//
+//                          temp3.add(managerLayout);
+//                    listOfCallHour.add(temp3);
+                }
+
+                Log.e("MDashBoard2", "****saveSuccess");
+
+                    dashBoard.fillCallCountPerHour();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
+//                if (pd != null) {
+//                    pd.dismiss();
+//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText(context.getResources().getString(R.string.ops))
+//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
+//                            .show();
+//                }
+
+                listOfCallHour.clear();
+                GClass gClass=new GClass(null,null,null);
+                gClass.filllistOfCallHour();
+                dashBoard.fillCallCountPerHour();
+
+            }
+
+        }
+    }
+    private class importDataDashBordEng extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+                //{"CHECH_IN_HOUR":[{"HOUR":"13","COUNT(*)":"9"},{"HOUR":"11","COUNT(*)":"11"},{"HOUR":"12","COUNT(*)":"20"},{"HOUR":"10","COUNT(*)":"8"}],"HOLD_HOUR":[{"HOUR2":"13","COUNT(*)":"9"},{"HOUR2":"11","COUNT(*)":"11"},{"HOUR2":"12","COUNT(*)":"20"},{"HOUR2":"10","COUNT(*)":"8"}],"CHECH_OUT_HOUR":[{"HOUR3":"00","COUNT(*)":"6"},
+                // {"HOUR3":"13","COUNT(*)":"9"},{"HOUR3":"11","COUNT(*)":"11"},{"HOUR3":"12","COUNT(*)":"18"},{"HOUR3":"10","COUNT(*)":"4"}]}
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=9&DATE='"+dateTime+"'";
+                // ITEM_CARD
+
+
+//                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
+////
+
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "MDashBoardHOUR_PER_ENG -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+// //{"CHECH_IN_HOUR":[{"HOUR":"13","COUNT(*)":"9"},{"HOUR":"11","COUNT(*)":"11"},{"HOUR":"12","COUNT(*)":"20"},
+// {"HOUR":"10","COUNT(*)":"8"}],"HOLD_HOUR":[{"HOUR2":"13","COUNT(*)":"9"},
+// {"HOUR2":"11","COUNT(*)":"11"},{"HOUR2":"12","COUNT(*)":"20"},{"HOUR2":"10","COUNT(*)":"8"}],"CHECH_OUT_HOUR":[{"HOUR3":"00","COUNT(*)":"6"},
+//                // {"HOUR3":"13","COUNT(*)":"9"},{"HOUR3":"11","COUNT(*)":"11"},{"HOUR3":"12","COUNT(*)":"18"},{"HOUR3":"10","COUNT(*)":"4"}]}
+//
+
+            if (JsonResponse != null && JsonResponse.contains("HOUR_PER_ENG")) {
+                Log.e("tag_ItemOCode", "****Success");
+//                progressDialog.dismiss();
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    try {
+
+
+                        //{"HOUR_PER_ENG":[{"ENG_ID":"4","ENG_NAME":"نور حماد ","CALL_COUNT":"1","PERC":"3.33"},{"ENG_ID":"9","ENG_NAME":"ايمان عريقات","CALL_COUNT":"2","PERC":"6.67"},{"ENG_ID":"6","ENG_NAME":"مي صوان ","CALL_COUNT":"4","PERC":"13.33"},{"ENG_ID":"11","ENG_NAME":"كوثر صخرية","CALL_COUNT":"5","PERC":"16.67"},{"ENG_ID":"12","ENG_NAME":"ايمان خنفر","CALL_COUNT":"5","PERC":"16.67"},{"ENG_ID":"8","ENG_NAME":"لمى الشوبكي","CALL_COUNT":"3","PERC":"10"},{"ENG_ID":"7","ENG_NAME":"تسنيم الشعيبي","CALL_COUNT":"4","PERC":"13.33"},{"ENG_ID":"10","ENG_NAME":"سجى بشير ","CALL_COUNT":"5",
+                        // "PERC":"16.67"},{"ENG_ID":"13","ENG_NAME":"بلقيس شنانير","CALL_COUNT":"1","PERC":"3.33"}]}
+                        engPerHourList.clear();
+                        GClass gClass=new GClass(null,null,null);
+                        gClass.filllistOfEngList();
+
+                        JSONArray HOUR_PER_ENG = parentArrayS.getJSONArray("HOUR_PER_ENG");
+
+                        for (int i = 0; i < HOUR_PER_ENG.length(); i++) {
+                            JSONObject finalObject = HOUR_PER_ENG.getJSONObject(i);
+
+                            EngineerInfo obj = new EngineerInfo();
+                            obj.setId(finalObject.getString("ENG_ID"));
+                            obj.setName(finalObject.getString("ENG_NAME"));
+                            obj.setNoOfCountCall(finalObject.getDouble("CALL_COUNT"));
+                            obj.setPercCall(finalObject.getDouble("PERC"));
+
+                            int index= getIndexOf(engPerHourList,obj.getId());
+                            if(index!=-1){
+                                Log.e("MaEngPerHourList","engPerHourList  "+engPerHourList.get(index).getNoOfCountCall());
+                                engPerHourList.get(index).setNoOfCountCall(obj.getNoOfCountCall());
+                                engPerHourList.get(index).setPercCall(obj.getPercCall());
+                                Log.e("MaEngPerHourList2","engPerHourList  "+engPerHourList.get(index).getNoOfCountCall());
+
+
+                            }
+                        }
+
+                    }catch (Exception e){
+//
+                    }
+
+                    Log.e("MDashBoard2", "****saveSuccess");
+
+                    dashBoard.fillChart();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
+//                if (pd != null) {
+//                    pd.dismiss();
+//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText(context.getResources().getString(R.string.ops))
+//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
+//                            .show();
+//                }
+                engPerHourList.clear();
+                GClass gClass=new GClass(null,null,null);
+                gClass.filllistOfEngList();
+                dashBoard.fillChart();
+
+            }
+
+        }
+    }
+
+
+    private class getDataByEngId extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=10&ENG_ID="+EngIdDashBord+"&DATE='"+dateTime+"'";
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "listOfCallHourByEng -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("CALLS_CHECK_IN")) {
+                Log.e("tag_ItemOCode", "****Success");
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    listOfCallHourByEng.clear();
+                    GClass gClass=new GClass(null,null,null);
+                    gClass.filllistOfCallHourByEng();
+                    List<ManagerLayout> temp=new ArrayList<>();
+                    List<ManagerLayout> temp2=new ArrayList<>();
+                    List<ManagerLayout> temp3=new ArrayList<>();
+
+                    try {
+
+
+                        JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("CALLS_CHECK_IN");
+
+                        for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
+
+                            ManagerLayout obj = new ManagerLayout();
+                            obj.setHour(finalObject.getDouble("CHECK_IN_HOUR"));
+                            obj.setCount(finalObject.getDouble("CHECK_IN_COUNT"));
+
+
+                            listOfCallHourByEng.get(0).get((int) obj.getHour()).setCount(obj.getCount());
+
+
+                        }
+
+                    }catch (Exception e){
+                    }
+
+                    try {
+                        JSONArray HOLD_HOUR = parentArrayS.getJSONArray("CALLS_CHECK_HOLD");
+
+
+                        for (int i = 0; i < HOLD_HOUR.length(); i++) {
+                            JSONObject finalObject = HOLD_HOUR.getJSONObject(i);
+
+                            ManagerLayout obj = new ManagerLayout();
+                            obj.setHour(finalObject.getDouble("HOLD_HOUR"));
+                            obj.setCount(finalObject.getDouble("HOLD_COUNT"));
+                            listOfCallHourByEng.get(2).get((int) obj.getHour()).setCount(obj.getCount());
+
+                        }
+                    }catch (Exception e){
+                    }
+
+                    try{
+                        JSONArray CHECH_OUT_HOUR = parentArrayS.getJSONArray("CALLS_CHECK_OUT");
+                        for (int i = 0; i < CHECH_OUT_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_OUT_HOUR.getJSONObject(i);
+
+                            ManagerLayout obj = new ManagerLayout();
+                            obj.setHour(finalObject.getDouble("CHECK_OUT_HOUR"));
+                            obj.setCount(finalObject.getDouble("CHECK_OUT_COUNT"));
+                            listOfCallHourByEng.get(1).get((int) obj.getHour()).setCount(obj.getCount());
+
+                        }
+                    }catch (Exception e){
+                    }
+
+                    Log.e("listOfCallHourByEng", "****saveSuccess");
+
+                    dashBoard.fill();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+            }
+
+        }
+    }
+
+    private class getDataSystemByEngId extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=11&ENG_ID="+EngIdDashBord+"&DATE='"+dateTime+"'";
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "listOfCallHourByEng -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("ENG_SYSTEM_COUNT")) {
+                Log.e("tag_ItemOCode", "****Success");
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    systemDashBordListByEng.clear();
+//                    GClass gClass=new GClass(null,null);
+//                    gClass.filllistOfCallHourByEng();
+
+                    try {
+
+
+                        JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("ENG_SYSTEM_COUNT");
+
+                        for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
+
+                            Systems obj = new Systems();
+
+                            obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
+                            obj.setSystemCount(finalObject.getDouble("COUNT(SYSTEM_NAME)"));
+
+                            systemDashBordListByEng.add(obj);
+
+                        }
+
+                    }catch (Exception e){
+                    }
+
+                    Log.e("listOfCallHourByEng", "****saveSuccess");
+
+                    dashBoard.fill2();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+            }
+
+        }
+    }
+
+
+
+
+
+    private class getDataSystem extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=12&DATE='"+dateTime+"'";
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "listOfCallHourByEng -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("SYSTEM_COUNT")) {
+                Log.e("tag_ItemOCode", "****Success");
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    systemListDashBoardSystem.clear();
+                    systemListDashOnlyMax.clear();
+                    GClass gClass=new GClass(null,null,null);
+                    gClass.filllistOfSystemList();
+
+                    try {
+
+
+                        JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("SYSTEM_COUNT");
+
+                        for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
+
+                            Systems obj = new Systems();
+
+                            obj.setSystemName(finalObject.getString("SYSTEM_NAME"));
+                            obj.setSystemCount(finalObject.getDouble("COUNT(*)"));
+                            obj.setSystemNo(finalObject.getString("SYS_ID"));
+                            systemListDashOnlyMax.add(obj);
+                            int index= getIndexOfSystem(systemListDashBoardSystem,obj.getSystemNo());
+                            if(index!=-1){
+                                Log.e("MaEngPerHourList","engPerHourList  "+systemListDashBoardSystem.get(index).getSystemName());
+                                systemListDashBoardSystem.get(index).setSystemCount(obj.getSystemCount());
+                                Log.e("MaEngPerHourList2","engPerHourList  "+systemListDashBoardSystem.get(index).getSystemName());
+                            }
+
+
+                        }
+
+                    }catch (Exception e){
+                    }
+
+                    Log.e("listOfCallHourByEng", "****saveSuccess");
+
+                    dashBoard.fill3();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+
+                systemListDashBoardSystem.clear();
+                systemListDashOnlyMax.clear();
+                GClass gClass=new GClass(null,null,null);
+                gClass.filllistOfSystemList();
+                dashBoard.fill3();
+            }
+
+        }
+    }
+
+
+    private class getDataBySysId extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=13&SYSTEM_ID="+sysIdDashboard+"&DATE='"+dateTime+"'";
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "listOfCallHourByEng -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("SYSTEM_ENG")) {
+                Log.e("tag_ItemOCode", "****Success");
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    engPerSysList.clear();
+//                    GClass gClass=new GClass(null,null);
+//                    gClass.filllistOfCallHourByEng();
+
+
+                    try {
+
+
+                        JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("SYSTEM_ENG");
+
+                        for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
+
+                            EngineerInfo obj = new EngineerInfo();
+                            obj.setName(finalObject.getString("ENG_NAME"));
+                            obj.setNoOfCountCall(finalObject.getDouble("COUNT"));
+
+                            engPerSysList.add(obj);
+                        }
+
+                    }catch (Exception e){
+                    }
+
+
+                    Log.e("listOfCallHourByEng", "****saveSuccess");
+
+                    dashBoard.fill4();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+                engPerSysList.clear();
+                dashBoard.fill4();
+            }
+
+        }
+    }
+
+    private class getInOutHoldDataByDate extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=15&DATE='"+dateTime+"'";
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "listOfCallHourByEng -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("TOTAL_CALLS")) {
+                Log.e("tag_ItemOCode", "****Success");
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    sizeProgress.clear();
+//                    GClass gClass=new GClass(null,null);
+//                    gClass.filllistOfCallHourByEng();
+
+
+                    try {
+
+
+                        JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("TOTAL_CALLS");
+
+                        for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
+
+//                            EngineerInfo obj = new EngineerInfo();
+//                            obj.setName(finalObject.getString("ENG_NAME"));
+//                            obj.setNoOfCountCall(finalObject.getDouble("COUNT"));
+                            sizeProgress.add( finalObject.getInt("CHECH_IN"));
+                            sizeProgress.add(finalObject.getInt("CHECH_OUT"));
+                            sizeProgress.add( finalObject.getInt("HOLD"));
+
+                        }
+
+                    }catch (Exception e){
+                    }
+
+
+                    Log.e("listOfCallHourByEng", "****saveSuccess");
+
+                    dashBoard.dataCall();
+                    dashBoard.fillChartPipePros();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+                sizeProgress.clear();
+                dashBoard.dataCall();
+                dashBoard.fillChartPipePros();
+            }
+
+        }
+    }
+
+    private class getDataByTowDate extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=14&DATE=\""+fDateDash+"\"&DATE2=\""+sDateDash+"\"";
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "listOfCallHourByEng -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("FIRST_DAY")) {
+                Log.e("tag_ItemOCode", "****Success");
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject parentArrayS = new JSONObject(JsonResponse);
+
+                    managerDashBord.clear();
+//                    GClass gClass=new GClass(null,null);
+//                    gClass.filllistOfCallHourByEng();
+
+
+                    try {
+
+
+                        JSONArray FIRST_DAY = parentArrayS.getJSONArray("FIRST_DAY");
+
+                        for (int i = 0; i < FIRST_DAY.length(); i++) {
+                            JSONObject finalObject = FIRST_DAY.getJSONObject(i);
+
+                            ManagerLayout obj = new ManagerLayout();
+                            obj.setFirstHour(finalObject.getString("DATE1"));
+                            obj.setFirstHourCount(finalObject.getDouble("COUNT1"));
+
+                            obj.setSecondHour(finalObject.getString("DATE2"));
+                            obj.setSecondHourCount(finalObject.getDouble("COUNT2"));
+
+                            managerDashBord.add(obj);
+                        }
+
+                    }catch (Exception e){
+                    }
+
+
+
+                    Log.e("listOfCallHourByEng", "****saveSuccess");
+
+                    dashBoard.fill5();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }  else {
+                Log.e("tag_itemCard", "****Failed to export data");
+                managerDashBord.clear();
+                dashBoard.fill5();
+            }
+
+        }
+    }
+
+    public static int getIndexOf(List<EngineerInfo> list, String name) {
+        int pos = 0;
+
+        for(EngineerInfo myObj : list) {
+            if(name.equalsIgnoreCase(myObj.getId()))
+                return pos;
+            pos++;
+        }
+
+        return -1;
+    }
+
+    public static int getIndexOfSystem(List<Systems> list, String name) {
+        int pos = 0;
+
+        for(Systems myObj : list) {
+            if(name.equalsIgnoreCase(myObj.getSystemNo()))
+                return pos;
+            pos++;
+        }
+
+        return -1;
     }
 }

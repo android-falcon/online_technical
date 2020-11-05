@@ -40,23 +40,117 @@ public class GClass {
     private Date date;
     private EngineersTrackingReport engineersTrackingReport;
     private CallCenterTrackingReport callCenterTrackingReport;
+    private DashBoard dashBoard;
 
     public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
     public static List<Systems> systemMList=new ArrayList<Systems>();
     public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
     public static List<String> engineerInfoList=new ArrayList<>();
+    public static List<List<ManagerLayout>> listOfCallHour=new ArrayList<List<ManagerLayout>>();
+    public static List<List<ManagerLayout>> listOfCallHourByEng=new ArrayList<List<ManagerLayout>>();
+    public static List<EngineerInfo> engPerHourList=new ArrayList<EngineerInfo>();
+    public static List<Systems> systemDashBordListByEng=new ArrayList<Systems>();
+    public static List<Systems> systemListDashBoardSystem=new ArrayList<Systems>();
+    public static List<Systems> systemListDashOnlyMax=new ArrayList<Systems>();
+    public static List<EngineerInfo> engPerSysList=new ArrayList<EngineerInfo>();
+    public static  List<Integer> sizeProgress=new ArrayList<>();
+    public static int inCount=0;
+    public static int outCount=0;
+    public static int holdCounts=0;
+
+    public static  List<ManagerLayout> managerDashBord=new ArrayList<>();
 
     public static List<ManagerLayout> customerPhoneNo=new ArrayList<>();
     ArrayAdapter<String>spinnerPhoneAdapter;
 
-    public GClass( EngineersTrackingReport engineersTrackingReport,CallCenterTrackingReport callCenterTrackingReport) {
+    public void filllistOfCallHour(){
+
+        for(int i=0;i<3;i++){
+            List<ManagerLayout>temp=new ArrayList<>();
+            for(int q=0;q<19;q++){
+
+                ManagerLayout managerLayout=new ManagerLayout();
+                managerLayout.setHour(q);
+                managerLayout.setCount(0);
+
+                temp.add(managerLayout);
+
+
+            }
+            listOfCallHour.add(temp);
+            Log.e("filllistOfCallHour",""+listOfCallHour.size());
+
+        }
+
+    }
+
+
+    public void filllistOfCallHourByEng(){
+
+        for(int i=0;i<3;i++){
+            List<ManagerLayout>temp=new ArrayList<>();
+            for(int q=0;q<19;q++){
+
+                ManagerLayout managerLayout=new ManagerLayout();
+                managerLayout.setHour(q);
+                managerLayout.setCount(0);
+
+                temp.add(managerLayout);
+
+
+            }
+            listOfCallHourByEng.add(temp);
+            Log.e("listOfCallHourByEng",""+listOfCallHourByEng.size());
+
+        }
+
+    }
+
+
+    public void filllistOfEngList(){
+
+        for(int q=0;q<engMList.size();q++){
+
+                EngineerInfo managerLayout=new EngineerInfo();
+                managerLayout=engMList.get(q);
+                managerLayout.setNoOfCountCall(0);
+                managerLayout.setPercCall(0.0);
+
+                engPerHourList.add(managerLayout);
+            }
+
+            Log.e("filllistOfEngList",""+engPerHourList.size());
+
+
+
+    }
+
+
+    public void filllistOfSystemList(){
+
+        for(int q=0;q<systemMList.size();q++){
+
+            Systems managerLayout=new Systems();
+            managerLayout=systemMList.get(q);
+            managerLayout.setSystemCount(0);
+
+            systemListDashBoardSystem.add(managerLayout);
+        }
+
+        Log.e("filllistOfSystemList",""+systemListDashBoardSystem.size());
+
+
+
+    }
+
+    public GClass( EngineersTrackingReport engineersTrackingReport,CallCenterTrackingReport callCenterTrackingReport,DashBoard dashBoardActivity) {
 
         date = Calendar.getInstance().getTime();
         calendar = Calendar.getInstance();
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
        this. engineersTrackingReport=engineersTrackingReport;
        this. callCenterTrackingReport=callCenterTrackingReport;
-
+        this. dashBoard=dashBoardActivity;
     }
 
 
@@ -98,8 +192,13 @@ public class GClass {
                 if (!fromDate.getText().toString().equals("") && !toDate.getText().toString().equals("")) {
                     if(type==1) {
                         engineersTrackingReport.fillAdapter();
-                    }else {
+                    }else  if(type==2) {
                         callCenterTrackingReport.fillAdapter();
+                    }else if(type==3) {
+
+                    }else if(type==4) {
+
+                        dashBoard.CallDataToFillDashBord();
                     }
 
                 }

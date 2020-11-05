@@ -16,4 +16,8 @@
     <item
         android:id="@+id/menu_engineers_tracking_report"
         android:title="@string/tracking_report"/>
+
+    <item
+        android:id="@+id/DashBoard"
+        android:title="@string/DashBoard"/>
 </menu>

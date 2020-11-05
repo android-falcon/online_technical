@@ -72,7 +72,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     int inSys=0;
     TextView infoTableReport;
 
-    TextView fromDate,toDate,btnSpeakCompany,btnSpeakCustomer;
+    TextView fromDate,toDate,btnSpeakCompany,btnSpeakCustomer,dateTransOrder,companyOrder,phoneOrder,customerFilter,engOrder;
     private int timeFlag = 0;// 0=> from, 1=> to
     EditText customerEText,phoneEText,companyEText;
     LinearLayout search;
@@ -80,9 +80,14 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     private SimpleDateFormat dateFormat, dfReport;
     private Date date;
     boolean upDownFlagCheInTime =false;
-    boolean upDownFlagCheOutTime =false;
-    boolean upDownFlagHoldTime =false;
+    boolean upDownFlagCheOutTime =true;
+    boolean upDownFlagHoldTime =true;
     boolean upDownFlagProblem =false;
+    boolean upDownFlagDateTrance =false;
+    boolean upDownFlagEng =false;
+    boolean upDownFlagCustomer =false;
+    boolean upDownFlagPhone =false;
+    boolean upDownFlagCompany =false;
     int timeFlagOrder =0;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -116,6 +121,12 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         CheckOutTimeId=findViewById(R.id.CheckOutTimeId);
         HoldTimeId=findViewById(R.id.HoldTimeId);
         problemOrder=findViewById(R.id.problemOrder);
+        dateTransOrder=findViewById(R.id.dateTransOrder);
+        companyOrder=findViewById(R.id.companyOrder);
+        phoneOrder=findViewById(R.id.phoneOrder);
+        customerFilter=findViewById(R.id.customerFilter);
+        engOrder=findViewById(R.id.engOrder);
+
 
 //        engineerList.add("Sarah");
 //        engineerList.add("Manal");
@@ -189,20 +200,128 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
                 if(upDownFlagCheInTime) {
                     upDownFlagCheInTime =false;
                     //ic_arrow_upward_black_24dp
-                    Collections.sort(callCenterList, new StringDateComparator());
+                    Collections.sort(callCenterList, new StringDateComparatorIn());
                     filter();
-                    CheckInTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+//                    CheckInTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
                 }else {
                     upDownFlagCheInTime =true;
-                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparator()));
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorIn()));
                     filter();
-                    CheckInTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+//                    CheckInTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
 
                 }
 
             }
         });
 
+
+//        dateTransOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                timeFlagOrder=1;
+//                if(upDownFlagDateTrance) {
+//                    upDownFlagDateTrance =false;
+//                    //ic_arrow_upward_black_24dp
+//                    Collections.sort(callCenterList, new StringDateComparatorDateTrance());
+//                    filter();
+////                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+//                }else {
+//                    upDownFlagDateTrance =true;
+//                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorDateTrance()));
+//                    filter();
+////                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+//
+//                }
+//
+//            }
+//        });
+
+
+        engOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=4;
+                if(upDownFlagEng) {
+                    upDownFlagEng =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagEng =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+        companyOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=5;
+                if(upDownFlagCompany) {
+                    upDownFlagCompany =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagCompany =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+        phoneOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=6;
+                if(upDownFlagPhone) {
+                    upDownFlagPhone =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagPhone =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+        customerFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=7;
+                if(upDownFlagCustomer) {
+                    upDownFlagCustomer =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagCustomer =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
 
         CheckOutTimeId.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,14 +330,14 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
                 if(upDownFlagCheOutTime) {
                     upDownFlagCheOutTime =false;
                     //ic_arrow_upward_black_24dp
-                    Collections.sort(callCenterList, new StringDateComparator());
+                    Collections.sort(callCenterList, new StringDateComparatorOut());
                     filter();
-                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
                 }else {
                     upDownFlagCheOutTime =true;
-                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparator()));
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorOut()));
                     filter();
-                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
 
                 }
 
@@ -235,14 +354,14 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
                 if(upDownFlagHoldTime) {
                     upDownFlagHoldTime =false;
                     //ic_arrow_upward_black_24dp
-                    Collections.sort(callCenterList, new StringDateComparator());
+                    Collections.sort(callCenterList, new StringDateComparatorHold());
                     filter();
-                    HoldTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+//                    HoldTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
                 }else {
                     upDownFlagHoldTime =true;
-                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparator()));
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorHold()));
                     filter();
-                    HoldTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+//                    HoldTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
 
                 }
 
@@ -626,34 +745,110 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
 
 
 
-
     class StringDateComparator implements Comparator<ManagerLayout>
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         int dateTime=0;
         public int compare(ManagerLayout lhs, ManagerLayout rhs)
         {
-            try {
-                switch (timeFlagOrder) {
-                    case 0:
-                        dateTime = dateFormat.parse(lhs.getCheakInTime()).compareTo(dateFormat.parse(rhs.getCheakInTime()));
-                break;
-                    case 1:
-                        dateTime = dateFormat.parse(lhs.getCheakOutTime()).compareTo(dateFormat.parse(rhs.getCheakOutTime()));
 
-                        break;
-                    case 2:
-                        dateTime = dateFormat.parse(lhs.getHoldTime()).compareTo(dateFormat.parse(rhs.getHoldTime()));
-                        break;
-                    case 3:
-                        dateTime= lhs.getProplem().compareTo(rhs.getProplem());
-                        break;
+            dateTime= lhs.getProplem().compareTo(rhs.getProplem());
 
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
+            return dateTime;
+        }
+    }
+
+
+
+    class StringDateComparatorIn implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getCheakInTime() == null || rhs.getCheakInTime() == null)
+                return 0;
+            return lhs.getCheakInTime().compareTo(rhs.getCheakInTime());
+
+        }
+    }
+
+    class StringDateComparatorOut implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getCheakOutTime() == null || rhs.getCheakOutTime() == null)
+                return 0;
+            return lhs.getCheakOutTime().compareTo(rhs.getCheakOutTime());
+
+        }
+    }
+
+    class StringDateComparatorDateTrance implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getTransactionDate() == null || rhs.getTransactionDate() == null)
+                return 0;
+            return lhs.getTransactionDate().compareTo(rhs.getTransactionDate());
+
+        }
+    }
+
+
+    class StringDateComparatorString implements Comparator<ManagerLayout>
+    {
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            switch (timeFlagOrder) {
+                case 4:
+                if (lhs.getEnginerName() == null || rhs.getEnginerName() == null)
+                    return 0;
+                return lhs.getEnginerName().compareTo(rhs.getEnginerName());
+
+
+                case 5:
+                    if (lhs.getCompanyName() == null || rhs.getCompanyName() == null)
+                        return 0;
+                    return lhs.getCompanyName().compareTo(rhs.getCompanyName());
+
+
+                case 6:
+                    if (lhs.getPhoneNo() == null || rhs.getPhoneNo() == null)
+                        return 0;
+                    return lhs.getPhoneNo().compareTo(rhs.getPhoneNo());
+
+
+                case 7:
+                    if (lhs.getCustomerName() == null || rhs.getCustomerName() == null)
+                        return 0;
+                    return lhs.getCustomerName().compareTo(rhs.getCustomerName());
+
+
             }
-        return dateTime;
+            return 0;
+        }
+    }
+
+    class StringDateComparatorHold implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getHoldTime() == null || rhs.getHoldTime() == null)
+                return 0;
+            return lhs.getHoldTime().compareTo(rhs.getHoldTime());
+
         }
     }
 

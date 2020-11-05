@@ -18,6 +18,9 @@
             android:name=".reports.CallCenterTrackingReport"
             android:screenOrientation="sensorLandscape" />
         <activity
+            android:name=".DashBoard"
+            android:screenOrientation="sensorLandscape" />
+        <activity
             android:name=".OnlineActivity"
             android:screenOrientation="sensorLandscape"
             tools:ignore="LockedOrientationActivity" />

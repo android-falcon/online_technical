@@ -116,7 +116,7 @@ public class OnlineCenter extends AppCompatActivity {
 
     public static  RecyclerView recyclerk;
     CountryCodePicker countryCodePicker;
-    GClass gClass=new GClass(null,null);
+    GClass gClass=new GClass(null,null,null);
     public static int isShow=0;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static final int REQ_CODE_SPEECH_INPUT_Company = 200;

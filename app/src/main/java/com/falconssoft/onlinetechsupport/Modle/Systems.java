@@ -7,6 +7,10 @@ public class Systems {
     private  String systemName;
     private  String systemNo;
 
+    private  double systemHour;
+    private  double systemCount;
+
+
     public Systems() {
     }
 
@@ -29,6 +33,22 @@ public class Systems {
 
     public void setSystemNo(String systemNo) {
         this.systemNo = systemNo;
+    }
+
+    public double getSystemHour() {
+        return systemHour;
+    }
+
+    public void setSystemHour(double systemHour) {
+        this.systemHour = systemHour;
+    }
+
+    public double getSystemCount() {
+        return systemCount;
+    }
+
+    public void setSystemCount(double systemCount) {
+        this.systemCount = systemCount;
     }
 
     public JSONObject getData() throws JSONException {
