@@ -236,4 +236,19 @@ public class GClass {
         }
   }
 
+
+    @SuppressLint("WrongConstant")
+    public void setHoldList(Context context) {
+        LinearLayoutManager llm = new LinearLayoutManager(context);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        Log.e("fillHoldList",""+hold_List.size());
+        if( hold_List.size()!=0)
+        {
+            final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(context, hold_List);
+
+            recyclerView.setLayoutManager(llm);
+            recyclerView.setAdapter(companyAdapter);
+        }
+    }
+
 }

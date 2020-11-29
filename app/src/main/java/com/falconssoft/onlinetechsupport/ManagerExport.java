@@ -34,7 +34,8 @@ import static com.falconssoft.onlinetechsupport.MainActivity.refresh;
 public class ManagerExport {
     ManagerLayout updateProblems;
     String newProblem;
-
+    String cancelReason;
+    ManagerLayout updateCancel;
     private Context context;
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialogSave;
@@ -73,6 +74,12 @@ DatabaseHandler databaseHandler;
 
     }
 
+    public void UpdateDeleteFun(ManagerLayout customerOnline,String newProblem) {
+        this.updateCancel=customerOnline;
+        this.cancelReason=newProblem;
+        new UpdateDeleteFlag().execute();
+
+    }
 
     private class AddEmployees extends AsyncTask<String, String, String> {
         private String JsonResponse = null;
@@ -393,6 +400,118 @@ DatabaseHandler databaseHandler;
         }
 
     }
+    private class UpdateDeleteFlag extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+//                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "//onlineTechnicalSupport/export.php";
+
+                JSONObject object = new JSONObject();
+                try {
+
+                    Log.e("problemDataurlString = ", "" + updateCancel.getProplem());
+                    object.put("CHECH_OUT_TIME", updateCancel.getCheakOutTime());
+                    object.put("PROBLEM", updateCancel.getProplem());
+                    object.put("CUST_NAME", updateCancel.getCustomerName());
+                    object.put("CHECH_IN_TIME", updateCancel.getCheakInTime());
+                    object.put("COMPANY_NAME", updateCancel.getCompanyName());
+                    object.put("PHONE_NO", updateCancel.getPhoneNo());
+                    object.put("SYSTEM_NAME", updateCancel.getSystemName());
+                    object.put("HOLD_TIME", updateCancel.getHoldTime());
+                    object.put("SYS_ID", updateCancel.getSystemId());
+                    object.put("ENG_ID", updateCancel.getEngId());
+                    object.put("ENG_NAME", updateCancel.getEnginerName());
+                    object.put("STATE", 0);
+                    object.put("SERIAL", updateCancel.getSerial());
+                    object.put("CALL_CENTER_ID", updateCancel.getCallCenterId());
+                    object.put("CANCLE_REASON", cancelReason);
+
+//                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String data = "CANCEL_FLAG_UPDATE=" + URLEncoder.encode(object.toString(), "UTF-8");
+
+                URL url = new URL(link);
+                Log.e("urlStringProblem= ", "" + url.toString());
+                Log.e("urlStringData= ", "" + data);
+                Log.e("serial12344 = ", "" + updateCancel.getSerial());
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+                wr.writeBytes(data);
+                wr.flush();
+                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCodegggppp -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+//JsonResponse != null && JsonResponse.contains("PROBLEM_UPDATE_SUCCESS")
+            if (JsonResponse != null && JsonResponse.contains("DELETE_SUCCESS")) {
+                ManagerImport managerImport=new ManagerImport(context);
+                managerImport.refreshHold("GetHold");
+                Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
+
+                Toast.makeText(context, "Delete SUCCESS", Toast.LENGTH_SHORT).show();
+
+            } else {
+
+                Toast.makeText(context, "DELETE_Fail", Toast.LENGTH_SHORT).show();
+                Log.e("PROBLEM_SOLVED_", "****Failed to export data");
+            }
+
+
+        }
+
+    }
 
 }

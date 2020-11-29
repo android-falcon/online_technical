@@ -47,6 +47,8 @@
     <string name="problem_detail">وصف المشكله :</string>
     <string name="done">تم </string>
     <string name="areyouSureExit">هل تريد الخروج؟</string>
+    <string name="areyouSureDelete">هل تريد الحذف ؟</string>
+
     <string name="warning">تحذير</string>
     <string name="no">لا</string>
     <string name="dialog_ok">موافق</string>
@@ -77,4 +79,7 @@
     <string name="to_date">To Date</string>
     <string name="hold_Reason">Hold Reason</string>
     <string name="DashBoard">DashBoard</string>
+    <string name="call_center_tec">Call Center Tec</string>
+    <string name="Technical">Technical</string>
+    <string name="cancel_Reason">Cancel Reason</string>
 </resources>

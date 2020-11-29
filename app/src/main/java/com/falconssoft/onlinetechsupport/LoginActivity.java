@@ -115,6 +115,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
                                     startActivity(intent3);
                                     break;
+                                case 3:// call center tec
+                                    Intent intent5 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                    startActivity(intent5);
+                                    break;
+                                case 4:// tec
+                                    Intent intent4 = new Intent(LoginActivity.this, OnlineActivity.class);
+                                    startActivity(intent4);
+                                    break;
                             }
                             presenterClass.setState(listInfo.get(i).getId(), 0);// log in
                             break;

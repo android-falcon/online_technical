@@ -7,6 +7,7 @@
         android:id="@+id/linear_companey"
         android:orientation="horizontal"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:background="@color/white_dark"
         android:layout_width="match_parent">
 
@@ -76,6 +77,27 @@
 
             android:textColor="@color/darkblue_"
             android:textSize="16sp" />
+
+        <TextView
+            android:layout_height="match_parent"
+            android:layout_width="2dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/darkblue_2"
+            android:background="@drawable/edittext_back"/>
+        <TextView
+            android:id="@+id/cancelButton"
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:textColor="@color/darkblue_2"
+            android:background="@drawable/ic_delete_forever_black_24dp"/>
 
     </LinearLayout>
 

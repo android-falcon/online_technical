@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,16 +15,19 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +38,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
@@ -101,6 +106,15 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
                 }
 
             });
+
+        viewHolder.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelDialog(companey.get(i));
+//                Toast.makeText(context, "gg", Toast.LENGTH_SHORT).show();
+            }
+        });
+
             if(row_index==i)
             {
                 viewHolder.linear_companey.setBackgroundColor(Color.parseColor("#e5e4e2"));
@@ -231,7 +245,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView green, hold_company_time,hold_company_name,companyTel;
+        TextView green, hold_company_time,hold_company_name,companyTel,cancelButton;
         CircleImageView profile_image;
         LinearLayout linear_companey;
 
@@ -242,11 +256,78 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
             companyTel=itemView.findViewById(R.id.hold_company_tel);
             hold_company_time=itemView.findViewById(R.id.hold_company_time);
             linear_companey=itemView.findViewById(R.id.linear_companey);
+            cancelButton=itemView.findViewById(R.id.cancelButton);
 
 
         }
     }
+
+    void cancelDialog(final ManagerLayout managerLayout){
+
+        new SweetAlertDialog(context)
+                .setTitleText(context.getResources().getString(R.string.warning))
+                .setContentText(context.getResources().getString(R.string.areyouSureDelete))
+                .setConfirmText(context.getResources().getString(R.string.dialog_ok))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @SuppressLint("WrongConstant")
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        cancelHoldDialog(managerLayout);
+                        sDialog.dismissWithAnimation();
+                    }
+                }).setCancelText(context.getResources().getString(R.string.no)).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+
+            }
+        })
+                .show();
+
+    }
+    void cancelHoldDialog(final ManagerLayout list) {
+
+        final Dialog cancelHoldDialog = new Dialog(context,R.style.Theme_Dialog);
+        cancelHoldDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        cancelHoldDialog.setCancelable(true);
+        cancelHoldDialog.setContentView(R.layout.cancle_hold_dialog);
+        cancelHoldDialog.setCanceledOnTouchOutside(true);
+
+        FloatingActionButton addList = cancelHoldDialog.findViewById(R.id.hold_reason);
+        final EditText holdReason = cancelHoldDialog.findViewById(R.id.holdEdit_reason);
+
+
+        addList.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onClick(View v) {
+
+                if (!TextUtils.isEmpty(holdReason.getText().toString())) {
+//
+                    list.setCancelReason(holdReason.getText().toString());
+                    ManagerExport managerExport=new ManagerExport(context,null);
+                    managerExport.UpdateDeleteFun(list,holdReason.getText().toString());
+
+                    cancelHoldDialog.dismiss();
+                } else {
+
+                    Toast.makeText(context, "Please add Reason ", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
+
+        cancelHoldDialog.show();
+
+
+    }
+
 }
+
+
+
 /*       viewHolder.linear_companey.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

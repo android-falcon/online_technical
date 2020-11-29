@@ -44,6 +44,8 @@ public class ManagerLayout {
 
     private String secondHour;
     private double secondHourCount;
+    private String cancelReason;
+    private String cancelState;
 
     public ManagerLayout() {
 
@@ -325,5 +327,21 @@ public class ManagerLayout {
 
     public void setSecondHourCount(double secondHourCount) {
         this.secondHourCount = secondHourCount;
+    }
+
+    public String getCancelReason() {
+        return cancelReason;
+    }
+
+    public void setCancelReason(String cancelReason) {
+        this.cancelReason = cancelReason;
+    }
+
+    public String getCancelState() {
+        return cancelState;
+    }
+
+    public void setCancelState(String cancelState) {
+        this.cancelState = cancelState;
     }
 }

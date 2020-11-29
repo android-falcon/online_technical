@@ -126,7 +126,7 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
                     states=dialog.findViewById(R.id.state);
                     callCenterName=dialog.findViewById(R.id.call_center_name);
                     dateOfTran=dialog.findViewById(R.id.dateOfTran);
-                    hold_reason=dialog.findViewById(R.id.dateOfTran);
+                    hold_reason=dialog.findViewById(R.id.hold_reason);
                     String statesString ="";
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);

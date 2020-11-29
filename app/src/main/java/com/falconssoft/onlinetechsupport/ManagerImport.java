@@ -136,7 +136,18 @@ public class ManagerImport {
 
     }
 
+    public void refreshHold(String flag) {
+//        Log.e("check",flag);
+        if (flag.equals("GetHold"))
+            new SyncHoldLayout().execute();
 
+
+
+
+
+//http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
+
+    }
 
     public void startSendingEngSys(Object object,int flag) {
 
@@ -881,10 +892,15 @@ Log.e("tag_itemCard", "****saveSuccess");
                         obj.setCurrentTime(curentTime);
                         obj.setSerial(finalObject.getString("SERIAL"));
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
+                        obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
+                        obj.setHoldTime(finalObject.getString("HOLD_TIME"));
+                        obj.setCancelState(finalObject.getString("ROW_STATUS"));
 
                         if(obj.getState().equals("0")&& finalObject.getString("CALL_CENTER_ID").equals( LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1"))){
-                            hold_List.add(obj);
-                            Log.e("hold_List",""+hold_List.size());
+                           if(obj.getCancelState().equals("0")) {
+                               hold_List.add(obj);
+                               Log.e("hold_List", "" + hold_List.size());
+                           }
                         }
                         setHoldList();
 
@@ -1119,6 +1135,8 @@ int sysEngFlag=0;
                     jsonObject = new JSONObject(JsonResponse);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }catch (Exception ex){
+
                 }
                 try {
 
@@ -1140,7 +1158,7 @@ int sysEngFlag=0;
                         engineerInfo.setState(engineerInfoObject.getInt("STATE"));
 
                         Log.e("ENG_TYPE",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
-                        if( engineerInfo.getEng_type()==2)
+                        if( engineerInfo.getEng_type()==2||engineerInfo.getEng_type()==4)
                         {
 
                             //arr
@@ -1150,7 +1168,7 @@ int sysEngFlag=0;
 
                         }
                         else {
-                            if(engineerInfo.getEng_type()==1)
+                            if(engineerInfo.getEng_type()==1||engineerInfo.getEng_type()==3)
 
                             engineerInfoList.add(engineerInfo.getName());
                         }
@@ -1167,6 +1185,8 @@ int sysEngFlag=0;
 
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }catch (Exception ex){
+
                 }
 
 

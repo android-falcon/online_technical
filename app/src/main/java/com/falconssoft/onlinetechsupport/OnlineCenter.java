@@ -78,6 +78,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import static android.widget.LinearLayout.VERTICAL;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_TYPE;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.ManagerImport.countOfCall;
@@ -122,6 +123,7 @@ public class OnlineCenter extends AppCompatActivity {
     private static final int REQ_CODE_SPEECH_INPUT_Company = 200;
     private static final int REQ_CODE_SPEECH_INPUT_Phone = 300;
 RelativeLayout relative;
+     int callType=1;
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,6 +149,8 @@ RelativeLayout relative;
             }
         });
         callCenterName.setText(sharedPreferences.getString(LOGIN_NAME, null));
+        callType=sharedPreferences.getInt(LOGIN_TYPE, -1);
+        Log.e("callType",""+callType);
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy   hh:mm:ss");
         String time = df.format(currentTimeAndDate);
@@ -478,10 +482,18 @@ RelativeLayout relative;
             for (int i = 0; i < engineerInfoList.size(); i++) {
                 engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
 
-                if (engType == 2)// available  Engeneering
-                {
-                    listEngforAdapter.add(engineerInfoList.get(i));
+                if(callType==1) {
+                    if (engType == 2)// available  Engeneering
+                    {
+                        listEngforAdapter.add(engineerInfoList.get(i));
 
+                    }
+                }else  if(callType==3) {
+                    if (engType == 4)// available  tec
+                    {
+                        listEngforAdapter.add(engineerInfoList.get(i));
+
+                    }
                 }
             }
             final LinearLayoutManager layoutManager;
@@ -615,15 +627,33 @@ RelativeLayout relative;
 
                                     Log.e("ENG_TYPE", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
-                                    if (engineerInfo.getEng_type() == 2) {
-                                        engInfoTra.add(engineerInfo);
-                                        engStringName.add(engineerInfo.getName());
+                                    if(callType==1) {
+                                        if (engineerInfo.getEng_type() == 2) {
+                                            engInfoTra.add(engineerInfo);
+                                            engStringName.add(engineerInfo.getName());
 
-                                    }
+                                        }
 
-                                    if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
-                                        engineerInfoList.add(engineerInfo);
-                                        Log.e("ENG_TYPE_in", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
+                                        if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
+                                            engineerInfoList.add(engineerInfo);
+                                            Log.e("ENG_TYPE_in", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
+
+                                        }
+
+                                    }else  if(callType==3) {
+
+
+                                        if (engineerInfo.getEng_type() == 4) {
+                                            engInfoTra.add(engineerInfo);
+                                            engStringName.add(engineerInfo.getName());
+
+                                        }
+
+                                        if (engineerInfo.getEng_type() == 4  && engineerInfo.getState() == 0) {
+                                            engineerInfoList.add(engineerInfo);
+                                            Log.e("ENG_TYPE_in", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
+
+                                        }
 
                                     }
 
@@ -643,9 +673,17 @@ RelativeLayout relative;
                                         engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
                                         engineerInfo.setState(engineerInfoObject.getInt("STATE"));
                                         engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
-                                        if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
-                                            engineerInfoList.add(engineerInfo);
+                                        if(callType==1) {
+                                            if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
+                                                engineerInfoList.add(engineerInfo);
 
+                                            }
+
+                                        }else if(callType==3){
+                                            if (engineerInfo.getEng_type() == 4 && engineerInfo.getState() == 0) {
+                                                engineerInfoList.add(engineerInfo);
+
+                                            }
                                         }
 //                                        if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() != 0 ) {
 //                                            engineerNotAvil.add(engineerInfo);
@@ -1225,6 +1263,8 @@ RelativeLayout relative;
 
     }
 
+
+
     @Override
     public void onBackPressed() {
         new SweetAlertDialog(OnlineCenter.this)
@@ -1235,7 +1275,7 @@ RelativeLayout relative;
                     @SuppressLint("WrongConstant")
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
-
+                        timer.cancel();
                         finish();
                         sDialog.dismissWithAnimation();
                     }

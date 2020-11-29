@@ -269,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
         final EditText UserName, Password;//,EngId;
-        final RadioButton Manager, Online, callCenter;
+        final RadioButton Manager, Online, callCenter,CallTecRadio,TecRadio;
         TextView add, cancel;
 
 
@@ -280,6 +280,9 @@ public class MainActivity extends AppCompatActivity {
         Manager = AddEmployeDialog.findViewById(R.id.managerRadio);
         Online = AddEmployeDialog.findViewById(R.id.OnlineRadio);
         callCenter = AddEmployeDialog.findViewById(R.id.CallRadio);
+
+        CallTecRadio = AddEmployeDialog.findViewById(R.id.CallTecRadio);
+        TecRadio = AddEmployeDialog.findViewById(R.id.TecRadio);
 
         add = AddEmployeDialog.findViewById(R.id.Addbutton);
         cancel = AddEmployeDialog.findViewById(R.id.Cancelbutton);
@@ -301,6 +304,10 @@ public class MainActivity extends AppCompatActivity {
                         EngType = 2;
                     } else if (callCenter.isChecked()) {
                         EngType = 1;
+                    } else if (CallTecRadio.isChecked()) {
+                        EngType = 3;
+                    } else if (TecRadio.isChecked()) {
+                        EngType = 4;
                     }
 
                     engineerInfo.setEng_type(EngType);

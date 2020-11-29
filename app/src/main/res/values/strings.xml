@@ -47,6 +47,7 @@
     <string name="problem_detail">Problem Detail :</string>
     <string name="done">Done</string>
     <string name="areyouSureExit">Are You Sure Exit?</string>
+    <string name="areyouSureDelete">Are You Sure Delete?</string>
     <string name="warning">Warning</string>
     <string name="no">No</string>
     <string name="dialog_ok">Ok</string>
@@ -78,4 +79,7 @@
     <string name="tracking_report">Tracking Report</string>
     <string name="hold_Reason">Hold Reason</string>
     <string name="DashBoard">DashBoard</string>
+    <string name="call_center_tec">Call Center Tec</string>
+    <string name="Technical">Technical</string>
+    <string name="cancel_Reason">Cancel Reason</string>
 </resources>
