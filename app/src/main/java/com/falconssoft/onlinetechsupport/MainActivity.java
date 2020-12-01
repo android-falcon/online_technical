@@ -37,6 +37,7 @@ import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -432,6 +433,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.DashBoard:
                 Intent intent3 = new Intent(MainActivity.this, DashBoard.class);
                 startActivity(intent3);
+//                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.menu_tec_report:
+                Intent intent4 = new Intent(MainActivity.this, TechnicalTrackingReport.class);
+                startActivity(intent4);
 //                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
                 return true;
             default:

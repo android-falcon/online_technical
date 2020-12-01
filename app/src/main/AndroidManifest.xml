@@ -17,6 +17,10 @@
         <activity
             android:name=".reports.CallCenterTrackingReport"
             android:screenOrientation="sensorLandscape" />
+
+        <activity
+            android:name=".reports.TechnicalTrackingReport"
+            android:screenOrientation="sensorLandscape" />
         <activity
             android:name=".DashBoard"
             android:screenOrientation="sensorLandscape" />

@@ -24,6 +24,7 @@ import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,11 +38,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.falconssoft.onlinetechsupport.GClass.callCenterList;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.intentText;
 import static com.falconssoft.onlinetechsupport.OnlineActivity.isTimerWork;
 import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.DateList;
-import static com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport.callCenterList;
 import static com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport.childList;
 import static com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport.engineerTrackingList;
 
@@ -64,6 +65,8 @@ public class PresenterClass {
     //    private List<ManagerLayout> callCenterList = new ArrayList<>();
     private CallCenterTrackingReport callCenterTrackingReport;
     private EngineersTrackingReport engineersTrackingReport;
+    private TechnicalTrackingReport technicalTrackingReport;
+    private String callType;
 
 //    private String ipAddres;
 
@@ -348,14 +351,15 @@ public class PresenterClass {
 
     //****************************************** setCallCenterData  **************************************
 
-    public void getCallCenterData(CallCenterTrackingReport callCenterTrackingReport) {
+    public void getCallCenterData(CallCenterTrackingReport callCenterTrackingReport,TechnicalTrackingReport technicalTrackingReport,String callType) {
 
 //        ipAddres = databaseHandler.getIp();
         this.callCenterTrackingReport = callCenterTrackingReport;
-        urlCallCenterReport = URL + "import.php?FLAG=5";
+        this.technicalTrackingReport=technicalTrackingReport;
+        this.callType=callType;
+        urlCallCenterReport = URL + "import.php?FLAG=5&TEC_TYPE="+callType;
         callCenterRequest = new JsonArrayRequest(Request.Method.GET, urlCallCenterReport, null, new CallCenterClass(), new CallCenterClass());
 //        Log.e("setStateGGG///", "engId" + engId + "state" + state + "url" + urlState);
-
         requestQueue.add(callCenterRequest);
     }
 
@@ -409,7 +413,11 @@ public class PresenterClass {
                 e.printStackTrace();
             }
 
-            callCenterTrackingReport.fillAdapter();
+            if(callType.equals("2")) {
+                callCenterTrackingReport.fillAdapter();
+            }else  if(callType.equals("4")) {
+                technicalTrackingReport.fillAdapter();
+            }
 
         }
     }

@@ -13,3 +13,13 @@ original_serial
 -1 --> masterTrans
 other No --> serial of master
 }
+
+
+ENG TYPE{
+mang ->0
+call onl ->1
+online ->2
+call tec ->3
+tec -> 4
+
+}

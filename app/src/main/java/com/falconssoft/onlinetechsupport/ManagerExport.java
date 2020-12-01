@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +46,7 @@ public class ManagerExport {
     String JsonResponseSave;
     String JsonResponseSaveSwitch;
     JSONObject datatoSend=null;
+    String tecType;
 
     public  static boolean sendSucsses=false;
 DatabaseHandler databaseHandler;
@@ -67,9 +69,10 @@ DatabaseHandler databaseHandler;
 
     }
 
-    public void UpdateProblemFun(ManagerLayout customerOnline,String newProblem) {
+    public void UpdateProblemFun(ManagerLayout customerOnline,String newProblem,String flag) {
             this.updateProblems=customerOnline;
             this.newProblem=newProblem;
+            this.tecType=flag;
             new UpdateProblem().execute();
 
     }
@@ -385,7 +388,11 @@ DatabaseHandler databaseHandler;
             if (JsonResponse != null && JsonResponse.contains("PROBLEM_UPDATE_SUCCESS")) {
                 Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
                 PresenterClass presenterClass = new PresenterClass(context);
-                presenterClass.getCallCenterData((CallCenterTrackingReport) context);
+                if(tecType.equals("2")) {
+                    presenterClass.getCallCenterData((CallCenterTrackingReport) context, null, tecType);
+                }else  if(tecType.equals("4")) {
+                    presenterClass.getCallCenterData(null, (TechnicalTrackingReport) context, tecType);
+                }
 //                CallCenterTrackingReport callCenterTrackingReport=new CallCenterTrackingReport();
 //                callCenterTrackingReport.fillAdapter();
                 Toast.makeText(context, "PROBLEM UPDATE SUCCESS", Toast.LENGTH_SHORT).show();

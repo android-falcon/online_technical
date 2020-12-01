@@ -21,6 +21,7 @@ import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +41,7 @@ public class GClass {
     private Date date;
     private EngineersTrackingReport engineersTrackingReport;
     private CallCenterTrackingReport callCenterTrackingReport;
+    TechnicalTrackingReport technicalTrackingReport;
     private DashBoard dashBoard;
 
     public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
@@ -57,6 +59,7 @@ public class GClass {
     public static int inCount=0;
     public static int outCount=0;
     public static int holdCounts=0;
+    public static List<ManagerLayout> callCenterList = new ArrayList<>();
 
     public static  List<ManagerLayout> managerDashBord=new ArrayList<>();
 
@@ -78,7 +81,7 @@ public class GClass {
 
             }
             listOfCallHour.add(temp);
-            Log.e("filllistOfCallHour",""+listOfCallHour.size());
+            Log.e("filllistOfCallHour44",""+listOfCallHour.size());
 
         }
 
@@ -195,7 +198,7 @@ public class GClass {
                     }else  if(type==2) {
                         callCenterTrackingReport.fillAdapter();
                     }else if(type==3) {
-
+                        technicalTrackingReport.fillAdapter();
                     }else if(type==4) {
 
                         dashBoard.CallDataToFillDashBord();

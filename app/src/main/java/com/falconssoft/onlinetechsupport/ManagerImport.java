@@ -21,6 +21,7 @@ import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -80,7 +81,7 @@ import static com.falconssoft.onlinetechsupport.OnlineCenter.text_finish;
 public class ManagerImport {
 
     private Context context;
-    boolean holdin=false;
+    boolean holdin = false;
     private ProgressDialog progressDialog;
     private ProgressDialog progressDialogSave;
     private JSONObject obj;
@@ -88,27 +89,27 @@ public class ManagerImport {
     String itemCode;
     String JsonResponseSave;
     String JsonResponseSaveSwitch;
-    JSONObject datatoSend=null,upDateHold=null;
-    public  static boolean sendSucsses=false;
-    public  static String ipAddres ="";
+    JSONObject datatoSend = null, upDateHold = null;
+    public static boolean sendSucsses = false;
+    public static String ipAddres = "";
     DatabaseHandler databaseHandler;
-    public static TextView countOfCall=null;
+    public static TextView countOfCall = null;
     CallCenterTrackingReport callCenterTrackingReport;
     EngineersTrackingReport engineersTrackingReport;
+    TechnicalTrackingReport technicalTrackingReport;
     DashBoard dashBoard;
-    String EngIdDashBord,sysIdDashboard;
-   ManagerLayout managerLayoutTrans;
-   int flag=0;
-   Dialog dialogs;
-   String  fDateDash,sDateDash,dateTime;
-
+    String EngIdDashBord, sysIdDashboard;
+    ManagerLayout managerLayoutTrans;
+    int flag = 0;
+    Dialog dialogs;
+    String fDateDash, sDateDash, dateTime;
 
 
     public ManagerImport(Context context) {//, JSONObject obj
 //        this.obj = obj;
         this.context = context;
-        databaseHandler=new DatabaseHandler(context);
-        ipAddres=databaseHandler.getIp();
+        databaseHandler = new DatabaseHandler(context);
+        ipAddres = databaseHandler.getIp();
 
 
     }
@@ -130,8 +131,6 @@ public class ManagerImport {
             new ImportPhoneNo().execute();
 
 
-
-
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
@@ -142,40 +141,37 @@ public class ManagerImport {
             new SyncHoldLayout().execute();
 
 
-
-
-
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
 
-    public void startSendingEngSys(Object object,int flag) {
+    public void startSendingEngSys(Object object, int flag) {
 
-            new SystemEngineer(object,flag).execute();
-        }
+        new SystemEngineer(object, flag).execute();
+    }
 
-    public void startSendingData(JSONObject data,boolean holds,int flagT,ManagerLayout managerLayout,Dialog dialog) {
-        sendSucsses=false;
-         datatoSend=data;
-       holdin=holds;
-       managerLayoutTrans=managerLayout;
-        flag=flagT;
-        dialogs=dialog;
+    public void startSendingData(JSONObject data, boolean holds, int flagT, ManagerLayout managerLayout, Dialog dialog) {
+        sendSucsses = false;
+        datatoSend = data;
+        holdin = holds;
+        managerLayoutTrans = managerLayout;
+        flag = flagT;
+        dialogs = dialog;
 
-            new SyncManagerLayoutIN().execute();
+        new SyncManagerLayoutIN().execute();
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
 
     public void startUpdateHold(JSONObject data) {
-        upDateHold=data;
+        upDateHold = data;
         new updateHoldLayout().execute();
     }
 
 
-    public void dashBoardData(Object object,String date){
-        dashBoard =(DashBoard)object;
-        dateTime=date;
+    public void dashBoardData(Object object, String date) {
+        dashBoard = (DashBoard) object;
+        dateTime = date;
         new importDataDashBord().execute();
         new importDataDashBordEng().execute();
         new getDataSystem().execute();
@@ -183,28 +179,28 @@ public class ManagerImport {
 
     }
 
-    public void dashBoardDataByEngId(Object object,String engId,String date){
-        dashBoard =(DashBoard)object;
-        EngIdDashBord=engId;
-        dateTime=date;
+    public void dashBoardDataByEngId(Object object, String engId, String date) {
+        dashBoard = (DashBoard) object;
+        EngIdDashBord = engId;
+        dateTime = date;
         new getDataByEngId().execute();
         new getDataSystemByEngId().execute();
 
     }
 
-    public void dashBoardDataBySysId(Object object,String sysId,String date){
-        dashBoard =(DashBoard)object;
-        sysIdDashboard=sysId;
-        dateTime=date;
+    public void dashBoardDataBySysId(Object object, String sysId, String date) {
+        dashBoard = (DashBoard) object;
+        sysIdDashboard = sysId;
+        dateTime = date;
         new getDataBySysId().execute();
 
     }
 
 
-    public void dashBoardDataByTwoDate(Object object,String fDate ,String sDate){
-        dashBoard =(DashBoard)object;
-        fDateDash=fDate;
-        sDateDash=sDate;
+    public void dashBoardDataByTwoDate(Object object, String fDate, String sDate) {
+        dashBoard = (DashBoard) object;
+        fDateDash = fDate;
+        sDateDash = sDate;
 
         new getDataByTowDate().execute();
 
@@ -225,8 +221,8 @@ public class ManagerImport {
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=1";
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=1";
                 // ITEM_CARD
 
 
@@ -297,15 +293,15 @@ public class ManagerImport {
                     JSONArray parentArrayS = new JSONArray(JsonResponse);
                     JSONObject CURRENT_TIME = parentArrayS.getJSONObject(0);
 
-                    String curentTime=CURRENT_TIME.getString("CURRENT_TIME");
-                    Log.e("CURRENT_TIME",""+CURRENT_TIME.getString("CURRENT_TIME"));
+                    String curentTime = CURRENT_TIME.getString("CURRENT_TIME");
+                    Log.e("CURRENT_TIME", "" + CURRENT_TIME.getString("CURRENT_TIME"));
 
                     JSONObject parentArrayD = parentArrayS.getJSONObject(1);
                     JSONArray parentArray = parentArrayD.getJSONArray("CUSTOMER_INFO");
 
-                    int cheakInCount=cheakIn.size();
-                    int cheakoutCount=cheakout.size();
-                    int holdCount=hold.size();
+                    int cheakInCount = cheakIn.size();
+                    int cheakoutCount = cheakout.size();
+                    int holdCount = hold.size();
 
                     cheakIn.clear();
                     cheakout.clear();
@@ -314,7 +310,7 @@ public class ManagerImport {
 //                    {"CUST_NAME":"daaa","COMPANY_NAME":"MASTER","SYSTEM_NAME":"rrrr","PHONE_NO":"0154545465","CHECH_IN_TIME":"0000","STATE":"1"
 //                            ,"ENG_NAME":"ENG.RAWAN","ENG_ID":"2","SYS_ID":"1","CHECH_OUT_TIME":"03:15","PROBLEM":"sefwuysagdh jyeuv "},
 
-                    for (int i = 0; i < parentArray.length(); i++) {
+                   for (int i = 0; i < parentArray.length(); i++) {
                         JSONObject finalObject = parentArray.getJSONObject(i);
 
                         ManagerLayout obj = new ManagerLayout();
@@ -337,46 +333,45 @@ public class ManagerImport {
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
                         obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
                         obj.setHoldReason(finalObject.getString("HOLD_REASON"));
-                        Log.e("finalObjectConvert",""+obj.getConvertFlag());
+                        Log.e("finalObjectConvert", "" + obj.getConvertFlag());
 
                         obj.setCurrentTime(curentTime);
 
-                        if(obj.getState().equals("1")){
+                        if (obj.getState().equals("1")) {
                             cheakIn.add(obj);
-                        }else if(obj.getState().equals("2")){
+                        } else if (obj.getState().equals("2")) {
                             cheakout.add(obj);
-                        }else if(obj.getState().equals("0")){
+                        } else if (obj.getState().equals("0")) {
                             hold.add(obj);
                         }
 
 
                     }
 
-                    countChickHold.setText(""+hold.size());
-                    countChickOut.setText(""+cheakout.size());
-                    countChickIn.setText(""+cheakIn.size());
+                    countChickHold.setText("" + hold.size());
+                    countChickOut.setText("" + cheakout.size());
+                    countChickIn.setText("" + cheakIn.size());
 
 //                    inCount=cheakIn.size();
                     refresh.setText("1");
 
 
-                    int cheakInCount1=cheakIn.size();
-                    int cheakoutCount1=cheakout.size();
-                    int holdCount1=hold.size();
+                    int cheakInCount1 = cheakIn.size();
+                    int cheakoutCount1 = cheakout.size();
+                    int holdCount1 = hold.size();
 
 
-
-                    if(cheakInCount1>cheakInCount){
+                    if (cheakInCount1 > cheakInCount) {
                         refresh.setText("2");
                     }
 
-Log.e("tag_itemCard", "****saveSuccess");
+                    Log.e("tag_itemCard", "****saveSuccess");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
 //                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
 //                if (pd != null) {
@@ -408,8 +403,8 @@ Log.e("tag_itemCard", "****saveSuccess");
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=1";
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=1";
                 // ITEM_CARD
 
 
@@ -479,13 +474,13 @@ Log.e("tag_itemCard", "****saveSuccess");
                     JSONArray parentArrayS = new JSONArray(JsonResponse);
                     JSONObject CURRENT_TIME = parentArrayS.getJSONObject(0);
 
-                    String curentTime=CURRENT_TIME.getString("CURRENT_TIME");
-                    Log.e("CURRENT_TIME",""+CURRENT_TIME.getString("CURRENT_TIME"));
+                    String curentTime = CURRENT_TIME.getString("CURRENT_TIME");
+                    Log.e("CURRENT_TIME", "" + CURRENT_TIME.getString("CURRENT_TIME"));
 
                     JSONObject parentArrayD = parentArrayS.getJSONObject(1);
                     JSONArray parentArray = parentArrayD.getJSONArray("CUSTOMER_INFO");
 
-                    int cheakInCount=checkInList.size();
+                    int cheakInCount = checkInList.size();
 
                     checkInList.clear();
 
@@ -512,7 +507,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                         obj.setCurrentTime(curentTime);
 
 
-                        if(obj.getState().equals("1")&& finalObject.getString("CALL_CENTER_ID").equals( LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1"))) {
+                        if (obj.getState().equals("1") && finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
                             checkInList.add(obj);
                         }
 //                        }else if(obj.getState().equals("2")){
@@ -526,7 +521,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                     }
 //                    refresh.setText("1");
 
-                     int cheakInCount1=checkInList.size();
+                    int cheakInCount1 = checkInList.size();
 //
 //                    if(cheakInCount1>cheakInCount){
 //                        refresh.setText("2");
@@ -540,7 +535,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("check_in", "****Failed to export data");
 
             }
@@ -552,8 +547,9 @@ Log.e("tag_itemCard", "****saveSuccess");
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
-       boolean isHold=false;
+        boolean isHold = false;
         SweetAlertDialog pdaSweet;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -564,14 +560,15 @@ Log.e("tag_itemCard", "****saveSuccess");
             pdaSweet.show();
 
         }
+
         @Override
         protected String doInBackground(String... params) {
             try {
-              ipAddres=databaseHandler.getIp();
-            String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/export.php";
 
                 JSONObject obj = new JSONObject();
-                JSONArray NEWI=new JSONArray();
+                JSONArray NEWI = new JSONArray();
 
                 NEWI.put(datatoSend);
 
@@ -630,7 +627,7 @@ Log.e("tag_itemCard", "****saveSuccess");
             pdaSweet.dismissWithAnimation();
             //&& JsonResponse.contains("CUST_NAME")
             if (JsonResponse != null && JsonResponse.contains("CUSTOMER_INFO SUCCESS")) {
-                sendSucsses=true;
+                sendSucsses = true;
 
                 Log.e("tag_ItemOCodeSS", "****Success");
 //                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
@@ -640,39 +637,36 @@ Log.e("tag_itemCard", "****saveSuccess");
 //                        .show();
 
                 //[{"STATE_DESC":"CUSTOMER_INFO SUCCESS","SERIAL":176}]
-                String Serial="";
+                String Serial = "";
                 try {
-                    JSONArray jsonArray=new JSONArray(JsonResponse);
-                    JSONObject jsonObject=jsonArray.getJSONObject(0);
-                     Serial =jsonObject.getString("SERIAL");
+                    JSONArray jsonArray = new JSONArray(JsonResponse);
+                    JSONObject jsonObject = jsonArray.getJSONObject(0);
+                    Serial = jsonObject.getString("SERIAL");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
 
-
-                if(flag==8){
-                    int id=EngId;
-                    EngId=Integer.parseInt(managerLayoutTrans.getEngId());
+                if (flag == 8) {
+                    int id = EngId;
+                    EngId = Integer.parseInt(managerLayoutTrans.getEngId());
                     managerLayoutTrans.setTransferToSerial(Serial);
-                    managerLayoutTrans.setEngId(""+id);
+                    managerLayoutTrans.setEngId("" + id);
                     textState.setText("Success");
                     text_finish.setText("AddFinish");
-                    Log.e("UpdateTransferSolved",EngId+"     "+id);
-                   new  UpdateTransferSolved(managerLayoutTrans,dialogs).execute();
-                }else {
+                    Log.e("UpdateTransferSolved", EngId + "     " + id);
+                    new UpdateTransferSolved(managerLayoutTrans, dialogs).execute();
+                } else {
                     text_finish.setText("finish");
                 }
 
-                if(holdin){
+                if (holdin) {
                     textState.setText("Success");
                 }
 
 
-
-
-            }  else {
-                sendSucsses=false;
+            } else {
+                sendSucsses = false;
                 Log.e("tag_itemCard", "****Failed to export data");
 
 //                }
@@ -694,14 +688,15 @@ Log.e("tag_itemCard", "****saveSuccess");
             super.onPreExecute();
 
         }
+
         @Override
         protected String doInBackground(String... params) {
             try {
-                ipAddres=databaseHandler.getIp();
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/export.php";
 
                 JSONObject obj = new JSONObject();
-                JSONArray NEWI=new JSONArray();
+                JSONArray NEWI = new JSONArray();
 
 //                NEWI.put(upDateHold);
 
@@ -761,7 +756,7 @@ Log.e("tag_itemCard", "****saveSuccess");
 
 
             if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
-                sendSucsses=true;
+                sendSucsses = true;
 
                 startSending("GetHold");
                 text_finish.setText("finish");
@@ -773,12 +768,11 @@ Log.e("tag_itemCard", "****saveSuccess");
                         .show();
 
 
-                    textState.setText("Success");
+                textState.setText("Success");
 
 
-
-            }  else {
-                sendSucsses=false;
+            } else {
+                sendSucsses = false;
                 Log.e("tag_itemCard", "****Failed to export data");
 
 //                }
@@ -804,8 +798,8 @@ Log.e("tag_itemCard", "****saveSuccess");
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=1";
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=1";
                 // ITEM_CARD
 
 
@@ -868,8 +862,8 @@ Log.e("tag_itemCard", "****saveSuccess");
                     JSONArray parentArrayS = new JSONArray(JsonResponse);
                     JSONObject CURRENT_TIME = parentArrayS.getJSONObject(0);
 
-                    String curentTime=CURRENT_TIME.getString("CURRENT_TIME");
-                    Log.e("CURRENT_TIME",""+CURRENT_TIME.getString("CURRENT_TIME"));
+                    String curentTime = CURRENT_TIME.getString("CURRENT_TIME");
+                    Log.e("CURRENT_TIME", "" + CURRENT_TIME.getString("CURRENT_TIME"));
 
                     JSONObject parentArrayD = parentArrayS.getJSONObject(1);
                     JSONArray parentArray = parentArrayD.getJSONArray("CUSTOMER_INFO");
@@ -896,11 +890,11 @@ Log.e("tag_itemCard", "****saveSuccess");
                         obj.setHoldTime(finalObject.getString("HOLD_TIME"));
                         obj.setCancelState(finalObject.getString("ROW_STATUS"));
 
-                        if(obj.getState().equals("0")&& finalObject.getString("CALL_CENTER_ID").equals( LoginActivity.sharedPreferences.getString(LOGIN_ID,"-1"))){
-                           if(obj.getCancelState().equals("0")) {
-                               hold_List.add(obj);
-                               Log.e("hold_List", "" + hold_List.size());
-                           }
+                        if (obj.getState().equals("0") && finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
+                            if (obj.getCancelState().equals("0")) {
+                                hold_List.add(obj);
+                                Log.e("hold_List", "" + hold_List.size());
+                            }
                         }
                         setHoldList();
 
@@ -913,7 +907,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
             }
 
@@ -935,15 +929,15 @@ Log.e("tag_itemCard", "****saveSuccess");
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
                 final String callId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=4&CALL_ID="+callId;
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=4&CALL_ID=" + callId;
                 // ITEM_CARD
 
 
 //                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
 ////
-                Log.e("CountCallWork",""+callId +"   " +link);
+                Log.e("CountCallWork", "" + callId + "   " + link);
 
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
@@ -1010,9 +1004,9 @@ Log.e("tag_itemCard", "****saveSuccess");
 
                     JSONObject CURRENT_Count = parentArrayS.getJSONObject(0);
 
-                    String count=CURRENT_Count.getString("COUNT");
-                    Log.e("CURRENT_TIME",""+CURRENT_Count.getString("COUNT"));
-                    countOfCall.setText(""+count);
+                    String count = CURRENT_Count.getString("COUNT");
+                    Log.e("CURRENT_TIME", "" + CURRENT_Count.getString("COUNT"));
+                    countOfCall.setText("" + count);
 
 
                     Log.e("tag_itemCard", "****saveSuccess");
@@ -1021,7 +1015,7 @@ Log.e("tag_itemCard", "****saveSuccess");
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
 //                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
 //                if (pd != null) {
@@ -1043,18 +1037,21 @@ Log.e("tag_itemCard", "****saveSuccess");
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
-Object object;
-int sysEngFlag=0;
-//EngineersTrackingReport engineersTrackingReport;
-        public SystemEngineer(Object object,int flag) {
-            this.sysEngFlag=flag;
-            if(sysEngFlag==0) {
+        Object object;
+        int sysEngFlag = 0;
 
-                callCenterTrackingReport=(CallCenterTrackingReport) object;
-            }else if(sysEngFlag==1){
-              engineersTrackingReport = (EngineersTrackingReport) object;
-            }else if(sysEngFlag==2){
-                dashBoard =(DashBoard)object;
+        //EngineersTrackingReport engineersTrackingReport;
+        public SystemEngineer(Object object, int flag) {
+            this.sysEngFlag = flag;
+            if (sysEngFlag == 0) {
+
+                callCenterTrackingReport = (CallCenterTrackingReport) object;
+            } else if (sysEngFlag == 1) {
+                engineersTrackingReport = (EngineersTrackingReport) object;
+            } else if (sysEngFlag == 2) {
+                dashBoard = (DashBoard) object;
+            } else if (sysEngFlag == 3) {
+                technicalTrackingReport = (TechnicalTrackingReport) object;
             }
 
         }
@@ -1069,9 +1066,9 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=0";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=0";
 
 
                 URL url = new URL(link);
@@ -1126,16 +1123,16 @@ int sysEngFlag=0;
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
 
-            if (JsonResponse != null && (JsonResponse.contains("ENGINEER_INFO")||JsonResponse.contains("SYSTEMS"))) {
+            if (JsonResponse != null && (JsonResponse.contains("ENGINEER_INFO") || JsonResponse.contains("SYSTEMS"))) {
                 Log.e("CALL_COUNT", "****Success");
 //                progressDialog.dismiss();
                 JsonResponseSave = JsonResponse;
-                JSONObject jsonObject= null;
+                JSONObject jsonObject = null;
                 try {
                     jsonObject = new JSONObject(JsonResponse);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }catch (Exception ex){
+                } catch (Exception ex) {
 
                 }
                 try {
@@ -1145,10 +1142,10 @@ int sysEngFlag=0;
                     Log.e("info", "" + info);
                     engMList.clear();
                     engineerInfoList.clear();
-                    engineerInfoList.add(0,"All");
+                    engineerInfoList.add(0, "All");
                     engList.clear();
-                    engMList.add(0,new EngineerInfo());
-                    engList.add(0,"All");
+                    engMList.add(0, new EngineerInfo());
+                    engList.add(0, "All");
                     for (int i = 0; i < info.length(); i++) {
                         JSONObject engineerInfoObject = info.getJSONObject(i);
                         EngineerInfo engineerInfo = new EngineerInfo();
@@ -1157,44 +1154,57 @@ int sysEngFlag=0;
                         engineerInfo.setEng_type(engineerInfoObject.getInt("ENG_TYPE"));
                         engineerInfo.setState(engineerInfoObject.getInt("STATE"));
 
-                        Log.e("ENG_TYPE",""+engineerInfo.getName()+"-->"+engineerInfo.getEng_type());
-                        if( engineerInfo.getEng_type()==2||engineerInfo.getEng_type()==4)
-                        {
+                        Log.e("ENG_TYPE", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
-                            //arr
-                            engMList.add(engineerInfo);
-                            engList.add(engineerInfo.getName());
+                        if (sysEngFlag == 3) {
 
+                            if (engineerInfo.getEng_type() == 4) {
+
+                                //arr
+                                engMList.add(engineerInfo);
+                                engList.add(engineerInfo.getName());
+
+
+                            } else {
+                                if (engineerInfo.getEng_type() == 3)
+
+                                    engineerInfoList.add(engineerInfo.getName());
+                            }
+
+                        } else {
+                            if (engineerInfo.getEng_type() == 2) {
+
+                                //arr
+                                engMList.add(engineerInfo);
+                                engList.add(engineerInfo.getName());
+
+
+                            } else {
+                                if (engineerInfo.getEng_type() == 1)
+
+                                    engineerInfoList.add(engineerInfo.getName());
+                            }
 
                         }
-                        else {
-                            if(engineerInfo.getEng_type()==1||engineerInfo.getEng_type()==3)
-
-                            engineerInfoList.add(engineerInfo.getName());
-                        }
-
-
 
 
                     }
-
-
 
 
                     Log.e("tag_itemCard", "****saveSuccess");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
-                }catch (Exception ex){
+                } catch (Exception ex) {
 
                 }
 
 
-                try{
+                try {
                     JSONArray systemInfoArray = jsonObject.getJSONArray("SYSTEMS");
                     systemMList.clear();
                     systemList.clear();
-                    systemMList.add(0,new Systems());
+                    systemMList.add(0, new Systems());
                     systemList.add("All");
                     for (int i = 0; i < systemInfoArray.length(); i++) {
                         JSONObject systemInfoObject = systemInfoArray.getJSONObject(i);
@@ -1205,26 +1215,28 @@ int sysEngFlag=0;
                         systemMList.add(systemInfo);
                         systemList.add(systemInfo.getSystemName());
                     }
-                }catch (Exception e){
-                    Log.e("No_Sys       ","Exception");
+                } catch (Exception e) {
+                    Log.e("No_Sys       ", "Exception");
 
                 }
 
-                if(sysEngFlag==0) {
+                if (sysEngFlag == 0) {
 
                     callCenterTrackingReport.fillSpinners();
-                }else if(sysEngFlag==1){
+                } else if (sysEngFlag == 1) {
                     engineersTrackingReport.fillSpinners();
-                }else if(sysEngFlag==2){
+                } else if (sysEngFlag == 2) {
 //                    dashBoard.fillChart();
-                    GClass gClass=new GClass(null,null,null);
+                    GClass gClass = new GClass(null, null, null);
                     gClass.filllistOfEngList();
                     gClass.filllistOfSystemList();
 
+                } else if (sysEngFlag == 3) {
+                    technicalTrackingReport.fillSpinners();
                 }
 
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
 //                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
 //                if (pd != null) {
@@ -1245,9 +1257,8 @@ int sysEngFlag=0;
     private void setHoldList() {
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
-        Log.e("fillHoldList",""+hold_List.size());
-        if( hold_List.size()!=0)
-        {
+        Log.e("fillHoldList", "" + hold_List.size());
+        if (hold_List.size() != 0) {
             final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(context, hold_List);
 
             recyclerView.setLayoutManager(llm);
@@ -1261,8 +1272,7 @@ int sysEngFlag=0;
         LinearLayoutManager llm = new LinearLayoutManager(context);
         llm.setOrientation(LinearLayoutManager.VERTICAL);
 //        Log.e("fillHoldList",""+hold_List.size());
-        if( checkInList.size()!=0)
-        {
+        if (checkInList.size() != 0) {
             final CheckInCompanyAdapter companyAdapter = new CheckInCompanyAdapter((OnlineCenter) context, checkInList);
 
             recyclerViewCheckIn.setLayoutManager(llm);
@@ -1274,7 +1284,7 @@ int sysEngFlag=0;
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static String getDateTime(Date date) {
 
-        Date d2 = new Date( date.getTime() + 1 * 60 * 60 * 1000 );
+        Date d2 = new Date(date.getTime() + 1 * 60 * 60 * 1000);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         String dateTime = dateFormat.format(d2);
@@ -1290,9 +1300,9 @@ int sysEngFlag=0;
         Dialog dialog;
         ManagerLayout managerLayout;
 
-        public UpdateTransferSolved(ManagerLayout managerLayout,Dialog dialog) {
+        public UpdateTransferSolved(ManagerLayout managerLayout, Dialog dialog) {
             this.managerLayout = managerLayout;
-            this.dialog=dialog;
+            this.dialog = dialog;
         }
 
         @Override
@@ -1332,12 +1342,12 @@ int sysEngFlag=0;
                     object.put("TRANSFER_RESON", managerLayout.getTransferReason());
                     object.put("TRANSFER_TO_SERIAL", managerLayout.getTransferToSerial());
 
-                    if(managerLayout.getOriginalSerial().equals("-2")) {
+                    if (managerLayout.getOriginalSerial().equals("-2")) {
                         object.put("ORGINAL_SERIAL", "-1");
-                        Log.e("ORGINAL_SERIALI","getSerial "+managerLayout.getOriginalSerial());
-                    }else {
+                        Log.e("ORGINAL_SERIALI", "getSerial " + managerLayout.getOriginalSerial());
+                    } else {
                         object.put("ORGINAL_SERIAL", managerLayout.getOriginalSerial());
-                        Log.e("ORGINAL_SERIALI","getOriginalSerial "+managerLayout.getOriginalSerial());
+                        Log.e("ORGINAL_SERIALI", "getOriginalSerial " + managerLayout.getOriginalSerial());
                     }
 
 
@@ -1434,8 +1444,8 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=7";
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=7";
                 // ITEM_CARD
 
 
@@ -1501,7 +1511,7 @@ int sysEngFlag=0;
 
                 try {
 
-                    JSONObject jsonObject=new JSONObject(JsonResponse);
+                    JSONObject jsonObject = new JSONObject(JsonResponse);
                     JSONArray parentArrayS = jsonObject.getJSONArray("CUSTOMER_PHONE");
 
                     customerPhoneNo.clear();
@@ -1509,7 +1519,7 @@ int sysEngFlag=0;
                     for (int i = 0; i < parentArrayS.length(); i++) {
                         JSONObject finalObject = parentArrayS.getJSONObject(i);
 
-                        ManagerLayout customerInfo=new ManagerLayout();
+                        ManagerLayout customerInfo = new ManagerLayout();
                         customerInfo.setPhoneNo(finalObject.getString("PHONE_NO"));
                         customerInfo.setCustomerName(finalObject.getString("CUST_NAME"));
                         customerInfo.setCompanyName(finalObject.getString("COMPANY_NAME"));
@@ -1524,7 +1534,7 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("customerPhoneNo", "****Failed to export data");
 
 
@@ -1548,11 +1558,11 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
                 //{"CHECH_IN_HOUR":[{"HOUR":"13","COUNT(*)":"9"},{"HOUR":"11","COUNT(*)":"11"},{"HOUR":"12","COUNT(*)":"20"},{"HOUR":"10","COUNT(*)":"8"}],"HOLD_HOUR":[{"HOUR2":"13","COUNT(*)":"9"},{"HOUR2":"11","COUNT(*)":"11"},{"HOUR2":"12","COUNT(*)":"20"},{"HOUR2":"10","COUNT(*)":"8"}],"CHECH_OUT_HOUR":[{"HOUR3":"00","COUNT(*)":"6"},
                 // {"HOUR3":"13","COUNT(*)":"9"},{"HOUR3":"11","COUNT(*)":"11"},{"HOUR3":"12","COUNT(*)":"18"},{"HOUR3":"10","COUNT(*)":"4"}]}
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=8&DATE='"+dateTime+"'";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=8&DATE='" + dateTime + "'";
                 // ITEM_CARD
 
 
@@ -1627,35 +1637,35 @@ int sysEngFlag=0;
                     JSONObject parentArrayS = new JSONObject(JsonResponse);
 
                     listOfCallHour.clear();
-                    GClass gClass=new GClass(null,null,null);
+                    GClass gClass = new GClass(null, null, null);
                     gClass.filllistOfCallHour();
-                    List<ManagerLayout> temp=new ArrayList<>();
-                    List<ManagerLayout> temp2=new ArrayList<>();
-                    List<ManagerLayout> temp3=new ArrayList<>();
+                    List<ManagerLayout> temp = new ArrayList<>();
+                    List<ManagerLayout> temp2 = new ArrayList<>();
+                    List<ManagerLayout> temp3 = new ArrayList<>();
 
                     try {
 
 
-                    JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("CHECH_IN_HOUR");
+                        JSONArray CHECH_IN_HOUR = parentArrayS.getJSONArray("CHECH_IN_HOUR");
 
-                        inCount=0;
-                        outCount=0;
-                        holdCounts=0;
+                        inCount = 0;
+                        outCount = 0;
+                        holdCounts = 0;
 
-                    for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
-                        JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
+                        for (int i = 0; i < CHECH_IN_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_IN_HOUR.getJSONObject(i);
 
-                        ManagerLayout obj = new ManagerLayout();
-                        obj.setHour(finalObject.getDouble("HOUR"));
-                        obj.setCount(finalObject.getDouble("COUNT(*)"));
+                            ManagerLayout obj = new ManagerLayout();
+                            obj.setHour(finalObject.getDouble("HOUR"));
+                            obj.setCount(finalObject.getDouble("COUNT(*)"));
 
 //                        inCount= (int) obj.getCount();
-                        listOfCallHour.get(0).get((int) obj.getHour()).setCount(obj.getCount());
+                            listOfCallHour.get(0).get((int) obj.getHour()).setCount(obj.getCount());
 
 
-                    }
+                        }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
 //                        ManagerLayout managerLayout=new ManagerLayout();
 //                        managerLayout.setHour(0);
 //                        managerLayout.setCount(0);
@@ -1665,22 +1675,22 @@ int sysEngFlag=0;
                     }
 
                     try {
-                    JSONArray HOLD_HOUR = parentArrayS.getJSONArray("HOLD_HOUR");
+                        JSONArray HOLD_HOUR = parentArrayS.getJSONArray("HOLD_HOUR");
 
 
-                    for (int i = 0; i < HOLD_HOUR.length(); i++) {
-                        JSONObject finalObject = HOLD_HOUR.getJSONObject(i);
+                        for (int i = 0; i < HOLD_HOUR.length(); i++) {
+                            JSONObject finalObject = HOLD_HOUR.getJSONObject(i);
 
-                        ManagerLayout obj = new ManagerLayout();
-                        obj.setHour(finalObject.getDouble("HOUR2"));
-                        obj.setCount(finalObject.getDouble("COUNT(*)"));
+                            ManagerLayout obj = new ManagerLayout();
+                            obj.setHour(finalObject.getDouble("HOUR2"));
+                            obj.setCount(finalObject.getDouble("COUNT(*)"));
 //                        holdCounts= (int) obj.getCount();
 //                        temp2.add(obj);
-                        listOfCallHour.get(1).get((int) obj.getHour()).setCount(obj.getCount());
+                            listOfCallHour.get(1).get((int) obj.getHour()).setCount(obj.getCount());
 
-                    }
+                        }
 //                    listOfCallHour.add(temp2);
-                    }catch (Exception e){
+                    } catch (Exception e) {
 //                        ManagerLayout managerLayout=new ManagerLayout();
 //                        managerLayout.setHour(0);
 //                        managerLayout.setCount(0);
@@ -1689,23 +1699,23 @@ int sysEngFlag=0;
 //                        listOfCallHour.add(temp2);
                     }
 
-                      try{
-                    JSONArray CHECH_OUT_HOUR = parentArrayS.getJSONArray("CHECH_OUT_HOUR");
-                    for (int i = 0; i < CHECH_OUT_HOUR.length(); i++) {
-                        JSONObject finalObject = CHECH_OUT_HOUR.getJSONObject(i);
+                    try {
+                        JSONArray CHECH_OUT_HOUR = parentArrayS.getJSONArray("CHECH_OUT_HOUR");
+                        for (int i = 0; i < CHECH_OUT_HOUR.length(); i++) {
+                            JSONObject finalObject = CHECH_OUT_HOUR.getJSONObject(i);
 
-                        ManagerLayout obj = new ManagerLayout();
-                        obj.setHour(finalObject.getDouble("HOUR3"));
-                        obj.setCount(finalObject.getDouble("COUNT(*)"));
+                            ManagerLayout obj = new ManagerLayout();
+                            obj.setHour(finalObject.getDouble("HOUR3"));
+                            obj.setCount(finalObject.getDouble("COUNT(*)"));
 //                        temp3.add(obj);
 //                        outCount= (int) (outCount+obj.getCount());
 
-                        listOfCallHour.get(2).get((int) obj.getHour()).setCount(obj.getCount());
+                            listOfCallHour.get(2).get((int) obj.getHour()).setCount(obj.getCount());
 
 //                        dashBoard.dataCall();
-                    }
+                        }
 //                    listOfCallHour.add(temp3);
-                }catch (Exception e){
+                    } catch (Exception e) {
 
 //                          ManagerLayout managerLayout=new ManagerLayout();
 //                          managerLayout.setHour(0);
@@ -1713,9 +1723,9 @@ int sysEngFlag=0;
 //
 //                          temp3.add(managerLayout);
 //                    listOfCallHour.add(temp3);
-                }
+                    }
 
-                Log.e("MDashBoard2", "****saveSuccess");
+                    Log.e("MDashBoard2", "****saveSuccess");
 
                     dashBoard.fillCallCountPerHour();
 
@@ -1723,7 +1733,7 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
 //                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
 //                if (pd != null) {
@@ -1735,7 +1745,7 @@ int sysEngFlag=0;
 //                }
 
                 listOfCallHour.clear();
-                GClass gClass=new GClass(null,null,null);
+                GClass gClass = new GClass(null, null, null);
                 gClass.filllistOfCallHour();
                 dashBoard.fillCallCountPerHour();
 
@@ -1743,6 +1753,7 @@ int sysEngFlag=0;
 
         }
     }
+
     private class importDataDashBordEng extends AsyncTask<String, String, String> {
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
@@ -1758,11 +1769,11 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
                 //{"CHECH_IN_HOUR":[{"HOUR":"13","COUNT(*)":"9"},{"HOUR":"11","COUNT(*)":"11"},{"HOUR":"12","COUNT(*)":"20"},{"HOUR":"10","COUNT(*)":"8"}],"HOLD_HOUR":[{"HOUR2":"13","COUNT(*)":"9"},{"HOUR2":"11","COUNT(*)":"11"},{"HOUR2":"12","COUNT(*)":"20"},{"HOUR2":"10","COUNT(*)":"8"}],"CHECH_OUT_HOUR":[{"HOUR3":"00","COUNT(*)":"6"},
                 // {"HOUR3":"13","COUNT(*)":"9"},{"HOUR3":"11","COUNT(*)":"11"},{"HOUR3":"12","COUNT(*)":"18"},{"HOUR3":"10","COUNT(*)":"4"}]}
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=9&DATE='"+dateTime+"'";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=9&DATE='" + dateTime + "'";
                 // ITEM_CARD
 
 
@@ -1843,7 +1854,7 @@ int sysEngFlag=0;
                         //{"HOUR_PER_ENG":[{"ENG_ID":"4","ENG_NAME":"نور حماد ","CALL_COUNT":"1","PERC":"3.33"},{"ENG_ID":"9","ENG_NAME":"ايمان عريقات","CALL_COUNT":"2","PERC":"6.67"},{"ENG_ID":"6","ENG_NAME":"مي صوان ","CALL_COUNT":"4","PERC":"13.33"},{"ENG_ID":"11","ENG_NAME":"كوثر صخرية","CALL_COUNT":"5","PERC":"16.67"},{"ENG_ID":"12","ENG_NAME":"ايمان خنفر","CALL_COUNT":"5","PERC":"16.67"},{"ENG_ID":"8","ENG_NAME":"لمى الشوبكي","CALL_COUNT":"3","PERC":"10"},{"ENG_ID":"7","ENG_NAME":"تسنيم الشعيبي","CALL_COUNT":"4","PERC":"13.33"},{"ENG_ID":"10","ENG_NAME":"سجى بشير ","CALL_COUNT":"5",
                         // "PERC":"16.67"},{"ENG_ID":"13","ENG_NAME":"بلقيس شنانير","CALL_COUNT":"1","PERC":"3.33"}]}
                         engPerHourList.clear();
-                        GClass gClass=new GClass(null,null,null);
+                        GClass gClass = new GClass(null, null, null);
                         gClass.filllistOfEngList();
 
                         JSONArray HOUR_PER_ENG = parentArrayS.getJSONArray("HOUR_PER_ENG");
@@ -1857,18 +1868,18 @@ int sysEngFlag=0;
                             obj.setNoOfCountCall(finalObject.getDouble("CALL_COUNT"));
                             obj.setPercCall(finalObject.getDouble("PERC"));
 
-                            int index= getIndexOf(engPerHourList,obj.getId());
-                            if(index!=-1){
-                                Log.e("MaEngPerHourList","engPerHourList  "+engPerHourList.get(index).getNoOfCountCall());
+                            int index = getIndexOf(engPerHourList, obj.getId());
+                            if (index != -1) {
+                                Log.e("MaEngPerHourList", "engPerHourList  " + engPerHourList.get(index).getNoOfCountCall());
                                 engPerHourList.get(index).setNoOfCountCall(obj.getNoOfCountCall());
                                 engPerHourList.get(index).setPercCall(obj.getPercCall());
-                                Log.e("MaEngPerHourList2","engPerHourList  "+engPerHourList.get(index).getNoOfCountCall());
+                                Log.e("MaEngPerHourList2", "engPerHourList  " + engPerHourList.get(index).getNoOfCountCall());
 
 
                             }
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
 //
                     }
 
@@ -1880,7 +1891,7 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
 //                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
 //                if (pd != null) {
@@ -1891,7 +1902,7 @@ int sysEngFlag=0;
 //                            .show();
 //                }
                 engPerHourList.clear();
-                GClass gClass=new GClass(null,null,null);
+                GClass gClass = new GClass(null, null, null);
                 gClass.filllistOfEngList();
                 dashBoard.fillChart();
 
@@ -1916,9 +1927,9 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=10&ENG_ID="+EngIdDashBord+"&DATE='"+dateTime+"'";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=10&ENG_ID=" + EngIdDashBord + "&DATE='" + dateTime + "'";
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
@@ -1981,11 +1992,11 @@ int sysEngFlag=0;
                     JSONObject parentArrayS = new JSONObject(JsonResponse);
 
                     listOfCallHourByEng.clear();
-                    GClass gClass=new GClass(null,null,null);
+                    GClass gClass = new GClass(null, null, null);
                     gClass.filllistOfCallHourByEng();
-                    List<ManagerLayout> temp=new ArrayList<>();
-                    List<ManagerLayout> temp2=new ArrayList<>();
-                    List<ManagerLayout> temp3=new ArrayList<>();
+                    List<ManagerLayout> temp = new ArrayList<>();
+                    List<ManagerLayout> temp2 = new ArrayList<>();
+                    List<ManagerLayout> temp3 = new ArrayList<>();
 
                     try {
 
@@ -2005,7 +2016,7 @@ int sysEngFlag=0;
 
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
 
                     try {
@@ -2021,10 +2032,10 @@ int sysEngFlag=0;
                             listOfCallHourByEng.get(2).get((int) obj.getHour()).setCount(obj.getCount());
 
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
 
-                    try{
+                    try {
                         JSONArray CHECH_OUT_HOUR = parentArrayS.getJSONArray("CALLS_CHECK_OUT");
                         for (int i = 0; i < CHECH_OUT_HOUR.length(); i++) {
                             JSONObject finalObject = CHECH_OUT_HOUR.getJSONObject(i);
@@ -2035,7 +2046,7 @@ int sysEngFlag=0;
                             listOfCallHourByEng.get(1).get((int) obj.getHour()).setCount(obj.getCount());
 
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
 
                     Log.e("listOfCallHourByEng", "****saveSuccess");
@@ -2046,7 +2057,7 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
             }
 
@@ -2068,9 +2079,9 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=11&ENG_ID="+EngIdDashBord+"&DATE='"+dateTime+"'";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=11&ENG_ID=" + EngIdDashBord + "&DATE='" + dateTime + "'";
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
@@ -2153,7 +2164,7 @@ int sysEngFlag=0;
 
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
 
                     Log.e("listOfCallHourByEng", "****saveSuccess");
@@ -2164,15 +2175,12 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
             }
 
         }
     }
-
-
-
 
 
     private class getDataSystem extends AsyncTask<String, String, String> {
@@ -2190,9 +2198,9 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=12&DATE='"+dateTime+"'";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=12&DATE='" + dateTime + "'";
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
@@ -2256,7 +2264,7 @@ int sysEngFlag=0;
 
                     systemListDashBoardSystem.clear();
                     systemListDashOnlyMax.clear();
-                    GClass gClass=new GClass(null,null,null);
+                    GClass gClass = new GClass(null, null, null);
                     gClass.filllistOfSystemList();
 
                     try {
@@ -2273,17 +2281,17 @@ int sysEngFlag=0;
                             obj.setSystemCount(finalObject.getDouble("COUNT(*)"));
                             obj.setSystemNo(finalObject.getString("SYS_ID"));
                             systemListDashOnlyMax.add(obj);
-                            int index= getIndexOfSystem(systemListDashBoardSystem,obj.getSystemNo());
-                            if(index!=-1){
-                                Log.e("MaEngPerHourList","engPerHourList  "+systemListDashBoardSystem.get(index).getSystemName());
+                            int index = getIndexOfSystem(systemListDashBoardSystem, obj.getSystemNo());
+                            if (index != -1) {
+                                Log.e("MaEngPerHourList", "engPerHourList  " + systemListDashBoardSystem.get(index).getSystemName());
                                 systemListDashBoardSystem.get(index).setSystemCount(obj.getSystemCount());
-                                Log.e("MaEngPerHourList2","engPerHourList  "+systemListDashBoardSystem.get(index).getSystemName());
+                                Log.e("MaEngPerHourList2", "engPerHourList  " + systemListDashBoardSystem.get(index).getSystemName());
                             }
 
 
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
 
                     Log.e("listOfCallHourByEng", "****saveSuccess");
@@ -2294,12 +2302,12 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
 
                 systemListDashBoardSystem.clear();
                 systemListDashOnlyMax.clear();
-                GClass gClass=new GClass(null,null,null);
+                GClass gClass = new GClass(null, null, null);
                 gClass.filllistOfSystemList();
                 dashBoard.fill3();
             }
@@ -2323,9 +2331,9 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=13&SYSTEM_ID="+sysIdDashboard+"&DATE='"+dateTime+"'";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=13&SYSTEM_ID=" + sysIdDashboard + "&DATE='" + dateTime + "'";
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
@@ -2407,7 +2415,7 @@ int sysEngFlag=0;
                             engPerSysList.add(obj);
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
 
 
@@ -2419,7 +2427,7 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
                 engPerSysList.clear();
                 dashBoard.fill4();
@@ -2443,9 +2451,9 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=15&DATE='"+dateTime+"'";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=15&DATE='" + dateTime + "'";
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
@@ -2523,13 +2531,13 @@ int sysEngFlag=0;
 //                            EngineerInfo obj = new EngineerInfo();
 //                            obj.setName(finalObject.getString("ENG_NAME"));
 //                            obj.setNoOfCountCall(finalObject.getDouble("COUNT"));
-                            sizeProgress.add( finalObject.getInt("CHECH_IN"));
+                            sizeProgress.add(finalObject.getInt("CHECH_IN"));
                             sizeProgress.add(finalObject.getInt("CHECH_OUT"));
-                            sizeProgress.add( finalObject.getInt("HOLD"));
+                            sizeProgress.add(finalObject.getInt("HOLD"));
 
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
 
 
@@ -2542,7 +2550,7 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
                 sizeProgress.clear();
                 dashBoard.dataCall();
@@ -2567,9 +2575,9 @@ int sysEngFlag=0;
         protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
             try {
 //
-                ipAddres=databaseHandler.getIp();
+                ipAddres = databaseHandler.getIp();
 
-                String link ="http://"+ipAddres+"/onlineTechnicalSupport/import.php?FLAG=14&DATE=\""+fDateDash+"\"&DATE2=\""+sDateDash+"\"";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=14&DATE=\"" + fDateDash + "\"&DATE2=\"" + sDateDash + "\"";
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
@@ -2654,9 +2662,8 @@ int sysEngFlag=0;
                             managerDashBord.add(obj);
                         }
 
-                    }catch (Exception e){
+                    } catch (Exception e) {
                     }
-
 
 
                     Log.e("listOfCallHourByEng", "****saveSuccess");
@@ -2667,7 +2674,7 @@ int sysEngFlag=0;
                     e.printStackTrace();
                 }
 
-            }  else {
+            } else {
                 Log.e("tag_itemCard", "****Failed to export data");
                 managerDashBord.clear();
                 dashBoard.fill5();
@@ -2679,8 +2686,8 @@ int sysEngFlag=0;
     public static int getIndexOf(List<EngineerInfo> list, String name) {
         int pos = 0;
 
-        for(EngineerInfo myObj : list) {
-            if(name.equalsIgnoreCase(myObj.getId()))
+        for (EngineerInfo myObj : list) {
+            if (name.equalsIgnoreCase(myObj.getId()))
                 return pos;
             pos++;
         }
@@ -2691,8 +2698,8 @@ int sysEngFlag=0;
     public static int getIndexOfSystem(List<Systems> list, String name) {
         int pos = 0;
 
-        for(Systems myObj : list) {
-            if(name.equalsIgnoreCase(myObj.getSystemNo()))
+        for (Systems myObj : list) {
+            if (name.equalsIgnoreCase(myObj.getSystemNo()))
                 return pos;
             pos++;
         }

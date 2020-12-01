@@ -39,10 +39,12 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
 
     private List<ManagerLayout> list;
     private Context context;
+    private String tecType;
 
-    public CallCenterTrackingAdapter(Context context, List<ManagerLayout> list) {
+    public CallCenterTrackingAdapter(Context context, List<ManagerLayout> list,String tecType) {
         this.list = list;
         this.context = context;
+        this.tecType=tecType;
     }
 
     @NonNull
@@ -112,8 +114,12 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
                             if (!TextUtils.isEmpty(newProblem.getText().toString())) {
                                 list.get(i).setProplem(newProblem.getText().toString());
                                 ManagerExport managerExport=new ManagerExport(context,null);
-                                managerExport.UpdateProblemFun(list.get(i),newProblem.getText().toString());
+                                if(tecType.equals("2")) {
+                                    managerExport.UpdateProblemFun(list.get(i), newProblem.getText().toString(), "2");
+                                }else  if(tecType.equals("4")) {
+                                    managerExport.UpdateProblemFun(list.get(i), newProblem.getText().toString(), "4");
 
+                                }
                                 updateDialog.dismiss();
                             } else {
 

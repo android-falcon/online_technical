@@ -1,10 +1,5 @@
 package com.falconssoft.onlinetechsupport.reports;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
@@ -24,6 +19,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.falconssoft.onlinetechsupport.DatabaseHandler;
 import com.falconssoft.onlinetechsupport.ManagerImport;
@@ -47,12 +47,13 @@ import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
 
-public class CallCenterTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class TechnicalTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     DatabaseHandler databaseHandler;
     private RecyclerView recyclerView;
     private CallCenterTrackingAdapter adapter;
     private PresenterClass presenterClass;
+
     private ArrayAdapter<String> callCenterAdapter,dateAdapter,engAdapter,sysAdapter;
     private Spinner callCenterSpinner,engSpinner,sysSpinner;//dateSpinner
     private String engineerText = "All", DateText = "All",engText="All",systemText="All";
@@ -72,7 +73,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     int inSys=0;
     TextView infoTableReport;
 
-    TextView fromDate,toDate,btnSpeakCompany,btnSpeakCustomer,dateTransOrder,companyOrder,phoneOrder,customerFilter,engOrder;
+    TextView reportName,fromDate,toDate,btnSpeakCompany,btnSpeakCustomer,dateTransOrder,companyOrder,phoneOrder,customerFilter,engOrder;
     private int timeFlag = 0;// 0=> from, 1=> to
     EditText customerEText,phoneEText,companyEText;
     LinearLayout search;
@@ -89,7 +90,6 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     boolean upDownFlagPhone =false;
     boolean upDownFlagCompany =false;
     int timeFlagOrder =0;
-    TextView reportName;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         setContentView(R.layout.activity_call_center_tracking_report);
 
         presenterClass = new PresenterClass(this);
-        presenterClass.getCallCenterData(this,null,"2");
+        presenterClass.getCallCenterData(null,this,"4");
         infoTableReport= findViewById(R.id.infoTableReport);
         infoTableReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +115,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         companyEText=findViewById(R.id.eng_report_company);
         search=findViewById(R.id.search);
 //        dateSpinner= findViewById(R.id.callCenter_report_dateSpinner);
-        adapter = new CallCenterTrackingAdapter(this, callCenterList,"2");
+        adapter = new CallCenterTrackingAdapter(this, callCenterList,"4");
         recyclerView.setAdapter(adapter);
         count=findViewById(R.id.count);
         CheckInTimeId=findViewById(R.id.CheckInTimeId);
@@ -128,7 +128,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         customerFilter=findViewById(R.id.customerFilter);
         engOrder=findViewById(R.id.engOrder);
         reportName=findViewById(R.id.reportName);
-        reportName.setText(CallCenterTrackingReport.this.getResources().getString(R.string.call_center_report));
+        reportName.setText(TechnicalTrackingReport.this.getResources().getString(R.string.Technical_report));
 
 //        engineerList.add("Sarah");
 //        engineerList.add("Manal");
@@ -150,8 +150,8 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
             }
         });
 
-        ManagerImport managerImport=new ManagerImport(CallCenterTrackingReport.this);
-        managerImport.startSendingEngSys(CallCenterTrackingReport.this,0);
+        ManagerImport managerImport=new ManagerImport(TechnicalTrackingReport.this);
+        managerImport.startSendingEngSys(TechnicalTrackingReport.this,3);
 
 //        customerEText.addTextChangedListener(textWatcher);
 //        phoneEText.addTextChangedListener(textWatcher);
@@ -168,7 +168,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
             @Override
             public void onClick(View view) {
                 timeFlag = 0;
-                new DatePickerDialog(CallCenterTrackingReport.this, openDatePickerDialog(timeFlag), calendar
+                new DatePickerDialog(TechnicalTrackingReport.this, openDatePickerDialog(timeFlag), calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -178,7 +178,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
             @Override
             public void onClick(View view) {
                 timeFlag = 1;
-                new DatePickerDialog(CallCenterTrackingReport.this, openDatePickerDialog(timeFlag), calendar
+                new DatePickerDialog(TechnicalTrackingReport.this, openDatePickerDialog(timeFlag), calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -380,12 +380,12 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
                     //ic_arrow_upward_black_24dp
                     Collections.sort(callCenterList, new StringDateComparator());
                     filter();
-                    problemOrder.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                    problemOrder.setCompoundDrawables(null, null, TechnicalTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
                 }else {
                     upDownFlagProblem =true;
                     Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparator()));
                     filter();
-                    problemOrder.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+                    problemOrder.setCompoundDrawables(null, null, TechnicalTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
 
                 }
 
@@ -469,7 +469,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     }
 
     private void dialogInfoColor() {
-        Dialog dialog = new Dialog(CallCenterTrackingReport.this,R.style.Theme_Dialog);
+        Dialog dialog = new Dialog(TechnicalTrackingReport.this,R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.information_dialog_table_color);
@@ -683,7 +683,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
             }
         }
 
-        adapter = new CallCenterTrackingAdapter(this, filtered,"2");
+        adapter = new CallCenterTrackingAdapter(this, filtered,"4");
         recyclerView.setAdapter(adapter);
         count.setText(""+filtered.size());
     }
