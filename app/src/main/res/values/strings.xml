@@ -39,6 +39,8 @@
     <string name="customer_name">Customer Name</string>
     <string name="system_type">System Type</string>
     <string name="hold_customer_list">Hold Customer List</string>
+    <string name="sch_customer_list">Schedule Customer List</string>
+
     <string name="hold">Hold</string>
     <string name="more_information">More Information</string>
     <string name="eng_name">Eng Name :</string>
@@ -83,4 +85,6 @@
     <string name="Technical">Technical</string>
     <string name="cancel_Reason">Cancel Reason</string>
     <string name="Technical_report">Technical Report</string>
+    <string name="Schedule">Schedule</string>
+    <string name="Schedule_reason">Schedule Reason</string>
 </resources>

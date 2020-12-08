@@ -47,6 +47,10 @@ public class ManagerLayout {
     private String cancelReason;
     private String cancelState;
 
+    private String tecType;
+
+    private  String companyId;
+
     public ManagerLayout() {
 
     }
@@ -343,5 +347,21 @@ public class ManagerLayout {
 
     public void setCancelState(String cancelState) {
         this.cancelState = cancelState;
+    }
+
+    public String getTecType() {
+        return tecType;
+    }
+
+    public void setTecType(String tecType) {
+        this.tecType = tecType;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 }

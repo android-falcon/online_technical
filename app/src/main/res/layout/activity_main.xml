@@ -29,12 +29,14 @@
                 android:layout_weight="1"
                 app:srcCompat="@drawable/falconssoftlogo" />
 
+
             <TextView
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="0"
                 android:textColor="@color/darkblue_1" />
+
         </androidx.appcompat.widget.Toolbar>
 
         <LinearLayout
@@ -190,6 +192,58 @@
                     android:layout_height="match_parent"
                     android:padding="5dp" />
             </LinearLayout>
+
+
+            <TextView
+android:id="@+id/line"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:id="@+id/scheduleLinear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bac_list_4"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/keania_one"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="@string/Schedule"
+                        android:textColor="@color/blueColor"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/countSchedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.8"
+                        android:fontFamily="@font/keania_one"
+                        android:gravity="start"
+                        android:text="0"
+                        android:textColor="@color/blueColor"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+
+                <ListView
+                    android:id="@+id/listSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="5dp" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
@@ -198,6 +252,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/countOfSchedule"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_marginEnd="0dp"
+            android:layout_weight="0"
+            android:background="@drawable/background_schdual"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/white_dark"
+            android:textSize="18sp" />
         <!--<ImageView-->
         <!--android:id="@+id/mo1"-->
         <!--android:layout_width="84dp"-->

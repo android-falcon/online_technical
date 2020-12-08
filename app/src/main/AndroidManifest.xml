@@ -13,6 +13,7 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:icon">
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity android:name=".reports.EngineersTrackingReport" android:screenOrientation="sensorLandscape"></activity>
         <activity
             android:name=".reports.CallCenterTrackingReport"
