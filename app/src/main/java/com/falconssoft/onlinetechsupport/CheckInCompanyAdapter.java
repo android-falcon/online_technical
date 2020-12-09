@@ -549,6 +549,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                     object.put("LATITUDE", "0");
                     object.put("CHECK_OUT_LONGITUDE", "0");
                     object.put("CHECK_OUT_LATITUDE", "0");
+                    object.put("SAVE_PIC", "'0'");
                     object.put("UPDATE_CUSTOMER_LOCATION", "'0'");// 0 check out, 1 update
 
 

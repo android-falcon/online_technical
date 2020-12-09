@@ -900,6 +900,7 @@ public class ManagerImport {
                         obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
                         obj.setHoldTime(finalObject.getString("HOLD_TIME"));
                         obj.setCancelState(finalObject.getString("ROW_STATUS"));
+                        obj.setHoldReason(finalObject.getString("HOLD_REASON"));
 
                         if ((obj.getState().equals("0")|| obj.getState().equals("3") )&& finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
                             if (obj.getCancelState().equals("0")) {
