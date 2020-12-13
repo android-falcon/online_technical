@@ -15,6 +15,7 @@
         android:layout_weight="1"
         android:padding="10dp"
         android:text="@string/transfer"
+        android:fontFamily="@font/keania_one"
         android:gravity="center"
         android:textColor="@color/darkblue_2"
         android:textSize="25sp" />

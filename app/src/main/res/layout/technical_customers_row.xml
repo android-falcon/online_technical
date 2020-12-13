@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/shadow"
+    android:padding="10dp"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/technicalRow_image"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
+        android:src="@mipmap/online_launcher"
+        />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0"
+        android:background="@color/cardview_shadow_start_color"
+        />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/technicalRow_company"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="Falcon"
+            android:textStyle="bold"
+            android:fontFamily="@font/keania_one"
+            android:textSize="16sp"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/goldf"
+            />
+
+        <TextView
+            android:id="@+id/technicalRow_customer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="Falcondddd"
+            android:maxLength="100"
+            android:ellipsize="end"
+            android:fontFamily="@font/averia_libre_light"
+            android:textSize="16sp"
+            android:paddingHorizontal="10dp"
+            />
+
+        <TextView
+            android:id="@+id/technicalRow_phone"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="Phone"
+            android:fontFamily="@font/averia_libre_light"
+            android:textSize="16sp"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/black"
+            />
+
+        <TextView
+            android:id="@+id/technicalRow_problem"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="Problem"
+            android:fontFamily="@font/averia_libre_light"
+            android:textSize="16sp"
+            android:paddingHorizontal="10dp"
+            />
+    </LinearLayout>
+</LinearLayout>
