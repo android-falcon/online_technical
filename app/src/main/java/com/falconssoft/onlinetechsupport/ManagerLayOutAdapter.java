@@ -97,6 +97,8 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                 holder.tecType.setText("On-Tec");
             }else  if(itemsList.get(i).getTecType().equals("4")){
                 holder.tecType.setText("Tec");
+            }else  if(itemsList.get(i).getTecType().equals("6")){
+                holder.tecType.setText("Prog");
             }
             holder.CheckOutTime.setVisibility(View.GONE);
             holder.CheckInTime.setText("" + itemsList.get(i).getCheakInTime());

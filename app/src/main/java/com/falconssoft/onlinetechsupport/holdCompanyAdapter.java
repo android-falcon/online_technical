@@ -353,6 +353,8 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
             titale.setText(context.getResources().getString(R.string.hold_Reason)+"");
         }else if(callType==3){
             titale.setText(context.getResources().getString(R.string.Schedule_reason)+"");
+        }else if(callType==5) {
+            titale.setText(context.getResources().getString(R.string.Schedule_reason)+"");
         }
 
         holdReason.setText(list);

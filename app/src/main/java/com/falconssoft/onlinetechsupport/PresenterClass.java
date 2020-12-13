@@ -24,6 +24,7 @@ import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.ProgrammerReport;
 import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONArray;
@@ -66,6 +67,7 @@ public class PresenterClass {
     private CallCenterTrackingReport callCenterTrackingReport;
     private EngineersTrackingReport engineersTrackingReport;
     private TechnicalTrackingReport technicalTrackingReport;
+    private  ProgrammerReport programmerReport;
     private String callType;
 
 //    private String ipAddres;
@@ -351,11 +353,12 @@ public class PresenterClass {
 
     //****************************************** setCallCenterData  **************************************
 
-    public void getCallCenterData(CallCenterTrackingReport callCenterTrackingReport,TechnicalTrackingReport technicalTrackingReport,String callType) {
+    public void getCallCenterData(CallCenterTrackingReport callCenterTrackingReport, TechnicalTrackingReport technicalTrackingReport, ProgrammerReport programmerReport, String callType) {
 
 //        ipAddres = databaseHandler.getIp();
         this.callCenterTrackingReport = callCenterTrackingReport;
         this.technicalTrackingReport=technicalTrackingReport;
+        this.programmerReport=programmerReport;
         this.callType=callType;
         urlCallCenterReport = URL + "import.php?FLAG=5&TEC_TYPE="+callType;
         callCenterRequest = new JsonArrayRequest(Request.Method.GET, urlCallCenterReport, null, new CallCenterClass(), new CallCenterClass());
@@ -417,6 +420,8 @@ public class PresenterClass {
                 callCenterTrackingReport.fillAdapter();
             }else  if(callType.equals("4")) {
                 technicalTrackingReport.fillAdapter();
+            }else  if(callType.equals("6")) {
+                programmerReport.fillAdapter();
             }
 
         }

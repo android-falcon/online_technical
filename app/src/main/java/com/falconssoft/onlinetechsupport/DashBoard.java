@@ -297,7 +297,12 @@ public class DashBoard extends AppCompatActivity  {
      if(sizeProgress.size()!=0) {
          allCall = sizeProgress.get(0) + sizeProgress.get(1) + sizeProgress.get(2);
          int engSize = engList.size() - 1;
-         double perCal = ((double) (allCall / engSize));
+         double perCal =0;
+         try {
+              perCal = ((double) (allCall / engSize));
+         }catch (Exception e){
+             perCal=0;
+         }
 
          CallNo.setText("" + allCall + " Call");
 

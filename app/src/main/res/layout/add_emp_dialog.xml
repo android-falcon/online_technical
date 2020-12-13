@@ -161,6 +161,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp">
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -212,7 +215,28 @@
                     android:textColor="@color/black"
                     android:textSize="18sp" />
 
+
+                <RadioButton
+                    android:id="@+id/CallProgRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/averia_libre_light"
+                    android:text="@string/call_center_Prog"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
+                <RadioButton
+                    android:id="@+id/progRadio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/averia_libre_light"
+                    android:text="@string/programmer"
+                    android:textColor="@color/black"
+                    android:textSize="18sp" />
+
             </RadioGroup>
+
+            </ScrollView>
 
         </TableRow>
 

@@ -97,7 +97,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         setContentView(R.layout.activity_call_center_tracking_report);
 
         presenterClass = new PresenterClass(this);
-        presenterClass.getCallCenterData(this,null,"2");
+        presenterClass.getCallCenterData(this,null,null,"2");
         infoTableReport= findViewById(R.id.infoTableReport);
         infoTableReport.setOnClickListener(new View.OnClickListener() {
             @Override

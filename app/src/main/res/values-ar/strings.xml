@@ -87,4 +87,7 @@
     <string name="Technical_report">Technical Report</string>
     <string name="Schedule">schedule</string>
     <string name="Schedule_reason">Schedule Reason</string>
+    <string name="call_center_Prog">Call Center Prog</string>
+    <string name="programmer">programmer</string>
+    <string name="Programmer_Report">Programmer Report</string>
 </resources>

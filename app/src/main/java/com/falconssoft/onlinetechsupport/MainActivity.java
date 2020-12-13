@@ -38,6 +38,7 @@ import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.ProgrammerReport;
 import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONException;
@@ -303,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
         final EditText UserName, Password;//,EngId;
-        final RadioButton Manager, Online, callCenter,CallTecRadio,TecRadio;
+        final RadioButton Manager, Online, callCenter,CallTecRadio,TecRadio,CallProgRadio,progRadio;
         TextView add, cancel;
 
 
@@ -317,6 +318,8 @@ public class MainActivity extends AppCompatActivity {
 
         CallTecRadio = AddEmployeDialog.findViewById(R.id.CallTecRadio);
         TecRadio = AddEmployeDialog.findViewById(R.id.TecRadio);
+        CallProgRadio=AddEmployeDialog.findViewById(R.id.CallProgRadio);
+        progRadio=AddEmployeDialog.findViewById(R.id.progRadio);
 
         add = AddEmployeDialog.findViewById(R.id.Addbutton);
         cancel = AddEmployeDialog.findViewById(R.id.Cancelbutton);
@@ -342,6 +345,10 @@ public class MainActivity extends AppCompatActivity {
                         EngType = 3;
                     } else if (TecRadio.isChecked()) {
                         EngType = 4;
+                    }else if (CallProgRadio.isChecked()) {
+                        EngType = 5;
+                    }else if (progRadio.isChecked()) {
+                        EngType = 6;
                     }
 
                     engineerInfo.setEng_type(EngType);
@@ -495,6 +502,23 @@ public class MainActivity extends AppCompatActivity {
 
                             }
 
+                        }else if(flag==2){
+
+                            if (!password.equals("")) {
+
+                                if (password.equals("prog1234")) {
+
+                                    textView.setText("");
+                                    Intent intent4 = new Intent(MainActivity.this, ProgrammerReport.class);
+                                    startActivity(intent4);
+                                    sweetAlertDialog.dismissWithAnimation();
+
+                                } else {
+                                    textView.setText("كلمة السر خطا ");
+                                }
+
+                            }
+
                         }
 
                     }
@@ -538,6 +562,11 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_tec_report:
                 passwordForSetting(1);
+
+//                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_prog_report:
+                passwordForSetting(2);
 
 //                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
                 return true;

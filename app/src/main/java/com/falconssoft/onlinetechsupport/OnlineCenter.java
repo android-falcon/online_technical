@@ -179,12 +179,12 @@ public class OnlineCenter extends AppCompatActivity {
 
         btn_sch.setVisibility(View.GONE);
         btn_hold.setVisibility(View.GONE);
-        if (callType == 1) {
+        if (callType == 1 ||callType == 5) {
             btn_hold.setVisibility(View.VISIBLE);
             btn_sch.setVisibility(View.GONE);
             holdScheduale.setText(getResources().getString(R.string.hold_customer_list));
 
-        } else if (callType == 3) {
+        } else if (callType == 3 ) {
             btn_hold.setVisibility(View.GONE);
             btn_sch.setVisibility(View.VISIBLE);
             holdScheduale.setText(getResources().getString(R.string.sch_customer_list));
@@ -523,6 +523,12 @@ public class OnlineCenter extends AppCompatActivity {
                         listEngforAdapter.add(engineerInfoList.get(i));
 
                     }
+                } else if (callType == 5) {
+                    if (engType == 6)// available  tec
+                    {
+                        listEngforAdapter.add(engineerInfoList.get(i));
+
+                    }
                 }
             }
             final LinearLayoutManager layoutManager;
@@ -684,6 +690,21 @@ public class OnlineCenter extends AppCompatActivity {
 
                                         }
 
+                                    }else if (callType == 5) {
+
+
+                                        if (engineerInfo.getEng_type() == 6) {
+                                            engInfoTra.add(engineerInfo);
+                                            engStringName.add(engineerInfo.getName());
+
+                                        }
+
+                                        if (engineerInfo.getEng_type() == 6 && engineerInfo.getState() == 0) {
+                                            engineerInfoList.add(engineerInfo);
+                                            Log.e("ENG_TYPE_in", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
+
+                                        }
+
                                     }
 
                                 }
@@ -710,6 +731,11 @@ public class OnlineCenter extends AppCompatActivity {
 
                                         } else if (callType == 3) {
                                             if (engineerInfo.getEng_type() == 4 && engineerInfo.getState() == 0) {
+                                                engineerInfoList.add(engineerInfo);
+
+                                            }
+                                        }else if (callType == 5) {
+                                            if (engineerInfo.getEng_type() == 6 && engineerInfo.getState() == 0) {
                                                 engineerInfoList.add(engineerInfo);
 
                                             }
@@ -1121,6 +1147,8 @@ public class OnlineCenter extends AppCompatActivity {
                 obj.put("TEC_TYPE", "'" + 2 + "'");
             } else if (callType == 3) {
                 obj.put("TEC_TYPE", "'" + 4 + "'");
+            }else if (callType == 5) {
+                obj.put("TEC_TYPE", "'" + 6 + "'");
             }
 
             obj.put("COMPANY_ID","'"+companyId+"'");
@@ -1149,6 +1177,8 @@ public class OnlineCenter extends AppCompatActivity {
                 obj.put("TEC_TYPE", "'" + 2 + "'");
             } else if (callType == 3) {
                 obj.put("TEC_TYPE", "'" + 4 + "'");
+            }else if (callType == 5) {
+                obj.put("TEC_TYPE", "'" + 6 + "'");
             }
 
             obj.put("COMPANY_ID","'"+companyId+"'");

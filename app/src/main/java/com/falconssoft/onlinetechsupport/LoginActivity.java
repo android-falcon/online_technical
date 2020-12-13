@@ -123,11 +123,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     Intent intent4 = new Intent(LoginActivity.this, OnlineActivity.class);
                                     startActivity(intent4);
                                     break;
-                                case 5:// call center tec
+                                case 5:// call center program
                                     Intent intent6 = new Intent(LoginActivity.this, OnlineCenter.class);
                                     startActivity(intent6);
                                     break;
-                                case 6:// tec
+                                case 6:// tec program
                                     Intent intent7 = new Intent(LoginActivity.this, OnlineActivity.class);
                                     startActivity(intent7);
                                     break;

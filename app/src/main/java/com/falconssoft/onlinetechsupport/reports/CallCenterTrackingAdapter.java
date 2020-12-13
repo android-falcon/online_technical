@@ -119,6 +119,9 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
                                 }else  if(tecType.equals("4")) {
                                     managerExport.UpdateProblemFun(list.get(i), newProblem.getText().toString(), "4");
 
+                                }else  if(tecType.equals("6")) {
+                                    managerExport.UpdateProblemFun(list.get(i), newProblem.getText().toString(), "6");
+
                                 }
                                 updateDialog.dismiss();
                             } else {

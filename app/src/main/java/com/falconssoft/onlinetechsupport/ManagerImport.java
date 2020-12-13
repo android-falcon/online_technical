@@ -21,6 +21,7 @@ import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.ProgrammerReport;
 import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONArray;
@@ -100,6 +101,7 @@ public class ManagerImport {
     CallCenterTrackingReport callCenterTrackingReport;
     EngineersTrackingReport engineersTrackingReport;
     TechnicalTrackingReport technicalTrackingReport;
+    ProgrammerReport programmerReport;
     DashBoard dashBoard;
     String EngIdDashBord, sysIdDashboard;
     ManagerLayout managerLayoutTrans;
@@ -1064,6 +1066,8 @@ public class ManagerImport {
                 dashBoard = (DashBoard) object;
             } else if (sysEngFlag == 3) {
                 technicalTrackingReport = (TechnicalTrackingReport) object;
+            } else if (sysEngFlag == 5) {
+               programmerReport  = (ProgrammerReport) object;
             }
 
         }
@@ -1183,7 +1187,7 @@ public class ManagerImport {
                                     engineerInfoList.add(engineerInfo.getName());
                             }
 
-                        } else {
+                        } else if(sysEngFlag == 1||sysEngFlag == 0 ||sysEngFlag == 2){
                             if (engineerInfo.getEng_type() == 2) {
 
                                 //arr
@@ -1197,9 +1201,19 @@ public class ManagerImport {
                                     engineerInfoList.add(engineerInfo.getName());
                             }
 
+                        }else if(sysEngFlag == 5){
+                            if (engineerInfo.getEng_type() == 6) {
+
+                                //arr
+                                engMList.add(engineerInfo);
+                                engList.add(engineerInfo.getName());
+
+
+                            } else {
+                                if (engineerInfo.getEng_type() == 5)
+                                    engineerInfoList.add(engineerInfo.getName());
+                            }
                         }
-
-
                     }
 
 
@@ -1245,6 +1259,8 @@ public class ManagerImport {
 
                 } else if (sysEngFlag == 3) {
                     technicalTrackingReport.fillSpinners();
+                }else if (sysEngFlag == 5) {
+                    programmerReport.fillSpinners();
                 }
 
 

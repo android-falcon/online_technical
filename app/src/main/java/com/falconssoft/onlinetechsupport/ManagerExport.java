@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.ProgrammerReport;
 import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONArray;
@@ -393,9 +394,11 @@ DatabaseHandler databaseHandler;
                 Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
                 PresenterClass presenterClass = new PresenterClass(context);
                 if(tecType.equals("2")) {
-                    presenterClass.getCallCenterData((CallCenterTrackingReport) context, null, tecType);
+                    presenterClass.getCallCenterData((CallCenterTrackingReport) context, null,null, tecType);
                 }else  if(tecType.equals("4")) {
-                    presenterClass.getCallCenterData(null, (TechnicalTrackingReport) context, tecType);
+                    presenterClass.getCallCenterData(null, (TechnicalTrackingReport) context,null, tecType);
+                }else  if(tecType.equals("6")) {
+                    presenterClass.getCallCenterData(null, null,(ProgrammerReport)context, tecType);
                 }
 //                CallCenterTrackingReport callCenterTrackingReport=new CallCenterTrackingReport();
 //                callCenterTrackingReport.fillAdapter();

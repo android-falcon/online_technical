@@ -482,6 +482,8 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
             obj.put("TEC_TYPE", "'" + 2 + "'");
         }else if(callType==3) {
             obj.put("TEC_TYPE", "'" + 4 + "'");
+        }else if(callType==5) {
+            obj.put("TEC_TYPE", "'" + 6 + "'");
         }
 
         obj.put("COMPANY_ID","'"+managerLayout.getCompanyId()+"'");

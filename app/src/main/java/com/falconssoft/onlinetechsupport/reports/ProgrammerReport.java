@@ -47,7 +47,7 @@ import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
 
-public class TechnicalTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ProgrammerReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     DatabaseHandler databaseHandler;
     private RecyclerView recyclerView;
@@ -97,7 +97,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
         setContentView(R.layout.activity_call_center_tracking_report);
 
         presenterClass = new PresenterClass(this);
-        presenterClass.getCallCenterData(null,this,null,"4");
+        presenterClass.getCallCenterData(null,null,this,"6");
         infoTableReport= findViewById(R.id.infoTableReport);
         infoTableReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +115,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
         companyEText=findViewById(R.id.eng_report_company);
         search=findViewById(R.id.search);
 //        dateSpinner= findViewById(R.id.callCenter_report_dateSpinner);
-        adapter = new CallCenterTrackingAdapter(this, callCenterList,"4");
+        adapter = new CallCenterTrackingAdapter(this, callCenterList,"6");
         recyclerView.setAdapter(adapter);
         count=findViewById(R.id.count);
         CheckInTimeId=findViewById(R.id.CheckInTimeId);
@@ -128,7 +128,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
         customerFilter=findViewById(R.id.customerFilter);
         engOrder=findViewById(R.id.engOrder);
         reportName=findViewById(R.id.reportName);
-        reportName.setText(TechnicalTrackingReport.this.getResources().getString(R.string.Technical_report));
+        reportName.setText(ProgrammerReport.this.getResources().getString(R.string.Programmer_Report));
 
 //        engineerList.add("Sarah");
 //        engineerList.add("Manal");
@@ -150,8 +150,8 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
             }
         });
 
-        ManagerImport managerImport=new ManagerImport(TechnicalTrackingReport.this);
-        managerImport.startSendingEngSys(TechnicalTrackingReport.this,3);
+        ManagerImport managerImport=new ManagerImport(ProgrammerReport.this);
+        managerImport.startSendingEngSys(ProgrammerReport.this,5);
 
 //        customerEText.addTextChangedListener(textWatcher);
 //        phoneEText.addTextChangedListener(textWatcher);
@@ -168,7 +168,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
             @Override
             public void onClick(View view) {
                 timeFlag = 0;
-                new DatePickerDialog(TechnicalTrackingReport.this, openDatePickerDialog(timeFlag), calendar
+                new DatePickerDialog(ProgrammerReport.this, openDatePickerDialog(timeFlag), calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -178,7 +178,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
             @Override
             public void onClick(View view) {
                 timeFlag = 1;
-                new DatePickerDialog(TechnicalTrackingReport.this, openDatePickerDialog(timeFlag), calendar
+                new DatePickerDialog(ProgrammerReport.this, openDatePickerDialog(timeFlag), calendar
                         .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)).show();
             }
@@ -380,12 +380,12 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
                     //ic_arrow_upward_black_24dp
                     Collections.sort(callCenterList, new StringDateComparator());
                     filter();
-                    problemOrder.setCompoundDrawables(null, null, TechnicalTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                    problemOrder.setCompoundDrawables(null, null, ProgrammerReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
                 }else {
                     upDownFlagProblem =true;
                     Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparator()));
                     filter();
-                    problemOrder.setCompoundDrawables(null, null, TechnicalTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+                    problemOrder.setCompoundDrawables(null, null, ProgrammerReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
 
                 }
 
@@ -469,7 +469,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
     }
 
     private void dialogInfoColor() {
-        Dialog dialog = new Dialog(TechnicalTrackingReport.this,R.style.Theme_Dialog);
+        Dialog dialog = new Dialog(ProgrammerReport.this,R.style.Theme_Dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.information_dialog_table_color);
@@ -683,7 +683,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
             }
         }
 
-        adapter = new CallCenterTrackingAdapter(this, filtered,"4");
+        adapter = new CallCenterTrackingAdapter(this, filtered,"6");
         recyclerView.setAdapter(adapter);
         count.setText(""+filtered.size());
     }
