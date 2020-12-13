@@ -4,51 +4,35 @@ package com.falconssoft.onlinetechsupport;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.OvershootInterpolator;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
 
-import com.daasuu.cat.CountAnimationTextView;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
-import com.robinhood.ticker.TickerUtils;
-import com.robinhood.ticker.TickerView;
 
-
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ManagerLayOutAdapter extends BaseAdapter {
+public class ManagerLayOutAdapter4 extends BaseAdapter {
 
         private Context context;
-    Date currentTimeAndDate;
-    SimpleDateFormat df;
-
 //
-
     int col;
         private static List<ManagerLayout> itemsList;
 //
 
-        public ManagerLayOutAdapter(Context context, List<ManagerLayout> itemsList,int col) {
+        public ManagerLayOutAdapter4(Context context, List<ManagerLayout> itemsList, int col) {
             this.context = context;
             this.itemsList = itemsList;
               this.col=col;
-             currentTimeAndDate = Calendar.getInstance().getTime();
-             df = new SimpleDateFormat("hh:mm");
-//            today = df.format(currentTimeAndDate);
         }//che
 
 
@@ -72,8 +56,7 @@ public class ManagerLayOutAdapter extends BaseAdapter {
         }
 
         private class ViewHolder {
-            TextView companyName, EngName,timeLoading,CheckOutTime,CheckInTime,tecType;
-
+            TextView companyName, EngName, timeLoading,CheckInTime,CheckOutTime,tecType;
             LinearLayout time,mainLiner;
         }
 
@@ -87,9 +70,11 @@ public class ManagerLayOutAdapter extends BaseAdapter {
 
             holder.companyName = (TextView) view.findViewById(R.id.companyName);
             holder.EngName = (TextView) view.findViewById(R.id.EngName);
-            holder.timeLoading =  view.findViewById(R.id.timeLoading);
+            holder.timeLoading = (TextView) view.findViewById(R.id.timeLoading);
             holder.time=(LinearLayout) view.findViewById(R.id.time);
             holder.mainLiner=(LinearLayout) view.findViewById(R.id.mainLiner);
+
+
             holder.CheckOutTime= view.findViewById(R.id.CheckOutTime);
             holder.CheckInTime= view.findViewById(R.id.CheckInTime);
             holder.tecType=view.findViewById(R.id.tecType);
@@ -98,20 +83,16 @@ public class ManagerLayOutAdapter extends BaseAdapter {
             }else  if(itemsList.get(i).getTecType().equals("4")){
                 holder.tecType.setText("Tec");
             }
-            holder.CheckOutTime.setVisibility(View.GONE);
-            holder.CheckInTime.setText("" + itemsList.get(i).getCheakInTime());
 
+            holder.CheckInTime.setTextColor(context.getResources().getColor(R.color.falconColor));
+            holder.CheckOutTime.setVisibility(View.GONE);
+            holder.CheckInTime.setText("" + itemsList.get(i).getHoldTime());
 
 
 
             holder.companyName.setText("" + itemsList.get(i).getCompanyName());
             holder.EngName.setText("" + itemsList.get(i).getEnginerName());
-            holder.timeLoading.setText(clock(itemsList.get(i).getCheakInTime(),itemsList.get(i).getCurrentTime()));
-
-//            final Animation animZoom = AnimationUtils.loadAnimation(context, R.anim.zoom);
-//            holder.mainLiner.startAnimation(animZoom);
-
-
+            holder.timeLoading.setText(clock(itemsList.get(i).getHoldTime(),itemsList.get(i).getCurrentTime()));
             switch (col){
                 case 0:
                     holder.time.setBackground(context.getResources().getDrawable(R.drawable.bac_list_0));
@@ -121,6 +102,9 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                     break;
                 case 2:
                     holder.time.setBackground(context.getResources().getDrawable(R.drawable.bac_list_0_2));
+                    break;
+                case 3:
+                    holder.time.setBackground(context.getResources().getDrawable(R.drawable.bac_list_0_3));
                     break;
             }
 
@@ -152,7 +136,6 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                     callCenterName=dialog.findViewById(R.id.call_center_name);
                     dateOfTran=dialog.findViewById(R.id.dateOfTran);
                     hold_reason=dialog.findViewById(R.id.hold_reason);
-
                     String statesString ="";
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);
@@ -184,6 +167,15 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                             statesString="In Hold ";
                             states.setTextColor(context.getResources().getColor(R.color.falconColor));
                             break;
+
+                        case 3:
+                            titel.setBackground(context.getResources().getDrawable(R.drawable.bac_list_4));
+                            titel.setTextColor(context.getResources().getColor(R.color.blueColor));
+                            bac1.setBackgroundColor(context.getResources().getColor(R.color.blueColor));
+                            bac2.setBackground(context.getResources().getDrawable(R.drawable.bac_list_4));
+                            statesString="In Hold ";
+                            states.setTextColor(context.getResources().getColor(R.color.blueColor));
+                            break;
                     }
 
 
@@ -193,13 +185,12 @@ public class ManagerLayOutAdapter extends BaseAdapter {
                     phone.setText("" + itemsList.get(i).getPhoneNo());
                     system.setText("" + itemsList.get(i).getSystemName());
                     eng.setText("" + itemsList.get(i).getEnginerName());
-                    time.setText("" + itemsList.get(i).getCheakInTime());
+                    time.setText("" + itemsList.get(i).getHoldTime());
                     states.setText(statesString);
                     problem.setText("" + itemsList.get(i).getProplem());
                     callCenterName.setText(""+itemsList.get(i).getCallCenterName());
                     dateOfTran.setText(""+itemsList.get(i).getTransactionDate());
                     hold_reason.setText(""+itemsList.get(i).getHoldReason());
-
 //                    Toast.makeText(context, "main "+ holder.EngName.getText().toString(), Toast.LENGTH_SHORT).show();
 
                     dialog.show();
@@ -211,33 +202,33 @@ public class ManagerLayOutAdapter extends BaseAdapter {
             return view;
         }
 
-        public  String clock(String inTime ,String outTime){
-            String timing ="";
 
-                        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+    public  String clock(String inTime ,String outTime){
+        String timing ="";
 
-            Date d1 = null;
-            Date d2 = null;
-            long diffSeconds=0,diffMinutes=0,diffHours = 0;
-            try {
-                d1 = format.parse(inTime);
-                d2 = format.parse(outTime);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
 
-                //in milliseconds
-                long diff = d2.getTime() - d1.getTime();
+        Date d1 = null;
+        Date d2 = null;
+        long diffSeconds=0,diffMinutes=0,diffHours = 0;
+        try {
+            d1 = format.parse(inTime);
+            d2 = format.parse(outTime);
 
-                 diffSeconds = diff / 1000 % 60;
-                 diffMinutes = diff / (60 * 1000) % 60;
-                 diffHours = diff / (60 * 60 * 1000) % 24;
+            //in milliseconds
+            long diff = d2.getTime() - d1.getTime();
+
+            diffSeconds = diff / 1000 % 60;
+            diffMinutes = diff / (60 * 1000) % 60;
+            diffHours = diff / (60 * 60 * 1000) % 24;
 //                long diffDays = diff / (24 * 60 * 60 * 1000);
 
-                timing="" +diffHours+":"+diffMinutes+":"+diffSeconds;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-            return timing;
+            timing="" +diffHours+":"+diffMinutes+":"+diffSeconds;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+
+        return timing;
+    }
 }

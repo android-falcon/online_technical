@@ -41,6 +41,8 @@ import java.util.List;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_TYPE;
+import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
@@ -59,11 +61,13 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
      int row_index=-1,rowEng=-1;
      String selectedEngineer="";
      String selectedId="";
+     int callType;
 
     public holdCompanyAdapter(Context context, List<ManagerLayout> companeyInfo) {
         this.context = context;
         this.companey = companeyInfo;
         Log.e("holdCompanyAdapter",""+companey.size());
+        callType = sharedPreferences.getInt(LOGIN_TYPE, -1);
 
     }
 
@@ -107,6 +111,17 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
 
             });
 
+        viewHolder.linear_companey.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                ReasonDialog(companey.get(i).getHoldReason());
+
+                return false;
+            }
+        });
+
+
         viewHolder.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,6 +140,7 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
 
             }
     }
+
 
 
     private void dialogEngineering(final Context context1) {
@@ -323,7 +339,29 @@ public class holdCompanyAdapter extends  RecyclerView.Adapter<holdCompanyAdapter
 
 
     }
+    void ReasonDialog(final String list) {
 
+        final Dialog cancelHoldDialog = new Dialog(context,R.style.Theme_Dialog);
+        cancelHoldDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        cancelHoldDialog.setCancelable(true);
+        cancelHoldDialog.setContentView(R.layout.reason_hold_dialog);
+        cancelHoldDialog.setCanceledOnTouchOutside(true);
+
+        final TextView holdReason = cancelHoldDialog.findViewById(R.id.holdEdit_reason);
+        TextView titale=cancelHoldDialog.findViewById(R.id.reason);
+        if(callType==1){
+            titale.setText(context.getResources().getString(R.string.hold_Reason)+"");
+        }else if(callType==3){
+            titale.setText(context.getResources().getString(R.string.Schedule_reason)+"");
+        }
+
+        holdReason.setText(list);
+
+
+        cancelHoldDialog.show();
+
+
+    }
 }
 
 

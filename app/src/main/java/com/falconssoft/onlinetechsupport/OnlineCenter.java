@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -89,8 +90,8 @@ public class OnlineCenter extends AppCompatActivity {
     public static RecyclerView recyclerView, recyclerViewCheckIn;
     public static List<EngineerInfo> engineerInfoList, listEngforAdapter, engInfoTra;
     List<ManagerLayout> holdCompaney;
-    public static TextView customer_name, companey_name, telephone_no, text_delet_id, text_finish, textState, systype,mSpeakBtn,btnSpeakPhone,btnSpeekCompany;
-    TextView callCenterName, LogInTime, deletaAllText,secandCall;
+    public static TextView customer_name, companey_name, telephone_no, text_delet_id, text_finish, textState, systype, mSpeakBtn, btnSpeakPhone, btnSpeekCompany;
+    TextView callCenterName, LogInTime, deletaAllText, secandCall;
     //    Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     DatabaseHandler databaseHandler;
@@ -115,15 +116,24 @@ public class OnlineCenter extends AppCompatActivity {
     TextView countOfCallWork;
     public static List<String> engStringName = new ArrayList<>();
 
-    public static  RecyclerView recyclerk;
+    public static RecyclerView recyclerk;
     CountryCodePicker countryCodePicker;
-    GClass gClass=new GClass(null,null,null);
-    public static int isShow=0;
+    GClass gClass = new GClass(null, null, null);
+    public static int isShow = 0;
     private static final int REQ_CODE_SPEECH_INPUT = 100;
     private static final int REQ_CODE_SPEECH_INPUT_Company = 200;
     private static final int REQ_CODE_SPEECH_INPUT_Phone = 300;
-RelativeLayout relative;
-     int callType=1;
+    RelativeLayout relative;
+    TextView holdScheduale;
+    int callType = 1;
+    Button btn_sch, btn_hold;
+
+    private Calendar calendar;
+    private SimpleDateFormat dateFormat;
+    private Date date;
+    String dateOfTrance="00/00/00";
+    public static String companyId="-1";
+
     @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,9 +158,16 @@ RelativeLayout relative;
                 systemGridDialog(systemsList);
             }
         });
+
+
+        date = Calendar.getInstance().getTime();
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         callCenterName.setText(sharedPreferences.getString(LOGIN_NAME, null));
-        callType=sharedPreferences.getInt(LOGIN_TYPE, -1);
-        Log.e("callType",""+callType);
+        callType = sharedPreferences.getInt(LOGIN_TYPE, -1);
+        Log.e("callType", "" + callType);
+
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy   hh:mm:ss");
         String time = df.format(currentTimeAndDate);
@@ -159,6 +176,20 @@ RelativeLayout relative;
         databaseHandler = new DatabaseHandler(OnlineCenter.this);
         ipAddres = databaseHandler.getIp();
         fillEngineerInfoList(0);
+
+        btn_sch.setVisibility(View.GONE);
+        btn_hold.setVisibility(View.GONE);
+        if (callType == 1) {
+            btn_hold.setVisibility(View.VISIBLE);
+            btn_sch.setVisibility(View.GONE);
+            holdScheduale.setText(getResources().getString(R.string.hold_customer_list));
+
+        } else if (callType == 3) {
+            btn_hold.setVisibility(View.GONE);
+            btn_sch.setVisibility(View.VISIBLE);
+            holdScheduale.setText(getResources().getString(R.string.sch_customer_list));
+        }
+
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
@@ -205,7 +236,7 @@ RelativeLayout relative;
 
 //        spinnerPhoneSS.setVisibility(View.GONE);
 
-        gClass.fillSearchCustomerPhoneNo(recyclerk,"","","",OnlineCenter.this, (EditText) telephone_no);
+        gClass.fillSearchCustomerPhoneNo(recyclerk, "", "", "", OnlineCenter.this, (EditText) telephone_no);
 
         telephone_no.addTextChangedListener(textWatcher);
         companey_name.addTextChangedListener(textWatcher);
@@ -214,14 +245,14 @@ RelativeLayout relative;
             @Override
             public void onClick(View v) {
                 recyclerk.setVisibility(View.GONE);
-                isShow=0;
+                isShow = 0;
             }
         });
 
     }
 
 
-    TextWatcher textWatcher=new TextWatcher() {
+    TextWatcher textWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 //                spinnerPhoneSS.setVisibility(View.VISIBLE);
@@ -230,7 +261,7 @@ RelativeLayout relative;
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            if(!TextUtils.isEmpty(s.toString())) {
+            if (!TextUtils.isEmpty(s.toString())) {
                 if (isShow == 0) {
                     recyclerk.setVisibility(View.VISIBLE);
                     isShow = 1;//for search dialog is open or not
@@ -240,8 +271,8 @@ RelativeLayout relative;
                 }
 
 
-                gClass.fillSearchCustomerPhoneNo(recyclerk, telephone_no.getText().toString(),customer_name.getText().toString(),companey_name.getText().toString(), OnlineCenter.this, (EditText) telephone_no);
-            }else {
+                gClass.fillSearchCustomerPhoneNo(recyclerk, telephone_no.getText().toString(), customer_name.getText().toString(), companey_name.getText().toString(), OnlineCenter.this, (EditText) telephone_no);
+            } else {
                 recyclerk.setVisibility(View.GONE);
             }
         }
@@ -251,6 +282,7 @@ RelativeLayout relative;
 
         }
     };
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -281,6 +313,7 @@ RelativeLayout relative;
 
         }
     }
+
     private void dialogEngineering(final Context context1) {
 
         final Dialog dialog = new Dialog(context1);
@@ -292,19 +325,17 @@ RelativeLayout relative;
         lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.gravity = Gravity.CENTER;
-        ArrayList<String> nameOfEngi=new ArrayList<>();
+        ArrayList<String> nameOfEngi = new ArrayList<>();
         final ListView listEngennering = dialog.findViewById(R.id.listViewEngineering);
 
         final int[] rowEng = new int[1];
         final String[] selectedId = new String[1];
-        if( engInfoTra.size()!=0)
-        {
-            for(int i=0;i<engInfoTra.size();i++)
-            {
+        if (engInfoTra.size() != 0) {
+            for (int i = 0; i < engInfoTra.size(); i++) {
 //                nameOfEngi.add("tahani");
                 nameOfEngi.add(engInfoTra.get(i).getName());
             }
-            Log.e("nameOfEngi",""+nameOfEngi.size());
+            Log.e("nameOfEngi", "" + nameOfEngi.size());
 
 //                    simple_list_item_1 simple_list_item_activated_1
             ArrayAdapter<String> itemsAdapter =
@@ -314,16 +345,16 @@ RelativeLayout relative;
         listEngennering.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                rowEng[0] =position;
+                rowEng[0] = position;
                 listEngennering.requestFocusFromTouch();
                 listEngennering.setSelection(position);
-                selectedId[0] =engInfoTra.get(position).getId();
-                EngId=Integer.parseInt(selectedId[0]);
-                selectedEngineer=engInfoTra.get(position).getName();
+                selectedId[0] = engInfoTra.get(position).getId();
+                EngId = Integer.parseInt(selectedId[0]);
+                selectedEngineer = engInfoTra.get(position).getName();
 
 //               Log.e( "getSelectedItem",""+listEngennering.getSelectedItem().toString());
-                Log.e( "getItemsCanFocus",""+listEngennering.getItemsCanFocus());
-                Log.e("position",""+position+"\t"+ selectedId[0]);
+                Log.e("getItemsCanFocus", "" + listEngennering.getItemsCanFocus());
+                Log.e("position", "" + position + "\t" + selectedId[0]);
 
             }
         });
@@ -334,23 +365,21 @@ RelativeLayout relative;
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(rowEng[0] ==-1)
-                {
+                if (rowEng[0] == -1) {
                     Toast.makeText(OnlineCenter.this, "Select Engineer", Toast.LENGTH_SHORT).show();
 
-                }
-                else {
-                        JSONObject data = null;
-                        try {
-                            data = getData("0", 1);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.e("data", "" + data);
-                        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                        managerImport.startSendingData(data, true, 0, null, null);
+                } else {
+                    JSONObject data = null;
+                    try {
+                        data = getData("0", 1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("data", "" + data);
+                    ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                    managerImport.startSendingData(data, true, 0, null, null);
 
-                        dialog.dismiss();
+                    dialog.dismiss();
 
 
                 }
@@ -482,13 +511,13 @@ RelativeLayout relative;
             for (int i = 0; i < engineerInfoList.size(); i++) {
                 engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
 
-                if(callType==1) {
+                if (callType == 1) {
                     if (engType == 2)// available  Engeneering
                     {
                         listEngforAdapter.add(engineerInfoList.get(i));
 
                     }
-                }else  if(callType==3) {
+                } else if (callType == 3) {
                     if (engType == 4)// available  tec
                     {
                         listEngforAdapter.add(engineerInfoList.get(i));
@@ -627,7 +656,7 @@ RelativeLayout relative;
 
                                     Log.e("ENG_TYPE", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
-                                    if(callType==1) {
+                                    if (callType == 1) {
                                         if (engineerInfo.getEng_type() == 2) {
                                             engInfoTra.add(engineerInfo);
                                             engStringName.add(engineerInfo.getName());
@@ -640,7 +669,7 @@ RelativeLayout relative;
 
                                         }
 
-                                    }else  if(callType==3) {
+                                    } else if (callType == 3) {
 
 
                                         if (engineerInfo.getEng_type() == 4) {
@@ -649,7 +678,7 @@ RelativeLayout relative;
 
                                         }
 
-                                        if (engineerInfo.getEng_type() == 4  && engineerInfo.getState() == 0) {
+                                        if (engineerInfo.getEng_type() == 4 && engineerInfo.getState() == 0) {
                                             engineerInfoList.add(engineerInfo);
                                             Log.e("ENG_TYPE_in", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
@@ -673,13 +702,13 @@ RelativeLayout relative;
                                         engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
                                         engineerInfo.setState(engineerInfoObject.getInt("STATE"));
                                         engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
-                                        if(callType==1) {
+                                        if (callType == 1) {
                                             if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
                                                 engineerInfoList.add(engineerInfo);
 
                                             }
 
-                                        }else if(callType==3){
+                                        } else if (callType == 3) {
                                             if (engineerInfo.getEng_type() == 4 && engineerInfo.getState() == 0) {
                                                 engineerInfoList.add(engineerInfo);
 
@@ -762,11 +791,11 @@ RelativeLayout relative;
         companey_name = findViewById(R.id.companey_name);
         telephone_no = findViewById(R.id.telephone_no);
 //        spenner_systems = findViewById(R.id.spenner_systems);
-        countryCodePicker= findViewById(R.id.spinnerPhone);
+        countryCodePicker = findViewById(R.id.spinnerPhone);
         engineerInfoList = new ArrayList<>();
 //        engineerNotAvil= new ArrayList<>();
         listEngforAdapter = new ArrayList<>();
-        secandCall=findViewById(R.id.secandCall);
+        secandCall = findViewById(R.id.secandCall);
         holdCompaney = new ArrayList<>();
         systemsList = new ArrayList<>();
         hold_List = new ArrayList<>();
@@ -775,7 +804,7 @@ RelativeLayout relative;
         systype = findViewById(R.id.systype);
         textState = findViewById(R.id.textState);
         callCenterName = findViewById(R.id.callCenterName);
-        relative= findViewById(R.id.relative);
+        relative = findViewById(R.id.relative);
         deletaAllText = findViewById(R.id.deletaAllText);
         deletaAllText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -786,13 +815,16 @@ RelativeLayout relative;
         });
 
         countryCodePicker.setVisibility(View.GONE);
-        recyclerk=findViewById(R.id.recyclerk);
+        recyclerk = findViewById(R.id.recyclerk);
         recyclerk.setVisibility(View.GONE);
         countOfCallWork = findViewById(R.id.countOfCallWork);
         LogInTime = findViewById(R.id.LogInTime);
-        mSpeakBtn=findViewById(R.id.btnSpeak);
-        btnSpeakPhone=findViewById(R.id.btnSpeakPhone);
-        btnSpeekCompany=findViewById(R.id.btnSpeakCompany);
+        mSpeakBtn = findViewById(R.id.btnSpeak);
+        btnSpeakPhone = findViewById(R.id.btnSpeakPhone);
+        btnSpeekCompany = findViewById(R.id.btnSpeakCompany);
+        holdScheduale = findViewById(R.id.holdScheaduale);
+        btn_sch = findViewById(R.id.btn_sch);
+        btn_hold = findViewById(R.id.btn_hold);
 
         textState.addTextChangedListener(new TextWatcher() {
             @Override
@@ -869,26 +901,21 @@ RelativeLayout relative;
             }
         });
     }
+
     private void startVoiceInput(int flag) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ar");
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Hello, How can I help you?");
         try {
-            if(flag==1)
-            {
+            if (flag == 1) {
                 startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
-            }
-            else
-                if(flag==2)
-            {
+            } else if (flag == 2) {
 
                 startActivityForResult(intent, REQ_CODE_SPEECH_INPUT_Company);
+            } else if (flag == 3) {
+                startActivityForResult(intent, REQ_CODE_SPEECH_INPUT_Phone);
             }
-                else   if(flag==3)
-                {
-                    startActivityForResult(intent, REQ_CODE_SPEECH_INPUT_Phone);
-                }
 
         } catch (ActivityNotFoundException a) {
 
@@ -1015,6 +1042,9 @@ RelativeLayout relative;
         companey_name.setText("");
         telephone_no.setText("");
         systype.setText("");
+        companyId="-1";
+        companey_name.setEnabled(true);
+        telephone_no.setEnabled(true);
     }
 
     private JSONObject getData(String transferFlag, int isHold) throws JSONException {
@@ -1029,12 +1059,12 @@ RelativeLayout relative;
 
         try {
 //            phoneFirst = spinnerPhone.getSelectedItem().toString();
-            phoneFirst=countryCodePicker.getSelectedCountryCode().toString();
+            phoneFirst = countryCodePicker.getSelectedCountryCode().toString();
         } catch (Exception e) {
             phoneFirst = "06";
         }
 
-        tele =  telephone_no.getText().toString();
+        tele = telephone_no.getText().toString();
         Date currentTimeAndDate = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("hh:mm:ss");
         time = df.format(currentTimeAndDate);
@@ -1053,8 +1083,10 @@ RelativeLayout relative;
 
         if (isHold == 0) {
             stateCompaney = 0;// hold
-        } else {
+        } else if (isHold == 1) {
             stateCompaney = 1;
+        } else if (isHold == 3) {//schaduel
+            stateCompaney = 3;
         }
 
 
@@ -1065,7 +1097,7 @@ RelativeLayout relative;
         JSONObject obj = new JSONObject();
 
 //engineerInfoList.size() != 0 ||
-        if ( isHold != 0) {
+        if (isHold == 1) {
             obj.put("CUST_NAME", "'" + customerName + "'");
             obj.put("COMPANY_NAME", "'" + companeyName + "'");
             obj.put("SYSTEM_NAME", "'" + sys_name + "'");
@@ -1079,12 +1111,19 @@ RelativeLayout relative;
             obj.put("PROBLEM", "'problem'");
             obj.put("CALL_CENTER_ID", "'" + CallId + "'");
             obj.put("HOLD_TIME", "'" + "00:00:00" + "'");
-            obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
+            obj.put("DATE_OF_TRANSACTION", "'"+dateOfTrance+"'");
             obj.put("SERIAL", "'" + "222" + "'");
             obj.put("CALL_CENTER_NAME", "'" + CallName + "'");
             obj.put("TRANSFER_FLAG", "'" + transferFlag + "'");
             obj.put("ORGINAL_SERIAL", "'-2'");
             obj.put("HOLD_REASON", "''");
+            if (callType == 1) {
+                obj.put("TEC_TYPE", "'" + 2 + "'");
+            } else if (callType == 3) {
+                obj.put("TEC_TYPE", "'" + 4 + "'");
+            }
+
+            obj.put("COMPANY_ID","'"+companyId+"'");
         } else {
             // hold company data
             obj.put("CUST_NAME", "'" + customerName + "'");
@@ -1100,13 +1139,20 @@ RelativeLayout relative;
             obj.put("PROBLEM", "'problem'");
             obj.put("CALL_CENTER_ID", "'" + CallId + "'");
             obj.put("HOLD_TIME", "'" + "00:00:00" + "'");
-            obj.put("DATE_OF_TRANSACTION", "'00/00/00'");
+            obj.put("DATE_OF_TRANSACTION", "'"+dateOfTrance+"'");
             obj.put("SERIAL", "'" + "222" + "'");
             obj.put("CALL_CENTER_NAME", "'" + CallName + "'");
             obj.put("TRANSFER_FLAG", "'" + transferFlag + "'");
             obj.put("ORGINAL_SERIAL", "'-2'");
-            obj.put("HOLD_REASON", "'"+holdReasonText+"'");
-            Log.e("holdReasonText","reason "+holdReasonText);
+            obj.put("HOLD_REASON", "'" + holdReasonText + "'");
+            if (callType == 1) {
+                obj.put("TEC_TYPE", "'" + 2 + "'");
+            } else if (callType == 3) {
+                obj.put("TEC_TYPE", "'" + 4 + "'");
+            }
+
+            obj.put("COMPANY_ID","'"+companyId+"'");
+            Log.e("holdReasonText", "reason " + holdReasonText);
         }
         return obj;
 
@@ -1194,17 +1240,56 @@ RelativeLayout relative;
 //                }
 
             }
+        } else if (view.getId() == R.id.btn_sch) {
+            view.startAnimation(buttonClick);
+            if (checkRequiredData()) {
+//                if (engineerInfoList.size() == 0) {
+
+                new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                        .setTitleText("warning!!")
+                        .setContentText("Add To SchSchedule List !!!")
+                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                schaduelListDialog();
+                                sweetAlertDialog.dismissWithAnimation();
+
+
+                            }
+                        })
+                        .setCancelButton("Cancel", new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+
+                                sweetAlertDialog.dismissWithAnimation();
+
+                            }
+                        })
+                        .show();
+
+
+//                } else {
+//                    new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText("warning!!")
+//                            .setContentText("there is engineer available !!!")
+////                            .hideConfirmButton()
+//                            .show();
+//
+//                }
+
+            }
         }
     }
 
     @SuppressLint("WrongConstant")
     void holdListDialog() {
 
-        final Dialog holdDialog = new Dialog(OnlineCenter.this,R.style.Theme_Dialog);
+        final Dialog holdDialog = new Dialog(OnlineCenter.this, R.style.Theme_Dialog);
         holdDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        holdDialog.setCancelable(true);
+        holdDialog.setCancelable(false);
         holdDialog.setContentView(R.layout.hold_dialog);
-        holdDialog.setCanceledOnTouchOutside(true);
+        holdDialog.setCanceledOnTouchOutside(false);
 
         FloatingActionButton addList = holdDialog.findViewById(R.id.hold_reason);
         final EditText holdReason = holdDialog.findViewById(R.id.holdEdit_reason);
@@ -1263,6 +1348,83 @@ RelativeLayout relative;
 
     }
 
+
+    void schaduelListDialog() {
+
+        final Dialog holdDialog = new Dialog(OnlineCenter.this, R.style.Theme_Dialog);
+        holdDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        holdDialog.setCancelable(false);
+        holdDialog.setContentView(R.layout.schadu_dialog);
+        holdDialog.setCanceledOnTouchOutside(false);
+
+        FloatingActionButton addList = holdDialog.findViewById(R.id.schad_reason);
+        final EditText holdReason = holdDialog.findViewById(R.id.holdEdit_reason);
+        final TextView dateSch = holdDialog.findViewById(R.id.dateSch);
+        dateSch.setText(""+gClass.DateInToday());
+        dateSch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new DatePickerDialog(OnlineCenter.this, gClass.openDatePickerDialog(0,dateSch,dateSch,0), calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+        addList.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("WrongConstant")
+            @Override
+            public void onClick(View v) {
+
+                if (!TextUtils.isEmpty(holdReason.getText().toString())) {
+                    Date currentTimeAndDate = Calendar.getInstance().getTime();
+                    SimpleDateFormat df = new SimpleDateFormat("hh:mm");
+                    String time = df.format(currentTimeAndDate);
+                    Log.e("timeHold", "" + time);
+                    LinearLayoutManager llm = new LinearLayoutManager(OnlineCenter.this);
+                    llm.setOrientation(LinearLayoutManager.VERTICAL);
+                    ManagerLayout info = new ManagerLayout();
+                    info.setCompanyName(companey_name.getText().toString());
+                    info.setPhoneNo(telephone_no.getText().toString());
+                    info.setCustomerName(customer_name.getText().toString());
+                    info.setSystemName(systype.getText().toString());
+                    dateOfTrance=dateSch.getText().toString();
+                    info.setTransactionDate(dateSch.getText().toString());
+                    info.setHoldReason(holdReason.getText().toString());
+                    holdReasonText = holdReason.getText().toString();
+                    info.setState("0");
+                    info.setCheakInTime(time);
+                    JSONObject data = null;
+                    try {
+                        data = getData("0", 3);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.e("data", "" + data);
+                    ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+                    managerImport.startSendingData(data, false, 0, null, null);
+
+                    holdCompaney.add(info);
+//                    hold_List.add(info);
+//                    final holdCompanyAdapter companyAdapter = new holdCompanyAdapter(OnlineCenter.this, hold_List);
+//
+//                    recyclerView.setLayoutManager(llm);
+//                    recyclerView.setAdapter(companyAdapter);
+                    clearData();
+                    holdDialog.dismiss();
+                } else {
+
+                    Toast.makeText(OnlineCenter.this, "Please add Reason ", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
+
+        holdDialog.show();
+
+
+    }
 
 
     @Override

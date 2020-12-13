@@ -68,8 +68,11 @@ import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
 import static com.falconssoft.onlinetechsupport.MainActivity.countChickHold;
 import static com.falconssoft.onlinetechsupport.MainActivity.countChickIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.countChickOut;
+import static com.falconssoft.onlinetechsupport.MainActivity.countOfScheduleS;
+import static com.falconssoft.onlinetechsupport.MainActivity.countSchedule;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
 import static com.falconssoft.onlinetechsupport.MainActivity.refresh;
+import static com.falconssoft.onlinetechsupport.MainActivity.schaeduale;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.EngId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.checkInList;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.hold_List;
@@ -278,6 +281,7 @@ public class ManagerImport {
             return null;
         }
 
+        @SuppressLint("SetTextI18n")
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         protected void onPostExecute(String JsonResponse) {
@@ -306,6 +310,7 @@ public class ManagerImport {
                     cheakIn.clear();
                     cheakout.clear();
                     hold.clear();
+                    schaeduale.clear();
 
 //                    {"CUST_NAME":"daaa","COMPANY_NAME":"MASTER","SYSTEM_NAME":"rrrr","PHONE_NO":"0154545465","CHECH_IN_TIME":"0000","STATE":"1"
 //                            ,"ENG_NAME":"ENG.RAWAN","ENG_ID":"2","SYS_ID":"1","CHECH_OUT_TIME":"03:15","PROBLEM":"sefwuysagdh jyeuv "},
@@ -333,6 +338,8 @@ public class ManagerImport {
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
                         obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
                         obj.setHoldReason(finalObject.getString("HOLD_REASON"));
+                       obj.setTecType(finalObject.getString("TEC_TYPE"));
+                       obj.setCancelState(finalObject.getString("ROW_STATUS"));
                         Log.e("finalObjectConvert", "" + obj.getConvertFlag());
 
                         obj.setCurrentTime(curentTime);
@@ -341,8 +348,10 @@ public class ManagerImport {
                             cheakIn.add(obj);
                         } else if (obj.getState().equals("2")) {
                             cheakout.add(obj);
-                        } else if (obj.getState().equals("0")) {
+                        } else if (obj.getState().equals("0")&&obj.getCancelState().equals("0")) {
                             hold.add(obj);
+                        }else if (obj.getState().equals("3")&&obj.getCancelState().equals("0")) {
+                            schaeduale.add(obj);
                         }
 
 
@@ -351,7 +360,8 @@ public class ManagerImport {
                     countChickHold.setText("" + hold.size());
                     countChickOut.setText("" + cheakout.size());
                     countChickIn.setText("" + cheakIn.size());
-
+                    countSchedule.setText("" + schaeduale.size());
+                    countOfScheduleS.setText("" + schaeduale.size());
 //                    inCount=cheakIn.size();
                     refresh.setText("1");
 
@@ -504,6 +514,7 @@ public class ManagerImport {
                         obj.setEngId(finalObject.getString("ENG_ID"));
                         obj.setSerial(finalObject.getString("SERIAL"));
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
+                        obj.setCompanyId(finalObject.getString("COMPANY_ID"));
                         obj.setCurrentTime(curentTime);
 
 
@@ -889,8 +900,9 @@ public class ManagerImport {
                         obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
                         obj.setHoldTime(finalObject.getString("HOLD_TIME"));
                         obj.setCancelState(finalObject.getString("ROW_STATUS"));
+                        obj.setHoldReason(finalObject.getString("HOLD_REASON"));
 
-                        if (obj.getState().equals("0") && finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
+                        if ((obj.getState().equals("0")|| obj.getState().equals("3") )&& finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
                             if (obj.getCancelState().equals("0")) {
                                 hold_List.add(obj);
                                 Log.e("hold_List", "" + hold_List.size());
@@ -1445,7 +1457,7 @@ public class ManagerImport {
             try {
 //
                 ipAddres = databaseHandler.getIp();
-                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=7";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=77";
                 // ITEM_CARD
 
 
@@ -1523,7 +1535,7 @@ public class ManagerImport {
                         customerInfo.setPhoneNo(finalObject.getString("PHONE_NO"));
                         customerInfo.setCustomerName(finalObject.getString("CUST_NAME"));
                         customerInfo.setCompanyName(finalObject.getString("COMPANY_NAME"));
-
+                        customerInfo.setCompanyId(finalObject.getString("COMPANY_ID"));
                         customerPhoneNo.add(customerInfo);
 //                        Log.e("customerPhoneNo", "****  "+customerPhoneNo.get(i));
                     }

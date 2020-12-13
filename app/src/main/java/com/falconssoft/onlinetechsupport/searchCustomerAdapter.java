@@ -51,6 +51,7 @@ import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.EngId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.companyId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engStringName;
@@ -98,7 +99,10 @@ public class searchCustomerAdapter extends  RecyclerView.Adapter<searchCustomerA
                     editText.setText(companey.get(i).getPhoneNo());
                     customer_name.setText(companey.get(i).getCustomerName());
                     companey_name.setText(companey.get(i).getCompanyName());
-                    recyclerk.setVisibility(View.GONE);
+                    companyId= companey.get(i).getCompanyId();
+                    companey_name.setEnabled(false);
+                    editText.setEnabled(false);
+                recyclerk.setVisibility(View.GONE);
 
                 }
 

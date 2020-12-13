@@ -66,6 +66,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_TYPE;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.EngId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
@@ -453,6 +454,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
 
         final String CallId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1");
         final String CallName = LoginActivity.sharedPreferences.getString(LOGIN_NAME, "-1");
+        int callType=sharedPreferences.getInt(LOGIN_TYPE, -1);
         Log.e("call_id1",""+CallId+"    "+sys_Id +"    "+ CallName);
 
         JSONObject obj = new JSONObject();
@@ -475,6 +477,15 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
             obj.put("CALL_CENTER_NAME", "'"+CallName+"'");
             obj.put("TRANSFER_FLAG", "'2'");
             obj.put("HOLD_REASON", "''");
+
+        if(callType==1) {
+            obj.put("TEC_TYPE", "'" + 2 + "'");
+        }else if(callType==3) {
+            obj.put("TEC_TYPE", "'" + 4 + "'");
+        }
+
+        obj.put("COMPANY_ID","'"+managerLayout.getCompanyId()+"'");
+
            if(managerLayout.getOriginalSerial().equals("-1")||managerLayout.getOriginalSerial().equals("-2")) {
                obj.put("ORGINAL_SERIAL", managerLayout.getSerial());
                Log.e("ORGINAL_SERIAL","getSerial "+managerLayout.getSerial());
@@ -534,6 +545,12 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
                     object.put("STATE", 0);
                     object.put("SERIAL", managerLayout.getSerial());
                     object.put("CONVERT_STATE", managerLayout.getConvertFlag());
+                    object.put("LONGITUDE", "0");
+                    object.put("LATITUDE", "0");
+                    object.put("CHECK_OUT_LONGITUDE", "0");
+                    object.put("CHECK_OUT_LATITUDE", "0");
+                    object.put("SAVE_PIC", "'0'");
+                    object.put("UPDATE_CUSTOMER_LOCATION", "'0'");// 0 check out, 1 update
 
 
 //                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");

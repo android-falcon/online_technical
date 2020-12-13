@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layoutDirection="ltr"
+    android:orientation="vertical"
     android:padding="5dp">
 
     <androidx.cardview.widget.CardView
@@ -23,7 +23,15 @@
             android:layout_gravity="clip_horizontal|center"
             android:gravity="center"
             android:orientation="horizontal">
-
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="clip_horizontal|center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -102,11 +110,12 @@
 
                 <ImageView
                     android:id="@+id/login_logo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="end"
+                    android:layout_weight="0"
                     android:visibility="gone"
-                    app:srcCompat="@drawable/ic_restaurant_black_24dp"
+                    app:srcCompat="@drawable/tec_word"
                     tools:ignore="VectorDrawableCompat" />
 
                 <TextView
@@ -142,7 +151,25 @@
                 <!--android:textColor="#17d409"-->
                 <!--tools:targetApi="jelly_bean_mr1" />-->
             </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tecType"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:fontFamily="cursive"
+                    android:gravity="end"
+                    android:text="T"
+                    android:textColor="@color/white_dark"
+                    android:textSize="12sp" />
+            </RelativeLayout>
         </LinearLayout>
+
+
+
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

@@ -26,6 +26,7 @@ import java.net.URLEncoder;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
 import static com.falconssoft.onlinetechsupport.MainActivity.hold;
@@ -325,7 +326,8 @@ DatabaseHandler databaseHandler;
                     object.put("SERIAL", updateProblems.getSerial());
                     object.put("CALL_CENTER_ID", updateProblems.getCallCenterId());
                     object.put("NEW_PROBLEM", newProblem);
-
+                    final String engIdUpdate = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+                    object.put("ROW_UPDATE_ID", engIdUpdate);
 //                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -384,6 +386,8 @@ DatabaseHandler databaseHandler;
         @Override
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
+            Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
+
 //JsonResponse != null && JsonResponse.contains("PROBLEM_UPDATE_SUCCESS")
             if (JsonResponse != null && JsonResponse.contains("PROBLEM_UPDATE_SUCCESS")) {
                 Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
@@ -439,10 +443,12 @@ DatabaseHandler databaseHandler;
                     object.put("SYS_ID", updateCancel.getSystemId());
                     object.put("ENG_ID", updateCancel.getEngId());
                     object.put("ENG_NAME", updateCancel.getEnginerName());
-                    object.put("STATE", 0);
+                    object.put("STATE", updateCancel.getState());
                     object.put("SERIAL", updateCancel.getSerial());
                     object.put("CALL_CENTER_ID", updateCancel.getCallCenterId());
                     object.put("CANCLE_REASON", cancelReason);
+                    final String engIdUpdate = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+                    object.put("ROW_UPDATE_ID", engIdUpdate);
 
 //                    object.put("CALL_CENTER_ID", "'"+customerOnlineGlobel.getCallId()+"'");
                 } catch (JSONException e) {
@@ -502,6 +508,7 @@ DatabaseHandler databaseHandler;
         @Override
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
+            Log.e("PROBLEM_SOLVED_", "****test" + JsonResponse.toString());
 //JsonResponse != null && JsonResponse.contains("PROBLEM_UPDATE_SUCCESS")
             if (JsonResponse != null && JsonResponse.contains("DELETE_SUCCESS")) {
                 ManagerImport managerImport=new ManagerImport(context);
