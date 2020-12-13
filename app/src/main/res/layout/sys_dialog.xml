@@ -14,23 +14,16 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="9"
-            app:srcCompat="@drawable/ic_add_to_queue_black_24dp_white"
-            tools:ignore="VectorDrawableCompat" />
-
         <TextView
             android:id="@+id/tital"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="10dp"
-            android:text="@string/system"
+            android:text="@string/systems"
+            android:fontFamily="@font/keania_one"
             android:textColor="@color/white"
-            android:textSize="40sp" />
+            android:textSize="30sp" />
     </LinearLayout>
 
     <LinearLayout

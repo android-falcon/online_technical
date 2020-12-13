@@ -1,202 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/grayf"
     android:id="@+id/online_cordinator_layout"
-    tools:context=".OnlineActivity">
-
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/online_image_customer"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="120dp"
-        android:layout_weight="0.5"
-        android:padding="10dp"
-        android:src="@drawable/call_center_boy"
-        android:tint="@color/darkblue_2"
-        app:civ_border_color="@color/darkblue_2"
-        app:civ_border_width="1dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="VectorDrawableCompat" />
-
-    <EditText
-        android:id="@+id/online_problem"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/stroke_f"
-        android:fontFamily="serif"
-        android:gravity="start"
-        android:hint="System problem ..."
-        android:inputType="textMultiLine"
-        android:minLines="20"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/online_image_customer" />
-
-    <RelativeLayout
-        android:id="@+id/linearLayout5"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/darkblue_1"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/online_exit"
-            android:layout_width="40dp"
-            android:layout_height="70dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_exit"
-            android:tint="@color/goldf" />
-
-        <ImageView
-            android:id="@+id/online_break"
-            android:layout_width="40dp"
-            android:layout_height="70dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@id/online_exit"
-            android:layout_toRightOf="@id/online_exit"
-            android:src="@drawable/ic_free_breakfast"
-            android:tint="@color/goldf" />
-
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/online_settings"
-            android:layout_width="63dp"
-            android:layout_height="68dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/a_letter_f"
-            app:civ_border_color="@color/greenf"
-            app:civ_border_width="3dp" />
-    </RelativeLayout>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/online_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="40dp"
-        android:src="@drawable/ic_check"
-        android:tint="@color/darkblue_1"
-        app:backgroundTint="@color/goldf"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.994" />
+    tools:context=".TechnicalActivity">
 
     <LinearLayout
-        android:id="@+id/online_customer_layout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/online_image_customer"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
+        android:id="@+id/linearLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/darkblue_1"
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <TextView
-            android:id="@+id/online_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="52dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/edit_text_f"
-            android:drawableStart="@drawable/ic_person"
-            android:drawableLeft="@drawable/ic_person"
-            android:drawableTint="@color/goldf"
-            android:fontFamily="serif"
+            android:id="@+id/technical_welcome_box"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/averia_libre_light"
+            android:hint="@string/welcome"
+            android:textColorHint="@color/white"
             android:gravity="center"
-            android:hint="Customer"
-            android:padding="15dp" />
+            android:textColor="@color/white"
+            android:textSize="30sp" />
 
-        <TextView
-            android:id="@+id/online_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginRight="24dp"
-            android:background="@drawable/edit_text_f"
-            android:drawableStart="@drawable/ic_call"
-            android:drawableLeft="@drawable/ic_call"
-            android:drawableTint="@color/goldf"
-            android:fontFamily="serif"
-            android:gravity="center"
-            android:hint="Phone Number"
-            android:padding="15dp" />
-
-        <TextView
-            android:id="@+id/online_system"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/edit_text_f"
-            android:drawableStart="@drawable/ic_desktop_window"
-            android:drawableLeft="@drawable/ic_desktop_window"
-            android:drawableTint="@color/goldf"
-            android:fontFamily="serif"
-            android:gravity="center"
-            android:hint="System"
-            android:padding="15dp" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/online_new_customer"
-        android:layout_width="0dp"
+    <Chronometer
+        android:id="@+id/technical_clock"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:background="@drawable/button_f"
-        android:drawableStart="@drawable/ic_call"
-        android:drawableLeft="@drawable/ic_call"
-        android:drawablePadding="-60dp"
-        android:drawableTint="@color/white"
-        android:fontFamily="serif"
-        android:paddingLeft="60dp"
-        android:text="New Customer"
-        android:textAllCaps="false"
+        android:minWidth="200dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
         android:textColor="@color/white"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/online_image_customer"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:background="@color/main_orange_light_color"
+        android:textSize="18sp"
+        android:fontFamily="@font/keania_one"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/technical_customers_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:padding="5dp"
+        android:orientation="horizontal"
+        android:layout_weight="2.5"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent"
+        android:layout_margin="10dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="10"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/bac_list"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/averia_libre_light"
+                        android:text="@string/company"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/technical_company"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="serif"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/bac_list"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/averia_libre_light"
+                        android:text="@string/customer"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/technical_customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="serif"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:layout_marginVertical="5dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/bac_list"
+                    android:orientation="horizontal"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/averia_libre_light"
+                        android:text="@string/phone"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/technical_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="serif"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="5dp"
+                    android:background="@drawable/bac_list"
+                    >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:fontFamily="@font/averia_libre_light"
+                        android:text="@string/system"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/technical_system"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="serif"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:paddingHorizontal="5dp"
+                android:background="@drawable/bac_list"
+                android:layout_marginBottom="5dp"
+                >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:fontFamily="@font/averia_libre_light"
+                    android:text="@string/problem"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/technical_problem"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="serif"
+                    android:gravity="center"
+                    android:paddingLeft="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorAccent"
+                />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8">
+
+                <EditText
+                    android:id="@+id/technical_t_problem"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="Customer problem ..."
+                    android:gravity="start"
+                    android:background="@null"
+                    android:fontFamily="@font/averia_libre_light"
+                    android:textSize="20sp"
+                    android:padding="10dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/technical_add_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="3"
+                        android:padding="30sp"
+                        android:src="@drawable/ic_baseline_add_photo"
+                        android:background="@drawable/frame_with_stroke"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="9"/>
+
+                    <com.google.android.material.floatingactionbutton.FloatingActionButton
+                        android:id="@+id/technical_checkout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20sp"
+                        android:src="@drawable/ic_check"
+                        android:tint="@color/darkblue_1"
+                        app:backgroundTint="@color/goldf" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="2"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

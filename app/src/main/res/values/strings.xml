@@ -6,7 +6,7 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
+    <string name="welcome">"Welcome"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
@@ -57,7 +57,7 @@
     <string name="check_out_time">Check Out</string>
     <string name="problem">Problem</string>
     <string name="transaction_date">Transaction Date</string>
-    <string name="phone">phone</string>
+    <string name="phone">Phone</string>
     <string name="eng">Engineer</string>
     <string name="report">report</string>
     <string name="date">Date</string>
@@ -83,4 +83,7 @@
     <string name="Technical">Technical</string>
     <string name="cancel_Reason">Cancel Reason</string>
     <string name="Technical_report">Technical Report</string>
+    <string name="systems">Systems</string>
+    <string name="required">Required!</string>
+
 </resources>
