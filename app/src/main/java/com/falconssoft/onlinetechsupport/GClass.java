@@ -146,7 +146,11 @@ public class GClass {
 
     }
 
-    public GClass( EngineersTrackingReport engineersTrackingReport,CallCenterTrackingReport callCenterTrackingReport,DashBoard dashBoardActivity) {
+    public GClass() {
+
+    }
+
+    public GClass(EngineersTrackingReport engineersTrackingReport, CallCenterTrackingReport callCenterTrackingReport, DashBoard dashBoardActivity) {
 
         date = Calendar.getInstance().getTime();
         calendar = Calendar.getInstance();

@@ -11,6 +11,7 @@ import android.icu.util.TimeZone;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -1555,6 +1556,7 @@ public class ManagerImport {
                         customerPhoneNo.add(customerInfo);
 //                        Log.e("customerPhoneNo", "****  "+customerPhoneNo.get(i));
                     }
+                    Log.e("customerPhoneNo", "****  "+customerPhoneNo.size());
 
                     Log.e("customerPhoneNo", "****saveSuccess");
 

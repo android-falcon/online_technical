@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     startActivity(intent6);
                                     break;
                                 case 6:// tec program
-                                    Intent intent7 = new Intent(LoginActivity.this, OnlineActivity.class);
+                                    Intent intent7 = new Intent(LoginActivity.this, TechnicalActivity.class);
                                     startActivity(intent7);
                                     break;
                             }

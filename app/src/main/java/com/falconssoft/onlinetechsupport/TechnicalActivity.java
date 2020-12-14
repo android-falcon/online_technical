@@ -1,20 +1,26 @@
 package com.falconssoft.onlinetechsupport;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.StrictMode;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
@@ -50,6 +56,8 @@ import com.google.android.gms.location.LocationServices;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -74,9 +82,10 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
     private PresenterClass presenterClass;
     private CustomerOnline checkInfo;
     private CircleImageView visitReportPic;
-    private Bitmap bitmap;
+    private Bitmap bitmap,serverPicBitmap;
     private CustomerOnline customerOnline;
-
+    boolean isPermition;
+    int flag = 0;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -99,6 +108,8 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
     private LocationClass locationClass;
     boolean isCheckIn;
     private SweetAlertDialog checkoutDialog, attentionDialog;
+    String mCameraFileName, path;
+    Uri image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -170,7 +181,14 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
                 openLargePicDialog(bitmap);
                 break;
             case R.id.technical_add_image:
-                openCamera();
+//                openCamera();
+                flag = 0;
+//                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//                startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                isPermition = isStoragePermissionGranted();
+                if (isPermition) {
+                    cameraIntent();
+                }
                 break;
             case R.id.technical_system:
                 presenterClass.getSystems(TechnicalActivity.this);
@@ -285,7 +303,8 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
 
         if (checkoutDialog != null)
             checkoutDialog.dismiss();
-        if (distance(checkInfo.getLatitudeIn(), checkInfo.getLongitudeIn(), latitude, longitude) <= 0.001)// one kilo
+double dis=distance(checkInfo.getLatitudeIn(), checkInfo.getLongitudeIn(), latitude, longitude);
+        if (0< dis && dis<= 0.001)// one kilo
             if (!TextUtils.isEmpty(checkInfo.getSerial()))
                 if (!TextUtils.isEmpty(company.getText().toString()))
                     if (!TextUtils.isEmpty(customer.getText().toString()))
@@ -386,11 +405,13 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
         Log.e("checkIn", "" + customerOnline.getLongitudeIn() + customerOnline.getLatitudeIn());
         Log.e("checkIn", "" + (customerOnline.getLongitudeIn() == 0));
 
-        if (customerOnline.getLongitudeIn() != 0 && customerOnline.getLatitudeIn() != 0)
-            if (customerOnline.getLongitudeIn() != longitude && customerOnline.getLatitudeIn() != latitude) {
+        if (customerOnline.getLongitudeIn() != 0 && customerOnline.getLatitudeIn() != 0) {
+          double  dis =distance(checkInfo.getLatitudeIn(), checkInfo.getLongitudeIn(), latitude, longitude);
+            if (0<dis&& dis<= 0.001) {//// one kilo if (customerOnline.getLongitudeIn() != longitude && customerOnline.getLatitudeIn() != latitude)
                 check = false;
                 attentionDialog("You're in another place, please check information from manager!", SweetAlertDialog.WARNING_TYPE, 0);
             }
+        }
 
         if (check) {
             if (checkInfo.getSerial() == null) {
@@ -719,6 +740,64 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
                 checkInfo.setVisitReportImage(bitMapToString(bitmap));
             }
         }
+
+        if (requestCode == 2) {
+            if (data != null) {
+                image = data.getData();
+                visitReportPic.setImageURI(image);
+//                CheckPic.setVisibility(View.VISIBLE);
+            }
+            if (image == null && mCameraFileName != null) {
+                image = Uri.fromFile(new File(mCameraFileName));
+                path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/in.png";
+                bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/in.png");
+                visitReportPic.setImageBitmap(bitmap);
+                checkInfo.setVisitReportImage(bitMapToString(bitmap));
+                deleteFiles(path);
+//                CheckPicText.setError(null);
+            }
+            File file = new File(mCameraFileName);
+            if (!file.exists()) {
+                file.mkdir();
+                path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/in.png";
+                bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/in.png");
+                visitReportPic.setImageBitmap(bitmap);
+                checkInfo.setVisitReportImage(bitMapToString(bitmap));
+                deleteFiles(path);
+//                    Bitmap bitmap1 = StringToBitMap(serverPic);
+//                    showImageOfCheck(bitmap1);
+            } else {
+
+                path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/in.png";
+//                BitmapFactory.Options options = new BitmapFactory.Options();
+//                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+//                serverPicBitmap = BitmapFactory.decodeFile(path, options);
+                bitmap = BitmapFactory.decodeFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/in.png");
+                visitReportPic.setImageBitmap(bitmap);
+                checkInfo.setVisitReportImage(bitMapToString(bitmap));
+                deleteFiles(path);
+//                Bitmap bitmap1 = StringToBitMap(serverPic);
+//                showImageOfCheck(bitmap1);
+
+            }
+        }
+
+    }
+
+
+    public void deleteFiles(String path) {
+        File file = new File(path);
+
+        if (file.exists()) {
+            String deleteCmd = "rm -r " + path;
+            Runtime runtime = Runtime.getRuntime();
+            try {
+                runtime.exec(deleteCmd);
+            } catch (IOException e) {
+
+            }
+        }
+
     }
 
     @Override
@@ -738,6 +817,21 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
 //            mLongitudeText.setText(String.valueOf(mLastLocation.getLongitude()));
                 }
             }
+        }else if (requestCode == 2){
+
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.e("jj4", "Permission: " + permissions[0] + "was " + grantResults[0]);
+                //resume tasks needing this permission
+//            if(flagINoUT==1){
+//                ExportDbToExternal();
+//            }else if (flagINoUT==2){
+//                ImportDbToMyApp();
+//            }
+
+                cameraIntent();
+
+            }
+
         }
     }
 
@@ -1008,6 +1102,45 @@ public class TechnicalActivity extends AppCompatActivity implements View.OnClick
 //    public void onBackPressed() {
 //
 //    }
+private void cameraIntent() {
+    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+    StrictMode.setVmPolicy(builder.build());
+    Intent intent = new Intent();
+    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
+
+    Date date = new Date();
+    DateFormat df = new SimpleDateFormat("_mm_ss");
+
+    String newPicFile = "in" + ".png";
+    String outPath = Environment.getExternalStorageDirectory() + File.separator + newPicFile;
+    Log.e("InventoryDBFolder", "" + outPath);
+    File outFile = new File(outPath);
+    path = outPath;
+    mCameraFileName = outFile.toString();
+    Uri outuri = Uri.fromFile(outFile);
+    intent.putExtra(MediaStore.EXTRA_OUTPUT, outuri);
+    startActivityForResult(intent, 2);
+}
+
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.e("gg1", "Permission is granted");
+                return true;
+            } else {
+
+                Log.e("gg2", "Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            Log.e("gg3", "Permission is granted");
+            return true;
+        }
+    }
+
+
 }
 
 

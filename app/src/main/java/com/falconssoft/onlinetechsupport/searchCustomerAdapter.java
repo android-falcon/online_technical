@@ -102,7 +102,10 @@ public class searchCustomerAdapter extends  RecyclerView.Adapter<searchCustomerA
                     companyId= companey.get(i).getCompanyId();
                     companey_name.setEnabled(false);
                     editText.setEnabled(false);
+
                 recyclerk.setVisibility(View.GONE);
+                    ManagerImport managerImport=new ManagerImport(context);
+                    managerImport.startSending("CustomerPhone");
 
                 }
 

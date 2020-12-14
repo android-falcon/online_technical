@@ -105,7 +105,7 @@ class CallCenterTrackingAdapter extends RecyclerView.Adapter<CallCenterTrackingA
 
                     FloatingActionButton addList = updateDialog.findViewById(R.id.hold_reason);
                     final EditText newProblem = updateDialog.findViewById(R.id.holdEdit_reason);
-
+                    newProblem.setText(list.get(i).getProplem()+"");
 
                     addList.setOnClickListener(new View.OnClickListener() {
                         @Override

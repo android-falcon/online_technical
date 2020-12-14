@@ -268,6 +268,8 @@ public class OnlineCenter extends AppCompatActivity {
                 } else if (isShow == 1) {
                     recyclerk.setVisibility(View.GONE);
                     isShow = 1;
+                    ManagerImport managerImport=new ManagerImport(OnlineCenter.this);
+                    managerImport.startSending("CustomerPhone");
                 }
 
 
