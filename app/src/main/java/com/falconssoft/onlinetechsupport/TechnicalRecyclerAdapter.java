@@ -1,11 +1,13 @@
 package com.falconssoft.onlinetechsupport;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
@@ -38,9 +40,10 @@ public class TechnicalRecyclerAdapter extends RecyclerView.Adapter<TechnicalRecy
         holder.problem.setText(list.get(i).getProblem());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
-                technicalActivity.getLocation(list.get(i), true);
+                technicalActivity.getLocation(list.get(i));
             }
         });
 

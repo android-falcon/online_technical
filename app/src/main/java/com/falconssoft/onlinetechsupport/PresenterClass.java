@@ -189,21 +189,7 @@ public class PresenterClass {
 
     public void checkOut(CustomerOnline customerOnline, TechnicalActivity technicalActivity) {
         this.technicalActivity = technicalActivity;
-//        object.put("CHECH_OUT_TIME", "'" + customerOnline.getCheakOutTime() + "'");
-//        object.put("PROBLEM", "'" + customerOnline.getProblem() + "'");
-//        object.put("CUST_NAME", "'" + customerOnline.getCustomerName() + "'");
-//        object.put("CHECH_IN_TIME", "'" + customerOnline.getCheakInTime() + "'");
-//        object.put("COMPANY_NAME", "'" + customerOnline.getCompanyName() + "'");
-//        object.put("PHONE_NO", "'" + customerOnline.getPhoneNo() + "'");
-//        object.put("SYSTEM_NAME", "'" + customerOnline.getSystemName() + "'");
-//        object.put("SYS_ID", "'" + customerOnline.getSystemId() + "'");
-//        object.put("ENG_ID", "'" + customerOnline.getEngineerID() + "'");
-//        object.put("ENG_NAME", "'" + customerOnline.getEngineerName() + "'");
-
-//    "http://10.0.0.214/onlineTechnicalSupport/import.php?LOG_IN_OUT=0&ENG_ID=&STATE="
-//        ipAddres = databaseHandler.getIp();
-        url = URL + "export.php";//?LOG_IN_OUT=0&ENG_ID="
-//        + LoginActivity.sharedPreferences.getString(LOGIN_ID, "null")+"&STATE=" + state;
+        url = URL + "export.php";
         Log.e("push", url);
 
         final JSONObject object = new JSONObject();
@@ -263,6 +249,7 @@ public class PresenterClass {
             Log.e("presenter", "CheckOutClass/ " + response);
             getCustomersData(technicalActivity);
             technicalActivity.dumpData(response);
+
 //            onlineActivity.hideCustomerLinear();
         }
     }

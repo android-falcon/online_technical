@@ -16,7 +16,13 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <activity android:name=".reports.EngineersTrackingReport"
             android:screenOrientation="sensorLandscape"/>
-        <activity android:name=".LocationActivity"/>
+        <activity android:name=".LocationActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
 
         <activity
             android:name=".reports.CallCenterTrackingReport"
