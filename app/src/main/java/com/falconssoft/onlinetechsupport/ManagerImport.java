@@ -518,6 +518,7 @@ public class ManagerImport {
                         obj.setSerial(finalObject.getString("SERIAL"));
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
                         obj.setCompanyId(finalObject.getString("COMPANY_ID"));
+                        obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
                         obj.setCurrentTime(curentTime);
 
 

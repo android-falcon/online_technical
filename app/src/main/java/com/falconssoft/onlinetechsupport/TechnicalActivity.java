@@ -727,19 +727,19 @@ double dis=distance(checkInfo.getLatitudeIn(), checkInfo.getLongitudeIn(), latit
 
         }
 
-        if (requestCode == 1888 && resultCode == RESULT_OK) {
-
-            Log.e("camera", "4");
-            Bundle intent = data.getExtras();
-            bitmap = (Bitmap) data.getExtras().get("data");
-//            bitmap = getResizedBitmap(bitmap, 100, 100);
-            File pictureFile;
-
-            if (intent != null) {
-                visitReportPic.setImageBitmap(bitmap);
-                checkInfo.setVisitReportImage(bitMapToString(bitmap));
-            }
-        }
+//        if (requestCode == 1888 && resultCode == RESULT_OK) {
+//
+//            Log.e("camera", "4");
+//            Bundle intent = data.getExtras();
+//            bitmap = (Bitmap) data.getExtras().get("data");
+////            bitmap = getResizedBitmap(bitmap, 100, 100);
+//            File pictureFile;
+//
+//            if (intent != null) {
+//                visitReportPic.setImageBitmap(bitmap);
+//                checkInfo.setVisitReportImage(bitMapToString(bitmap));
+//            }
+//        }
 
         if (requestCode == 2) {
             if (data != null) {
