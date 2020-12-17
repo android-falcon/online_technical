@@ -78,6 +78,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
 
 public class TechnicalActivity extends AppCompatActivity implements View.OnClickListener {
 
