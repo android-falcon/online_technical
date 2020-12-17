@@ -82,7 +82,7 @@ public class CustomerOnline {
 //    @SerializedName("CHECK_OUT_LATITUDE")
     private int update;
 
-//    @SerializedName("DATE_OF_TRANSACTION")
+    @SerializedName("DATE_OF_TRANSACTION")
     private String date;
 
     public CustomerOnline() {
