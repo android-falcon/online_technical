@@ -46,6 +46,8 @@ import static com.falconssoft.onlinetechsupport.GClass.callCenterList;
 import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_TYPE;
+import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 
 public class TechnicalTrackingReport extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
@@ -90,6 +92,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
     boolean upDownFlagPhone =false;
     boolean upDownFlagCompany =false;
     int timeFlagOrder =0;
+    int callType=1;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,6 +166,8 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
         fromDate.setText(dateFormat.format(date));
         toDate.setText(dateFormat.format(date));
 
+        callType = sharedPreferences.getInt(LOGIN_TYPE, -1);
+        Log.e("callTypeTech", "" + callType);
 
         fromDate.setOnClickListener(new View.OnClickListener() {
             @Override

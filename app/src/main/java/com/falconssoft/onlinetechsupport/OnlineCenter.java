@@ -54,6 +54,7 @@ import com.falconssoft.onlinetechsupport.Modle.CompaneyInfo;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
+import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hbb20.CountryCodePicker;
 
@@ -126,7 +127,7 @@ public class OnlineCenter extends AppCompatActivity {
     RelativeLayout relative;
     TextView holdScheduale;
     int callType = 1;
-    Button btn_sch, btn_hold;
+    Button btn_sch, btn_hold,btnReport;
 
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -178,15 +179,18 @@ public class OnlineCenter extends AppCompatActivity {
         fillEngineerInfoList(0);
 
         btn_sch.setVisibility(View.GONE);
+        btnReport.setVisibility(View.GONE);
         btn_hold.setVisibility(View.GONE);
         if (callType == 1 ||callType == 5) {
             btn_hold.setVisibility(View.VISIBLE);
             btn_sch.setVisibility(View.GONE);
+            btnReport.setVisibility(View.GONE);
             holdScheduale.setText(getResources().getString(R.string.hold_customer_list));
 
         } else if (callType == 3 ) {
             btn_hold.setVisibility(View.GONE);
             btn_sch.setVisibility(View.VISIBLE);
+            btnReport.setVisibility(View.VISIBLE);
             holdScheduale.setText(getResources().getString(R.string.sch_customer_list));
         }
 
@@ -852,6 +856,7 @@ public class OnlineCenter extends AppCompatActivity {
         btnSpeekCompany = findViewById(R.id.btnSpeakCompany);
         holdScheduale = findViewById(R.id.holdScheaduale);
         btn_sch = findViewById(R.id.btn_sch);
+        btnReport=findViewById(R.id.btnReport);
         btn_hold = findViewById(R.id.btn_hold);
 
         textState.addTextChangedListener(new TextWatcher() {
@@ -1482,5 +1487,10 @@ public class OnlineCenter extends AppCompatActivity {
         })
                 .show();
 
+    }
+
+    public void showTecReport(View view) {
+        Intent TechReport=new Intent(OnlineCenter.this, TechnicalTrackingReport.class);
+        startActivity(TechReport);
     }
 }

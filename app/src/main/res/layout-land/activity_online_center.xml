@@ -541,6 +541,21 @@
                     android:text="@string/Schedule"
                     android:textColor="@color/darkblue_" />
 
+                <Button
+                    android:id="@+id/btnReport"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_hold"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:onClick="showTecReport"
+                    android:text="@string/Technical_report"
+                    android:textColor="@color/darkblue_" />
+
 
             </LinearLayout>
 
