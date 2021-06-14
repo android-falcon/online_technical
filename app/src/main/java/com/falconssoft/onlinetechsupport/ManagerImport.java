@@ -1475,7 +1475,7 @@ public class ManagerImport {
             try {
 //
                 ipAddres = databaseHandler.getIp();
-                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=77";
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=7";// this for new update flage =77
                 // ITEM_CARD
 
 
@@ -1553,7 +1553,7 @@ public class ManagerImport {
                         customerInfo.setPhoneNo(finalObject.getString("PHONE_NO"));
                         customerInfo.setCustomerName(finalObject.getString("CUST_NAME"));
                         customerInfo.setCompanyName(finalObject.getString("COMPANY_NAME"));
-                        customerInfo.setCompanyId(finalObject.getString("COMPANY_ID"));
+                       // customerInfo.setCompanyId(finalObject.getString("COMPANY_ID")); // this for new update in flage =77
                         customerPhoneNo.add(customerInfo);
 //                        Log.e("customerPhoneNo", "****  "+customerPhoneNo.get(i));
                     }

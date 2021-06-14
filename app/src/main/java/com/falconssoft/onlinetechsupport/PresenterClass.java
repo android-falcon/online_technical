@@ -339,7 +339,7 @@ public class PresenterClass {
                 }
 
 //                callCenterTrackingReport.fillDateSpinner();
-                Log.e("setListDateSizePr", "" + "     \n" + DateList.size());
+                Log.e("setListDateSizePr", "" + "     \n" + DateList.size()+ callCenterList.size());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
