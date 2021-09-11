@@ -64,7 +64,7 @@ public class PresenterClass {
     private EngineersTrackingReport engineersTrackingReport;
     private TechnicalTrackingReport technicalTrackingReport;
     private  ProgrammerReport programmerReport;
-    private String callType;
+    private String callType,fromDate,toDate;
 
 //    private String ipAddres;
 
@@ -281,14 +281,16 @@ public class PresenterClass {
 
     //****************************************** setCallCenterData  **************************************
 
-    public void getCallCenterData(CallCenterTrackingReport callCenterTrackingReport, TechnicalTrackingReport technicalTrackingReport, ProgrammerReport programmerReport, String callType) {
+    public void getCallCenterData(CallCenterTrackingReport callCenterTrackingReport, TechnicalTrackingReport technicalTrackingReport, ProgrammerReport programmerReport, String callType,String fromDate,String toDate) {
 
 //        ipAddres = databaseHandler.getIp();
         this.callCenterTrackingReport = callCenterTrackingReport;
         this.technicalTrackingReport=technicalTrackingReport;
         this.programmerReport=programmerReport;
         this.callType=callType;
-        urlCallCenterReport = URL + "import.php?FLAG=5&TEC_TYPE="+callType;
+        this.fromDate=fromDate;
+        this.toDate=toDate;
+        urlCallCenterReport = URL + "import.php?FLAG=555&TEC_TYPE="+callType+"&FROM_DATE="+fromDate+"&TO_DATE="+toDate;
         callCenterRequest = new JsonArrayRequest(Request.Method.GET, urlCallCenterReport, null, new CallCenterClass(), new CallCenterClass());
 //        Log.e("setStateGGG///", "engId" + engId + "state" + state + "url" + urlState);
         requestQueue.add(callCenterRequest);

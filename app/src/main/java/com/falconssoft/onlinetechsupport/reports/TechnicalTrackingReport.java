@@ -99,8 +99,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_center_tracking_report);
 
-        presenterClass = new PresenterClass(this);
-        presenterClass.getCallCenterData(null,this,null,"4");
+
         infoTableReport= findViewById(R.id.infoTableReport);
         infoTableReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +117,6 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
         companyEText=findViewById(R.id.eng_report_company);
         search=findViewById(R.id.search);
 //        dateSpinner= findViewById(R.id.callCenter_report_dateSpinner);
-        adapter = new CallCenterTrackingAdapter(this, callCenterList,"4");
         recyclerView.setAdapter(adapter);
         count=findViewById(R.id.count);
         CheckInTimeId=findViewById(R.id.CheckInTimeId);
@@ -165,6 +163,12 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         fromDate.setText(dateFormat.format(date));
         toDate.setText(dateFormat.format(date));
+
+        presenterClass = new PresenterClass(this);
+        presenterClass.getCallCenterData(null,this,null,"4",fromDate.getText().toString(),toDate.getText().toString());
+
+
+        adapter = new CallCenterTrackingAdapter(this, callCenterList,"4",fromDate.getText().toString(),toDate.getText().toString());
 
         callType = sharedPreferences.getInt(LOGIN_TYPE, -1);
         Log.e("callTypeTech", "" + callType);
@@ -466,7 +470,9 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
                     toDate.setText(sdf.format(calendar.getTime()));
 
                 if (!fromDate.getText().toString().equals("") && !toDate.getText().toString().equals("")) {
-                    filter();
+                    presenterClass.getCallCenterData(null,TechnicalTrackingReport.this,null,"4",fromDate.getText().toString(),toDate.getText().toString());
+
+                    //  filter();
                 }
             }
         };
@@ -688,7 +694,7 @@ public class TechnicalTrackingReport extends AppCompatActivity implements Adapte
             }
         }
 
-        adapter = new CallCenterTrackingAdapter(this, filtered,"4");
+        adapter = new CallCenterTrackingAdapter(this, filtered,"4",fromDate.getText().toString(),toDate.getText().toString());
         recyclerView.setAdapter(adapter);
         count.setText(""+filtered.size());
     }

@@ -49,6 +49,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import static com.falconssoft.onlinetechsupport.GClass.customerPhoneNo;
 import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engMList;
+import static com.falconssoft.onlinetechsupport.GClass.engMListInfoAdapter;
 import static com.falconssoft.onlinetechsupport.GClass.engPerHourList;
 import static com.falconssoft.onlinetechsupport.GClass.engPerSysList;
 import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
@@ -65,6 +66,8 @@ import static com.falconssoft.onlinetechsupport.GClass.systemListDashBoardSystem
 import static com.falconssoft.onlinetechsupport.GClass.systemListDashOnlyMax;
 import static com.falconssoft.onlinetechsupport.GClass.systemMList;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
+import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_TYPE;
+import static com.falconssoft.onlinetechsupport.LoginActivity.sharedPreferences;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakIn;
 import static com.falconssoft.onlinetechsupport.MainActivity.cheakout;
 import static com.falconssoft.onlinetechsupport.MainActivity.countChickHold;
@@ -103,6 +106,7 @@ public class ManagerImport {
     EngineersTrackingReport engineersTrackingReport;
     TechnicalTrackingReport technicalTrackingReport;
     ProgrammerReport programmerReport;
+    MainActivity mainActivity;
     DashBoard dashBoard;
     String EngIdDashBord, sysIdDashboard;
     ManagerLayout managerLayoutTrans;
@@ -904,13 +908,25 @@ public class ManagerImport {
                         obj.setCallCenterId(finalObject.getString("CALL_CENTER_ID"));
                         obj.setHoldTime(finalObject.getString("HOLD_TIME"));
                         obj.setCancelState(finalObject.getString("ROW_STATUS"));
+                        obj.setTecType(finalObject.getString("TEC_TYPE"));
                         obj.setHoldReason(finalObject.getString("HOLD_REASON"));
 
-                        if ((obj.getState().equals("0")|| obj.getState().equals("3") )&& finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
-                            if (obj.getCancelState().equals("0")) {
-                                hold_List.add(obj);
-                                Log.e("hold_List", "" + hold_List.size());
+                        int callType=sharedPreferences.getInt(LOGIN_TYPE, -1);
+                        if(callType==1) {
+                            if ((obj.getState().equals("0")) ) {
+                                if (obj.getCancelState().equals("0")) {
+                                    hold_List.add(obj);
+                                    Log.e("hold_List", "" + hold_List.size());
+                                }
                             }
+                        }else {
+                            if ((obj.getState().equals("0") || obj.getState().equals("3")) && finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
+                                if (obj.getCancelState().equals("0")) {
+                                    hold_List.add(obj);
+                                    Log.e("hold_List", "" + hold_List.size());
+                                }
+                            }
+
                         }
                         setHoldList();
 
@@ -1070,6 +1086,8 @@ public class ManagerImport {
                 technicalTrackingReport = (TechnicalTrackingReport) object;
             } else if (sysEngFlag == 5) {
                programmerReport  = (ProgrammerReport) object;
+            } else if (sysEngFlag == 6) {
+                mainActivity  = (MainActivity) object;
             }
 
         }
@@ -1159,6 +1177,7 @@ public class ManagerImport {
                     JSONArray info = jsonObject.getJSONArray("ENGINEER_INFO");
                     Log.e("info", "" + info);
                     engMList.clear();
+                    engMListInfoAdapter.clear();
                     engineerInfoList.clear();
                     engineerInfoList.add(0, "All");
                     engList.clear();
@@ -1174,6 +1193,7 @@ public class ManagerImport {
 
                         Log.e("ENG_TYPE", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
+                        engMListInfoAdapter.add(engineerInfo);
                         if (sysEngFlag == 3) {
 
                             if (engineerInfo.getEng_type() == 4) {

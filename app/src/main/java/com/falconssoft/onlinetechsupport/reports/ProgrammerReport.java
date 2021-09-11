@@ -96,8 +96,7 @@ public class ProgrammerReport extends AppCompatActivity implements AdapterView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_center_tracking_report);
 
-        presenterClass = new PresenterClass(this);
-        presenterClass.getCallCenterData(null,null,this,"6");
+
         infoTableReport= findViewById(R.id.infoTableReport);
         infoTableReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +114,6 @@ public class ProgrammerReport extends AppCompatActivity implements AdapterView.O
         companyEText=findViewById(R.id.eng_report_company);
         search=findViewById(R.id.search);
 //        dateSpinner= findViewById(R.id.callCenter_report_dateSpinner);
-        adapter = new CallCenterTrackingAdapter(this, callCenterList,"6");
         recyclerView.setAdapter(adapter);
         count=findViewById(R.id.count);
         CheckInTimeId=findViewById(R.id.CheckInTimeId);
@@ -162,6 +160,12 @@ public class ProgrammerReport extends AppCompatActivity implements AdapterView.O
         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         fromDate.setText(dateFormat.format(date));
         toDate.setText(dateFormat.format(date));
+
+        presenterClass = new PresenterClass(this);
+        presenterClass.getCallCenterData(null,null,this,"6",fromDate.getText().toString(),toDate.getText().toString());
+
+
+        adapter = new CallCenterTrackingAdapter(this, callCenterList,"6",fromDate.getText().toString(),toDate.getText().toString());
 
 
         fromDate.setOnClickListener(new View.OnClickListener() {
@@ -461,7 +465,8 @@ public class ProgrammerReport extends AppCompatActivity implements AdapterView.O
                     toDate.setText(sdf.format(calendar.getTime()));
 
                 if (!fromDate.getText().toString().equals("") && !toDate.getText().toString().equals("")) {
-                    filter();
+                   // filter();
+                    presenterClass.getCallCenterData(null,null,ProgrammerReport.this,"6",fromDate.getText().toString(),toDate.getText().toString());
                 }
             }
         };
@@ -683,7 +688,7 @@ public class ProgrammerReport extends AppCompatActivity implements AdapterView.O
             }
         }
 
-        adapter = new CallCenterTrackingAdapter(this, filtered,"6");
+        adapter = new CallCenterTrackingAdapter(this, filtered,"6",fromDate.getText().toString(),toDate.getText().toString());
         recyclerView.setAdapter(adapter);
         count.setText(""+filtered.size());
     }

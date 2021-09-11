@@ -47,6 +47,7 @@ public class GClass {
     public static List<String> systemList=new ArrayList<String>(),engList=new ArrayList<String>();
     public static List<Systems> systemMList=new ArrayList<Systems>();
     public static List<EngineerInfo> engMList=new ArrayList<EngineerInfo>();
+    public static List<EngineerInfo> engMListInfoAdapter=new ArrayList<EngineerInfo>();
     public static List<String> engineerInfoList=new ArrayList<>();
     public static List<List<ManagerLayout>> listOfCallHour=new ArrayList<List<ManagerLayout>>();
     public static List<List<ManagerLayout>> listOfCallHourByEng=new ArrayList<List<ManagerLayout>>();

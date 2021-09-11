@@ -48,7 +48,7 @@ public class ManagerExport {
     String JsonResponseSave;
     String JsonResponseSaveSwitch;
     JSONObject datatoSend=null;
-    String tecType;
+    String tecType,toDate,fromDate;
 
     public  static boolean sendSucsses=false;
 DatabaseHandler databaseHandler;
@@ -71,10 +71,16 @@ DatabaseHandler databaseHandler;
 
     }
 
-    public void UpdateProblemFun(ManagerLayout customerOnline,String newProblem,String flag) {
+
+    public void updateEmployeesFun(String engId, String engName, String available){
+        new updateEmployees( engId,  engName,  available).execute();
+    }
+    public void UpdateProblemFun(ManagerLayout customerOnline,String newProblem,String flag,String fromDate,String toDate) {
             this.updateProblems=customerOnline;
             this.newProblem=newProblem;
             this.tecType=flag;
+            this.toDate=toDate;
+            this.fromDate=fromDate;
             new UpdateProblem().execute();
 
     }
@@ -180,6 +186,114 @@ DatabaseHandler databaseHandler;
                 new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
                         .setTitleText("")
                         .setContentText("The User Failed to save")
+//                        .hideConfirmButton()
+                        .show();
+
+            }
+
+        }
+    }
+
+    private class updateEmployees extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+        String engId,engName,available;
+
+        public updateEmployees(String engId, String engName, String available) {
+            this.engId = engId;
+            this.engName = engName;
+            this.available = available;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+
+                String ip = "";
+
+//
+//                ipAddres=databaseHandler.getIp();
+
+                String link ="http://"+ipAddres+"/onlineTechnicalSupport/export.php";
+                // ITEM_CARD
+
+
+                String data = "UPDATE_EMPLOY=" + URLEncoder.encode("'1'", "UTF-8")+"&"+
+                        "AVAILABLE_FLAG=" + URLEncoder.encode(available, "UTF-8")+"&"+
+                        "ENG_ID="+URLEncoder.encode(engId,"UTF-8")+"&"+
+                        "ENG_NAME="+URLEncoder.encode(engName,"UTF-8");
+
+                URL url = new URL(link);
+                Log.e("urlStringoo001234 = ", "" + url.toString()+"  "+data);
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+                wr.writeBytes(data);
+                wr.flush();
+                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCode -->" + stringBuffer.toString()+"   "+data);
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+            Log.e("tag_itemCard000", "****saveSuccess"+JsonResponse);
+            if (JsonResponse != null && JsonResponse.contains("AVAILABLE_UPDATE_SUCCESS")) {
+                Log.e(" ONLINE_ENGINEER_INFO", "****saveSuccess");
+                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("")
+                        .setContentText("The User UPDATE Success ")
+//                        .hideConfirmButton()
+                        .show();
+            }  else {
+                Log.e(" ONLINE_ENGINEER_INFO", "****Failed to export data");
+                new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                        .setTitleText("")
+                        .setContentText("The User Failed to UPDATE")
 //                        .hideConfirmButton()
                         .show();
 
@@ -394,11 +508,11 @@ DatabaseHandler databaseHandler;
                 Log.e("PROBLEM_SOLVED_", "****Success" + JsonResponse.toString());
                 PresenterClass presenterClass = new PresenterClass(context);
                 if(tecType.equals("2")) {
-                    presenterClass.getCallCenterData((CallCenterTrackingReport) context, null,null, tecType);
+                    presenterClass.getCallCenterData((CallCenterTrackingReport) context, null,null, tecType,fromDate,toDate);
                 }else  if(tecType.equals("4")) {
-                    presenterClass.getCallCenterData(null, (TechnicalTrackingReport) context,null, tecType);
+                    presenterClass.getCallCenterData(null, (TechnicalTrackingReport) context,null, tecType,fromDate,toDate);
                 }else  if(tecType.equals("6")) {
-                    presenterClass.getCallCenterData(null, null,(ProgrammerReport)context, tecType);
+                    presenterClass.getCallCenterData(null, null,(ProgrammerReport)context, tecType,fromDate,toDate);
                 }
 //                CallCenterTrackingReport callCenterTrackingReport=new CallCenterTrackingReport();
 //                callCenterTrackingReport.fillAdapter();

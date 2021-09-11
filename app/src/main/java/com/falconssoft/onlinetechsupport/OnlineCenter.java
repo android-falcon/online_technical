@@ -512,24 +512,26 @@ public class OnlineCenter extends AppCompatActivity {
     @SuppressLint("WrongConstant")
     private void sendEngineerToAdapter() {
         int engType = 0;
+        int available=0;
         if (engineerInfoList.size() != 0) {
             listEngforAdapter.clear();
             for (int i = 0; i < engineerInfoList.size(); i++) {
                 engType = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getEng_type()));
+                available = Integer.parseInt(String.valueOf(engineerInfoList.get(i).getAvailable()));
 
-                if (callType == 1) {
-                    if (engType == 2)// available  Engeneering
+                if (callType == 1  ) {
+                    if (engType == 2 && available==0)// available  Engeneering
                     {
                         listEngforAdapter.add(engineerInfoList.get(i));
 
                     }
-                } else if (callType == 3) {
+                } else if (callType == 3 && available==0) {
                     if (engType == 4)// available  tec
                     {
                         listEngforAdapter.add(engineerInfoList.get(i));
 
                     }
-                } else if (callType == 5) {
+                } else if (callType == 5 && available==0) {
                     if (engType == 6)// available  tec
                     {
                         listEngforAdapter.add(engineerInfoList.get(i));
@@ -665,7 +667,7 @@ public class OnlineCenter extends AppCompatActivity {
                                     engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
                                     engineerInfo.setEng_type(engineerInfoObject.getInt("ENG_TYPE"));
                                     engineerInfo.setState(engineerInfoObject.getInt("STATE"));
-
+                                    engineerInfo.setAvailable(engineerInfoObject.getInt("AVAILABLE"));
                                     Log.e("ENG_TYPE", "" + engineerInfo.getName() + "-->" + engineerInfo.getEng_type());
 
                                     if (callType == 1) {
@@ -729,6 +731,8 @@ public class OnlineCenter extends AppCompatActivity {
                                         engineerInfo.setId(engineerInfoObject.getString("ENG_ID"));
                                         engineerInfo.setState(engineerInfoObject.getInt("STATE"));
                                         engineerInfo.setEng_type(Integer.parseInt(engineerInfoObject.getString("ENG_TYPE")));
+                                        engineerInfo.setAvailable(engineerInfoObject.getInt("AVAILABLE"));
+
                                         if (callType == 1) {
                                             if (engineerInfo.getEng_type() == 2 && engineerInfo.getState() == 0) {
                                                 engineerInfoList.add(engineerInfo);

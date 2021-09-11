@@ -15,6 +15,7 @@ public class EngineerInfo {
     private String password;
     private int eng_type;
     private int state;
+    private int available;
 
     private double noOfCountCall;
     private double percCall;
@@ -77,6 +78,14 @@ public class EngineerInfo {
 
     public void setPercCall(double percCall) {
         this.percCall = percCall;
+    }
+
+    public int getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(int available) {
+        this.available = available;
     }
 
     public JSONObject getData() throws JSONException {

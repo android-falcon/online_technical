@@ -52,6 +52,8 @@ import java.util.zip.Inflater;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
+import static com.falconssoft.onlinetechsupport.GClass.engMListInfoAdapter;
+
 public class MainActivity extends AppCompatActivity {
     public static List<ManagerLayout> cheakIn, cheakout, hold,schaeduale;
     //    ImageView addEmp, AddSystem;
@@ -119,6 +121,10 @@ public class MainActivity extends AppCompatActivity {
 //        animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
 //        falcon.startAnimation(animZoom);
         falcon = findViewById(R.id.falcon);
+
+         managerImport=new ManagerImport(MainActivity.this);
+        managerImport.startSendingEngSys(MainActivity.this,6);
+
 //        final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
 //        falcon.startAnimation(animZoom);
 
@@ -223,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-         managerImport = new ManagerImport(MainActivity.this);
+       //  managerImport = new ManagerImport(MainActivity.this);
         T = new Timer();
         T.schedule(new TimerTask() {
             @Override
@@ -374,6 +380,34 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddEmployeDialog.dismiss();
+            }
+        });
+
+
+        AddEmployeDialog.show();
+    }
+
+    void userControlApp() {
+
+        final Dialog AddEmployeDialog = new Dialog(MainActivity.this, R.style.Theme_Dialog);
+        AddEmployeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AddEmployeDialog.setCancelable(true);
+        AddEmployeDialog.setContentView(R.layout.user_control);
+//                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
+
+
+        TextView cancel=AddEmployeDialog.findViewById(R.id.Cancelbutton);
+
+        ListView listView=AddEmployeDialog.findViewById(R.id.userControlList);
+
+        ManagerControlUser managerControlUser=new ManagerControlUser(MainActivity.this,engMListInfoAdapter);
+
+        listView.setAdapter(managerControlUser);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -569,6 +603,10 @@ public class MainActivity extends AppCompatActivity {
                 passwordForSetting(2);
 
 //                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.UserControl:
+                userControlApp();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
