@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.falconssoft.onlinetechsupport">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/online_launcher"
@@ -13,13 +21,33 @@
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:icon">
-        <activity android:name=".reports.EngineersTrackingReport" android:screenOrientation="sensorLandscape"></activity>
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
+        <activity android:name=".reports.EngineersTrackingReport"
+            android:screenOrientation="sensorLandscape"/>
+        <activity android:name=".LocationActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+
         <activity
             android:name=".reports.CallCenterTrackingReport"
             android:screenOrientation="sensorLandscape" />
         <activity
-            android:name=".OnlineActivity"
+            android:name=".reports.ProgrammerReport"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".reports.TechnicalTrackingReport"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".DashBoard"
+            android:screenOrientation="sensorLandscape" />
+        <activity
+            android:name=".TechnicalActivity"
             android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustPan|stateVisible"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".OnlineCenter"
@@ -41,7 +69,6 @@
             android:name=".MainActivity"
             android:screenOrientation="sensorLandscape"
             tools:ignore="LockedOrientationActivity" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -50,9 +77,6 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

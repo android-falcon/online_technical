@@ -15,6 +15,11 @@ public class EngineerInfo {
     private String password;
     private int eng_type;
     private int state;
+    private int available;
+
+    private double noOfCountCall;
+    private double percCall;
+
 
     public EngineerInfo() {
     }
@@ -57,6 +62,30 @@ public class EngineerInfo {
 
     public void setEng_type(int eng_type) {
         this.eng_type = eng_type;
+    }
+
+    public double getNoOfCountCall() {
+        return noOfCountCall;
+    }
+
+    public void setNoOfCountCall(double noOfCountCall) {
+        this.noOfCountCall = noOfCountCall;
+    }
+
+    public double getPercCall() {
+        return percCall;
+    }
+
+    public void setPercCall(double percCall) {
+        this.percCall = percCall;
+    }
+
+    public int getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(int available) {
+        this.available = available;
     }
 
     public JSONObject getData() throws JSONException {

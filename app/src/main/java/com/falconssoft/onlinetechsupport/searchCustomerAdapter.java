@@ -51,6 +51,7 @@ import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_ID;
 import static com.falconssoft.onlinetechsupport.LoginActivity.LOGIN_NAME;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.EngId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.companey_name;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.companyId;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.customer_name;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engStringName;
@@ -87,6 +88,7 @@ public class searchCustomerAdapter extends  RecyclerView.Adapter<searchCustomerA
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
 
+        viewHolder.cancelButton.setVisibility(View.GONE);
             viewHolder.hold_company_name.setText(companey.get(i).getCompanyName());
             viewHolder.companyTel.setText(companey.get(i).getPhoneNo());
             viewHolder.hold_company_time.setText(companey.get(i).getCustomerName());
@@ -97,7 +99,13 @@ public class searchCustomerAdapter extends  RecyclerView.Adapter<searchCustomerA
                     editText.setText(companey.get(i).getPhoneNo());
                     customer_name.setText(companey.get(i).getCustomerName());
                     companey_name.setText(companey.get(i).getCompanyName());
-                    recyclerk.setVisibility(View.GONE);
+                    companyId= companey.get(i).getCompanyId();
+                    companey_name.setEnabled(false);
+                    editText.setEnabled(false);
+
+                recyclerk.setVisibility(View.GONE);
+                    ManagerImport managerImport=new ManagerImport(context);
+                    managerImport.startSending("CustomerPhone");
 
                 }
 
@@ -127,7 +135,7 @@ public class searchCustomerAdapter extends  RecyclerView.Adapter<searchCustomerA
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView green, hold_company_time,hold_company_name,companyTel;
+        TextView green, hold_company_time,hold_company_name,companyTel,cancelButton;
         LinearLayout linear_companey;
 
         public ViewHolder(View itemView) {
@@ -137,6 +145,7 @@ public class searchCustomerAdapter extends  RecyclerView.Adapter<searchCustomerA
             companyTel=itemView.findViewById(R.id.hold_company_tel);
             hold_company_time=itemView.findViewById(R.id.hold_company_time);
             linear_companey=itemView.findViewById(R.id.linear_companey);
+            cancelButton=itemView.findViewById(R.id.cancelButton);
 
 
         }

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
@@ -37,6 +38,8 @@ import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
 import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
+import com.falconssoft.onlinetechsupport.reports.ProgrammerReport;
+import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,22 +50,30 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.zip.Inflater;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.falconssoft.onlinetechsupport.GClass.engMListInfoAdapter;
+
 public class MainActivity extends AppCompatActivity {
-    public static List<ManagerLayout> cheakIn, cheakout, hold;
+    public static List<ManagerLayout> cheakIn, cheakout, hold,schaeduale;
     //    ImageView addEmp, AddSystem;
-    ListView listCheakIn, listCheakout, holds;
+    ListView listCheakIn, listCheakout, holds,listSchedule;
     ImageView falcon;
     Animation animZoom;
     Timer T;
     RelativeLayout imageMove;
-    public static TextView refresh,countChickHold,countChickOut,countChickIn;
+    public static TextView refresh,countChickHold,countChickOut,countChickIn,countSchedule,countOfScheduleS;
     TextView waite;
     ManagerLayOutAdapter managerLayOutAdapter1;
     ManagerLayOutAdapter2 managerLayOutAdapter2;
     ManagerLayOutAdapter3 managerLayOutAdapter3;
+    ManagerLayOutAdapter4 managerLayOutAdapter4;
     String ipAddres = "5.189.130.98:8085";
     private Toolbar toolbar;
     ManagerImport managerImport;
+    TextView countOfSchedule,line;
+    int isVisible=1;
+    LinearLayout scheduleLinear;
 
 
     @Override
@@ -83,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         waite = findViewById(R.id.waite);
+        line= findViewById(R.id.line);
 //        addEmp = findViewById(R.id.addEmp);
 //        AddSystem = findViewById(R.id.addSys);
 
@@ -90,19 +102,29 @@ public class MainActivity extends AppCompatActivity {
         countChickHold= findViewById(R.id.countChickHold);
         countChickOut= findViewById(R.id.countChickOut);
         countChickIn= findViewById(R.id.countChickIn);
+        countSchedule= findViewById(R.id.countSchedule);
+        countOfScheduleS= findViewById(R.id.countOfSchedule);
         imageMove = findViewById(R.id.imageMove);
         cheakIn = new ArrayList<>();
         cheakout = new ArrayList<>();
         hold = new ArrayList<>();
+        schaeduale=new ArrayList<>();
 
         listCheakIn = findViewById(R.id.listCheakIn);
+        scheduleLinear=findViewById(R.id.scheduleLinear);
+        countOfSchedule = findViewById(R.id.countOfSchedule);
         listCheakout = findViewById(R.id.listCheakout);
         holds = findViewById(R.id.hold);
+        listSchedule=findViewById(R.id.listSchedule);
          managerImport = new ManagerImport(MainActivity.this);
         managerImport.startSending("Manager");
 //        animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
 //        falcon.startAnimation(animZoom);
         falcon = findViewById(R.id.falcon);
+
+         managerImport=new ManagerImport(MainActivity.this);
+        managerImport.startSendingEngSys(MainActivity.this,6);
+
 //        final Animation animZoom = AnimationUtils.loadAnimation(MainActivity.this, R.anim.zoom);
 //        falcon.startAnimation(animZoom);
 
@@ -150,16 +172,34 @@ public class MainActivity extends AppCompatActivity {
 //            managerLayout.setEnginerName("Eng.Name");
 //            hold.add(managerLayout);
 //        }
+        scheduleLinear.setVisibility(View.GONE);
+        line.setVisibility(View.GONE);
+        countOfSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(isVisible==0){
+                    line.setVisibility(View.GONE);
+                    scheduleLinear.setVisibility(View.GONE);
+                    isVisible=1;
+                }else if(isVisible==1){
+                    line.setVisibility(View.VISIBLE);
+                    scheduleLinear.setVisibility(View.VISIBLE);
+                    isVisible=0;
+                }
+
+            }
+        });
 
         managerLayOutAdapter1 = new ManagerLayOutAdapter(MainActivity.this, cheakIn, 0);
         managerLayOutAdapter2 = new ManagerLayOutAdapter2(MainActivity.this, cheakout, 1);
         managerLayOutAdapter3 = new ManagerLayOutAdapter3(MainActivity.this, hold, 2);
-
+        managerLayOutAdapter4= new  ManagerLayOutAdapter4(MainActivity.this, schaeduale, 3);
 //
         holds.setAdapter(managerLayOutAdapter3);
         listCheakIn.setAdapter(managerLayOutAdapter1);
         listCheakout.setAdapter(managerLayOutAdapter2);
-
+        listSchedule.setAdapter(managerLayOutAdapter4);
         refresh.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -176,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                     managerLayOutAdapter1.notifyDataSetChanged();
                     managerLayOutAdapter2.notifyDataSetChanged();
                     managerLayOutAdapter3.notifyDataSetChanged();
+                    managerLayOutAdapter4.notifyDataSetChanged();
                     refresh.setText("0");
                 } else if (refresh.getText().toString().equals("2")) {//wait to in
 //                    insertImage(waite,null,listCheakIn);
@@ -188,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-         managerImport = new ManagerImport(MainActivity.this);
+       //  managerImport = new ManagerImport(MainActivity.this);
         T = new Timer();
         T.schedule(new TimerTask() {
             @Override
@@ -269,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
 //                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
 
         final EditText UserName, Password;//,EngId;
-        final RadioButton Manager, Online, callCenter;
+        final RadioButton Manager, Online, callCenter,CallTecRadio,TecRadio,CallProgRadio,progRadio;
         TextView add, cancel;
 
 
@@ -280,6 +321,11 @@ public class MainActivity extends AppCompatActivity {
         Manager = AddEmployeDialog.findViewById(R.id.managerRadio);
         Online = AddEmployeDialog.findViewById(R.id.OnlineRadio);
         callCenter = AddEmployeDialog.findViewById(R.id.CallRadio);
+
+        CallTecRadio = AddEmployeDialog.findViewById(R.id.CallTecRadio);
+        TecRadio = AddEmployeDialog.findViewById(R.id.TecRadio);
+        CallProgRadio=AddEmployeDialog.findViewById(R.id.CallProgRadio);
+        progRadio=AddEmployeDialog.findViewById(R.id.progRadio);
 
         add = AddEmployeDialog.findViewById(R.id.Addbutton);
         cancel = AddEmployeDialog.findViewById(R.id.Cancelbutton);
@@ -301,6 +347,14 @@ public class MainActivity extends AppCompatActivity {
                         EngType = 2;
                     } else if (callCenter.isChecked()) {
                         EngType = 1;
+                    } else if (CallTecRadio.isChecked()) {
+                        EngType = 3;
+                    } else if (TecRadio.isChecked()) {
+                        EngType = 4;
+                    }else if (CallProgRadio.isChecked()) {
+                        EngType = 5;
+                    }else if (progRadio.isChecked()) {
+                        EngType = 6;
                     }
 
                     engineerInfo.setEng_type(EngType);
@@ -326,6 +380,34 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddEmployeDialog.dismiss();
+            }
+        });
+
+
+        AddEmployeDialog.show();
+    }
+
+    void userControlApp() {
+
+        final Dialog AddEmployeDialog = new Dialog(MainActivity.this, R.style.Theme_Dialog);
+        AddEmployeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        AddEmployeDialog.setCancelable(true);
+        AddEmployeDialog.setContentView(R.layout.user_control);
+//                    dialog.getWindow().setBackgroundDrawable(context.getResources().getDrawable(R.drawable.bac_list_3_1)); // transpa
+
+
+        TextView cancel=AddEmployeDialog.findViewById(R.id.Cancelbutton);
+
+        ListView listView=AddEmployeDialog.findViewById(R.id.userControlList);
+
+        ManagerControlUser managerControlUser=new ManagerControlUser(MainActivity.this,engMListInfoAdapter);
+
+        listView.setAdapter(managerControlUser);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -398,6 +480,90 @@ public class MainActivity extends AppCompatActivity {
         AddSystem.show();
     }
 
+    public void passwordForSetting(final int flag){
+        final EditText editText = new EditText(MainActivity.this);
+        final TextView textView = new TextView(MainActivity.this);
+        editText.setHint("ادخل كلمة السر ");
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editText.setTextColor(Color.BLACK);
+        textView.setTextColor(Color.RED);
+        if (SweetAlertDialog.DARK_STYLE) {
+            editText.setTextColor(Color.BLACK);
+        }
+        LinearLayout linearLayout = new LinearLayout(getApplicationContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.addView(editText);
+        linearLayout.addView(textView);
+
+        SweetAlertDialog dialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                .setTitleText("كلمة السر ")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        String password=editText.getText().toString();
+                        textView.setText("");
+                        if(flag==0) {
+                            if (!password.equals("")) {
+
+                                if (password.equals("co1234")) {
+
+                                    textView.setText("");
+                                    Intent intent = new Intent(MainActivity.this, CallCenterTrackingReport.class);
+                                    startActivity(intent);
+
+                                    sweetAlertDialog.dismissWithAnimation();
+
+                                } else {
+                                    textView.setText("كلمة السر خطا ");
+                                }
+
+                            }
+
+                        }else if(flag==1){
+
+                            if (!password.equals("")) {
+
+                                if (password.equals("to1234")) {
+
+                                    textView.setText("");
+                                    Intent intent4 = new Intent(MainActivity.this, TechnicalTrackingReport.class);
+                                    startActivity(intent4);
+                                    sweetAlertDialog.dismissWithAnimation();
+
+                                } else {
+                                    textView.setText("كلمة السر خطا ");
+                                }
+
+                            }
+
+                        }else if(flag==2){
+
+                            if (!password.equals("")) {
+
+                                if (password.equals("prog1234")) {
+
+                                    textView.setText("");
+                                    Intent intent4 = new Intent(MainActivity.this, ProgrammerReport.class);
+                                    startActivity(intent4);
+                                    sweetAlertDialog.dismissWithAnimation();
+
+                                } else {
+                                    textView.setText("كلمة السر خطا ");
+                                }
+
+                            }
+
+                        }
+
+                    }
+                });
+//                        .hideConfirmButton();
+
+        dialog.setCustomView(linearLayout);
+        dialog.show();
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.control_menu, menu);
@@ -414,12 +580,33 @@ public class MainActivity extends AppCompatActivity {
                 addEmploy();
                 return true;
             case R.id.menu_report:
-                Intent intent = new Intent(MainActivity.this, CallCenterTrackingReport.class);
-                startActivity(intent);
+                passwordForSetting(0);
+
                 return true;
             case R.id.menu_engineers_tracking_report:
                 Intent intent2 = new Intent(MainActivity.this, EngineersTrackingReport.class);
                 startActivity(intent2);
+                return true;
+
+            case R.id.DashBoard:
+                Intent intent3 = new Intent(MainActivity.this, DashBoard.class);
+                startActivity(intent3);
+//                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.menu_tec_report:
+                passwordForSetting(1);
+
+//                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.menu_prog_report:
+                passwordForSetting(2);
+
+//                Toast.makeText(this, "In Next Version", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.UserControl:
+                userControlApp();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

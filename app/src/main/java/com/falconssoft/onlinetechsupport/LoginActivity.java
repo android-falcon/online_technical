@@ -20,13 +20,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
-import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
-
 import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.falconssoft.onlinetechsupport.PresenterClass.listInfo;
 
@@ -112,11 +106,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     startActivity(intent2);
                                     break;
                                 case 2:// online
-                                    Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+                                    Intent intent3 = new Intent(LoginActivity.this, TechnicalActivity.class);
                                     startActivity(intent3);
                                     break;
+                                case 3:// call center tec
+                                    Intent intent5 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                    startActivity(intent5);
+                                    break;
+                                case 4:// tec
+                                    Intent intent4 = new Intent(LoginActivity.this, TechnicalActivity.class);
+                                    startActivity(intent4);
+                                    break;
+                                case 5:// call center program
+                                    Intent intent6 = new Intent(LoginActivity.this, OnlineCenter.class);
+                                    startActivity(intent6);
+                                    break;
+                                case 6:// tec program
+                                    Intent intent7 = new Intent(LoginActivity.this, TechnicalActivity.class);
+                                    startActivity(intent7);
+                                    break;
                             }
-                            presenterClass.setState(listInfo.get(i).getId(), 0);// log in
+//                            presenterClass.setState(listInfo.get(i).getId(), 0);// log in
                             break;
                         }
 
@@ -128,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                         }else if(localUsername.equals("online")&&localPassword.equals("1234o")){
 
-                            Intent intent3 = new Intent(LoginActivity.this, OnlineActivity.class);
+                            Intent intent3 = new Intent(LoginActivity.this, TechnicalActivity.class);
                             startActivity(intent3);
                         }else  if(localUsername.equals("callCenter")&&localPassword.equals("1234c")){
                             Intent intent2 = new Intent(LoginActivity.this, OnlineCenter.class);

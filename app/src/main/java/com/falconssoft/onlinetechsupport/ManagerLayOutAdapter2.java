@@ -57,7 +57,7 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
         }
 
         private class ViewHolder {
-            TextView companyName, EngName, timeLoading,CheckOutTime,CheckInTime;
+            TextView companyName, EngName, timeLoading,CheckOutTime,CheckInTime,tecType;
             LinearLayout time,mainLiner;
         }
 
@@ -77,6 +77,14 @@ public class ManagerLayOutAdapter2 extends BaseAdapter {
             holder.CheckOutTime= view.findViewById(R.id.CheckOutTime);
             holder.CheckInTime= view.findViewById(R.id.CheckInTime);
             holder.CheckOutTime.setVisibility(View.VISIBLE);
+            holder.tecType=view.findViewById(R.id.tecType);
+            if(itemsList.get(i).getTecType().equals("2")){
+                holder.tecType.setText("On-Tec");
+            }else  if(itemsList.get(i).getTecType().equals("4")){
+                holder.tecType.setText("Tec");
+            }else  if(itemsList.get(i).getTecType().equals("6")){
+                holder.tecType.setText("Prog");
+            }
 
             holder.CheckOutTime.setTextColor(context.getResources().getColor(R.color.darkblue_2));
             holder.CheckInTime.setText("" + itemsList.get(i).getCheakInTime());

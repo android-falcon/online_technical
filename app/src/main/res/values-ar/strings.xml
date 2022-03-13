@@ -39,6 +39,8 @@
     <string name="customer_name">اسم الزبون</string>
     <string name="system_type">نوع البرنامج</string>
     <string name="hold_customer_list">قائمة الانتظار للزبائن</string>
+    <string name="sch_customer_list">Schedule Customer List</string>
+
     <string name="hold">انتظار</string>
     <string name="more_information">المزيد من المعلومات</string>
     <string name="eng_name">اسم المهندس :</string>
@@ -47,6 +49,8 @@
     <string name="problem_detail">وصف المشكله :</string>
     <string name="done">تم </string>
     <string name="areyouSureExit">هل تريد الخروج؟</string>
+    <string name="areyouSureDelete">هل تريد الحذف ؟</string>
+
     <string name="warning">تحذير</string>
     <string name="no">لا</string>
     <string name="dialog_ok">موافق</string>
@@ -76,4 +80,16 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="hold_Reason">Hold Reason</string>
+    <string name="DashBoard">DashBoard</string>
+    <string name="call_center_tec">Call Center Tec</string>
+    <string name="Technical">Technical</string>
+    <string name="cancel_Reason">Cancel Reason</string>
+    <string name="Technical_report">Technical Report</string>
+    <string name="Schedule">schedule</string>
+    <string name="Schedule_reason">Schedule Reason</string>
+    <string name="systems">Systems</string>
+    <string name="call_center_Prog">Call Center Prog</string>
+    <string name="programmer">programmer</string>
+    <string name="Programmer_Report">Programmer Report</string>
+    <string name="UserControl">User Control</string>
 </resources>

@@ -57,7 +57,7 @@ public class EngineersTrackingReport extends AppCompatActivity implements Adapte
     private List<ManagerLayout> tempList = new ArrayList<>();
     EditText customerEText,phoneEText,companyEText;
     TextView fromDate,toDate;
-    GClass gClass=new GClass(EngineersTrackingReport.this,null);
+    GClass gClass=new GClass(EngineersTrackingReport.this,null,null);
     private Calendar calendar;
     private String engineerText = "All", DateText = "All",engText="All",systemText="All";
     int inEng=0;

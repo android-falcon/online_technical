@@ -16,4 +16,17 @@
     <item
         android:id="@+id/menu_engineers_tracking_report"
         android:title="@string/tracking_report"/>
+    <item
+        android:id="@+id/menu_tec_report"
+        android:title="@string/Technical_report"/>
+    <item
+        android:id="@+id/menu_prog_report"
+        android:title="@string/Programmer_Report"/>
+    <item
+        android:id="@+id/DashBoard"
+        android:title="@string/DashBoard"/>
+
+    <item
+        android:id="@+id/UserControl"
+        android:title="@string/UserControl"/>
 </menu>

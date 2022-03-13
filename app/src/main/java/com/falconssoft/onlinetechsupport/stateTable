@@ -13,3 +13,40 @@ original_serial
 -1 --> masterTrans
 other No --> serial of master
 }
+
+
+ENG TYPE{
+mang ->0
+call onl ->1
+online ->2
+call tec ->3
+tec -> 4
+call prog ->5
+prog -> 6
+
+}
+
+
+convert_status{
+0->check out solved
+
+1 -> checkout  convert
+2-> checkout  convert
+3-> checkout  convert
+4 -> transfer
+
+}
+
+
+row_status
+{
+1--> delete
+2--> update problem
+}
+
+tec_type{
+
+2-->online
+4-->tec
+6-->prog
+}

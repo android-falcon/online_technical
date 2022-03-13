@@ -57,6 +57,7 @@ public class adapterGridEngineer extends BaseAdapter {
         engineerLayout= myView.findViewById(R.id.engineerLayout);
         textView_Nmae = myView.findViewById(R.id.textView_Nmae);
         profile_image = myView.findViewById(R.id.profile_image);
+        Log.e("list_list_engineer",""+list_engineer.size());
         textView_Nmae.setText(list_engineer.get(i).getName());
         textView_Nmae.setTag(i);
 

@@ -24,37 +24,25 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.NoConnectionError;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.falconssoft.onlinetechsupport.DatabaseHandler;
 import com.falconssoft.onlinetechsupport.ManagerImport;
-import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
-import com.falconssoft.onlinetechsupport.Modle.Systems;
-import com.falconssoft.onlinetechsupport.MySingeltone;
-import com.falconssoft.onlinetechsupport.OnlineCenter;
 import com.falconssoft.onlinetechsupport.PresenterClass;
 import com.falconssoft.onlinetechsupport.R;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
+import static com.falconssoft.onlinetechsupport.GClass.callCenterList;
 import static com.falconssoft.onlinetechsupport.GClass.engList;
 import static com.falconssoft.onlinetechsupport.GClass.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.GClass.systemList;
@@ -65,13 +53,12 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     private RecyclerView recyclerView;
     private CallCenterTrackingAdapter adapter;
     private PresenterClass presenterClass;
-    public static List<ManagerLayout> callCenterList = new ArrayList<>();
     private ArrayAdapter<String> callCenterAdapter,dateAdapter,engAdapter,sysAdapter;
     private Spinner callCenterSpinner,engSpinner,sysSpinner;//dateSpinner
     private String engineerText = "All", DateText = "All",engText="All",systemText="All";
     private List<String> engineerList = new ArrayList<>();
     private List<ManagerLayout> tempList = new ArrayList<>();
-    TextView count;
+    TextView count,CheckInTimeId,CheckOutTimeId,HoldTimeId,problemOrder;
     public static List<String> DateList=new ArrayList<>();
     List<String> dateListReal=new ArrayList<String>();
 
@@ -85,21 +72,29 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
     int inSys=0;
     TextView infoTableReport;
 
-    TextView fromDate,toDate,btnSpeakCompany,btnSpeakCustomer;
+    TextView fromDate,toDate,btnSpeakCompany,btnSpeakCustomer,dateTransOrder,companyOrder,phoneOrder,customerFilter,engOrder;
     private int timeFlag = 0;// 0=> from, 1=> to
     EditText customerEText,phoneEText,companyEText;
     LinearLayout search;
     private Calendar calendar;
     private SimpleDateFormat dateFormat, dfReport;
     private Date date;
+    boolean upDownFlagCheInTime =false;
+    boolean upDownFlagCheOutTime =true;
+    boolean upDownFlagHoldTime =true;
+    boolean upDownFlagProblem =false;
+    boolean upDownFlagDateTrance =false;
+    boolean upDownFlagEng =false;
+    boolean upDownFlagCustomer =false;
+    boolean upDownFlagPhone =false;
+    boolean upDownFlagCompany =false;
+    int timeFlagOrder =0;
+    TextView reportName;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_center_tracking_report);
-
-        presenterClass = new PresenterClass(this);
-        presenterClass.getCallCenterData(this);
         infoTableReport= findViewById(R.id.infoTableReport);
         infoTableReport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,14 +112,22 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         companyEText=findViewById(R.id.eng_report_company);
         search=findViewById(R.id.search);
 //        dateSpinner= findViewById(R.id.callCenter_report_dateSpinner);
-        adapter = new CallCenterTrackingAdapter(this, callCenterList);
         recyclerView.setAdapter(adapter);
         count=findViewById(R.id.count);
+        CheckInTimeId=findViewById(R.id.CheckInTimeId);
+        CheckOutTimeId=findViewById(R.id.CheckOutTimeId);
+        HoldTimeId=findViewById(R.id.HoldTimeId);
+        problemOrder=findViewById(R.id.problemOrder);
+        dateTransOrder=findViewById(R.id.dateTransOrder);
+        companyOrder=findViewById(R.id.companyOrder);
+        phoneOrder=findViewById(R.id.phoneOrder);
+        customerFilter=findViewById(R.id.customerFilter);
+        engOrder=findViewById(R.id.engOrder);
+        reportName=findViewById(R.id.reportName);
+        reportName.setText(CallCenterTrackingReport.this.getResources().getString(R.string.call_center_report));
 
 //        engineerList.add("Sarah");
 //        engineerList.add("Manal");
-
-
 
         fromDate=findViewById(R.id.fromDate);
         toDate=findViewById(R.id.toDate);
@@ -142,6 +145,12 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
                 startVoiceInput(2);
             }
         });
+
+
+        presenterClass = new PresenterClass(this);
+        presenterClass.getCallCenterData(this,null,null,"2",fromDate.getText().toString(),toDate.getText().toString());
+
+        adapter = new CallCenterTrackingAdapter(this, callCenterList,"2",fromDate.getText().toString(),toDate.getText().toString());
 
         ManagerImport managerImport=new ManagerImport(CallCenterTrackingReport.this);
         managerImport.startSendingEngSys(CallCenterTrackingReport.this,0);
@@ -187,6 +196,206 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
 
             }
         });
+
+        CheckInTimeId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=0;
+                if(upDownFlagCheInTime) {
+                    upDownFlagCheInTime =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorIn());
+                    filter();
+//                    CheckInTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagCheInTime =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorIn()));
+                    filter();
+//                    CheckInTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+//        dateTransOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                timeFlagOrder=1;
+//                if(upDownFlagDateTrance) {
+//                    upDownFlagDateTrance =false;
+//                    //ic_arrow_upward_black_24dp
+//                    Collections.sort(callCenterList, new StringDateComparatorDateTrance());
+//                    filter();
+////                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+//                }else {
+//                    upDownFlagDateTrance =true;
+//                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorDateTrance()));
+//                    filter();
+////                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+//
+//                }
+//
+//            }
+//        });
+
+
+        engOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=4;
+                if(upDownFlagEng) {
+                    upDownFlagEng =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagEng =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+        companyOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=5;
+                if(upDownFlagCompany) {
+                    upDownFlagCompany =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagCompany =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+        phoneOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=6;
+                if(upDownFlagPhone) {
+                    upDownFlagPhone =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagPhone =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+        customerFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=7;
+                if(upDownFlagCustomer) {
+                    upDownFlagCustomer =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorString());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagCustomer =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorString()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+        CheckOutTimeId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=1;
+                if(upDownFlagCheOutTime) {
+                    upDownFlagCheOutTime =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorOut());
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagCheOutTime =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorOut()));
+                    filter();
+//                    CheckOutTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+
+
+        HoldTimeId.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=2;
+                if(upDownFlagHoldTime) {
+                    upDownFlagHoldTime =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparatorHold());
+                    filter();
+//                    HoldTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagHoldTime =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparatorHold()));
+                    filter();
+//                    HoldTimeId.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+        problemOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                timeFlagOrder=3;
+                if(upDownFlagProblem) {
+                    upDownFlagProblem =false;
+                    //ic_arrow_upward_black_24dp
+                    Collections.sort(callCenterList, new StringDateComparator());
+                    filter();
+                    problemOrder.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp), null);
+                }else {
+                    upDownFlagProblem =true;
+                    Collections.sort(callCenterList,Collections.reverseOrder(new StringDateComparator()));
+                    filter();
+                    problemOrder.setCompoundDrawables(null, null, CallCenterTrackingReport.this.getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp), null);
+
+                }
+
+            }
+        });
+
+
+
 
     }
     private void startVoiceInput(int flag) {
@@ -254,7 +463,9 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
                     toDate.setText(sdf.format(calendar.getTime()));
 
                 if (!fromDate.getText().toString().equals("") && !toDate.getText().toString().equals("")) {
-                    filter();
+                    presenterClass.getCallCenterData(CallCenterTrackingReport.this,null,null,"2",fromDate.getText().toString(),toDate.getText().toString());
+
+                    //  filter();
                 }
             }
         };
@@ -476,7 +687,7 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
             }
         }
 
-        adapter = new CallCenterTrackingAdapter(this, filtered);
+        adapter = new CallCenterTrackingAdapter(this, filtered,"2",fromDate.getText().toString(),toDate.getText().toString());
         recyclerView.setAdapter(adapter);
         count.setText(""+filtered.size());
     }
@@ -496,5 +707,159 @@ public class CallCenterTrackingReport extends AppCompatActivity implements Adapt
         return d;
     }
 
+
+//    class SorterClass implements Comparator<BundleInfo> {
+//        @Override
+//        public int compare(BundleInfo one, BundleInfo another) {
+//            int returnVal = 0;
+//            switch (sortFlag) {
+//                case 0: // thickness
+//                    if (one.getThickness() < another.getThickness()) {
+//                        returnVal = -1;
+//                    } else if (one.getThickness() > another.getThickness()) {
+//                        returnVal = 1;
+//                    } else if (one.getThickness() == another.getThickness()) {
+//                        returnVal = 0;
+//                    }
+//                    break;
+//
+//                case 1: // width
+//                    if (one.getWidth() < another.getWidth()) {
+//                        returnVal = -1;
+//                    } else if (one.getWidth() > another.getWidth()) {
+//                        returnVal = 1;
+//                    } else if (one.getWidth() == another.getWidth()) {
+//                        returnVal = 0;
+//                    }
+//                    break;
+//
+//                case 2: // length
+//                    if (one.getLength() < another.getLength()) {
+//                        returnVal = -1;
+//                    } else if (one.getLength() > another.getLength()) {
+//                        returnVal = 1;
+//                    } else if (one.getLength() == another.getLength()) {
+//                        returnVal = 0;
+//                    }
+//                    break;
+//            }
+//            return returnVal;
+//        }
+//
+//    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        callCenterList.clear();
+    }
+
+    class StringDateComparator implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        int dateTime=0;
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+
+            dateTime= lhs.getProplem().compareTo(rhs.getProplem());
+
+            return dateTime;
+        }
+    }
+
+
+
+    class StringDateComparatorIn implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getCheakInTime() == null || rhs.getCheakInTime() == null)
+                return 0;
+            return lhs.getCheakInTime().compareTo(rhs.getCheakInTime());
+
+        }
+    }
+
+    class StringDateComparatorOut implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getCheakOutTime() == null || rhs.getCheakOutTime() == null)
+                return 0;
+            return lhs.getCheakOutTime().compareTo(rhs.getCheakOutTime());
+
+        }
+    }
+
+    class StringDateComparatorDateTrance implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getTransactionDate() == null || rhs.getTransactionDate() == null)
+                return 0;
+            return lhs.getTransactionDate().compareTo(rhs.getTransactionDate());
+
+        }
+    }
+
+
+    class StringDateComparatorString implements Comparator<ManagerLayout>
+    {
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            switch (timeFlagOrder) {
+                case 4:
+                if (lhs.getEnginerName() == null || rhs.getEnginerName() == null)
+                    return 0;
+                return lhs.getEnginerName().compareTo(rhs.getEnginerName());
+
+
+                case 5:
+                    if (lhs.getCompanyName() == null || rhs.getCompanyName() == null)
+                        return 0;
+                    return lhs.getCompanyName().compareTo(rhs.getCompanyName());
+
+
+                case 6:
+                    if (lhs.getPhoneNo() == null || rhs.getPhoneNo() == null)
+                        return 0;
+                    return lhs.getPhoneNo().compareTo(rhs.getPhoneNo());
+
+
+                case 7:
+                    if (lhs.getCustomerName() == null || rhs.getCustomerName() == null)
+                        return 0;
+                    return lhs.getCustomerName().compareTo(rhs.getCustomerName());
+
+
+            }
+            return 0;
+        }
+    }
+
+    class StringDateComparatorHold implements Comparator<ManagerLayout>
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+
+        public int compare(ManagerLayout lhs, ManagerLayout rhs)
+        {
+            //
+            if (lhs.getHoldTime() == null || rhs.getHoldTime() == null)
+                return 0;
+            return lhs.getHoldTime().compareTo(rhs.getHoldTime());
+
+        }
+    }
 
 }

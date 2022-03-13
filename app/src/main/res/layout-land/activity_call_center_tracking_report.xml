@@ -18,6 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         >
     <TextView
+        android:id="@+id/reportName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/call_center_report"
@@ -397,6 +398,7 @@
         android:layout_height="wrap_content">
 
         <TextView
+            android:id="@+id/engOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -417,6 +419,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/problemOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -438,6 +441,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/phoneOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -448,6 +452,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/companyOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -458,29 +463,37 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/CheckInTimeId"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/check_in_time"
+            android:drawableEnd="@drawable/ic_arrow_upward_black_24dp"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/CheckOutTimeId"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
+            android:drawableEnd="@drawable/ic_arrow_upward_black_24dp"
+
             android:text="@string/check_out_time"
             android:textColor="@color/white"
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/HoldTimeId"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:drawableEnd="@drawable/ic_arrow_upward_black_24dp"
+
             android:fontFamily="@font/averia_libre_light"
             android:gravity="center"
             android:text="@string/hold"
@@ -488,6 +501,7 @@
             android:textSize="16sp" />
 
         <TextView
+            android:id="@+id/dateTransOrder"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.2"

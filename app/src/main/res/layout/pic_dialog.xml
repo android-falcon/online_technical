@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="510dp"
+    android:layout_height="510dp"
+    android:padding="20dp"
+   >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/jjj"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/main_pic"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_margin="10dp"
+            android:src="@drawable/pic"
+            android:background="@drawable/border_background"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>

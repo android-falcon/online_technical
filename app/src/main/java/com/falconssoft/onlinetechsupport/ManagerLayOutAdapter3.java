@@ -56,7 +56,7 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
         }
 
         private class ViewHolder {
-            TextView companyName, EngName, timeLoading,CheckInTime,CheckOutTime;
+            TextView companyName, EngName, timeLoading,CheckInTime,CheckOutTime,tecType;
             LinearLayout time,mainLiner;
         }
 
@@ -77,6 +77,14 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
 
             holder.CheckOutTime= view.findViewById(R.id.CheckOutTime);
             holder.CheckInTime= view.findViewById(R.id.CheckInTime);
+            holder.tecType=view.findViewById(R.id.tecType);
+            if(itemsList.get(i).getTecType().equals("2")){
+                holder.tecType.setText("On-Tec");
+            }else  if(itemsList.get(i).getTecType().equals("4")){
+                holder.tecType.setText("Tec");
+            }else  if(itemsList.get(i).getTecType().equals("6")){
+                holder.tecType.setText("Prog");
+            }
 
             holder.CheckInTime.setTextColor(context.getResources().getColor(R.color.falconColor));
             holder.CheckOutTime.setVisibility(View.GONE);
@@ -126,7 +134,7 @@ public class ManagerLayOutAdapter3 extends BaseAdapter {
                     states=dialog.findViewById(R.id.state);
                     callCenterName=dialog.findViewById(R.id.call_center_name);
                     dateOfTran=dialog.findViewById(R.id.dateOfTran);
-                    hold_reason=dialog.findViewById(R.id.dateOfTran);
+                    hold_reason=dialog.findViewById(R.id.hold_reason);
                     String statesString ="";
                     Animation animation = AnimationUtils.loadAnimation(context, R.anim.top_bottom);
 //                    dialog.ge.startAnimation(animation);

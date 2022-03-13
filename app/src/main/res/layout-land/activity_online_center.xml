@@ -380,6 +380,7 @@
                         android:textColor="@color/white" />
 
                     <TextView
+                        android:id="@+id/holdScheaduale"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
@@ -506,6 +507,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8"
                 android:layoutDirection="ltr"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <Button
@@ -513,7 +515,6 @@
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="450dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/background_hold"
@@ -525,19 +526,51 @@
                     android:textColor="@color/darkblue_" />
 
 
+                <Button
+                    android:id="@+id/btn_sch"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_hold"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:onClick="addToHoldList"
+                    android:text="@string/Schedule"
+                    android:textColor="@color/darkblue_" />
+
+                <Button
+                    android:id="@+id/btnReport"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/background_hold"
+                    android:elevation="5dp"
+                    android:gravity="center"
+                    android:onClick="showTecReport"
+                    android:text="@string/Technical_report"
+                    android:textColor="@color/darkblue_" />
+
+
             </LinearLayout>
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/deletaAllText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_delete_forever_black_24dp"
-            android:elevation="2dp"
-            android:gravity="left"
-            android:padding="1dp"
-            />
+        android:id="@+id/deletaAllText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_delete_forever_black_24dp"
+        android:elevation="2dp"
+        android:gravity="left"
+        android:padding="1dp"
+        />
+
 
         <TextView
             android:id="@+id/countOfCallWork"
