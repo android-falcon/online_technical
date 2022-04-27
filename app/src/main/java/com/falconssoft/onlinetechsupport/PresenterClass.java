@@ -56,15 +56,18 @@ public class PresenterClass {
     private List<CustomerOnline> onlineList;
     private String value, URL;
     private int serial, childIndex;
+    int flag=0;
 
     //    private List<ManagerLayout> callCenterList = new ArrayList<>();
     private CustomerOnline customerOnline;
     private TechnicalActivity technicalActivity;
+    private TechnicalActivityOnline technicalActivityOnline;
     private CallCenterTrackingReport callCenterTrackingReport;
     private EngineersTrackingReport engineersTrackingReport;
     private TechnicalTrackingReport technicalTrackingReport;
     private  ProgrammerReport programmerReport;
     private String callType,fromDate,toDate;
+    int flagUpdate=0,update=0;
 
 //    private String ipAddres;
 
@@ -125,6 +128,7 @@ public class PresenterClass {
                         engineerInfo.setState(jsonObject.getInt("STATE"));
                         engineerInfo.setPassword(jsonObject.getString("PASSWORD"));
                         engineerInfo.setEng_type(jsonObject.getInt("ENG_TYPE"));
+                        engineerInfo.setEnglishName(jsonObject.getString("ENG_NAME_ENGLISH"));
                         listInfo.add(engineerInfo);
                         i++;
                         Log.e("EmployList", "LoginDataClass/ " + engineerInfo.getName() + "  " + engineerInfo.getPassword());
@@ -185,10 +189,103 @@ public class PresenterClass {
         }
     }
 
+
+    //****************************************** Customers Data 2**************************************
+
+    public void getCustomersData2(TechnicalActivityOnline technicalActivity) {
+        this.technicalActivityOnline = technicalActivity;
+        try {
+            String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+            //http://10.0.0.175/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=19
+            urlImportCustomer = URL + "import.php?FLAG=2&ENG_ID=" + engId;
+            objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, null, new CustomersDataClass2(), new CustomersDataClass2());
+            Log.e("presenter/e", "getCustomersData/urllll" + urlImportCustomer);
+
+            requestQueue.add(objectRequest);
+        } catch (Exception e) {
+            Toast.makeText(technicalActivity, "Try to login please!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class CustomersDataClass2 implements Response.Listener<JSONObject>, Response.ErrorListener {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e("presenter/e", "getCustomersData/ " + error.getMessage());
+
+        }
+
+        @Override
+        public void onResponse(JSONObject response) {
+//            Log.e("presenter", "getCustomersData/ " + response.toString());
+
+            Gson gson = new Gson();
+            if (response.toString().equals("{}"))
+                technicalActivityOnline.fillRecyclerData(new ArrayList<CustomerOnline>());
+            else {
+                CustomerOnline online = gson.fromJson(response.toString(), CustomerOnline.class);
+                Log.e("getOnlineList", "" + response.toString());
+                technicalActivityOnline.fillRecyclerData(online.getOnlineList());
+            }
+
+        }
+    }
+
+    //****************************************** customer hold danger **************************************
+
+    public void getCustomersHoldDanger(TechnicalActivityOnline technicalActivity) {
+        this.technicalActivityOnline = technicalActivity;
+        try {
+            String engId = LoginActivity.sharedPreferences.getString(LOGIN_ID, "null");
+            //http://10.0.0.175/onlineTechnicalSupport/import.php?FLAG=2&ENG_ID=19
+            urlImportCustomer = URL + "import.php?FLAG=17";
+            objectRequest = new JsonObjectRequest(Request.Method.GET, urlImportCustomer, null, new HoldDangerClass(), new HoldDangerClass());
+            Log.e("presenter/e", "getCustomersHoldDanger/urllll" + urlImportCustomer);
+
+            requestQueue.add(objectRequest);
+        } catch (Exception e) {
+            Toast.makeText(technicalActivity, "Try to login please!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    class HoldDangerClass implements Response.Listener<JSONObject>, Response.ErrorListener {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e("presenter/e", "getCustomersHoldDanger/ " + error.getMessage());
+
+            try {
+                technicalActivityOnline.fillRecyclerDataDanger(new ArrayList<CustomerOnline>());
+            }catch (Exception e){
+
+            }
+
+        }
+
+        @Override
+        public void onResponse(JSONObject response) {
+           Log.e("presenter", "getCustomersHoldDanger/ " + response.toString());
+
+            Gson gson = new Gson();
+            if (response.toString().equals("{}"))
+                technicalActivityOnline.fillRecyclerDataDanger(new ArrayList<CustomerOnline>());
+            else {
+                CustomerOnline online = gson.fromJson(response.toString(), CustomerOnline.class);
+                Log.e("getOnlineListDanger", "" + response.toString());
+                technicalActivityOnline.fillRecyclerDataDanger(online.getOnlineList());
+            }
+
+        }
+    }
+
     //****************************************** checkOut **************************************
 
-    public void checkOut(CustomerOnline customerOnline, TechnicalActivity technicalActivity) {
-        this.technicalActivity = technicalActivity;
+    public void checkOut(CustomerOnline customerOnline, Context technicalActivity,int flag) {
+        this.flag=flag;
+        if(flag==1) {
+            this.technicalActivity = (TechnicalActivity) technicalActivity;
+        }else if(flag==2){
+            this.technicalActivityOnline = (TechnicalActivityOnline) technicalActivity;
+
+        }
         url = URL + "export.php";
         Log.e("push", url);
 
@@ -208,7 +305,7 @@ public class PresenterClass {
             object.put("SYS_ID", customerOnline.getSystemId());
             object.put("ENG_ID", customerOnline.getEngineerID());
             object.put("ENG_NAME", customerOnline.getEngineerName());
-            object.put("STATE", "2");
+            object.put("STATE", "0");//why????
             object.put("COMPANY_ID", customerOnline.getCompanyId());
             object.put("LONGITUDE", customerOnline.getLongitudeIn());
             object.put("LATITUDE", customerOnline.getLatitudeIn());
@@ -247,8 +344,13 @@ public class PresenterClass {
         @Override
         public void onResponse(String response) {
             Log.e("presenter", "CheckOutClass/ " + response);
-            getCustomersData(technicalActivity);
-            technicalActivity.dumpData(response);
+            if(flag==1) {
+                getCustomersData(technicalActivity);
+                technicalActivity.dumpData(response);
+            }else if (flag==2){
+                getCustomersData2(technicalActivityOnline);
+                technicalActivityOnline.dumpData(response);
+            }
 
 //            onlineActivity.hideCustomerLinear();
         }
@@ -437,9 +539,17 @@ public class PresenterClass {
 
     //****************************************** getSystems  **************************************
 
-    public void getSystems(Activity activity) {
+    public void getSystems(Activity activity,int flag) {
 
-        technicalActivity = (TechnicalActivity) activity;
+        this.flag=flag;
+        if(flag==1){
+            technicalActivity = (TechnicalActivity) activity;
+
+        }else if(flag==2){
+            technicalActivityOnline = (TechnicalActivityOnline) activity;
+
+        }
+
         url = URL + "import.php?FLAG=0";//http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=0
         request = new StringRequest(Request.Method.GET, url, new SystemsClass(), new SystemsClass());
 
@@ -460,17 +570,31 @@ public class PresenterClass {
 
             Gson gson = new Gson();
             Systems systems = gson.fromJson(response, Systems.class);
-            technicalActivity.fillSystemsDialog(systems.getSystemsList());
+            if(flag==1){
+                technicalActivity.fillSystemsDialog(systems.getSystemsList());
+
+            }else if(flag==2){
+                technicalActivityOnline.fillSystemsDialog(systems.getSystemsList());
+
+            }
 
 
         }
-    }
+    }//
 
     //****************************************** update technical state  **************************************
 
-    public void updateTechnicalState(Activity activity, final CustomerOnline customerOnline) {
+    public void updateTechnicalState(Activity activity, final CustomerOnline customerOnline,int flag,int update) {
 
-        technicalActivity = (TechnicalActivity) activity;
+        if(flag==1) {
+            this.update=update;
+            technicalActivity = (TechnicalActivity) activity;
+        }else if(flag==2){
+            this.update=update;
+            flagUpdate=2;
+            technicalActivityOnline = (TechnicalActivityOnline) activity;
+
+        }
         url = URL + "export.php?";//http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=0
         //http://10.0.0.175/onlineTechnicalSupport/exort.php?
         final JSONObject object = new JSONObject();
@@ -478,6 +602,14 @@ public class PresenterClass {
             object.put("CALL_CENTER_ID", customerOnline.getCallCenterId());
             object.put("ENG_ID", customerOnline.getEngineerID());
             object.put("SERIAL", customerOnline.getSerial());
+
+            if(customerOnline.getDangerStatus()==1||customerOnline.getDangerStatus()==2||customerOnline.getDangerStatus()==4){
+                object.put("DANGER_STATUS", 2);
+            }else {
+                object.put("DANGER_STATUS", 3);
+            }
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -510,7 +642,16 @@ public class PresenterClass {
         @Override
         public void onResponse(String response) {
             Log.e("presenter", "TechnicalStateClass/ " + response);
+            if(flagUpdate==2){
+if(update==2){
+    technicalActivityOnline.refreshAfterTransfer();
+}else {
 
+    getCustomersHoldDanger(technicalActivityOnline);
+}
+            }else {
+
+            }
 //            Gson gson = new Gson();
 //            Systems systems = gson.fromJson(response, Systems.class);
 //            technicalActivity.fillSystemsDialog(systems.getSystemsList());
@@ -518,5 +659,81 @@ public class PresenterClass {
 
         }
     }
+
+    //****************************************** update technical Danger status  **************************************
+
+    public void updateTechnicalDangerState(Activity activity, final CustomerOnline customerOnline,int flag) {
+
+        if(flag==1) {
+            technicalActivity = (TechnicalActivity) activity;
+        }else if(flag==2){
+            technicalActivityOnline = (TechnicalActivityOnline) activity;
+
+        }
+        url = URL + "export.php?";//http://5.189.130.98:8085/onlineTechnicalSupport/import.php?FLAG=0
+        //http://10.0.0.175/onlineTechnicalSupport/exort.php?
+        final JSONObject object = new JSONObject();
+        try {
+            object.put("CALL_CENTER_ID", customerOnline.getCallCenterId());
+            object.put("ENG_ID", customerOnline.getEngineerID());
+            object.put("SERIAL", customerOnline.getSerial());
+
+            if(customerOnline.getDangerStatus()==1||customerOnline.getDangerStatus()==2||customerOnline.getDangerStatus()==4){
+                object.put("DANGER_STATUS", 4);
+            }else {
+                object.put("DANGER_STATUS", 5);
+            }
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        request = new StringRequest(Request.Method.POST, url, new TechnicalDangerStateClass(), new TechnicalDangerStateClass()) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("DANGER_STATUS_UPDATE", object.toString());
+//                params.put("CALL_CENTER_ID", customerOnline.getCallCenterId());
+//                params.put("ENG_ID", customerOnline.getEngineerID());
+//                params.put("SERIAL", customerOnline.getSerial());
+
+                return params;
+            }
+        };
+
+        requestQueue.add(request);
+    }
+
+    class TechnicalDangerStateClass implements Response.Listener<String>, Response.ErrorListener {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.e("presenter/e", "TechnicalStateClass/ " + error.getMessage());
+
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        @Override
+        public void onResponse(String response) {
+            Log.e("presenter", "TechnicalStateClass/ " + response);
+
+//            Gson gson = new Gson();
+//            Systems systems = gson.fromJson(response, Systems.class);
+//            technicalActivity.fillSystemsDialog(systems.getSystemsList());
+            try {
+                if (response.toString().contains("DANGER_STATUS_UPDATE_SUCCESS")) {
+
+                    technicalActivityOnline.refreshAfterTransfer();
+
+                }
+            } catch (Exception e) {
+
+            }
+
+
+        }
+    }
+
 
 }

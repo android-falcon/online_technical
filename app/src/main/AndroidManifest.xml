@@ -50,7 +50,17 @@
             android:windowSoftInputMode="adjustPan|stateVisible"
             tools:ignore="LockedOrientationActivity" />
         <activity
+            android:name=".TechnicalActivityOnline"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustPan|stateVisible"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name=".OnlineCenter"
+            android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="stateVisible|adjustNothing"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".QA_Activity"
             android:screenOrientation="sensorLandscape"
             android:windowSoftInputMode="stateVisible|adjustNothing"
             tools:ignore="LockedOrientationActivity" />

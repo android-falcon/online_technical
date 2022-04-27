@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layoutDirection="ltr"
+    android:padding="10dp"
+    android:background="@drawable/bac_list"
+    android:orientation="horizontal">
+
+<!--    <androidx.cardview.widget.CardView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:background="@color/white"-->
+<!--        android:elevation="@dimen/cardview_default_elevation"-->
+<!--        app:cardCornerRadius="20dp">-->
+
+        <LinearLayout
+            android:id="@+id/mainLiner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="clip_horizontal|center"
+            android:gravity="center"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/button_f_"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:padding="5dp"
+                    android:text="please Choice Order Type"
+                    android:textColor="@color/white" />
+
+
+                <!--<com.robinhood.ticker.TickerView-->
+                <!--android:id="@+id/timeLoading"-->
+                <!--android:gravity="center"-->
+                <!--android:layout_weight="1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="0"-->
+                <!--android:textColor="@color/white"-->
+                <!--android:textSize="16sp"-->
+                <!--app:ticker_animationDuration="1500000"-->
+                <!--app:ticker_defaultPreferredScrollingDirection="up"-->
+                <!--/>-->
+
+
+                <!--<TextClock-->
+                <!--android:id="@+id/timeLoading"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:textColor="#17d409"-->
+                <!--tools:targetApi="jelly_bean_mr1" />-->
+            </LinearLayout>
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="5dp">
+
+                <RadioButton
+                    android:id="@+id/NormalRadioButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:textColor="@color/black"
+                    android:text="Normal Order" />
+
+                <RadioButton
+                    android:id="@+id/DangerRadioButton"
+                    android:layout_width="match_parent"
+                    android:textColor="@color/black"
+                    android:layout_height="wrap_content"
+                    android:text="Danger Order [ متعطل ]" />
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/button_f"
+                android:textColor="@color/white"
+                android:layout_margin="5dp"
+                android:text="done" />
+
+        </LinearLayout>
+<!--    </androidx.cardview.widget.CardView>-->
+
+</LinearLayout>

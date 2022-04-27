@@ -608,6 +608,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.UserControl:
                 userControlApp();
                 return true;
+            case R.id.QA:
+               Intent qaLayout=new Intent(MainActivity.this,QA_Activity.class);
+               startActivity(qaLayout);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -1,6 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/bac_list_0_1_l.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/bac_list_0_2.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/bac_list_0_3.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/bac_list_2.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/bac_list_2_1.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/bac_list_4.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/back_fill.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/background_container.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/background_hol_3.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/background_hold.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/background_hold_4.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/background_schdual.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/border_background.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/break_d.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/button_f.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/button_f_.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/button_f_g.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/ic_baseline_check_gray.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/ic_baseline_refresh_24.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/ic_baseline_transfer.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/ic_delete_forever_black_24dp.xml" value="0.11302083333333333" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/ic_exit.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/shadow.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/shadow_danger.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/drawable/shadow_wait.xml" value="0.2203125" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout-land/activity_call_center_tracking_report.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout-land/activity_engineers_tracking_report.xml" value="0.14114583333333333" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout-land/activity_login.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout-land/activity_online.xml" value="0.2875" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout-land/activity_online_center.xml" value="0.2875" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout-land/engineers_tracking_row.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout-land/tracking_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/activity_location.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/activity_login.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/activity_online.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/activity_online_on.xml" value="0.2875" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/add_emp_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/add_sys_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/break_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/call_center_report_row.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/cancle_hold_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/check_in_dialog.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/content_main.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/dash_board_activity.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/data_qa_layout.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/data_qa_layout_main.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/engeneering_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/hold_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/information_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/information_dialog_table_color.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/item_hold_row.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/item_manager_row.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/item_rows.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/item_sys_row.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/location_master.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/order_type_dan_norm.xml" value="0.22" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/pic_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/problem_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/qa_activity.xml" value="0.2875" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/qa_activity_dialog.xml" value="0.30364583333333334" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/reason_hold_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/schadu_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/settings_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/spinner_drop_down_layout.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/spinner_layout.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/spinner_text.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/sys_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/technical_customers_row.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/transfer_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/user_control.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/layout/user_control_row.xml" value="0.1" />
+        <entry key="..\:/Users/mr gamer/AndroidStudioProjects/OnlineTechSupport/app/src/main/res/menu/control_menu.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

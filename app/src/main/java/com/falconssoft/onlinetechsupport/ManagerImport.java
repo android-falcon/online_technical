@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.falconssoft.onlinetechsupport.Modle.CustomerOnline;
 import com.falconssoft.onlinetechsupport.Modle.EngineerInfo;
 import com.falconssoft.onlinetechsupport.Modle.ManagerLayout;
 import com.falconssoft.onlinetechsupport.Modle.Systems;
@@ -24,6 +25,7 @@ import com.falconssoft.onlinetechsupport.reports.CallCenterTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.EngineersTrackingReport;
 import com.falconssoft.onlinetechsupport.reports.ProgrammerReport;
 import com.falconssoft.onlinetechsupport.reports.TechnicalTrackingReport;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,6 +96,7 @@ public class ManagerImport {
     private ProgressDialog progressDialogSave;
     private JSONObject obj;
 
+    boolean tranOnline=false;
     String itemCode;
     String JsonResponseSave;
     String JsonResponseSaveSwitch;
@@ -121,6 +124,15 @@ public class ManagerImport {
         databaseHandler = new DatabaseHandler(context);
         ipAddres = databaseHandler.getIp();
 
+
+    }
+    void startGetQA(){
+        new QA_dashboard().execute();
+
+    }
+
+    void startGetQA_info(String engId){
+        new QA_dashboard_info(engId).execute();
 
     }
 
@@ -168,14 +180,30 @@ public class ManagerImport {
         flag = flagT;
         dialogs = dialog;
 
+        tranOnline=false;
         new SyncManagerLayoutIN().execute();
 //http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
 
     }
 
-    public void startUpdateHold(JSONObject data) {
+
+    public void startSendingDataTranEng(JSONObject data, boolean holds, int flagT, ManagerLayout managerLayout, Dialog dialog,boolean tranOnline) {
+        sendSucsses = false;
+        datatoSend = data;
+        holdin = holds;
+        managerLayoutTrans = managerLayout;
+        flag = flagT;
+        dialogs = dialog;
+        this.tranOnline=tranOnline;
+
+        new SyncManagerLayoutIN().execute();
+//http://10.0.0.214/onlineTechnicalSupport/export.php?CUSTOMER_INFO=[{CUST_NAME:%22fALCONS%22,COMPANY_NAME:%22MASTER%22,SYSTEM_NAME:%22rESTURANT%22,PHONE_NO:%220784555545%22,CHECH_IN_TIME:%2202:25%22,STATE:%221%22,ENG_NAME:%22ENG.RAWAN%22}]
+
+    }
+
+    public void startUpdateHold(JSONObject data,int flagSend) {//if 0->in OnlineCenter Activity 1->TechnicalActivityOnline Activity
         upDateHold = data;
-        new updateHoldLayout().execute();
+        new updateHoldLayout(flagSend).execute();
     }
 
 
@@ -523,6 +551,7 @@ public class ManagerImport {
                         obj.setOriginalSerial(finalObject.getString("ORGINAL_SERIAL"));
                         obj.setCompanyId(finalObject.getString("COMPANY_ID"));
                         obj.setTransactionDate(finalObject.getString("DATE_OF_TRANSACTION"));
+                        obj.setDangerStatus(finalObject.getInt("DANGER_STATUS"));
                         obj.setCurrentTime(curentTime);
 
 
@@ -591,7 +620,7 @@ public class ManagerImport {
 
                 NEWI.put(datatoSend);
 
-                String data = "CUSTOMER_INFO=" + URLEncoder.encode(NEWI.toString(), "UTF-8");
+                String data = "CUSTOMER_INFO_2=" + URLEncoder.encode(NEWI.toString(), "UTF-8");
                 URL url = new URL(link);
                 Log.e("urlString = ", "" + url.toString());
 
@@ -671,8 +700,10 @@ public class ManagerImport {
                     EngId = Integer.parseInt(managerLayoutTrans.getEngId());
                     managerLayoutTrans.setTransferToSerial(Serial);
                     managerLayoutTrans.setEngId("" + id);
-                    textState.setText("Success");
-                    text_finish.setText("AddFinish");
+                    if(!tranOnline) {
+                        textState.setText("Success");
+                        text_finish.setText("AddFinish");
+                    }
                     Log.e("UpdateTransferSolved", EngId + "     " + id);
                     new UpdateTransferSolved(managerLayoutTrans, dialogs).execute();
                 } else {
@@ -682,6 +713,8 @@ public class ManagerImport {
                 if (holdin) {
                     textState.setText("Success");
                 }
+
+
 
 
             } else {
@@ -700,7 +733,11 @@ public class ManagerImport {
         private String JsonResponse = null;
         private HttpURLConnection urlConnection = null;
         private BufferedReader reader = null;
+        int flag;
 
+        public updateHoldLayout(int flag) {
+            this.flag=flag;
+        }
 
         @Override
         protected void onPreExecute() {
@@ -773,26 +810,36 @@ public class ManagerImport {
         protected void onPostExecute(String JsonResponse) {
             super.onPostExecute(JsonResponse);
 
+           // Log.e("Manager_IMPORTs1", ""+JsonResponse.toString());
 
             if (JsonResponse != null && JsonResponse.contains("CUST_NAME")) {
                 sendSucsses = true;
 
-                startSending("GetHold");
-                text_finish.setText("finish");
-                Log.e("updatehold", "****Success");
-                new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
-                        .setTitleText("")
-                        .setContentText("send hold data Success")
+                if(flag==0) {
+                    startSending("GetHold");
+                    text_finish.setText("finish");
+                    Log.e("updatehold", "****Success");
+                    new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE)
+                            .setTitleText("")
+                            .setContentText("send hold data Success")
 //                        .hideConfirmButton()
-                        .show();
+                            .show();
 
 
-                textState.setText("Success");
+                    textState.setText("Success");
 
-
+                }else if(flag==1){
+                    TechnicalActivityOnline tec=(TechnicalActivityOnline) context;
+                    tec.updateDangerState();
+                }
             } else {
                 sendSucsses = false;
-                Log.e("tag_itemCard", "****Failed to export data");
+                if(flag==1){
+                    TechnicalActivityOnline tec=(TechnicalActivityOnline) context;
+                    tec.refreshAfterTransfer();
+
+                }
+                Log.e("Manager_IMPORT", "****Failed to export data  "+JsonResponse.toString());
 
 //                }
 
@@ -1063,7 +1110,245 @@ public class ManagerImport {
 
         }
     }
+    private class QA_dashboard extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=18";
+                // ITEM_CARD
+
+
+//                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
+////
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("CUSTOMER_INFO")) {
+                Log.e("countMan", "****Success");
+//                progressDialog.dismiss();
+                JsonResponseSave = JsonResponse;
+
+                try {
+
+                    JSONObject COUNT = new JSONObject(JsonResponse);
+
+                    JSONArray parentArrayS = COUNT.getJSONArray("CUSTOMER_INFO");
+
+                    List<CustomerOnline> customerOnlines=new ArrayList<>();
+
+                  for(int i=0;i<parentArrayS.length();i++){
+                      JSONObject finalObject = parentArrayS.getJSONObject(i);
+
+                      CustomerOnline obj = new CustomerOnline();
+                      obj.setWaitCount(finalObject.getInt("WAIT"));
+                      obj.setChekInCount(finalObject.getInt("CHECKIN"));
+                      obj.setChekOutCount(finalObject.getInt("CHECKOUT"));
+                      obj.setEngineerName(finalObject.getString("ENG_NAME"));
+                      obj.setEngineerID(finalObject.getString("ENG_ID"));
+                      //obj.setTIME(finalObject.getString("TIME"));
+
+                      customerOnlines.add(obj);
+
+                  }
+
+
+                  QA_Activity qa=(QA_Activity)context;
+                  qa.fillAdapter(customerOnlines);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("qaerror", ""+e.getMessage().toString());
+                }
+
+            } else {
+                Log.e("tag_itemCard", "****Failed to export data");
+//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
+//                if (pd != null) {
+//                    pd.dismiss();
+//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText(context.getResources().getString(R.string.ops))
+//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
+//                            .show();
+//                }
+                QA_Activity qa=(QA_Activity)context;
+                qa.fillAdapter(new ArrayList<CustomerOnline>());
+
+
+            }
+
+        }
+    }
+    private class QA_dashboard_info extends AsyncTask<String, String, String> {
+        private String JsonResponse = null;
+        private HttpURLConnection urlConnection = null;
+        private BufferedReader reader = null;
+        String engId;
+
+        public QA_dashboard_info(String engId) {
+            this.engId = engId;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {///GetModifer?compno=736&compyear=2019
+            try {
+//
+                ipAddres = databaseHandler.getIp();
+                String link = "http://" + ipAddres + "/onlineTechnicalSupport/import.php?FLAG=19&ENG_ID="+engId;
+                // ITEM_CARD
+
+
+//                String data = "FLAG=" + URLEncoder.encode("0", "UTF-8");
+////
+
+                URL url = new URL(link);
+                Log.e("urlString = ", "" + url.toString());
+
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                httpURLConnection.setRequestMethod("POST");
+
+//
+//                DataOutputStream wr = new DataOutputStream(httpURLConnection.getOutputStream());
+//                wr.writeBytes(data);
+//                wr.flush();
+//                wr.close();
+
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+
+                StringBuffer stringBuffer = new StringBuffer();
+
+                while ((JsonResponse = bufferedReader.readLine()) != null) {
+                    stringBuffer.append(JsonResponse + "\n");
+                }
+
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+
+                Log.e("tag", "ItemOCode -->" + stringBuffer.toString());
+
+                return stringBuffer.toString();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (final IOException e) {
+                        Log.e("tag", "Error closing stream", e);
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String JsonResponse) {
+            super.onPostExecute(JsonResponse);
+
+            if (JsonResponse != null && JsonResponse.contains("CUSTOMER_INFO")) {
+                Log.e("countMan", "****Success");
+//                progressDialog.dismiss();
+                JsonResponseSave = JsonResponse;
+
+                Gson gson=new Gson();
+                CustomerOnline online = gson.fromJson(JsonResponse.toString(), CustomerOnline.class);
+                Log.e("getOnlineList", "" + JsonResponse.toString());
+
+                QA_Activity qa=(QA_Activity)context;
+                qa.fillAdapter_info(online.getOnlineList());
+
+            } else {
+                Log.e("tag_itemCard", "****Failed to export data");
+//                Toast.makeText(context, "Failed to Get data", Toast.LENGTH_SHORT).show();
+//                if (pd != null) {
+//                    pd.dismiss();
+//                    new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+//                            .setTitleText(context.getResources().getString(R.string.ops))
+//                            .setContentText(context.getResources().getString(R.string.fildtoimportitemswitch))
+//                            .show();
+//                }
+                QA_Activity qa=(QA_Activity)context;
+                qa.fillAdapter_info(new ArrayList<CustomerOnline>());
+
+
+            }
+
+        }
+    }
 
     private class SystemEngineer extends AsyncTask<String, String, String> {
         private String JsonResponse = null;
@@ -1466,7 +1751,16 @@ public class ManagerImport {
 
                 dialog.dismiss();
 //                context.FillCheckIn();
-                text_finish.setText("finish");
+
+
+                if(tranOnline){
+                    TechnicalActivityOnline tec=(TechnicalActivityOnline) context;
+                    tec.refreshAfterTransfer();
+                }else {
+                    text_finish.setText("finish");
+
+                }
+
 
             } else {
 

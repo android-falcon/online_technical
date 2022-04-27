@@ -73,6 +73,7 @@ import static com.falconssoft.onlinetechsupport.OnlineCenter.engInfoTra;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engStringName;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.engineerInfoList;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.isInHold;
+import static com.falconssoft.onlinetechsupport.OnlineCenter.norDanFlag;
 import static com.falconssoft.onlinetechsupport.OnlineCenter.text_delet_id;
 
 public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyAdapter.ViewHolder> {
@@ -414,7 +415,7 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("data", "" + data);
+        Log.e("dataTrancfer222 ", "" + data);
         ManagerImport managerImport = new ManagerImport(context);
         managerImport.startSendingData(data, false,8,managerLayoutTransfer,dialog);
 
@@ -477,6 +478,15 @@ public class CheckInCompanyAdapter extends  RecyclerView.Adapter<CheckInCompanyA
             obj.put("CALL_CENTER_NAME", "'"+CallName+"'");
             obj.put("TRANSFER_FLAG", "'2'");
             obj.put("HOLD_REASON", "''");
+
+        int dangerStatus=0;
+        if(managerLayout.getDangerStatus()==1||managerLayout.getDangerStatus()==2||managerLayout.getDangerStatus()==4){
+
+            dangerStatus=1;
+        }else {
+            dangerStatus=0;
+        }
+        obj.put("DANGER_STATUS", "'"+dangerStatus+"'");
 
         if(callType==1) {
             obj.put("TEC_TYPE", "'" + 2 + "'");

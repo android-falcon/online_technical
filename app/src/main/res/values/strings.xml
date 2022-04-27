@@ -94,4 +94,10 @@
     <string name="programmer">programmer</string>
     <string name="Programmer_Report">Programmer Report</string>
     <string name="UserControl">User Control</string>
+    <string name="clear">Clear</string>
+    <string name="logout">Log Out</string>
+    <string name="wating">Wating</string>
+    <string name="wait">Waiting</string>
+    <string name="danger">Danger  [متعطل]</string>
+    <string name="QA">QA Online</string>
 </resources>

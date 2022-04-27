@@ -17,6 +17,8 @@ public class CustomerOnline {
 //            ,"COMPANY_ID":"5880","ROW_UPDATE_ID":"-1","CHECK_OUT_LATITUDE":"31.9694705"
 //            ,"CHECK_OUT_LONGITUDE":"35.9140855","VR_PIC":"null","LATITUDE":"31.9694705","LONGITUDE":"35.9140855"}]}
 
+    @SerializedName("TIME")
+    private String TIME;
     @SerializedName("CUSTOMER_INFO")
     private List<CustomerOnline> onlineList ;
 
@@ -85,7 +87,76 @@ public class CustomerOnline {
     @SerializedName("DATE_OF_TRANSACTION")
     private String date;
 
+
+    @SerializedName("ORGINAL_SERIAL")
+    private String originalSerial;
+
+    @SerializedName("CALL_CENTER_NAME")
+    private String callCenterName;
+
+    @SerializedName("DANGER_STATUS")
+    private int dangerStatus;
+    private int ChekInCount;
+    private int ChekOutCount;
+    private int waitCount;
+
+    public String getTIME() {
+        return TIME;
+    }
+
+    public void setTIME(String TIME) {
+        this.TIME = TIME;
+    }
+
+    public int getChekInCount() {
+        return ChekInCount;
+    }
+
+    public void setChekInCount(int chekInCount) {
+        ChekInCount = chekInCount;
+    }
+
+    public int getChekOutCount() {
+        return ChekOutCount;
+    }
+
+    public void setChekOutCount(int chekOutCount) {
+        ChekOutCount = chekOutCount;
+    }
+
+    public int getWaitCount() {
+        return waitCount;
+    }
+
+    public void setWaitCount(int waitCount) {
+        this.waitCount = waitCount;
+    }
+
     public CustomerOnline() {
+    }
+
+    public int getDangerStatus() {
+        return dangerStatus;
+    }
+
+    public void setDangerStatus(int dangerStatus) {
+        this.dangerStatus = dangerStatus;
+    }
+
+    public String getCallCenterName() {
+        return callCenterName;
+    }
+
+    public void setCallCenterName(String callCenterName) {
+        this.callCenterName = callCenterName;
+    }
+
+    public String getOriginalSerial() {
+        return originalSerial;
+    }
+
+    public void setOriginalSerial(String originalSerial) {
+        this.originalSerial = originalSerial;
     }
 
     public String getDate() {

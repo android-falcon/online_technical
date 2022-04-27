@@ -17,11 +17,21 @@ public class EngineerInfo {
     private int state;
     private int available;
 
+    private String englishName;
     private double noOfCountCall;
     private double percCall;
 
 
     public EngineerInfo() {
+    }
+
+
+    public String getEnglishName() {
+        return englishName;
+    }
+
+    public void setEnglishName(String englishName) {
+        this.englishName = englishName;
     }
 
     public int getState() {
