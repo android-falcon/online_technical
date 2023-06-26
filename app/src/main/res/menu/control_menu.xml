@@ -29,4 +29,7 @@
     <item
         android:id="@+id/UserControl"
         android:title="@string/UserControl"/>
+    <item
+        android:id="@+id/QA"
+        android:title="@string/QA"/>
 </menu>

@@ -50,6 +50,7 @@ public class ManagerLayout {
     private String tecType;
 
     private  String companyId;
+    private int dangerStatus;
 
     public ManagerLayout() {
 
@@ -67,6 +68,14 @@ public class ManagerLayout {
         this.State = state;
         this.systemId = systemId;
         this.Proplem = proplem;
+    }
+
+    public int getDangerStatus() {
+        return dangerStatus;
+    }
+
+    public void setDangerStatus(int dangerStatus) {
+        this.dangerStatus = dangerStatus;
     }
 
     public String getTransactionDate() {

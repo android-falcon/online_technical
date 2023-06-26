@@ -32,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
@@ -96,9 +97,10 @@ public class OnlineCenter extends AppCompatActivity {
     //    Spinner spenner_systems;
     //    String ipAddres = "10.0.0.214";
     DatabaseHandler databaseHandler;
-
+    public static  int norDanFlag=0;
     String ipAddres = "";
     public static List<Systems> systemsList;
+    LinearLayout linearService;
     LinearLayoutManager layoutManager;
     public static int stateCompaney = -1, selectedEngId = 0, EngId = -1;
     String holdReasonText = "";
@@ -127,7 +129,7 @@ public class OnlineCenter extends AppCompatActivity {
     RelativeLayout relative;
     TextView holdScheduale;
     int callType = 1;
-    Button btn_sch, btn_hold,btnReport;
+    Button btn_sch, btn_hold,btnReport,btn_danger;
 
     private Calendar calendar;
     private SimpleDateFormat dateFormat;
@@ -178,20 +180,27 @@ public class OnlineCenter extends AppCompatActivity {
         ipAddres = databaseHandler.getIp();
         fillEngineerInfoList(0);
 
+
+
         btn_sch.setVisibility(View.GONE);
+       // btn_danger.setVisibility(View.GONE);
         btnReport.setVisibility(View.GONE);
         btn_hold.setVisibility(View.GONE);
+        linearService.setVisibility(View.GONE);
         if (callType == 1 ||callType == 5) {
             btn_hold.setVisibility(View.VISIBLE);
+          //  btn_danger.setVisibility(View.VISIBLE);
             btn_sch.setVisibility(View.GONE);
             btnReport.setVisibility(View.GONE);
             holdScheduale.setText(getResources().getString(R.string.hold_customer_list));
-
+            linearService.setVisibility(View.GONE);
         } else if (callType == 3 ) {
             btn_hold.setVisibility(View.GONE);
+          //  btn_danger.setVisibility(View.GONE);
             btn_sch.setVisibility(View.VISIBLE);
             btnReport.setVisibility(View.VISIBLE);
             holdScheduale.setText(getResources().getString(R.string.sch_customer_list));
+            linearService.setVisibility(View.VISIBLE);
         }
 
         timer = new Timer();
@@ -375,16 +384,9 @@ public class OnlineCenter extends AppCompatActivity {
                     Toast.makeText(OnlineCenter.this, "Select Engineer", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    JSONObject data = null;
-                    try {
-                        data = getData("0", 1);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Log.e("data", "" + data);
-                    ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                    managerImport.startSendingData(data, true, 0, null, null);
 
+                    //sendHoldData();
+                    orderTypeDialog(3);
                     dialog.dismiss();
 
 
@@ -473,11 +475,13 @@ public class OnlineCenter extends AppCompatActivity {
 
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    sendCompaneyInfo();
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+//                                try {
+//                                    sendCompaneyInfo();
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+                                orderTypeDialog(1);
+
                                 // Continue with delete operation
                             }
                         })
@@ -565,12 +569,13 @@ public class OnlineCenter extends AppCompatActivity {
 
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
-                                    try {
-                                        sendCompaneyInfo();
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+//                                    try {
+//                                        sendCompaneyInfo();
+//
+//                                    } catch (JSONException e) {
+//                                        e.printStackTrace();
+//                                    }
+                                    orderTypeDialog(1);
                                     // Continue with delete operation
                                 }
                             })
@@ -832,6 +837,7 @@ public class OnlineCenter extends AppCompatActivity {
 //        engineerNotAvil= new ArrayList<>();
         listEngforAdapter = new ArrayList<>();
         secandCall = findViewById(R.id.secandCall);
+        linearService=findViewById(R.id.linearService);
         holdCompaney = new ArrayList<>();
         systemsList = new ArrayList<>();
         hold_List = new ArrayList<>();
@@ -862,6 +868,7 @@ public class OnlineCenter extends AppCompatActivity {
         btn_sch = findViewById(R.id.btn_sch);
         btnReport=findViewById(R.id.btnReport);
         btn_hold = findViewById(R.id.btn_hold);
+      //  btn_danger=findViewById(R.id.btn_danger);
 
         textState.addTextChangedListener(new TextWatcher() {
             @Override
@@ -959,6 +966,66 @@ public class OnlineCenter extends AppCompatActivity {
         }
     }
 
+    public  void orderTypeDialog(final int flagIsOpen){
+
+        final Dialog orderDialog = new Dialog(OnlineCenter.this, R.style.Theme_Dialog);
+        orderDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        orderDialog.setCancelable(false);
+        orderDialog.setContentView(R.layout.order_type_dan_norm);
+        orderDialog.setCanceledOnTouchOutside(true);
+
+
+
+        final RadioButton NormalRadioButton=orderDialog.findViewById(R.id.NormalRadioButton);
+        RadioButton DangerRadioButton=orderDialog.findViewById(R.id.DangerRadioButton);
+        Button done=orderDialog.findViewById(R.id.done);
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(NormalRadioButton.isChecked()){
+                    norDanFlag=0;//normal
+                }else {
+                    norDanFlag=1;//danger
+                }
+
+                if(flagIsOpen==1){
+
+                    try {
+                        sendCompaneyInfo();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else if(flagIsOpen==2){
+                    holdListDialog();
+                }else if(flagIsOpen==3){
+                    sendHoldData();
+                }
+
+                orderDialog.dismiss();
+
+            }
+        });
+
+        orderDialog.show();
+
+    }
+
+    void sendHoldData(){
+        JSONObject data = null;
+        try {
+            data = getData("0", 1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e("data", "" + data);
+        ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
+        managerImport.startSendingData(data, true, 0, null, null);
+
+
+    }
+
     public void sendCompaneyInfo() throws JSONException {
         boolean isfaull = checkRequiredData();
         if (isfaull) {
@@ -993,7 +1060,7 @@ public class OnlineCenter extends AppCompatActivity {
                         JSONObject data = companeyInfo.getData();
                         Log.e("HOLDp", "" + data);
                         ManagerImport managerImport = new ManagerImport(OnlineCenter.this);
-                        managerImport.startUpdateHold(data);
+                        managerImport.startUpdateHold(data,0);
 
                     }
                     isInHold = false;
@@ -1154,6 +1221,7 @@ public class OnlineCenter extends AppCompatActivity {
             obj.put("TRANSFER_FLAG", "'" + transferFlag + "'");
             obj.put("ORGINAL_SERIAL", "'-2'");
             obj.put("HOLD_REASON", "''");
+            obj.put("DANGER_STATUS", "'" + norDanFlag + "'");
             if (callType == 1) {
                 obj.put("TEC_TYPE", "'" + 2 + "'");
             } else if (callType == 3) {
@@ -1184,6 +1252,8 @@ public class OnlineCenter extends AppCompatActivity {
             obj.put("TRANSFER_FLAG", "'" + transferFlag + "'");
             obj.put("ORGINAL_SERIAL", "'-2'");
             obj.put("HOLD_REASON", "'" + holdReasonText + "'");
+            obj.put("DANGER_STATUS", "'" + norDanFlag + "'");
+
             if (callType == 1) {
                 obj.put("TEC_TYPE", "'" + 2 + "'");
             } else if (callType == 3) {
@@ -1254,7 +1324,9 @@ public class OnlineCenter extends AppCompatActivity {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
 
-                                holdListDialog();
+                                orderTypeDialog(2);
+
+
                                 sweetAlertDialog.dismissWithAnimation();
 
 

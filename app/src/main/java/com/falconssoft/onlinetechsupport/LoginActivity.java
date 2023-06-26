@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.json.JSONException;
 
 import static com.falconssoft.onlinetechsupport.PresenterClass.listInfo;
+import static com.falconssoft.onlinetechsupport.TechnicalActivityOnline.isOpenFirstTime;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -61,6 +62,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         handler = new DatabaseHandler(this);
         presenterClass = new PresenterClass(this);
 
+
+
+
         sharedPreferences = getSharedPreferences(LOGIN_PREFERNCES, Context.MODE_PRIVATE);
         settings = findViewById(R.id.login_settings);
         login = findViewById(R.id.login_login);
@@ -85,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if(s.toString().equals("start"))
                 {
                     for (int i = 0; i < listInfo.size(); i++)
-                        if (localUsername.toLowerCase().equals(listInfo.get(i).getName().toLowerCase())
+                        if ((localUsername.toLowerCase().equals(listInfo.get(i).getName().toLowerCase())||localUsername.toLowerCase().equals(listInfo.get(i).getEnglishName().toLowerCase()))
                                 && localPassword.equals(listInfo.get(i).getPassword())) {//
                             found = true;
                             editor = sharedPreferences.edit();
@@ -106,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     startActivity(intent2);
                                     break;
                                 case 2:// online
-                                    Intent intent3 = new Intent(LoginActivity.this, TechnicalActivity.class);
+                                    Intent intent3 = new Intent(LoginActivity.this, TechnicalActivityOnline.class);
                                     startActivity(intent3);
                                     break;
                                 case 3:// call center tec
@@ -172,7 +176,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                list = handler.getLoginData();
                  localUsername = username.getText().toString();
                  localPassword = password.getText().toString();
+                try{
+                    isOpenFirstTime=true;
+                }catch (Exception e){
 
+                }
 
                 if (!TextUtils.isEmpty(localUsername))
                     if (!TextUtils.isEmpty(localPassword)) {

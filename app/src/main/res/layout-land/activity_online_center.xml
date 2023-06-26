@@ -458,6 +458,7 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/linearService"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="5"
@@ -525,6 +526,23 @@
                     android:text="@string/hold"
                     android:textColor="@color/darkblue_" />
 
+
+<!--                <Button-->
+<!--                    android:id="@+id/btn_danger"-->
+<!--                    android:layout_width="150dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginTop="5dp"-->
+<!--                    android:layout_marginBottom="5dp"-->
+<!--                    android:layout_marginLeft="5dp"-->
+<!--                    android:background="@drawable/background_hold"-->
+
+<!--                    android:elevation="5dp"-->
+<!--                    android:gravity="center"-->
+<!--                    android:onClick="addToHoldList"-->
+<!--                    android:text="@string/danger"-->
+<!--                    android:backgroundTint="@color/exit"-->
+<!--                    android:textColor="@color/white" />-->
 
                 <Button
                     android:id="@+id/btn_sch"
