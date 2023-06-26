@@ -526,7 +526,7 @@ public class ManagerImport {
                         obj.setCurrentTime(curentTime);
 
 
-                        if (obj.getState().equals("1") && finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))) {
+                        if (obj.getState().equals("1") /*&& finalObject.getString("CALL_CENTER_ID").equals(LoginActivity.sharedPreferences.getString(LOGIN_ID, "-1"))*/) {
                             checkInList.add(obj);
                         }
 //                        }else if(obj.getState().equals("2")){
